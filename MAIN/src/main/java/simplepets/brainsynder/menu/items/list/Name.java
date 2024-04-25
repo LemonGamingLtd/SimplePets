@@ -38,9 +38,10 @@ public class Name extends Item {
         if (pet != null) {
             masterUser.getPlayer().closeInventory();
             PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(), () ->
-                masterUser.getPlayer().performCommand("pet rename " + pet.getPetType().getName()),
+                    masterUser.getPlayer().performCommand("pet rename " + pet.getPetType().getName()),
                 100L, TimeUnit.MILLISECONDS
             );
+            return;
         }
 
         PetSelectorMenu menu = InventoryManager.SELECTOR;
