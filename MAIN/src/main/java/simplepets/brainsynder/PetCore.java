@@ -164,7 +164,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         }
 
         handleListeners();
-        handleUpdateUtils();
+//        handleUpdateUtils();
 
         {
             TimeUnit unit;

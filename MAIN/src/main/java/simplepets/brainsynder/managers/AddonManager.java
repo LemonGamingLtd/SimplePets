@@ -361,10 +361,11 @@ public class AddonManager {
     }
 
     public boolean isSupported(int build) {
-        if (build <= 0) return true;
-        String plugin = PetCore.getInstance().getDescription().getVersion().toLowerCase();
-        if (!plugin.contains("-build-")) return false; // Custom fork with different version?
-        return Integer.parseInt(AdvString.after("-build-", plugin)) >= build;
+        return true;
+//        if (build <= 0) return true;
+//        String plugin = PetCore.getInstance().getDescription().getVersion().toLowerCase();
+//        if (!plugin.contains("-build-")) return false; // Custom fork with different version?
+//        return Integer.parseInt(AdvString.after("-build-", plugin)) >= build;
     }
 
     public void checkAddons() {

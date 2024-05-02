@@ -1,5 +1,6 @@
 package simplepets.brainsynder.nms.pathfinder;
 
+import io.papermc.lib.PaperLib;
 import lib.brainsynder.math.MathUtils;
 import lib.brainsynder.reflection.Reflection;
 import net.minecraft.core.BlockPos;
