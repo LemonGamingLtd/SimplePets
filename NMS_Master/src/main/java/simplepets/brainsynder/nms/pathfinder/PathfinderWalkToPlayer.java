@@ -14,6 +14,7 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.entity.misc.EntityPetType;
 import simplepets.brainsynder.api.event.entity.movment.PetTeleportEvent;
 import simplepets.brainsynder.api.other.ParticleHandler;
@@ -27,6 +28,7 @@ import simplepets.brainsynder.nms.entity.EntityPet;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.EnumSet;
+import java.util.concurrent.TimeUnit;
 
 public class PathfinderWalkToPlayer extends Goal {
     private final EntityPet entity;
@@ -106,7 +108,7 @@ public class PathfinderWalkToPlayer extends Goal {
             // Translation: Entity.distanceTo (Entity)
 
             user.cacheAndRemove();
-            user.summonCachedPets();
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(user.getPlayer(), user::summonCachedPets, 1L, TimeUnit.SECONDS);
 
 //            if (entity.distanceTo(this.player) >= 144) { // Will teleport the pet if the player is more then 144 blocks away
 //                entity.teleportToOwner(); // Will ignore all checks and just teleport to the player
