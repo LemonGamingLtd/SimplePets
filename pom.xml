@@ -199,16 +199,16 @@
 
     <repositories>
         <repository>
+            <id>bs-repo-releases</id>
+            <url>https://repo.bsdevelopment.org/releases</url>
+        </repository>
+        <repository>
             <id>bs-repo-nms</id>
             <url>https://repo.bsdevelopment.org/nms</url>
         </repository>
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>bs-repo-releases</id>
-            <url>https://repo.bsdevelopment.org/releases</url>
         </repository>
         <repository>
             <id>nms-repo</id>
