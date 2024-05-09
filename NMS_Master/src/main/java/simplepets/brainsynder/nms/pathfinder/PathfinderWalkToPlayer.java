@@ -104,7 +104,10 @@ public class PathfinderWalkToPlayer extends Goal {
         // Translation: Entity.squaredDistanceTo (Entity)
         if (entity.distanceToSqr(this.player) >= 155.0D) { // Will teleport the pet if the player is more then 155 blocks away
             // Translation: Entity.distanceTo (Entity)
-            user.removePet(entity.getPetType()); // NAHU: REMOVE PET!
+
+            user.cacheAndRemove();
+            user.summonCachedPets();
+
 //            if (entity.distanceTo(this.player) >= 144) { // Will teleport the pet if the player is more then 144 blocks away
 //                entity.teleportToOwner(); // Will ignore all checks and just teleport to the player
 //            } else {
