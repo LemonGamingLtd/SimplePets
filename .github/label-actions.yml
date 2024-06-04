@@ -14,7 +14,7 @@ fixed in v5:
     Downloads:
     - [Spigot](https://www.spigotmc.org/resources/100106/)
     - [Polymart](https://polymart.org/resource/1952/)
-    - [Jenkins](https://ci.pluginwiki.us/job/SimplePets_v5/)
+    - [Jenkins](https://ci.bsdevelopment.org/job/SimplePets_v5/)
   issues:
     close: true
 
@@ -43,7 +43,7 @@ fixed in v5:
 
 Added in Latest Build:
   comment: >
-    @{issue-author}, This was added in the latest build of SimplePets you can download the jar from the [Jenkins Server](https://ci.pluginwiki.us/job/SimplePets_v5/)
+    @{issue-author}, This was added in the latest build of SimplePets you can download the jar from the [Jenkins Server](https://ci.bsdevelopment.org/job/SimplePets_v5/)
   issues:
     close: true
 

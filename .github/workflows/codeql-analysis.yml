@@ -41,7 +41,7 @@ jobs:
         uses: actions/setup-java@v2.5.0
         with:
           # The Java version to set up. Takes a whole or semver Java version. See examples of supported syntax in README file
-          java-version: 17
+          java-version: 21
           # Java distribution. See the list of supported distributions in README file
           distribution: microsoft
 
@@ -55,7 +55,7 @@ jobs:
           languages: ${{ matrix.language }}
 
       - run: |
-          mvn clean install -f pom.xml -Denv.BUILD_NUMBER=-1 -Denv.JOB_NAME=SimplePets_Analysis
+          mvn clean install -Djenkins.name=SimplePets_Analysis
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
