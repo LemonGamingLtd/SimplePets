@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>simplepets.brainsynder</groupId>
+        <artifactId>SimplePets</artifactId>
+        <version>1</version>
+    </parent>
+
+    <artifactId>API</artifactId>
+    <version>${revision}</version>
+
+    <build>
+        <sourceDirectory>src/</sourceDirectory>
+    </build>
+
+    <properties>
+        <module.info>-API (DEVELOPERS ONLY)</module.info>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

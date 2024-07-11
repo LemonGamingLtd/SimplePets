@@ -6,202 +6,140 @@
 
     <groupId>simplepets.brainsynder</groupId>
     <artifactId>SimplePets</artifactId>
+    <version>1</version>
     <packaging>pom</packaging>
-    <version>1.1-SNAPSHOT</version>
-
-    <modules>
-        <module>API</module>
-        <module>MAIN</module>
-        <!-- <module>v1_16_R3</module> -->
-        <module>NMS_Master</module>
-        <!-- Removed 1.17 - 1.17.1 support on: June 7th, 2023 -->
-        <!-- <module>Version_1.17</module>   -->
-        <!-- <module>Version_1.17.1</module> -->
-
-        <!-- Removed 1.18 - 1.18.2 support on: September 13th, 2023 -->
-        <!-- <module>Version_1.18</module>   -->
-        <!-- <module>Version_1.18.1</module> -->
-        <!-- <module>Version_1.18.2</module> -->
-        <module>Version_1.19</module>
-        <module>Version_1.19.1</module>
-        <module>Version_1.19.2</module>
-        <module>Version_1.19.3</module>
-        <module>Version_1.19.4</module>
-        <module>Version_1.20</module>
-        <module>Version_1.20.1</module>
-        <module>Version_1.20.2</module>
-        <module>Version_1.20.3</module>
-        <module>Version_1.20.4</module>
-        <module>DIST</module>
-    </modules>
-
-    <profiles>
-        <profile>
-            <id>build-number</id>
-            <activation>
-                <property>
-                    <name>env.BUILD_NUMBER</name>
-                </property>
-            </activation>
-            <properties>
-                <!-- Override only if necessary -->
-                <jenkins.buildNumber>${env.BUILD_NUMBER}</jenkins.buildNumber>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>job-name</id>
-            <activation>
-                <property>
-                    <name>env.JOB_NAME</name>
-                </property>
-            </activation>
-            <properties>
-                <!-- Override only if necessary -->
-                <jenkins.name>${env.JOB_NAME}</jenkins.name>
-            </properties>
-        </profile>
-    </profiles>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <module.info>-parent</module.info>
-
+        <!-- These 2 values are used by my Update Checker to check for new dev builds -->
         <jenkins.name>SimplePets_v5</jenkins.name>
         <jenkins.buildNumber>0</jenkins.buildNumber>
 
-        <module.version>5.0-BUILD-${jenkins.buildNumber}</module.version>
-        <bslib.version>B125</bslib.version>
+        <module.info>-parent</module.info>
+        <revision>5.0-BUILD-0</revision>
 
-        <minecraft.version>1.20.4</minecraft.version>
+        <java.version>17</java.version>
+        <bslib.version>B130</bslib.version>
+        <anvilgui.version>1.6.18-CUSTOM</anvilgui.version>
+        <spigotupdatechecker.version>3.0.3</spigotupdatechecker.version>
+        <protocol-lib.version>5.0.0</protocol-lib.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <specialsource.version>2.0.3</specialsource.version>
+        <shade.version>3.5.0</shade.version>
+
+        <minecraft.version>1.21</minecraft.version>
         <spigot.version>${minecraft.version}-R0.1-SNAPSHOT</spigot.version>
-        <spigot.nms>v1_20_R3</spigot.nms>
+        <spigot.nms>v1_21_R1</spigot.nms>
 
-        <anvilgui.version>1.6.15-CUSTOM</anvilgui.version>
+        <!-- Used to compile specific versions -->
+        <target-mc>${minecraft.version}</target-mc>
+
+        <current-module.version/>
+        <current-module.nms/>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
 
-    <build>
-        <defaultGoal>clean install</defaultGoal>
-        <finalName>${project.parent.artifactId}${module.info}</finalName>
-        <resources>
-            <resource>
-                <targetPath>.</targetPath>
-                <filtering>true</filtering>
-                <directory>src/resources/</directory>
-                <includes>
-                    <include>*.yml</include>
-                </includes>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.15.0</version>
-                <configuration>
-                    <properties>
-                        <property>
-                            <name>spigot.version</name>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>simplepets.brainsynder</groupId>
-                                </dependency>
-                            </dependencies>
-                        </property>
-                        <property>
-                            <name>anvilgui.version</name>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>simplepets.brainsynder</groupId>
-                                </dependency>
-                            </dependencies>
-                        </property>
-                        <property>
-                            <name>module.version</name>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>simplepets.brainsynder</groupId>
-                                </dependency>
-                            </dependencies>
-                        </property>
-                        <property>
-                            <name>bslib.version</name>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>simplepets.brainsynder</groupId>
-                                </dependency>
-                            </dependencies>
-                        </property>
-                    </properties>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.4.1</version>
-                <configuration>
-                    <minimizeJar>true</minimizeJar>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <shadedArtifactAttached>false</shadedArtifactAttached>
-                    <outputDirectory>/tmp</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <artifactSet>
-                                <includes>
-                                    <include>simplepets.brainsynder:*</include>
-                                    <include>lib.brainsynder:*</include>
-                                    <include>anvil.brainsynder:*</include>
-                                    <include>com.jeff_media:*</include>
-                                    <include>commons-io:*</include>
-                                    <include>resources:*</include>
-                                </includes>
-                            </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.apache.commons</pattern>
-                                    <shadedPattern>${groupId}.internal.apache</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>anvil.brainsynder</pattern>
-                                    <shadedPattern>${groupId}.internal.anvil</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <profiles>
+        <!-- Used to compile a selected version Example: mvn clean install -Dtarget-mc=1.20.4 -->
+        <profile>
+            <id>targeted</id>
+            <activation>
+                <property>
+                    <name>target-mc</name>
+                </property>
+            </activation>
 
-    <distributionManagement>
-        <repository>
-            <id>bs-repo-releases</id>
-            <url>https://repo.bsdevelopment.org/releases</url>
-        </repository>
-    </distributionManagement>
+            <modules>
+                <module>plugin-api</module>
+                <module>plugin-core</module>
+                <module>plugin-distribution</module>
+
+                <module>nms/master</module>
+                <module>nms/version-${target-mc}</module>
+            </modules>
+        </profile>
+
+
+        <!-- Used to compile for the latest mc version Example: mvn clean install -Platest -->
+        <profile>
+            <id>latest</id>
+
+            <modules>
+                <module>plugin-api</module>
+                <module>plugin-core</module>
+                <module>plugin-distribution</module>
+
+                <module>nms/master</module>
+                <module>nms/version-${minecraft.version}</module>
+            </modules>
+        </profile>
+
+
+        <!-- Used to compile for the 1.19 mc versions Example: mvn clean install -P1.19 -->
+        <profile>
+            <id>1.19</id>
+
+            <modules>
+                <module>plugin-api</module>
+                <module>plugin-core</module>
+                <module>plugin-distribution</module>
+
+                <module>nms/version-1.19</module>
+                <module>nms/version-1.19.1</module>
+                <module>nms/version-1.19.2</module>
+                <module>nms/version-1.19.3</module>
+                <module>nms/version-1.19.4</module>
+            </modules>
+        </profile>
+
+        <!-- This profile is automatically run when running the 'mvn clean install' command -->
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <modules>
+                <module>plugin-api</module>
+                <module>plugin-core</module>
+                <module>plugin-distribution</module>
+
+                <module>nms/master</module>
+
+                <module>nms/version-1.20</module>
+                <module>nms/version-1.20.1</module>
+                <module>nms/version-1.20.2</module>
+                <module>nms/version-1.20.3</module>
+                <module>nms/version-1.20.4</module>
+                <module>nms/version-1.20.5</module>
+                <module>nms/version-1.20.6</module>
+                <module>nms/version-1.21</module>
+                <!-- AUTOMATION: INSERTION POINT -->
+            </modules>
+
+            <build>
+                <resources>
+                    <resource>
+                        <directory>${project.basedir}/resources/</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>lib.brainsynder</groupId>
+            <artifactId>API</artifactId>
+            <version>${bslib.version}</version>
+        </dependency>
+    </dependencies>
 
     <repositories>
-        <repository>
-            <id>bs-repo-releases</id>
-            <url>https://repo.bsdevelopment.org/releases</url>
-        </repository>
         <repository>
             <id>bs-repo-nms</id>
             <url>https://repo.bsdevelopment.org/nms</url>
@@ -211,8 +149,8 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>nms-repo</id>
-            <url>https://repo.codemc.org/repository/nms/</url>
+            <id>bs-repo-releases</id>
+            <url>https://repo.bsdevelopment.org/releases</url>
         </repository>
         <repository>
             <id>dmulloy2-repo</id>
@@ -232,24 +170,150 @@
         </repository>
     </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>apache.snapshots</id>
-            <url>https://repository.apache.org/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+        <finalName>${project.parent.artifactId}${module.info}</finalName>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>5.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>lib.brainsynder</groupId>
-            <artifactId>API</artifactId>
-            <version>${bslib.version}</version>
-        </dependency>
-    </dependencies>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.0.0</version>
+
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.15.0</version>
+                <configuration>
+                    <groupId>simplepets.brainsynder</groupId>
+
+                    <properties>
+                        <property>
+                            <name>revision</name>
+                        </property>
+                        <property>
+                            <name>spigot.version</name>
+                        </property>
+                        <property>
+                            <name>minecraft.version</name>
+                        </property>
+                        <property>
+                            <name>java.version</name>
+                        </property>
+                        <property>
+                            <name>shade.version</name>
+                        </property>
+                        <property>
+                            <name>compiler.version</name>
+                        </property>
+                        <property>
+                            <name>anvilgui.version</name>
+                        </property>
+                        <property>
+                            <name>module.version</name>
+                        </property>
+                        <property>
+                            <name>bslib.version</name>
+                        </property>
+                        <property>
+                            <name>spigotupdatechecker.version</name>
+                        </property>
+                        <property>
+                            <name>protocol-lib.version</name>
+                        </property>
+                        <property>
+                            <name>commons-io.version</name>
+                        </property>
+                        <property>
+                            <name>specialsource.version</name>
+                        </property>
+                        <property>
+                            <name>target-mc</name>
+                        </property>
+                    </properties>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>${shade.version}</version>
+                    <configuration>
+                        <minimizeJar>false</minimizeJar>
+                        <createDependencyReducedPom>false</createDependencyReducedPom>
+                        <shadedArtifactAttached>false</shadedArtifactAttached>
+                        <outputDirectory>/tmp</outputDirectory>
+
+                        <relocations>
+                            <relocation>
+                                <pattern>${project.groupId}.nms</pattern>
+                                <shadedPattern>${project.groupId}.versions.${current-module.version}</shadedPattern>
+                            </relocation>
+                            <relocation>
+                                <pattern>org.bukkit.craftbukkit.${spigot.nms}</pattern>
+                                <shadedPattern>org.bukkit.craftbukkit.${current-module.nms}</shadedPattern>
+                            </relocation>
+
+                            <relocation>
+                                <pattern>org.apache.commons</pattern>
+                                <shadedPattern>${project.groupId}.internal.apache</shadedPattern>
+                            </relocation>
+                            <relocation>
+                                <pattern>anvil.brainsynder</pattern>
+                                <shadedPattern>${project.groupId}.internal.anvil</shadedPattern>
+                            </relocation>
+                            <relocation>
+                                <pattern>io.papermc.lib</pattern>
+                                <shadedPattern>${project.groupId}.internal.papermc</shadedPattern>
+                            </relocation>
+                            <relocation>
+                                <pattern>com.jeff_media.updatechecker</pattern>
+                                <shadedPattern>${project.groupId}.internal.updatechecker</shadedPattern>
+                            </relocation>
+                        </relocations>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>bs-repo-releases</id>
+            <url>https://repo.bsdevelopment.org/releases</url>
+        </repository>
+    </distributionManagement>
 </project>
