@@ -116,7 +116,9 @@ public class PetOwner implements PetUser {
                             Player player = Bukkit.getPlayer(uuid);
                             if (player != null) {
                                 if (!Utilities.hasPermission(player, type.getPermission())) return;
-                                spawnUtil.spawnEntityPet(type, PetOwner.this, tag.getCompoundTag("data"));
+                                PetCore.getInstance().getScheduler().getImpl().runAtLocation(player.getLocation(), () -> {
+                                    spawnUtil.spawnEntityPet(type, PetOwner.this, tag.getCompoundTag("data"));
+                                });
                             }
                         });
                     });

@@ -130,37 +130,7 @@
             <dependencies>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20.1</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20.2</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20.3</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.4</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20.5</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
                 </dependency>
