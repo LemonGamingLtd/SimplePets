@@ -55,16 +55,16 @@ public class AnimationFrame {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("AnimationFrame{");
-        if (head != null) builder.append("head=").append(formatAngle (head)).append(", ");
-        if (body != null) builder.append("body=").append(formatAngle (body)).append(", ");
-        if (leftHand != null) builder.append("leftHand=").append(formatAngle (leftHand)).append(", ");
-        if (rightHand != null) builder.append("rightHand=").append(formatAngle (rightHand)).append(", ");
-        if (leftLeg != null) builder.append("leftLeg=").append(formatAngle (leftLeg)).append(", ");
-        if (rightLeg != null) builder.append("rightLeg=").append(formatAngle (rightLeg)).append(", ");
+        if (head != null) builder.append("head=").append(formatAngle(head)).append(", ");
+        if (body != null) builder.append("body=").append(formatAngle(body)).append(", ");
+        if (leftHand != null) builder.append("leftHand=").append(formatAngle(leftHand)).append(", ");
+        if (rightHand != null) builder.append("rightHand=").append(formatAngle(rightHand)).append(", ");
+        if (leftLeg != null) builder.append("leftLeg=").append(formatAngle(leftLeg)).append(", ");
+        if (rightLeg != null) builder.append("rightLeg=").append(formatAngle(rightLeg)).append(", ");
         return AdvString.replaceLast(", ", "}", builder.toString());
     }
 
-    private String formatAngle (EulerAngle angle) {
-        return "x: "+angle.getX() + " y: "+angle.getY() + " z: "+angle.getZ();
+    private String formatAngle(EulerAngle angle) {
+        return "x: " + angle.getX() + " y: " + angle.getY() + " z: " + angle.getZ();
     }
 }

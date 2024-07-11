@@ -12,8 +12,8 @@ public class FrogVariantData extends PetData<IEntityFrogPet> {
     public FrogVariantData() {
         for (FrogType type : FrogType.values()) {
             addDefaultItem(type.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+type.name())
-                    .setTexture(type.getTexture()));
+                .withName("&#c8c8c8{name}: &a" + type.name())
+                .setTexture(type.getTexture()));
         }
     }
 

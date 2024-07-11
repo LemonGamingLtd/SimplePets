@@ -10,7 +10,7 @@ public enum SnifferState {
     private final String texture;
 
     SnifferState(String texture) {
-        this.texture = "http://textures.minecraft.net/texture/"+texture;
+        this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
     public String getTexture() {
@@ -39,7 +39,7 @@ public enum SnifferState {
         return (current == DIGGING) ? IDLING : values()[current.ordinal() + 1];
     }
 
-    public int getId () {
+    public int getId() {
         return ordinal();
     }
 }

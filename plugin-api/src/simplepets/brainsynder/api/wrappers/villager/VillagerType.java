@@ -26,7 +26,7 @@ public enum VillagerType {
     private final ItemBuilder icon;
 
     VillagerType(String texture) {
-        this.icon = new ItemBuilder(Material.PLAYER_HEAD).setTexture("http://textures.minecraft.net/texture/"+texture);
+        this.icon = new ItemBuilder(Material.PLAYER_HEAD).setTexture("http://textures.minecraft.net/texture/" + texture);
     }
 
     VillagerType(ItemBuilder icon) {

@@ -12,8 +12,8 @@ public class ParrotColorData extends PetData<IEntityParrotPet> {
     public ParrotColorData() {
         for (ParrotVariant variant : ParrotVariant.values()) {
             addDefaultItem(variant.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+variant.name())
-                    .setTexture(variant.getTexture()));
+                .withName("&#c8c8c8{name}: &a" + variant.name())
+                .setTexture(variant.getTexture()));
         }
     }
 

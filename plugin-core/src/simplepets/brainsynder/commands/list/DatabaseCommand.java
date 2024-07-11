@@ -1,5 +1,3 @@
-
-
 package simplepets.brainsynder.commands.list;
 
 import lib.brainsynder.commands.annotations.ICommand;
@@ -19,8 +17,8 @@ import simplepets.brainsynder.sql.SQLData;
 import java.util.List;
 
 @ICommand(
-        name = "database",
-        description = "Shows information about the database"
+    name = "database",
+    description = "Shows information about the database"
 )
 @Permission(permission = "database", adminCommand = true, additionalPermissions = {"removenpcs", "removeduplicates", "findduplicates"})
 public class DatabaseCommand extends PetSubCommand {

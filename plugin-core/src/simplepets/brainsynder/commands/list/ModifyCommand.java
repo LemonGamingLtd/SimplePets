@@ -21,9 +21,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @ICommand(
-        name = "modify",
-        usage = "[player] <type> <nbt>",
-        description = "Modify the Selected Players' Pet."
+    name = "modify",
+    usage = "[player] <type> <nbt>",
+    description = "Modify the Selected Players' Pet."
 )
 @Permission(permission = "modify", additionalPermissions = {"other"})
 public class ModifyCommand extends PetSubCommand {
@@ -37,7 +37,7 @@ public class ModifyCommand extends PetSubCommand {
             sendUsage(sender);
             return;
         }
-        AtomicInteger argStart = new AtomicInteger (0);
+        AtomicInteger argStart = new AtomicInteger(0);
 
         Player target = null;
         if (isUsername(args[argStart.get()]) && sender.hasPermission(getPermission("other"))) {
@@ -54,8 +54,8 @@ public class ModifyCommand extends PetSubCommand {
 
         if (target == null) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED+"You must be a player to run this command for yourself.");
-            }else{
+                sender.sendMessage(ChatColor.RED + "You must be a player to run this command for yourself.");
+            } else {
                 target = (Player) sender;
             }
         }
@@ -76,14 +76,15 @@ public class ModifyCommand extends PetSubCommand {
             }
 
             StorageTagCompound compound;
-            String json = messageMaker(args, argStart.get()+1).replace(" ", "~");
+            String json = messageMaker(args, argStart.get() + 1).replace(" ", "~");
             json = formatJson(json);
 
 
             // This should help fix the issue with booleans not working for the command.
-            if (json.toLowerCase().contains(":true")){
+            if (json.toLowerCase().contains(":true")) {
                 json = json.replaceAll("(?i):true", ":1b");
-            }if (json.toLowerCase().contains(":false")){
+            }
+            if (json.toLowerCase().contains(":false")) {
                 json = json.replaceAll("(?i):false", ":0b");
             }
 
@@ -93,23 +94,25 @@ public class ModifyCommand extends PetSubCommand {
                 sender.sendMessage(MessageFile.getTranslation(MessageOption.INVALID_NBT));
 
                 String message = MessageFile.getTranslation(MessageOption.INVALID_NBT_MESSAGE)
-                        .replace("{message}", e.getMessage().replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
+                    .replace("{message}", e.getMessage().replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
                 if (!message.isEmpty()) sender.sendMessage(message);
                 return;
             }
 
             String message = MessageFile.getTranslation(MessageOption.MODIFY_COMPOUND).replace("{compound}", compound.toString());
-            if (!message.isEmpty()) sender.sendMessage(message.replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
+            if (!message.isEmpty())
+                sender.sendMessage(message.replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
             user.getPetEntity(type).ifPresent(entityPet -> {
-                if (entityPet instanceof IEntityControllerPet) entityPet = ((IEntityControllerPet)entityPet).getVisibleEntity();
+                if (entityPet instanceof IEntityControllerPet)
+                    entityPet = ((IEntityControllerPet) entityPet).getVisibleEntity();
                 try {
                     entityPet.applyCompound(compound);
                     sender.sendMessage(MessageFile.getTranslation(MessageOption.MODIFY_APPLIED).replace("{type}", type.getName()));
-                }catch (Exception e) {
+                } catch (Exception e) {
                     sender.sendMessage(MessageFile.getTranslation(MessageOption.INVALID_NBT));
 
                     String errorMessage = MessageFile.getTranslation(MessageOption.INVALID_NBT_MESSAGE)
-                            .replace("{message}", e.getMessage().replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
+                        .replace("{message}", e.getMessage().replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
                     if (!errorMessage.isEmpty()) sender.sendMessage(errorMessage);
                 }
             });

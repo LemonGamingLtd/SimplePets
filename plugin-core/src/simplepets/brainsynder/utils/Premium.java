@@ -10,7 +10,7 @@ public class Premium {
     public static String USER_ID = "%%__USER__%%";
     public static String UNIQUE_DOWNLOAD_ID = "%%__NONCE__%%";
 
-    public static DownloadType getDownloadType () {
+    public static DownloadType getDownloadType() {
         if ("%%__POLYMART__%%".equals("1")) return DownloadType.POLYMART;
         if (!USER_ID.contains("_USER_")) return DownloadType.SPIGOT;
 
@@ -18,11 +18,12 @@ public class Premium {
 
         try {
             prop.load(Premium.class.getResourceAsStream("/plugin.properties"));
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
         return DownloadType.valueOf(prop.getProperty("download_location", "JENKINS"));
     }
 
-    public static boolean isPremium () {
+    public static boolean isPremium() {
         return getDownloadType() != DownloadType.JENKINS;
     }
 
@@ -34,12 +35,12 @@ public class Premium {
         HANGAR,
         CUSTOM;
 
-        public UpdateCheckSource toSource () {
+        public UpdateCheckSource toSource() {
             if (!fromDownloadSite()) return UpdateCheckSource.CUSTOM_URL;
             return UpdateCheckSource.valueOf(name());
         }
 
-        public boolean fromDownloadSite () {
+        public boolean fromDownloadSite() {
             return (this != JENKINS) && (this != CUSTOM);
         }
     }

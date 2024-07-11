@@ -9,12 +9,15 @@ import simplepets.brainsynder.api.wrappers.CatType;
 
 @EntityPetType(petType = PetType.CAT)
 public interface IEntityCatPet extends ITameable, ISleeper {
-    CatType getCatType ();
-    void setCatType (CatType type);
+    CatType getCatType();
+
+    void setCatType(CatType type);
 
     DyeColorWrapper getCollarColor();
+
     void setCollarColor(DyeColorWrapper color);
 
-    boolean isHeadUp ();
-    void setHeadUp (boolean value);
+    boolean isHeadUp();
+
+    void setHeadUp(boolean value);
 }

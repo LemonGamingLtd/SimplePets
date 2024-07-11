@@ -10,9 +10,9 @@ import simplepets.brainsynder.api.pet.PetData;
 public class FoxSittingData extends PetData<IEntityFoxPet> {
     public FoxSittingData() {
         addDefaultItem("true", new ItemBuilder(Material.OAK_STAIRS)
-                .withName("&#c8c8c8{name}: &atrue"));
+            .withName("&#c8c8c8{name}: &atrue"));
         addDefaultItem("false", new ItemBuilder(Material.OAK_STAIRS)
-                .withName("&#c8c8c8{name}: &cfalse"));
+            .withName("&#c8c8c8{name}: &cfalse"));
     }
 
     @Override

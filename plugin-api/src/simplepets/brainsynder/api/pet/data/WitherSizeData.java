@@ -10,9 +10,9 @@ import simplepets.brainsynder.api.pet.PetData;
 public class WitherSizeData extends PetData<IEntityWitherPet> {
     public WitherSizeData() {
         addDefaultItem("true", new ItemBuilder(Material.NETHER_STAR)
-                .withName("&#c8c8c8{name}: &atrue"));
+            .withName("&#c8c8c8{name}: &atrue"));
         addDefaultItem("false", new ItemBuilder(Material.NETHER_STAR)
-                .withName("&#c8c8c8{name}: &cfalse"));
+            .withName("&#c8c8c8{name}: &cfalse"));
     }
 
     @Override

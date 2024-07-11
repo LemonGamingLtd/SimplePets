@@ -11,6 +11,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface PetCustomization {
-    SoundMaker ambient ();
-    PetWeight weight () default PetWeight.NONE;
+    SoundMaker ambient();
+
+    @Deprecated
+    PetWeight weight() default PetWeight.NONE;
 }

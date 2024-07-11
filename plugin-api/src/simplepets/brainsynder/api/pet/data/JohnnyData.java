@@ -10,9 +10,9 @@ import simplepets.brainsynder.api.pet.PetData;
 public class JohnnyData extends PetData<IEntityVindicatorPet> {
     public JohnnyData() {
         addDefaultItem("true", new ItemBuilder(Material.IRON_AXE)
-                .withName("&#c8c8c8{name}: &atrue"));
+            .withName("&#c8c8c8{name}: &atrue"));
         addDefaultItem("false", new ItemBuilder(Material.IRON_AXE)
-                .withName("&#c8c8c8{name}: &cfalse"));
+            .withName("&#c8c8c8{name}: &cfalse"));
     }
 
     @Override

@@ -6,12 +6,19 @@
 package simplepets.brainsynder.utils;
 
 public interface FieldValues {
-    String getEntityDataMapField ();
-    String getEntityFactoryField ();
-    String getEntityRegistryField ();
-    String getEntityJumpField ();
-    String getRegistryFrozenField ();
-    String getRegistryIntrusiveField ();
-    String getRideCooldownField ();
-    String getServerRunningField ();
+    String getEntityDataMapField();
+
+    String getEntityFactoryField();
+
+    String getEntityRegistryField();
+
+    String getEntityJumpField();
+
+    String getRegistryFrozenField();
+
+    String getRegistryIntrusiveField();
+
+    String getRideCooldownField();
+
+    String getServerRunningField();
 }

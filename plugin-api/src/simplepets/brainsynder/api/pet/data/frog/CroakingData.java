@@ -10,11 +10,11 @@ import simplepets.brainsynder.api.pet.PetData;
 public class CroakingData extends PetData<IEntityFrogPet> {
     public CroakingData() {
         addDefaultItem("true", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &atrue")
-                .setTexture("http://textures.minecraft.net/texture/1b20e0c01e2a241fb6fbf45045b9c9dbfecf745c62a8fda6eb6522fc2d53e2cf"));
+            .withName("&#c8c8c8{name}: &atrue")
+            .setTexture("http://textures.minecraft.net/texture/1b20e0c01e2a241fb6fbf45045b9c9dbfecf745c62a8fda6eb6522fc2d53e2cf"));
         addDefaultItem("false", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &cfalse")
-                .setTexture("http://textures.minecraft.net/texture/1b20e0c01e2a241fb6fbf45045b9c9dbfecf745c62a8fda6eb6522fc2d53e2cf"));
+            .withName("&#c8c8c8{name}: &cfalse")
+            .setTexture("http://textures.minecraft.net/texture/1b20e0c01e2a241fb6fbf45045b9c9dbfecf745c62a8fda6eb6522fc2d53e2cf"));
     }
 
     @Override

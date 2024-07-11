@@ -10,9 +10,9 @@ import simplepets.brainsynder.api.pet.PetData;
 public class PandaSittingData extends PetData<IEntityPandaPet> {
     public PandaSittingData() {
         addDefaultItem("true", new ItemBuilder(Material.OAK_STAIRS)
-                .withName("&#c8c8c8{name}: &atrue"));
+            .withName("&#c8c8c8{name}: &atrue"));
         addDefaultItem("false", new ItemBuilder(Material.OAK_STAIRS)
-                .withName("&#c8c8c8{name}: &cfalse"));
+            .withName("&#c8c8c8{name}: &cfalse"));
     }
 
     @Override

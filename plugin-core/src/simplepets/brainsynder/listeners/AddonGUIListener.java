@@ -50,7 +50,7 @@ public class AddonGUIListener implements Listener {
                 PersistentDataContainer container = meta.getPersistentDataContainer();
                 String name = container.get(Keys.MODULE_NAME, PersistentDataType.STRING);
                 if (container.has(Keys.ADDON_URL, PersistentDataType.STRING)) {
-                    meta.setDisplayName(ChatColor.GRAY+"Downloading...");
+                    meta.setDisplayName(ChatColor.GRAY + "Downloading...");
                     stack.setItemMeta(meta);
                     e.getInventory().setItem(e.getRawSlot(), stack);
 
@@ -64,7 +64,7 @@ public class AddonGUIListener implements Listener {
                 }
                 PetCore.getInstance().getAddonManager().fetchAddonModule(name).ifPresent(module -> {
                     if (e.isShiftClick() && container.has(Keys.ADDON_UPDATE, PersistentDataType.STRING)) {
-                        meta.setDisplayName(ChatColor.GRAY+"Updating...");
+                        meta.setDisplayName(ChatColor.GRAY + "Updating...");
                         stack.setItemMeta(meta);
                         e.getInventory().setItem(e.getRawSlot(), stack);
 

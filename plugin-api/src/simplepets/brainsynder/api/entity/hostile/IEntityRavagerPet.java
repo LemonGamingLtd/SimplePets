@@ -8,7 +8,7 @@ import simplepets.brainsynder.api.pet.PetType;
 
 @EntityPetType(petType = PetType.RAVAGER)
 public interface IEntityRavagerPet extends IEntityPet, ISpecialRiding, IRaider {
-    boolean isChomping ();
+    boolean isChomping();
 
-    void setChomping (boolean chomping);
+    void setChomping(boolean chomping);
 }

@@ -10,11 +10,11 @@ import simplepets.brainsynder.api.pet.PetData;
 public class PandaSneezeData extends PetData<IEntityPandaPet> {
     public PandaSneezeData() {
         addDefaultItem("true", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &atrue")
-                .setTexture("http://textures.minecraft.net/texture/5c2d25e956337d82791fa0e6617a40086f02d6ebfbfd5a6459889cf206fca787"));
+            .withName("&#c8c8c8{name}: &atrue")
+            .setTexture("http://textures.minecraft.net/texture/5c2d25e956337d82791fa0e6617a40086f02d6ebfbfd5a6459889cf206fca787"));
         addDefaultItem("false", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &cfalse")
-                .setTexture("http://textures.minecraft.net/texture/dca096eea506301bea6d4b17ee1605625a6f5082c71f74a639cc940439f47166"));
+            .withName("&#c8c8c8{name}: &cfalse")
+            .setTexture("http://textures.minecraft.net/texture/dca096eea506301bea6d4b17ee1605625a6f5082c71f74a639cc940439f47166"));
     }
 
     @Override

@@ -12,7 +12,7 @@ public class MessageFile {
 
     private static YamlFile file;
 
-    public static void init (File folder) {
+    public static void init(File folder) {
         SimplePets.getDebugLogger().debug(DebugLevel.HIDDEN, "Initializing Messages file");
         file = new YamlFile(folder, "messages.yml") {
             @Override
@@ -50,9 +50,9 @@ public class MessageFile {
                 addDefault(MessageOption.RENAME_ANVIL_TITLE, "The title for the pet rename Anvil GUI");
                 addDefault(MessageOption.RENAME_ANVIL_TAG, "The name for the NAME_TAG in the Anvil GUI");
                 addDefault(MessageOption.RENAME_SIGN_TEXT, "The text that will be set for the sign\n" +
-                        "  - One line MUST have {input} to mark what line the player types the pets name\n" +
-                        "  - Hex colors can NOT be used for this\n" +
-                        "  - MUST have 4 lines");
+                    "  - One line MUST have {input} to mark what line the player types the pets name\n" +
+                    "  - Hex colors can NOT be used for this\n" +
+                    "  - MUST have 4 lines");
 
                 addDefault(MessageOption.PET_FILES_REGEN, "Message will be sent when the pets folder has been reset");
                 addDefault(MessageOption.INV_FILES_REGEN, "Message will be sent when the inventories folder has been reset");
@@ -73,21 +73,21 @@ public class MessageFile {
                 addDefault(MessageOption.CONFIG_INVALID_DOUBLE, "The value entered is not a valid double (0.1, 0.02, 0.003)");
                 addDefault(MessageOption.CONFIG_UNABLE_TO_UPDATE, "The key entered is not able to be updated via the command (probably is an array or an object)");
                 addDefault(MessageOption.CONFIG_VALUE_UPDATED, """
-                        The key has been updated with the new value
-                        
-                        Placeholders:
-                        {key} - The target key
-                        {value} - The new value
-                        {type} - The type of pet selected
-                        """);
+                    The key has been updated with the new value
+
+                    Placeholders:
+                    {key} - The target key
+                    {value} - The new value
+                    {type} - The type of pet selected
+                    """);
                 addDefault(MessageOption.CONFIG_VALUE_RESET, """
-                        The key has been reset with the default value
-                        
-                        Placeholders:
-                        {key} - The target key
-                        {value} - The new value
-                        {type} - The type of pet selected
-                        """);
+                    The key has been reset with the default value
+
+                    Placeholders:
+                    {key} - The target key
+                    {value} - The new value
+                    {type} - The type of pet selected
+                    """);
             }
         };
     }
@@ -96,10 +96,15 @@ public class MessageFile {
         return file;
     }
 
-    public static String getTranslation (MessageOption option) {
+    public static String getTranslation(MessageOption option) {
+        return getTranslation(option, true);
+    }
+
+    public static String getTranslation(MessageOption option, boolean translateColor) {
         String message = file.getString(option);
-        if (message.contains("{prefix}") && (option != MessageOption.PREFIX)) message = message.replace("{prefix}", file.getString(MessageOption.PREFIX));
-        return Colorize.translateBungeeHex(message);
+        if (message.contains("{prefix}") && (option != MessageOption.PREFIX))
+            message = message.replace("{prefix}", file.getString(MessageOption.PREFIX));
+        return translateColor ? Colorize.translateBungeeHex(message) : message;
     }
 
 

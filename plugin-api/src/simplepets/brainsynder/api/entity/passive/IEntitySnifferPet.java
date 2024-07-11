@@ -11,8 +11,8 @@ import simplepets.brainsynder.api.wrappers.SnifferState;
 @EntityPetType(petType = PetType.SNIFFER)
 public interface IEntitySnifferPet extends IAgeablePet {
 
-    SnifferState getSnifferState ();
+    SnifferState getSnifferState();
 
-    void setSnifferState (SnifferState state);
+    void setSnifferState(SnifferState state);
 
 }

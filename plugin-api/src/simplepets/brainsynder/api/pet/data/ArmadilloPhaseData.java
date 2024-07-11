@@ -12,8 +12,8 @@ public class ArmadilloPhaseData extends PetData<IEntityArmadilloPet> {
     public ArmadilloPhaseData() {
         for (ArmadilloPhase type : ArmadilloPhase.values()) {
             addDefaultItem(type.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+type.name())
-                    .setTexture(type.getTexture()));
+                .withName("&#c8c8c8{name}: &a" + type.name())
+                .setTexture(type.getTexture()));
         }
     }
 

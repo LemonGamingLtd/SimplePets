@@ -52,7 +52,8 @@ public class PetSubCommand extends SubCommand {
             if (current == index) {
                 if (value.contains("nbt") && sender.hasPermission(getPermission("nbt"))) completions.add("{}");
                 if (value.contains("type")) completions.addAll(getPetTypes(sender));
-                if (value.contains("player") && sender.hasPermission(getPermission("other"))) completions.addAll(getOnlinePlayers());
+                if (value.contains("player") && sender.hasPermission(getPermission("other")))
+                    completions.addAll(getOnlinePlayers());
                 break;
             }
             current++;
@@ -200,7 +201,7 @@ public class PetSubCommand extends SubCommand {
         }
     }
 
-    public boolean isUsername (String string) {
+    public boolean isUsername(String string) {
         return (string.length() < 17) && (string.length() > 2) && string.replace("_", "").matches("[A-Za-z0-9]+");
     }
 }

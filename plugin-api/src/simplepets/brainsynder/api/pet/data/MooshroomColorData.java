@@ -10,7 +10,7 @@ public class MooshroomColorData extends PetData<IEntityMooshroomPet> {
     public MooshroomColorData() {
         for (MooshroomType color : MooshroomType.values()) {
             addDefaultItem(color.name(), color.getIcon()
-                    .withName("&#c8c8c8{name}: &a"+color.name()));
+                .withName("&#c8c8c8{name}: &a" + color.name()));
         }
     }
 

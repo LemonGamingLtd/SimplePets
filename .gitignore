@@ -4,6 +4,8 @@ dependency-reduced-pom.xml
 */dependency-reduced-pom.xml
 .idea/
 */.idea
+.fleet/
+*/.fleet
 */*.iml
 *.iml
 libs/craftbukkit-*

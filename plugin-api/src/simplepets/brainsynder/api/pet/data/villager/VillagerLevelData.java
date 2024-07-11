@@ -10,7 +10,7 @@ public class VillagerLevelData extends PetData<IProfession> {
     public VillagerLevelData() {
         for (VillagerLevel type : VillagerLevel.values()) {
             addDefaultItem(type.name(), type.getIcon()
-                    .withName("&#c8c8c8{name}: &a"+type.name()));
+                .withName("&#c8c8c8{name}: &a" + type.name()));
         }
     }
 

@@ -10,11 +10,10 @@ public interface ItemHandler {
      * Registers the item so the names can be used in the GUIs
      *
      * @param item - Item being registered
-     * @return
-     *      true - Successfully registered
-     *      false - Failed to register (name already exists?)
+     * @return true - Successfully registered
+     * false - Failed to register (name already exists?)
      */
-    boolean register (Class<? extends Item> clazz);
+    boolean register(Class<? extends Item> clazz);
 
     /**
      * Fetches the item from the registered items

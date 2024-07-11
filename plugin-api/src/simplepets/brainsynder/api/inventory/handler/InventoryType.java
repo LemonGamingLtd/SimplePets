@@ -7,5 +7,5 @@ public interface InventoryType {
     InventoryType DATA_GUI = () -> "pet-data";
     InventoryType ADDON_GUI = () -> "pet-addons";
 
-    String getRawType ();
+    String getRawType();
 }

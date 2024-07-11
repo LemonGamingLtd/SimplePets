@@ -10,7 +10,7 @@ public interface GUIHandler {
      *
      * @param inventory - Inventory being registered
      */
-    void register (Class<? extends CustomInventory> clazz);
+    void register(Class<? extends CustomInventory> clazz);
 
     /**
      * Fetches the gui from the registered inventories

@@ -9,7 +9,7 @@ public enum LlamaColor {
     private final String texture;
 
     LlamaColor(String texture) {
-        this.texture = "http://textures.minecraft.net/texture/"+texture;
+        this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
     public static LlamaColor getByID(int id) {
@@ -27,7 +27,6 @@ public enum LlamaColor {
         }
         return CREAMY;
     }
-
 
 
     public static LlamaColor getPrevious(LlamaColor current) {

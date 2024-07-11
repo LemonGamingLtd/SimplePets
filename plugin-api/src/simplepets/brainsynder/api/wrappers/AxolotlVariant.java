@@ -10,7 +10,7 @@ public enum AxolotlVariant {
     private final String texture;
 
     AxolotlVariant(String texture) {
-        this.texture = "http://textures.minecraft.net/texture/"+texture;
+        this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
     public String getTexture() {

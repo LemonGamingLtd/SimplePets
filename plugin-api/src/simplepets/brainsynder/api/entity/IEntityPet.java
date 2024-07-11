@@ -15,20 +15,20 @@ import java.util.UUID;
 import java.util.function.Function;
 
 public interface IEntityPet extends IEntityBase, IBurnablePet {
-    default void togglePetHatTask (boolean value) {}
+    default void togglePetHatTask(boolean value) {}
 
     /**
      * Will teleport the pet to its owner
      */
-    void teleportToOwner ();
+    void teleportToOwner();
 
     /**
      * Used for other plugins to use as storage for the pet
      *
      * @param pluginKey - A unique key for the plugin/addon (so the data does not get merged unnecessarily)
-     * @param compound - Get/Set data that is contained within the Additional Storage
+     * @param compound  - Get/Set data that is contained within the Additional Storage
      */
-    void handleAdditionalStorage (String pluginKey, Function<StorageTagCompound, StorageTagCompound> compound);
+    void handleAdditionalStorage(String pluginKey, Function<StorageTagCompound, StorageTagCompound> compound);
 
     /**
      * UUID of the pets owner
@@ -41,7 +41,7 @@ public interface IEntityPet extends IEntityBase, IBurnablePet {
 
     /**
      * Returns the visible entity for the pet
-     *      EG: Shulker pet will return the shulker entity not the ghost armor stand its riding
+     * EG: Shulker pet will return the shulker entity not the ghost armor stand its riding
      */
     Entity getEntity();
 
@@ -61,6 +61,7 @@ public interface IEntityPet extends IEntityBase, IBurnablePet {
 
     /**
      * Will apply data to the pet EG: if the pet is a baby
+     *
      * @param object - The data to modify the pet with
      */
     void applyCompound(StorageTagCompound object);
@@ -80,57 +81,58 @@ public interface IEntityPet extends IEntityBase, IBurnablePet {
 
     /**
      * Will fetch the pets name
-     *  - If the name was previously modified via {@link IEntityPet#setPetName(String)} it will return that name
-     *  - If the player has a default name for it
-     *  - empty if there is no name
+     * - If the name was previously modified via {@link IEntityPet#setPetName(String)} it will return that name
+     * - If the player has a default name for it
+     * - empty if there is no name
      */
-    Optional<String> getPetName ();
+    Optional<String> getPetName();
 
     /**
      * Sets the player pets name
+     *
      * @param name - name of the pet
      */
-    void setPetName (String name);
+    void setPetName(String name);
 
     /**
      * Added in 1.17
-     *
+     * <p>
      * This checks if the pet is frozen, if it is it will shake
      */
-    default boolean isFrozen () {
+    default boolean isFrozen() {
         return false;
     }
 
     /**
      * Added in 1.17
-     *
+     * <p>
      * This will toggle weather the pet is fully frozen or not
      *
      * @param frozen
      */
-    default void setFrozen (boolean frozen) {}
+    default void setFrozen(boolean frozen) {}
 
     /**
      * Is the pet visible to players
      */
-    boolean isPetVisible ();
+    boolean isPetVisible();
 
     /**
      * This will toggle weather the pet is visible to players or not
      *
      * @param visible
      */
-    void setPetVisible (boolean visible);
+    void setPetVisible(boolean visible);
 
     /**
      * This will set the color the pet will glow as
      *
      * @param color
      */
-    void setGlowColor (ChatColor color);
+    void setGlowColor(ChatColor color);
 
     /**
      * Returns what color the pet will glow as
      */
-    ChatColor getGlowColor ();
+    ChatColor getGlowColor();
 }

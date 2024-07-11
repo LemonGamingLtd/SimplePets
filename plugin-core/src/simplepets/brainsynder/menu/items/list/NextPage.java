@@ -23,9 +23,9 @@ public class NextPage extends Item {
     @Override
     public ItemBuilder getDefaultItem() {
         return new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#e3c79a&l----&#e3aa4f&l>")
-                .addLore("&#d1c9c9Click Here to go", "&#d1c9c9the next page")
-                .setTexture("http://textures.minecraft.net/texture/956a3618459e43b287b22b7e235ec699594546c6fcd6dc84bfca4cf30ab9311");
+            .withName("&#e3c79a&l----&#e3aa4f&l>")
+            .addLore("&#d1c9c9Click Here to go", "&#d1c9c9the next page")
+            .setTexture("http://textures.minecraft.net/texture/956a3618459e43b287b22b7e235ec699594546c6fcd6dc84bfca4cf30ab9311");
     }
 
     @Override
@@ -49,10 +49,10 @@ public class NextPage extends Item {
 
             if (pages == null) return;
 
-            if (pages.totalPages() > current) menu.open(owner, (current+1));
+            if (pages.totalPages() > current) menu.open(owner, (current + 1));
             return;
         }
 
-        inventory.open(owner, inventory.getCurrentPage(owner)+1);
+        inventory.open(owner, inventory.getCurrentPage(owner) + 1);
     }
 }

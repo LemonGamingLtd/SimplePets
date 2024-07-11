@@ -16,8 +16,8 @@ import simplepets.brainsynder.utils.Utilities;
 import java.util.Optional;
 
 @ICommand(
-        name = "list",
-        description = "Lists all the different pet types"
+    name = "list",
+    description = "Lists all the different pet types"
 )
 @Permission(permission = "list", defaultAllow = true)
 public class ListCommand extends PetSubCommand {
@@ -36,14 +36,14 @@ public class ListCommand extends PetSubCommand {
             if (config.isPresent() && (!config.get().isEnabled())) {
                 color = ChatColor.RED; // red
                 tooltip = color + "DISABLED";
-            }else if (!type.isSupported()) {
+            } else if (!type.isSupported()) {
                 color = ChatColor.GOLD; // tan/light orange
                 tooltip = color + "NOT SUPPORTED";
-            }else if (!SimplePets.getSpawnUtil().isRegistered(type)) {
+            } else if (!SimplePets.getSpawnUtil().isRegistered(type)) {
                 color = ChatColor.YELLOW; // yellow
                 tooltip = color + "NOT REGISTERED";
-            }else if (type.isInDevelopment()
-                    && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue())) {
+            } else if (type.isInDevelopment()
+                && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue())) {
                 color = ChatColor.GRAY;
                 tooltip = color + "IN DEVELOPMENT";
             }

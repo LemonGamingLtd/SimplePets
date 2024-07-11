@@ -10,9 +10,9 @@ import simplepets.brainsynder.api.pet.PetData;
 public class CatTiltData extends PetData<IEntityCatPet> {
     public CatTiltData() {
         addDefaultItem("true", new ItemBuilder(Material.SKELETON_SKULL)
-                .withName("&#c8c8c8{name}: &atrue"));
+            .withName("&#c8c8c8{name}: &atrue"));
         addDefaultItem("false", new ItemBuilder(Material.SKELETON_SKULL)
-                .withName("&#c8c8c8{name}: &cfalse"));
+            .withName("&#c8c8c8{name}: &cfalse"));
     }
 
     @Override

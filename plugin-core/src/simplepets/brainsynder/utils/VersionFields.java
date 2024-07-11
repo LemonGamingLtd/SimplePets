@@ -130,17 +130,28 @@ public enum VersionFields implements FieldValues {
             "R", // net.minecraft.server.MinecraftServer$running
             "bS" // net.minecraft.world.entity.LivingEntity$attributes
     ),
-    v1_20_6 (
-            "e", // net.minecraft.network.syncher.SynchedEntityData$itemsById
-            "bF", // net.minecraft.world.entity.EntityType$factory
-            "l", // net.minecraft.core.MappedRegistry$frozen
-            "m", // net.minecraft.core.MappedRegistry$unregisteredIntrusiveHolders
-            "g", // net.minecraft.core.registries.BuiltInRegistries#ENTITY_TYPE
-            "bn", // net.minecraft.world.entity.LivingEntity$jumping
-            "K", // net.minecraft.world.entity.Entity$boardingCooldown
-            "R", // net.minecraft.server.MinecraftServer$running
-            "bS" // net.minecraft.world.entity.LivingEntity$attributes
-    );
+        v1_20_6 (
+                "e", // net.minecraft.network.syncher.SynchedEntityData$itemsById
+                "bF", // net.minecraft.world.entity.EntityType$factory
+                "l", // net.minecraft.core.MappedRegistry$frozen
+                "m", // net.minecraft.core.MappedRegistry$unregisteredIntrusiveHolders
+                "g", // net.minecraft.core.registries.BuiltInRegistries#ENTITY_TYPE
+                "bn", // net.minecraft.world.entity.LivingEntity$jumping
+                "K", // net.minecraft.world.entity.Entity$boardingCooldown
+                "R", // net.minecraft.server.MinecraftServer$running
+                "bS" // net.minecraft.world.entity.LivingEntity$attributes
+        ),
+        v1_21 (
+                "e", // net.minecraft.network.syncher.SynchedEntityData$itemsById
+                "bF", // net.minecraft.world.entity.EntityType$factory
+                "l", // net.minecraft.core.MappedRegistry$frozen
+                "m", // net.minecraft.core.MappedRegistry$unregisteredIntrusiveHolders
+                "f", // net.minecraft.core.registries.BuiltInRegistries#ENTITY_TYPE
+                "bn", // net.minecraft.world.entity.LivingEntity$jumping
+                "K", // net.minecraft.world.entity.Entity$boardingCooldown
+                "R", // net.minecraft.server.MinecraftServer$running
+                "bU" // net.minecraft.world.entity.LivingEntity$attributes
+        );
 
     public static VersionFields fromServerVersion (ServerVersion version) {
         return valueOf(version.name());

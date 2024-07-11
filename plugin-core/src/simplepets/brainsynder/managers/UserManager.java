@@ -62,7 +62,7 @@ public class UserManager implements UserManagement {
         PetUser user;
         if (userMap.containsKey(player.getUniqueId())) {
             user = userMap.get(player.getUniqueId());
-        }else{
+        } else {
             user = new PetOwner(player);
             userMap.put(player.getUniqueId(), user);
         }

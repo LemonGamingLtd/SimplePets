@@ -13,8 +13,8 @@ public class WolfTypeData extends PetData<IEntityWolfPet> {
     public WolfTypeData() {
         for (WolfType type : WolfType.values()) {
             addDefaultItem(type.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+type.name())
-                    .setTexture(type.getTexture()));
+                .withName("&#c8c8c8{name}: &a" + type.name())
+                .setTexture(type.getTexture()));
         }
     }
 

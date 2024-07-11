@@ -10,12 +10,15 @@ import simplepets.brainsynder.api.wrappers.FrogType;
 @SupportedVersion(version = ServerVersion.v1_19)
 @EntityPetType(petType = PetType.FROG)
 public interface IEntityFrogPet extends IAgeablePet {
-    void setVariant (FrogType variant);
-    FrogType getVariant ();
+    void setVariant(FrogType variant);
 
-    boolean isCroaking ();
-    void setCroaking (boolean value);
+    FrogType getVariant();
 
-    boolean isUsingTongue ();
-    void setUsingTongue (boolean value);
+    boolean isCroaking();
+
+    void setCroaking(boolean value);
+
+    boolean isUsingTongue();
+
+    void setUsingTongue(boolean value);
 }

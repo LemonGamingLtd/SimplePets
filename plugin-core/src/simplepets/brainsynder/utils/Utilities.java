@@ -59,7 +59,7 @@ public class Utilities {
     public static boolean handlePetSpawning(PetUser user, PetType type, StorageTagCompound compound, boolean checkDataPermissions) {
         Player player = user.getPlayer();
         if (type.isInDevelopment()
-                && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue())) {
+            && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue())) {
             player.sendMessage(MessageFile.getTranslation(MessageOption.PET_IN_DEVELOPMENT).replace("{type}", type.getName()));
             return false;
         }
@@ -75,7 +75,7 @@ public class Utilities {
         }
 
         if (!Utilities.hasPermission(player, type.getPermission())
-                && ((!user.getOwnedPets().contains(type)) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
+            && ((!user.getOwnedPets().contains(type)) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
             return false;
         }
 
@@ -103,8 +103,8 @@ public class Utilities {
         } else {
             SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.FAILED, player, player.getLocation());
             if (entityPet.isSecondPresent()) {
-                Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON).replace("{type}", type.getName()))
-                        .tooltip(entityPet.second().get()).send(player);
+                Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
+                    .tooltip(entityPet.second().get()).send(player);
                 return false;
             }
 
@@ -237,9 +237,9 @@ public class Utilities {
 
     public static void resetRideCooldown(Entity entity) {
         FieldAccessor<Integer> field = FieldAccessor.getField(
-                Reflection.getNmsClass("Entity", "world.entity"),
-                VersionFields.fromServerVersion(ServerVersion.getVersion()).getRideCooldownField(),
-                Integer.TYPE
+            Reflection.getNmsClass("Entity", "world.entity"),
+            VersionFields.fromServerVersion(ServerVersion.getVersion()).getRideCooldownField(),
+            Integer.TYPE
         );
 
         field.set(Reflection.getHandle(entity), 0);
@@ -300,13 +300,13 @@ public class Utilities {
             if (!backup.exists()) backup.createNewFile();
             FileUtils.copyFile(file, backup);
             SimplePets.getDebugLogger().debug(DebugBuilder.build(yamlFile.getClass()).setLevel(DebugLevel.NORMAL).setMessages(
-                    "A new major config change was detected",
-                    "Saving the old config to 'plugins/SimplePets/" + backup.getParentFile().getName() + "/" + backup.getName() + "'"
+                "A new major config change was detected",
+                "Saving the old config to 'plugins/SimplePets/" + backup.getParentFile().getName() + "/" + backup.getName() + "'"
             ));
         } catch (IOException e) {
             SimplePets.getDebugLogger().debug(DebugBuilder.build(yamlFile.getClass()).setLevel(DebugLevel.ERROR).setMessages(
-                    "Failed to create file backup for: " + file.getName(),
-                    "Error: " + e.getMessage()
+                "Failed to create file backup for: " + file.getName(),
+                "Error: " + e.getMessage()
             ));
             e.printStackTrace();
         }

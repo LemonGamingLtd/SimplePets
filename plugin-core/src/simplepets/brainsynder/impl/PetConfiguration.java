@@ -44,7 +44,7 @@ public class PetConfiguration implements PetConfigManager {
         }
     }
 
-    public void reset () {
+    public void reset() {
         configMap.clear();
 
         for (PetType type : PetType.values()) {
@@ -54,7 +54,7 @@ public class PetConfiguration implements PetConfigManager {
         }
     }
 
-    public void reset (PetType type) {
+    public void reset(PetType type) {
         configMap.remove(type);
 
         if (!type.isSupported()) return;
@@ -79,7 +79,7 @@ public class PetConfiguration implements PetConfigManager {
             additional = new HashMap<>();
             commandMap = new HashMap<>();
 
-            JSON = new JsonFile(new File(new File(plugin.getDataFolder() +File.separator+"Pets"), type.getName()+".json"), true){
+            JSON = new JsonFile(new File(new File(plugin.getDataFolder() + File.separator + "Pets"), type.getName() + ".json"), true) {
                 @Override
                 public void loadDefaults() {
                     setDefault("enabled", true);
@@ -111,9 +111,9 @@ public class PetConfiguration implements PetConfigManager {
                         Object defaultValue = petData.getDefaultValue();
                         if (defaultValue instanceof Integer) {
                             data.set("default", (Integer) petData.getDefaultValue());
-                        }else if (defaultValue instanceof Boolean) {
+                        } else if (defaultValue instanceof Boolean) {
                             data.set("default", (Boolean) petData.getDefaultValue());
-                        }else{
+                        } else {
                             data.set("default", String.valueOf(petData.getDefaultValue()));
                         }
                         JsonObject values = new JsonObject();
@@ -121,7 +121,7 @@ public class PetConfiguration implements PetConfigManager {
                             String name = petData.getNamespace().namespace();
                             name = name.replace("_", " ");
                             name = WordUtils.capitalize(name);
-                            ItemBuilder builder = ((ItemBuilder)item);
+                            ItemBuilder builder = ((ItemBuilder) item);
                             String raw = builder.getName();
                             raw = raw.replace("{name}", name);
                             builder.withName(raw);
@@ -232,9 +232,9 @@ public class PetConfiguration implements PetConfigManager {
                     itemMeta.getPersistentDataContainer().set(Keys.PET_TYPE_ITEM, PersistentDataType.STRING, type.getName());
                     return itemMeta;
                 });
-            }catch (Exception e) {
-                SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Failed to get default item for '"+type.getName()+"'");
-                SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Error: "+e.getMessage());
+            } catch (Exception e) {
+                SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Failed to get default item for '" + type.getName() + "'");
+                SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Error: " + e.getMessage());
                 return type.getBuilder();
             }
         }
@@ -251,7 +251,7 @@ public class PetConfiguration implements PetConfigManager {
                         for (PetData petData : type.getPetData()) {
                             if (!petData.getNamespace().namespace().equals(namespace)) continue;
                             petData.getDefaultItems().forEach((o, o2) -> {
-                                values.add(String.valueOf(o), StorageTagTools.toJsonObject(((ItemBuilder)o2).toCompound()));
+                                values.add(String.valueOf(o), StorageTagTools.toJsonObject(((ItemBuilder) o2).toCompound()));
                             });
                         }
                         data.set("values", values);
@@ -281,7 +281,7 @@ public class PetConfiguration implements PetConfigManager {
                         for (PetData petData : type.getPetData()) {
                             if (!petData.getNamespace().namespace().equals(namespace)) continue;
                             petData.getDefaultItems().forEach((o, o2) -> {
-                                values.add(String.valueOf(o), StorageTagTools.toJsonObject(((ItemBuilder)o2).toCompound()));
+                                values.add(String.valueOf(o), StorageTagTools.toJsonObject(((ItemBuilder) o2).toCompound()));
                             });
                         }
 
@@ -292,7 +292,7 @@ public class PetConfiguration implements PetConfigManager {
 
                     if (values.names().contains(String.valueOf(value))) {
                         return Optional.of(ItemBuilder.fromCompound(StorageTagTools.fromJsonObject((JsonObject) values.get(String.valueOf(value)))));
-                    }else{
+                    } else {
                         // Does not contain value
                         values.add(String.valueOf(value), StorageTagTools.toJsonObject(fallback.toCompound()));
                         dataObject.add(namespace, data);
@@ -306,7 +306,7 @@ public class PetConfiguration implements PetConfigManager {
         }
 
         @Override
-        public JsonObject getRawData (String namespace) {
+        public JsonObject getRawData(String namespace) {
             JsonObject data = new JsonObject();
             if (JSON.containsKey("data")) {
                 JsonObject dataObject = (JsonObject) JSON.getValue("data");
@@ -327,11 +327,11 @@ public class PetConfiguration implements PetConfigManager {
                 JsonObject dataObject = (JsonObject) JSON.getValue("data");
                 JsonObject values;
                 if (!dataObject.names().contains(namespace)) {
-                    SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, type.getName()+" | Missing namespace: "+namespace);
+                    SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, type.getName() + " | Missing namespace: " + namespace);
                     JsonObject data = new JsonObject();
                     values = new JsonObject();
                     petData.getDefaultItems().forEach((value, item) -> {
-                        values.add(String.valueOf(value), StorageTagTools.toJsonObject(((ItemBuilder)item).toCompound()));
+                        values.add(String.valueOf(value), StorageTagTools.toJsonObject(((ItemBuilder) item).toCompound()));
                     });
                     data.set("values", values);
                     data.set("enabled", true);
@@ -350,7 +350,7 @@ public class PetConfiguration implements PetConfigManager {
                         Map.Entry<String, ItemBuilder> entry = (Map.Entry<String, ItemBuilder>) object;
                         if (!values.names().contains(entry.getKey())) {
                             update = true;
-                            SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, type.getName()+" | "+namespace+" | Missing namespace: "+entry.getKey());
+                            SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, type.getName() + " | " + namespace + " | Missing namespace: " + entry.getKey());
                             values.add(entry.getKey(), StorageTagTools.toJsonObject(entry.getValue().toCompound()));
                         }
                     }
@@ -367,13 +367,13 @@ public class PetConfiguration implements PetConfigManager {
                 return true;
             }
 
-            SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, type.getName()+" | Missing 'data' section");
+            SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, type.getName() + " | Missing 'data' section");
 
             JsonObject dataObject = new JsonObject();
             JsonObject values = new JsonObject();
             JsonObject data = new JsonObject();
             petData.getDefaultItems().forEach((value, item) -> {
-                values.add(String.valueOf(value), StorageTagTools.toJsonObject(((ItemBuilder)item).toCompound()));
+                values.add(String.valueOf(value), StorageTagTools.toJsonObject(((ItemBuilder) item).toCompound()));
             });
             if (!data.names().contains("enabled")) data.set("enabled", true);
             data.set("values", values);
@@ -383,15 +383,15 @@ public class PetConfiguration implements PetConfigManager {
             return false;
         }
 
-        private boolean canFlyDefault (PetType type) {
+        private boolean canFlyDefault(PetType type) {
             return (type == PetType.BAT)
-                    || (type == PetType.BEE)
-                    || (type == PetType.BLAZE)
-                    || (type == PetType.PHANTOM)
-                    || (type == PetType.PARROT)
-                    || (type == PetType.GHAST)
-                    || (type == PetType.VEX)
-                    || (type == PetType.WITHER);
+                || (type == PetType.BEE)
+                || (type == PetType.BLAZE)
+                || (type == PetType.PHANTOM)
+                || (type == PetType.PARROT)
+                || (type == PetType.GHAST)
+                || (type == PetType.VEX)
+                || (type == PetType.WITHER);
         }
     }
 }

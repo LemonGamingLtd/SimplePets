@@ -28,10 +28,10 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @ICommand(
-        name = "summon",
-        usage = "<type> [player] [nbt]",
-        alias = {"spawn"},
-        description = "Spawns a pet for the player or selected player"
+    name = "summon",
+    usage = "<type> [player] [nbt]",
+    alias = {"spawn"},
+    description = "Spawns a pet for the player or selected player"
 )
 @Permission(permission = "summon", defaultAllow = true, additionalPermissions = {"all", "other", "nbt"})
 public class SummonCommand extends PetSubCommand {
@@ -57,7 +57,7 @@ public class SummonCommand extends PetSubCommand {
                     if (!type.isSupported()) return;
                     if (!SimplePets.getSpawnUtil().isRegistered(type)) return;
                     integer.getAndIncrement();
-                    getPlugin().getUserManager().getPetUser(((Player)sender).getUniqueId()).ifPresent(user -> spawner.spawnEntityPet(type, user));
+                    getPlugin().getUserManager().getPetUser(((Player) sender).getUniqueId()).ifPresent(user -> spawner.spawnEntityPet(type, user));
                 });
             }
 
@@ -73,7 +73,7 @@ public class SummonCommand extends PetSubCommand {
 
         PetType type = petType.get();
         if (type.isInDevelopment()
-                && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue())) {
+            && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue())) {
             sender.sendMessage(MessageFile.getTranslation(MessageOption.PET_IN_DEVELOPMENT).replace("{type}", type.getName()));
             return;
         }
@@ -139,7 +139,7 @@ public class SummonCommand extends PetSubCommand {
         if (target == null) {
             if (sender instanceof Player) {
                 target = (Player) sender;
-            }else{
+            } else {
                 sendUsage(sender);
                 return;
             }
@@ -162,8 +162,8 @@ public class SummonCommand extends PetSubCommand {
             }
 
             if ((!user.canSpawnMorePets())
-                    && (!ConfigOption.INSTANCE.MISC_TOGGLES_CONSOLE_BYPASS_LIMIT.getValue())
-                    && (!(sender instanceof Player))) {
+                && (!ConfigOption.INSTANCE.MISC_TOGGLES_CONSOLE_BYPASS_LIMIT.getValue())
+                && (!(sender instanceof Player))) {
                 finalTarget.sendMessage(MessageFile.getTranslation(MessageOption.CANT_SPAWN_MORE_PETS));
                 return;
             }
@@ -178,8 +178,8 @@ public class SummonCommand extends PetSubCommand {
             BiOptional<IEntityPet, String> entityPet = spawner.spawnEntityPet(type, user, finalCompound);
             if (!entityPet.isFirstPresent()) {
                 if (entityPet.isSecondPresent()) {
-                    Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON).replace("{type}", type.getName()))
-                            .tooltip(entityPet.second().get()).send(sender);
+                    Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
+                        .tooltip(entityPet.second().get()).send(sender);
                     return;
                 }
 
@@ -187,7 +187,7 @@ public class SummonCommand extends PetSubCommand {
                 return;
             }
             if (type == PetType.ARMOR_STAND) {
-                ((IEntityControllerPet)entityPet.first().get()).getVisibleEntity().applyCompound(finalCompound);
+                ((IEntityControllerPet) entityPet.first().get()).getVisibleEntity().applyCompound(finalCompound);
             }
             sender.sendMessage(MessageFile.getTranslation(MessageOption.SUMMONED_PET).replace("{type}", type.getName()));
         });

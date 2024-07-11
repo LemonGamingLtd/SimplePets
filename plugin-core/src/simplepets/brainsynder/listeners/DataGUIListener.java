@@ -52,10 +52,10 @@ public class DataGUIListener implements Listener {
                             if (Utilities.isSimilar(builder.build(), e.getCurrentItem())) {
                                 if (e.getClick().toString().toLowerCase().contains("right")) {
                                     petData.onRightClick(entityPet);
-                                }else{
+                                } else {
                                     petData.onLeftClick(entityPet);
                                 }
-                                petData.getItem(entityPet).ifPresent(o1 -> e.getInventory().setItem(e.getSlot(), ((ItemBuilder)o1).build()));
+                                petData.getItem(entityPet).ifPresent(o1 -> e.getInventory().setItem(e.getSlot(), ((ItemBuilder) o1).build()));
                             }
                         });
                     });
@@ -65,7 +65,7 @@ public class DataGUIListener implements Listener {
     }
 
     @EventHandler
-    public void onClose (InventoryCloseEvent e) {
+    public void onClose(InventoryCloseEvent e) {
         if (e.getInventory().getHolder() == null) return;
         if (!(e.getInventory().getHolder() instanceof PetDataHolder)) return;
         DataMenu menu = InventoryManager.PET_DATA;

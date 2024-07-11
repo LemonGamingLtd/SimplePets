@@ -26,7 +26,7 @@ public abstract class CustomInventory extends JsonFile {
         super(file);
     }
 
-    public void reset (PetUser owner) {
+    public void reset(PetUser owner) {
         if (owner == null) return;
         Player player = owner.getPlayer();
         if (player == null) player = Bukkit.getPlayer(owner.getOwnerUUID());
@@ -49,16 +49,16 @@ public abstract class CustomInventory extends JsonFile {
                 int slot = json.getInt("slot", -1);
                 String namespace = json.getString("item", "-unknown-");
                 if (slot == 0) {
-                    SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Slot can not be 0 for item '"+namespace+"'");
+                    SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Slot can not be 0 for item '" + namespace + "'");
                     return;
                 }
                 if (slot == -1) {
-                    SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Invalid slot for item '"+namespace+"'");
+                    SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Invalid slot for item '" + namespace + "'");
                     return;
                 }
 
                 if (namespace.equalsIgnoreCase("-unknown-")) {
-                    SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Invalid item for slot '"+slot+"'");
+                    SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Invalid item for slot '" + slot + "'");
                     return;
                 }
 
@@ -73,8 +73,8 @@ public abstract class CustomInventory extends JsonFile {
     /**
      * What happens when the player clicks an item in the Inventory
      *
-     * @param slot - Slot clicked
-     * @param item - Item being clicked
+     * @param slot   - Slot clicked
+     * @param item   - Item being clicked
      * @param player - Player clicking the item
      */
     public abstract void onClick(int slot, ItemStack item, Player player);
@@ -83,8 +83,7 @@ public abstract class CustomInventory extends JsonFile {
      * Gets the current page for the user
      *
      * @param user
-     * @return
-     *      Default: 1
+     * @return Default: 1
      */
     public int getCurrentPage(PetUser user) {
         return pageSave.getOrDefault(user.getPlayer().getName(), 1);
@@ -99,16 +98,16 @@ public abstract class CustomInventory extends JsonFile {
                     int slot = json.getInt("slot", -1);
                     String namespace = json.getString("item", "-unknown-");
                     if (slot == 0) {
-                        SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Slot can not be 0 for item '"+namespace+"'");
+                        SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Slot can not be 0 for item '" + namespace + "'");
                         return;
                     }
                     if (slot == -1) {
-                        SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Invalid slot for item '"+namespace+"'");
+                        SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Invalid slot for item '" + namespace + "'");
                         return;
                     }
 
                     if (namespace.equalsIgnoreCase("-unknown-")) {
-                        SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Invalid item for slot '"+slot+"'");
+                        SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Invalid item for slot '" + slot + "'");
                         return;
                     }
 
@@ -123,7 +122,7 @@ public abstract class CustomInventory extends JsonFile {
         return slots;
     }
 
-    public abstract InventoryType getInventoryType ();
+    public abstract InventoryType getInventoryType();
 
     /**
      * Size of the inventory
@@ -152,9 +151,8 @@ public abstract class CustomInventory extends JsonFile {
      * Opens the Inventory
      *
      * @param user - User to have the gui opened for
-     * @param page
-     *      - The page to open the GUI to
-     *      Default: 1
+     * @param page - The page to open the GUI to
+     *             Default: 1
      */
     public void open(PetUser user, int page) {}
 
@@ -163,7 +161,7 @@ public abstract class CustomInventory extends JsonFile {
      *
      * @param user
      */
-    public void update (PetUser user) {}
+    public void update(PetUser user) {}
 
     /**
      * Is the inventory enabled?

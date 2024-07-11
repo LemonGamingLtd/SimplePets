@@ -54,8 +54,8 @@ public class SQLiteHandler implements SQLHandler {
     @Override
     public CompletableFuture<Boolean> sendPlayerData(UUID uuid, String name, StorageTagCompound compound) {
         return CompletableFuture
-                .supplyAsync(() -> sendPlayerDataSync(uuid, name, compound), PetCore.getInstance().async)
-                .thenApplyAsync(result -> result, PetCore.getInstance().sync);
+            .supplyAsync(() -> sendPlayerDataSync(uuid, name, compound), PetCore.getInstance().async)
+            .thenApplyAsync(result -> result, PetCore.getInstance().sync);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SQLiteHandler implements SQLHandler {
             boolean hasEntry;
             {
                 PreparedStatement statement = connection.prepareStatement(
-                        "SELECT * FROM `" + SQLData.TABLE_PREFIX + "_players` WHERE uuid = '" + uuid.toString() + "' LIMIT 1");
+                    "SELECT * FROM `" + SQLData.TABLE_PREFIX + "_players` WHERE uuid = '" + uuid.toString() + "' LIMIT 1");
                 ResultSet result = statement.executeQuery();
                 hasEntry = result.next();
 
@@ -76,7 +76,7 @@ public class SQLiteHandler implements SQLHandler {
             PreparedStatement statement;
             if (hasEntry) {
                 statement = connection.prepareStatement("UPDATE `" + SQLData.TABLE_PREFIX + "_players` SET " +
-                        "name=?, UnlockedPets=?, PetName=?, NeedsRespawn=?, SavedPets=? WHERE uuid = ?");
+                    "name=?, UnlockedPets=?, PetName=?, NeedsRespawn=?, SavedPets=? WHERE uuid = ?");
                 statement.setString(1, name);
 
                 statement.setString(2, Base64Wrapper.encodeString(compound.getTag("owned_pets").toString()));
@@ -86,7 +86,7 @@ public class SQLiteHandler implements SQLHandler {
                 statement.setString(6, uuid.toString());
             } else {
                 statement = connection.prepareStatement("INSERT INTO `" + SQLData.TABLE_PREFIX + "_players` " +
-                        "(`uuid`, `name`, `UnlockedPets`, `PetName`, `NeedsRespawn`, `SavedPets`) VALUES (?, ?, ?, ?, ?, ?)");
+                    "(`uuid`, `name`, `UnlockedPets`, `PetName`, `NeedsRespawn`, `SavedPets`) VALUES (?, ?, ?, ?, ?, ?)");
                 statement.setString(1, uuid.toString());
                 statement.setString(2, name);
 
@@ -239,9 +239,9 @@ public class SQLiteHandler implements SQLHandler {
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
                     list.add(Triple.of(
-                            UUID.fromString(result.getString(1)),
-                            result.getString(2),
-                            result.getInt(3)
+                        UUID.fromString(result.getString(1)),
+                        result.getString(2),
+                        result.getInt(3)
                     ));
                 }
 

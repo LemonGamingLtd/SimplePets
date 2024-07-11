@@ -1,6 +1,6 @@
 package simplepets.brainsynder.api.wrappers;
 
-public enum FoxType  {
+public enum FoxType {
     RED,
     WHITE;
 
@@ -12,6 +12,7 @@ public enum FoxType  {
         }
         return RED;
     }
+
     public static FoxType getByName(String name) {
         for (FoxType wrapper : values()) {
             if (wrapper.name().equalsIgnoreCase(name)) return wrapper;
@@ -23,6 +24,7 @@ public enum FoxType  {
         if (current == RED) return WHITE;
         return values()[(current.ordinal() - 1)];
     }
+
     public static FoxType getNext(FoxType current) {
         if (current == WHITE) return RED;
         return values()[(current.ordinal() + 1)];

@@ -18,7 +18,7 @@ public class AnimationController {
         this.standPet = standPet;
     }
 
-    public void cycleFrame () {
+    public void cycleFrame() {
         if (this.currentFrame == this.frames.size()) this.currentFrame = 0;
 
         try {

@@ -7,6 +7,7 @@ import simplepets.brainsynder.api.wrappers.MooshroomType;
 
 @EntityPetType(petType = PetType.MOOSHROOM)
 public interface IEntityMooshroomPet extends IAgeablePet {
-    void setMooshroomType (MooshroomType type);
-    MooshroomType getMooshroomType ();
+    void setMooshroomType(MooshroomType type);
+
+    MooshroomType getMooshroomType();
 }

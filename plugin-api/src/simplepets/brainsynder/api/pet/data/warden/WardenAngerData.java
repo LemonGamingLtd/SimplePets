@@ -12,8 +12,8 @@ public class WardenAngerData extends PetData<IEntityWardenPet> {
     public WardenAngerData() {
         for (AngerLevel level : AngerLevel.values()) {
             addDefaultItem(level.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+level.name())
-                    .setTexture("http://textures.minecraft.net/texture/1dfd13ca08bf973bfef0293d770704a11ef5a9fe20d40671fb066724d3e18d8"));
+                .withName("&#c8c8c8{name}: &a" + level.name())
+                .setTexture("http://textures.minecraft.net/texture/1dfd13ca08bf973bfef0293d770704a11ef5a9fe20d40671fb066724d3e18d8"));
         }
     }
 

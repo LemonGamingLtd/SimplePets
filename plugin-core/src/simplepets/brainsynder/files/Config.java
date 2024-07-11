@@ -19,9 +19,9 @@ public class Config extends YamlFile {
             // Load the default values just in case
             if (entry.getDescription() == null) {
                 addDefault(key, entry.getDefaultValue());
-            }else{
+            } else {
                 addDefault(key, entry.getDefaultValue(), entry.getDescription()
-                        .replace("{default}", String.valueOf(entry.getDefaultValue())) // Replace the {default} placeholder with what the default value is
+                    .replace("{default}", String.valueOf(entry.getDefaultValue())) // Replace the {default} placeholder with what the default value is
                 );
             }
 
@@ -48,7 +48,7 @@ public class Config extends YamlFile {
 
             // Validate the value, make sure the types match to prevent booleans becoming numbers
             if (!value.getClass().getSimpleName().equals(entry.getDefaultValue().getClass().getSimpleName())) {
-                SimplePets.getDebugLogger().debug(DebugLevel.CRITICAL, "Value of '"+key+"' can not be a '"+value.getClass().getSimpleName()+"' must be a '"+entry.getDefaultValue().getClass().getSimpleName()+"'" + ((entry.getExamples() != null) ? " Example(s): "+entry.getExamples() : ""));
+                SimplePets.getDebugLogger().debug(DebugLevel.CRITICAL, "Value of '" + key + "' can not be a '" + value.getClass().getSimpleName() + "' must be a '" + entry.getDefaultValue().getClass().getSimpleName() + "'" + ((entry.getExamples() != null) ? " Example(s): " + entry.getExamples() : ""));
                 value = entry.getDefaultValue();
             }
             // Store the configured value into the Entry
@@ -61,15 +61,16 @@ public class Config extends YamlFile {
         set(key, anEnum.name());
     }
 
-    public <E extends Enum>E getEnum (String key, Class<E> type) {
+    public <E extends Enum> E getEnum(String key, Class<E> type) {
         return getEnum(key, type, null);
     }
-    public <E extends Enum>E getEnum (String key, Class<E> type, E fallback) {
+
+    public <E extends Enum> E getEnum(String key, Class<E> type, E fallback) {
         if (!contains(key)) return fallback;
         return (E) E.valueOf(type, getString(key));
     }
 
-    private void updateSections () {
+    private void updateSections() {
         remove("PetItemStorage.Enable");
         remove("PetItemStorage.Inventory-Size");
         remove("WorldGuard.BypassPermission");
@@ -106,10 +107,10 @@ public class Config extends YamlFile {
     }
 
 
-    protected BiConsumer<String, String> logMove () {
+    protected BiConsumer<String, String> logMove() {
         return (oldKey, newKey) -> {
             String name = getClass().getSimpleName().replace("File", "");
-            SimplePets.getDebugLogger().debug("["+name+"] Moving '"+oldKey+"' to '"+newKey+"'");
+            SimplePets.getDebugLogger().debug("[" + name + "] Moving '" + oldKey + "' to '" + newKey + "'");
         };
     }
 }

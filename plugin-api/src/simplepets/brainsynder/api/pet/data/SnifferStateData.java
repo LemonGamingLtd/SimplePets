@@ -12,8 +12,8 @@ public class SnifferStateData extends PetData<IEntitySnifferPet> {
     public SnifferStateData() {
         for (SnifferState state : SnifferState.values()) {
             addDefaultItem(state.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+state.name())
-                    .setTexture(state.getTexture()));
+                .withName("&#c8c8c8{name}: &a" + state.name())
+                .setTexture(state.getTexture()));
         }
     }
 

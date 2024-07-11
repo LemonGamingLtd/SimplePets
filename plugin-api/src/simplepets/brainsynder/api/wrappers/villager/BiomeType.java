@@ -16,7 +16,8 @@ public enum BiomeType {
     TAIGA(new ItemBuilder(Material.PODZOL));
 
     private final ItemBuilder icon;
-    BiomeType (ItemBuilder icon) {
+
+    BiomeType(ItemBuilder icon) {
         this.icon = icon;
     }
 
@@ -35,6 +36,7 @@ public enum BiomeType {
         if (current == DESERT) return TAIGA;
         return values()[(current.ordinal() - 1)];
     }
+
     public static BiomeType getNext(BiomeType current) {
         if (current == TAIGA) return DESERT;
         return values()[(current.ordinal() + 1)];

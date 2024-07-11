@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public interface IPetConfig {
-    void handleAdditionalStorage (String pluginKey, Function<JsonObject, JsonObject> json);
+    void handleAdditionalStorage(String pluginKey, Function<JsonObject, JsonObject> json);
 
     /**
      * The configured display name that a pet will be named
@@ -88,26 +88,26 @@ public interface IPetConfig {
      *
      * @return Will return the default item if an error occurs
      */
-    ItemBuilder getBuilder ();
+    ItemBuilder getBuilder();
 
     /**
      * Will fetch the data item for the namespace
      *
      * @param namespace - Name of the data item
-     * @param value - value to get for
+     * @param value     - value to get for
      */
-    Optional<ItemBuilder> getDataItem (String namespace, Object value);
+    Optional<ItemBuilder> getDataItem(String namespace, Object value);
 
     /**
      * Will fetch the data item for the namespace
      *
      * @param namespace - Name of the data item
-     * @param value - value to get for
-     * @param fallback - fallback item if there is none in the file
+     * @param value     - value to get for
+     * @param fallback  - fallback item if there is none in the file
      */
-    Optional<ItemBuilder> getDataItem (String namespace, Object value, ItemBuilder fallback);
+    Optional<ItemBuilder> getDataItem(String namespace, Object value, ItemBuilder fallback);
 
-    JsonObject getRawData (String namespace);
+    JsonObject getRawData(String namespace);
 
-    Map<CommandReason, List<String>> getCommands ();
+    Map<CommandReason, List<String>> getCommands();
 }

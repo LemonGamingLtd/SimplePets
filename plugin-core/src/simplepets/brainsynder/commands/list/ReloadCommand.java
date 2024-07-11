@@ -14,9 +14,9 @@ import simplepets.brainsynder.managers.ItemManager;
 import java.util.List;
 
 @ICommand(
-        name = "reload",
-        usage = "[selector]",
-        description = "Reloads a selected file/folder"
+    name = "reload",
+    usage = "[selector]",
+    description = "Reloads a selected file/folder"
 )
 @Permission(permission = "reload", adminCommand = true)
 public class ReloadCommand extends PetSubCommand {

@@ -34,7 +34,7 @@ public class AddonCloudData {
     /**
      * It takes a string and splits it into lines of a given length
      *
-     * @param text The text to be split.
+     * @param text         The text to be split.
      * @param wordsPerLine The number of words per line.
      * @return A string with new lines inserted.
      */

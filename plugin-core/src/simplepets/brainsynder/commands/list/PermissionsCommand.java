@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ICommand(
-        name = "permissions",
-        description = "Generates a file that contains all the permissions in the plugin"
+    name = "permissions",
+    description = "Generates a file that contains all the permissions in the plugin"
 )
 @Permission(permission = "permissions", adminCommand = true)
 public class PermissionsCommand extends PetSubCommand {
@@ -41,10 +41,10 @@ public class PermissionsCommand extends PetSubCommand {
             generatePluginPermissions(Boolean.parseBoolean(args[0]));
         }
 
-        sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX)+ ChatColor.GRAY+"Generated the permissions.yml file");
+        sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + "Generated the permissions.yml file");
     }
 
-    private void addPermission (StringBuilder builder, String permission, String comment, String defaultType) {
+    private void addPermission(StringBuilder builder, String permission, String comment, String defaultType) {
         builder.append("    ").append(permission).append(": ");
 
         if ((comment != null) && (!comment.isEmpty())) builder.append(" # ").append(comment);
@@ -59,7 +59,8 @@ public class PermissionsCommand extends PetSubCommand {
 
         StringBuilder master = new StringBuilder();
         addPermission(master, "pet.amount.bypass", "This permission bypasses the limit of how many pets can be spawned", "op");
-        if (notDeveloper) addPermission(master, "pet.amount.<number>", "This permission sets how many pets the player can have spawned", "false");
+        if (notDeveloper)
+            addPermission(master, "pet.amount.<number>", "This permission sets how many pets the player can have spawned", "false");
         addPermission(master, "pet.name.bypass", "This permission bypasses any of the pet renaming checks", "op");
         addPermission(master, "pet.name.color", "This permission is to allow players to add color codes when renaming their pet", "true");
         addPermission(master, "pet.name.color.hex", "This permission is to allow players to add HEX color codes when renaming their pet (Eg: &#FFFFFF)", "op");
@@ -97,16 +98,16 @@ public class PermissionsCommand extends PetSubCommand {
             String allowDefault = "false # Not given to players by default";
             if (data.adminCommand()) {
                 allowDefault = "op # Only Operators should be given this permission";
-            }else if (data.defaultAllow()) {
+            } else if (data.defaultAllow()) {
                 allowDefault = "true # Allows players to use them by default";
             }
 
             master.append("    ").append(permission).append(": # Grants access to the '/pet ").append(command.getCommand(command.getClass()).name()).append("' command\n")
-                    .append("        default: ").append(allowDefault).append("\n\n");
+                .append("        default: ").append(allowDefault).append("\n\n");
         });
         master.append("\n")
-                .append("    pet.commands.*:  # Grants the player to use all commands (NOT recommended)").append("\n")
-                .append(def).append(commandBuilder).append("\n\n");
+            .append("    pet.commands.*:  # Grants the player to use all commands (NOT recommended)").append("\n")
+            .append(def).append(commandBuilder).append("\n\n");
 
 
         if (notDeveloper) {
@@ -121,7 +122,7 @@ public class PermissionsCommand extends PetSubCommand {
                     if (description.equals(" # ")) description = "";
 
                     master.append("    ").append(data.getPermission()).append(":").append(description).append("\n")
-                            .append("        default: ").append(data.getType().toString()).append("\n");
+                        .append("        default: ").append(data.getType().toString()).append("\n");
                 });
             });
 
@@ -181,78 +182,78 @@ public class PermissionsCommand extends PetSubCommand {
 
         List<StringBuilder> fly = new ArrayList<>();
         fly.add(new StringBuilder()
-                .append("    pet.type.*.fly:  # Will allow all pets to fly (if enabled)").append("\n")
-                .append("        default: false").append("\n")
-                .append("        children:").append("\n")
+            .append("    pet.type.*.fly:  # Will allow all pets to fly (if enabled)").append("\n")
+            .append("        default: false").append("\n")
+            .append("        children:").append("\n")
         );
         for (PetType type : PetType.values()) {
             if (type == PetType.UNKNOWN) continue;
             String permission = type.getPermission();
             fly.add(new StringBuilder()
-                    .append("            ").append(permission).append(".fly: true").append("\n")
+                .append("            ").append(permission).append(".fly: true").append("\n")
             );
         }
 
 
         List<StringBuilder> hat = new ArrayList<>();
         hat.add(new StringBuilder()
-                .append("    pet.type.*.hat:  # Will allow all pets to be a hat (if enabled)").append("\n")
-                .append("        default: false").append("\n")
-                .append("        children:").append("\n")
+            .append("    pet.type.*.hat:  # Will allow all pets to be a hat (if enabled)").append("\n")
+            .append("        default: false").append("\n")
+            .append("        children:").append("\n")
         );
         for (PetType type : PetType.values()) {
             if (type == PetType.UNKNOWN) continue;
             String permission = type.getPermission();
             hat.add(new StringBuilder()
-                    .append("            ").append(permission).append(".hat: true").append("\n")
+                .append("            ").append(permission).append(".hat: true").append("\n")
             );
         }
 
 
         List<StringBuilder> savesBypass = new ArrayList<>();
         savesBypass.add(new StringBuilder()
-                .append("    pet.saves.bypass:  # Will allow all player to bypass the saves limit (if enabled)").append("\n")
-                .append("        default: false").append("\n")
-                .append("        children:").append("\n")
+            .append("    pet.saves.bypass:  # Will allow all player to bypass the saves limit (if enabled)").append("\n")
+            .append("        default: false").append("\n")
+            .append("        children:").append("\n")
         );
         for (PetType type : PetType.values()) {
             if (type == PetType.UNKNOWN) continue;
             savesBypass.add(new StringBuilder()
-                    .append("            pet.saves.").append(type.name().toLowerCase().replace("_", "")).append(".bypass: true").append("\n")
+                .append("            pet.saves.").append(type.name().toLowerCase().replace("_", "")).append(".bypass: true").append("\n")
             );
         }
 
         List<StringBuilder> mount = new ArrayList<>();
         mount.add(new StringBuilder()
-                .append("    pet.type.*.mount:  # Will allow all pets to be mounted (if enabled)").append("\n")
-                .append("        default: false").append("\n")
-                .append("        children:").append("\n")
+            .append("    pet.type.*.mount:  # Will allow all pets to be mounted (if enabled)").append("\n")
+            .append("        default: false").append("\n")
+            .append("        children:").append("\n")
         );
         for (PetType type : PetType.values()) {
             if (type == PetType.UNKNOWN) continue;
             String permission = type.getPermission();
             mount.add(new StringBuilder()
-                    .append("            ").append(permission).append(".mount: true").append("\n")
+                .append("            ").append(permission).append(".mount: true").append("\n")
             );
         }
 
         savesBypass.forEach(master::append);
 
         master
-                .append("\n")
-                .append("    pet.type.*:  # Grants access to all pets").append("\n")
-                .append(def)
-                .append("            pet.type.passive: true").append("\n")
-                .append("            pet.type.hostile: true").append("\n")
-                .append("    pet.type.passive:  # Will grant access to all pets that would be passive in vanilla").append("\n")
-                .append(def)
-                .append(passive).append("\n\n")
-                .append("    pet.type.hostile:  # Will grant access to all the pets that would be hostile in vanilla").append("\n")
-                .append(def)
-                .append(hostile).append("\n\n")
-                .append("    pet.type.*.data.*:  # Will grant all data permissions for all pets").append("\n")
-                .append(def)
-                .append(allAllowData).append("\n\n");
+            .append("\n")
+            .append("    pet.type.*:  # Grants access to all pets").append("\n")
+            .append(def)
+            .append("            pet.type.passive: true").append("\n")
+            .append("            pet.type.hostile: true").append("\n")
+            .append("    pet.type.passive:  # Will grant access to all pets that would be passive in vanilla").append("\n")
+            .append(def)
+            .append(passive).append("\n\n")
+            .append("    pet.type.hostile:  # Will grant access to all the pets that would be hostile in vanilla").append("\n")
+            .append(def)
+            .append(hostile).append("\n\n")
+            .append("    pet.type.*.data.*:  # Will grant all data permissions for all pets").append("\n")
+            .append(def)
+            .append(allAllowData).append("\n\n");
 
         fly.forEach(master::append);
         master.append("\n\n");

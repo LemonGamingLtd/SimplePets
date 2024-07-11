@@ -9,49 +9,49 @@ import java.util.List;
 public class DebugLevel {
     /**
      * Mostly used when debugging
-     *
-     *      (Can't be disabled)
+     * <p>
+     * (Can't be disabled)
      */
     public static final DebugLevel DEBUG;
     /**
      * Used to send hidden debug messages that can only be seen in the 'debug.json' file
-     *
-     *      (Can't be disabled)
+     * <p>
+     * (Can't be disabled)
      */
     public static final DebugLevel HIDDEN;
 
     /**
      * Used for normal messages
-     *
-     *      (Can be disabled if removed from the Debug level list)
+     * <p>
+     * (Can be disabled if removed from the Debug level list)
      */
     public static final DebugLevel NORMAL;
 
     /**
      * Used for warnings
-     *
-     *      (Can be disabled if removed from the Debug level list)
+     * <p>
+     * (Can be disabled if removed from the Debug level list)
      */
     public static final DebugLevel WARNING;
 
     /**
      * Used if there is a major error
-     *
-     *      (Can be disabled if removed from the Debug level list)
+     * <p>
+     * (Can be disabled if removed from the Debug level list)
      */
     public static final DebugLevel ERROR;
 
     /**
      * Used when facing a critical error
-     *
-     *      (Can't be disabled)
+     * <p>
+     * (Can't be disabled)
      */
     public static final DebugLevel CRITICAL;
 
     /**
      * This one is used if there is an update to the plugin
-     *
-     *      (Can only be disabled if update checking is off)
+     * <p>
+     * (Can only be disabled if update checking is off)
      */
     public static final DebugLevel UPDATE;
 
@@ -77,23 +77,26 @@ public class DebugLevel {
     private boolean bypassDisable = false;
     private boolean hidden = false;
 
-    public DebugLevel (ChatColor textColor) {
+    public DebugLevel(ChatColor textColor) {
         this("Debug", textColor);
     }
-    public DebugLevel (ChatColor textColor, ChatColor prefixColor) {
+
+    public DebugLevel(ChatColor textColor, ChatColor prefixColor) {
         this("Debug", textColor, prefixColor);
     }
-    public DebugLevel (String name, ChatColor textColor) {
+
+    public DebugLevel(String name, ChatColor textColor) {
         this(name, textColor, ChatColor.GOLD);
     }
-    public DebugLevel (String name, ChatColor textColor, ChatColor prefixColor) {
+
+    public DebugLevel(String name, ChatColor textColor, ChatColor prefixColor) {
         this.name = name;
         this.textColor = textColor;
         this.prefixColor = prefixColor;
         levels.add(this);
     }
 
-    public static List<String> getLevels () {
+    public static List<String> getLevels() {
         List<String> list = new ArrayList<>();
         for (DebugLevel level : levels) {
             if ((level != DEBUG) && (level != UPDATE) && (level != HIDDEN)) list.add(level.getName());

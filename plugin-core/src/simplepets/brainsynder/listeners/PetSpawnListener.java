@@ -15,6 +15,7 @@ public class PetSpawnListener implements Listener {
         if (!SimplePets.isPetEntity(e)) return;
         event.setCancelled(false);
     }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onCreatureSpawn(EntitySpawnEvent event) {
         Entity e = event.getEntity();

@@ -26,11 +26,11 @@ public class DebugBuilder {
     private final String caller;
     private final Class<?> clazz;
 
-    private DebugBuilder () {
-        this (null);
+    private DebugBuilder() {
+        this(null);
     }
 
-    private DebugBuilder (Class<?> clazz) {
+    private DebugBuilder(Class<?> clazz) {
         this.clazz = clazz;
         timestamp = System.currentTimeMillis();
         level = DebugLevel.NORMAL;
@@ -93,14 +93,14 @@ public class DebugBuilder {
                 }
                 method = method.replace("$1", "");
 
-                callerClassName = AdvString.afterLast(".", name).replace("$1", "")+"(method: "+method+"() | line: "+element.getLineNumber()+")";
+                callerClassName = AdvString.afterLast(".", name).replace("$1", "") + "(method: " + method + "() | line: " + element.getLineNumber() + ")";
             }
         }
 
         return callerClassName;
     }
 
-    public String getCallerClassName () {
+    public String getCallerClassName() {
         String callerClassName = null;
 
         try {
@@ -131,10 +131,11 @@ public class DebugBuilder {
 
 
     // STATIC
-    public static DebugBuilder build () {
+    public static DebugBuilder build() {
         return build(null);
     }
-    public static DebugBuilder build (Class<?> clazz) {
+
+    public static DebugBuilder build(Class<?> clazz) {
         return new DebugBuilder(clazz);
     }
 }

@@ -12,7 +12,7 @@ public class HorseStyleData extends PetData<IEntityHorsePet> {
     public HorseStyleData() {
         for (HorseStyleType styleType : HorseStyleType.values()) {
             addDefaultItem(styleType.name(), new ItemBuilder(Material.LEAD)
-                    .withName("&#c8c8c8{name}: &a"+styleType.name()));
+                .withName("&#c8c8c8{name}: &a" + styleType.name()));
         }
     }
 

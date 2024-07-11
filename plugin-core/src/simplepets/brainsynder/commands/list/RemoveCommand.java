@@ -16,9 +16,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @ICommand(
-        name = "remove",
-        usage = "[player] [type]",
-        description = "Remove your pet or another players"
+    name = "remove",
+    usage = "[player] [type]",
+    description = "Remove your pet or another players"
 )
 @Permission(permission = "remove", defaultAllow = true, additionalPermissions = {"other"})
 public class RemoveCommand extends PetSubCommand {
@@ -36,9 +36,9 @@ public class RemoveCommand extends PetSubCommand {
 
             AtomicInteger integer = new AtomicInteger(0);
 
-            getPlugin().getUserManager().getPetUser((Player)sender).ifPresent(user -> {
+            getPlugin().getUserManager().getPetUser((Player) sender).ifPresent(user -> {
                 for (PetType type : PetType.values())
-                if (user.removePet(type)) integer.incrementAndGet();
+                    if (user.removePet(type)) integer.incrementAndGet();
             });
 
             sender.sendMessage(MessageFile.getTranslation(MessageOption.REMOVED_ALL_PETS).replace("{count}", String.valueOf(integer.get())));
@@ -61,8 +61,8 @@ public class RemoveCommand extends PetSubCommand {
 
         if (target == null) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED+"You must be a player to run this command for yourself.");
-            }else{
+                sender.sendMessage(ChatColor.RED + "You must be a player to run this command for yourself.");
+            } else {
                 target = (Player) sender;
             }
         }

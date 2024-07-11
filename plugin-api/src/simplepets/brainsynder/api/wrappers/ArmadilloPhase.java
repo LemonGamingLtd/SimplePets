@@ -13,7 +13,7 @@ public enum ArmadilloPhase {
     private final String mojangName;
 
     ArmadilloPhase(String texture, String mojangName) {
-        this.texture = "http://textures.minecraft.net/texture/"+texture;
+        this.texture = "http://textures.minecraft.net/texture/" + texture;
         this.key = NamespacedKey.minecraft(name().toLowerCase(Locale.ROOT));
         this.mojangName = mojangName;
     }
@@ -34,6 +34,7 @@ public enum ArmadilloPhase {
         for (ArmadilloPhase phase : values()) if (phase.ordinal() == id) return phase;
         return STANDING;
     }
+
     public static ArmadilloPhase getByName(String name) {
         for (ArmadilloPhase phase : values()) {
             if (phase.name().equalsIgnoreCase(name)) return phase;
@@ -46,6 +47,7 @@ public enum ArmadilloPhase {
         if (current == STANDING) return ROLLED_UP;
         return values()[(current.ordinal() - 1)];
     }
+
     public static ArmadilloPhase getNext(ArmadilloPhase current) {
         if (current == ROLLED_UP) return STANDING;
         return values()[(current.ordinal() + 1)];

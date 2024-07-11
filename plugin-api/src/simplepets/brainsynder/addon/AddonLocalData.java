@@ -25,8 +25,8 @@ public class AddonLocalData {
         this.authors = new ArrayList<>();
         if (json.names().contains("author")) {
             authors.add(json.getString("author", "UNKNOWN"));
-        }else if (json.names().contains("authors")) {
-            ((JsonArray)json.get("authors")).forEach(jsonValue -> authors.add(jsonValue.asString()));
+        } else if (json.names().contains("authors")) {
+            ((JsonArray) json.get("authors")).forEach(jsonValue -> authors.add(jsonValue.asString()));
         }
         this.version = String.valueOf(json.getDouble("version", 0.0));
         this.supportedBuild = json.getInt("supported-build", -1);
@@ -34,8 +34,8 @@ public class AddonLocalData {
         if (json.names().contains("description")) {
             JsonValue value = json.get("description");
             if (value instanceof JsonArray) {
-                ((JsonArray)value).forEach(jsonValue -> description.add(jsonValue.asString()));
-            }else{
+                ((JsonArray) value).forEach(jsonValue -> description.add(jsonValue.asString()));
+            } else {
                 description.add(value.asString());
             }
         }
@@ -43,8 +43,8 @@ public class AddonLocalData {
         if (json.names().contains("class-checks")) {
             JsonValue value = json.get("class-checks");
             if (value instanceof JsonArray) {
-                ((JsonArray)value).forEach(jsonValue -> classChecks.add(jsonValue.asString()));
-            }else{
+                ((JsonArray) value).forEach(jsonValue -> classChecks.add(jsonValue.asString()));
+            } else {
                 classChecks.add(value.asString());
             }
         }

@@ -24,7 +24,7 @@ public class InventoryManager implements GUIHandler {
 
     private final List<CustomInventory> loaders = new ArrayList<>();
 
-    public void initiate () {
+    public void initiate() {
         TaskTimer timer = new TaskTimer(getClass(), "initiate");
         timer.start();
         PetCore plugin = PetCore.getInstance();
@@ -37,8 +37,8 @@ public class InventoryManager implements GUIHandler {
 
         SimplePets.getDebugLogger().debug("Loading Customizable Inventories Files...");
         loaders.add(new SelectionMenu(getLocation(plugin, SelectionMenu.class)));
-        loaders.add(new DataMenu (getLocation(plugin, DataMenu.class)));
-        loaders.add(new SavesMenu (getLocation(plugin, SavesMenu.class)));
+        loaders.add(new DataMenu(getLocation(plugin, DataMenu.class)));
+        loaders.add(new SavesMenu(getLocation(plugin, SavesMenu.class)));
         loaders.add(new AddonMenu(getLocation(plugin, AddonMenu.class)));
         loaders.add(new PetSelectorMenu(getLocation(plugin, PetSelectorMenu.class)));
         timer.label("inventories registered");
@@ -71,8 +71,8 @@ public class InventoryManager implements GUIHandler {
 
         try {
             Constructor constructor = clazz.getConstructor(File.class);
-            inventory = (CustomInventory) constructor.newInstance(new File(registeredFolder, clazz.getSimpleName()+".json"));
-        }catch (Exception e) {
+            inventory = (CustomInventory) constructor.newInstance(new File(registeredFolder, clazz.getSimpleName() + ".json"));
+        } catch (Exception e) {
             return;
         }
 

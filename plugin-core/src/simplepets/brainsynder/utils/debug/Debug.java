@@ -31,7 +31,7 @@ public class Debug implements DebugLogger {
         debugLog = Lists.newLinkedList();
     }
 
-    public Debug (PetCore core) {
+    public Debug(PetCore core) {
         this.core = core;
     }
 
@@ -59,9 +59,12 @@ public class Debug implements DebugLogger {
                 runnable = () -> {
                     if ((configuration != null) && (builder.getLevel().getLevelName() != null)) {
                         if (!ConfigOption.INSTANCE.DEBUG_ENABLED.getValue()) return;
-                        if ((builder.getLevel() == DebugLevel.NORMAL) && (!ConfigOption.INSTANCE.DEBUG_NORMAL_LEVEL.getValue())) return;
-                        if ((builder.getLevel() == DebugLevel.WARNING) && (!ConfigOption.INSTANCE.DEBUG_WARNING_LEVEL.getValue())) return;
-                        if ((builder.getLevel() == DebugLevel.ERROR) && (!ConfigOption.INSTANCE.DEBUG_ERROR_LEVEL.getValue())) return;
+                        if ((builder.getLevel() == DebugLevel.NORMAL) && (!ConfigOption.INSTANCE.DEBUG_NORMAL_LEVEL.getValue()))
+                            return;
+                        if ((builder.getLevel() == DebugLevel.WARNING) && (!ConfigOption.INSTANCE.DEBUG_WARNING_LEVEL.getValue()))
+                            return;
+                        if ((builder.getLevel() == DebugLevel.ERROR) && (!ConfigOption.INSTANCE.DEBUG_ERROR_LEVEL.getValue()))
+                            return;
                     }
                     if (builder.broadcast())
                         Bukkit.getOnlinePlayers().stream().filter(ServerOperator::isOp).forEach(player -> {
@@ -87,7 +90,7 @@ public class Debug implements DebugLogger {
                     });
                 };
             }
-        }else{
+        } else {
             runnable = () -> {
                 if (builder.broadcast())
                     Bukkit.getOnlinePlayers().stream().filter(ServerOperator::isOp).forEach(player -> {
@@ -131,7 +134,7 @@ public class Debug implements DebugLogger {
         debug(DebugBuilder.build().setLevel(level).setMessages(message).setSync(sync));
     }
 
-    public static JsonObject fetchLog () {
+    public static JsonObject fetchLog() {
         JsonObject json = new JsonObject();
         JsonObject information = new JsonObject();
         JsonObject quickLog = new JsonObject();
@@ -156,7 +159,7 @@ public class Debug implements DebugLogger {
                     messageBuilder.append(line).append(", ");
                     num++;
                 }
-                log.set(String.valueOf(builder.timestamp), "["+builder.getLevel()+"] "+ messageBuilder);
+                log.set(String.valueOf(builder.timestamp), "[" + builder.getLevel() + "] " + messageBuilder);
                 quickLog.set(s, log);
             }
         });
@@ -167,10 +170,10 @@ public class Debug implements DebugLogger {
         while (!debugLog.isEmpty()) {
             JsonObject data = new JsonObject();
             DebugBuilder builder = debugLog.pollFirst();
-            Instant instant = Instant.ofEpochMilli ( builder.timestamp );
-            ZonedDateTime zdt = ZonedDateTime.ofInstant ( instant , ZoneOffset.UTC );
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy/MM/dd | HH:mm:ss:SSS" );
-            String output = formatter.format ( zdt );
+            Instant instant = Instant.ofEpochMilli(builder.timestamp);
+            ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd | HH:mm:ss:SSS");
+            String output = formatter.format(zdt);
             data.add("time/date", output);
             data.add("level", builder.getLevel().getName());
 

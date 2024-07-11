@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class LocationChangeListener implements Listener {
 
     @EventHandler
-    public void onWorldChange (PlayerChangedWorldEvent event) {
+    public void onWorldChange(PlayerChangedWorldEvent event) {
         if (!ConfigOption.INSTANCE.REMOVE_PET_ON_WORLD_CHANGE.getValue()) return;
 
         Player player = event.getPlayer();
@@ -25,7 +25,7 @@ public class LocationChangeListener implements Listener {
     }
 
     @EventHandler
-    public void onTeleport (PlayerTeleportEvent event) {
+    public void onTeleport(PlayerTeleportEvent event) {
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) return;
 
         Player player = event.getPlayer();

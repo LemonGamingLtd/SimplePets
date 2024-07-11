@@ -11,11 +11,11 @@ import simplepets.brainsynder.api.wrappers.AxolotlVariant;
 public class AxolotlPlayDeadData extends PetData<IEntityAxolotlPet> {
     public AxolotlPlayDeadData() {
         addDefaultItem("false", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &cfalse")
-                .setTexture(AxolotlVariant.LUCY.getTexture()));
+            .withName("&#c8c8c8{name}: &cfalse")
+            .setTexture(AxolotlVariant.LUCY.getTexture()));
         addDefaultItem("true", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &atrue")
-                .setTexture("http://textures.minecraft.net/texture/88fd654d856bde8b69f0c3567d28fafe94e71eae10d32ea59ee23e9bd64b41b0"));
+            .withName("&#c8c8c8{name}: &atrue")
+            .setTexture("http://textures.minecraft.net/texture/88fd654d856bde8b69f0c3567d28fafe94e71eae10d32ea59ee23e9bd64b41b0"));
 
     }
 

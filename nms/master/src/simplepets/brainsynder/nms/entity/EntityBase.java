@@ -6,9 +6,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
+import simplepets.brainsynder.nms.entity.list.EntityRabbitPet;
+import simplepets.brainsynder.nms.entity.list.EntitySlimePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 import simplepets.brainsynder.utils.VersionFields;
 
@@ -33,6 +36,30 @@ public class EntityBase extends Mob {
         this.petType = type;
         entityType = getEntityType(entitytypes);
         originalEntityType = entitytypes;
+    }
+
+    @Override
+    public void jumpFromGround() {
+        if (this instanceof EntitySlimePet) {
+            Vec3 vec3d = this.getDeltaMovement();
+            this.setDeltaMovement(vec3d.x, this.getJumpPower(), vec3d.z);
+            this.hasImpulse = true;
+            return;
+        }
+
+        super.jumpFromGround();
+
+        if (this instanceof EntityRabbitPet) {
+            double speed = this.moveControl.getSpeedModifier();
+            if (speed > 0.0D) {
+                double length = getDeltaMovement().horizontalDistanceSqr();
+                if (length < 0.01D) {
+                    this.moveRelative(0.1F, new Vec3(0.0D, 0.0D, 1.0D));
+                }
+            }
+
+            if (!VersionTranslator.getEntityLevel(this).isClientSide) VersionTranslator.getEntityLevel(this).broadcastEntityEvent(this, (byte)1);
+        }
     }
 
     public void populateDataAccess(PetDataAccess dataAccess) {}

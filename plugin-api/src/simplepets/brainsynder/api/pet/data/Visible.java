@@ -13,9 +13,9 @@ import simplepets.brainsynder.api.pet.annotations.DisableDefault;
 public class Visible extends PetData<IEntityPet> {
     public Visible() {
         addDefaultItem("true", new ItemBuilder(Material.GLASS_BOTTLE)
-                .withName("&#c8c8c8{name}: &atrue"));
+            .withName("&#c8c8c8{name}: &atrue"));
         addDefaultItem("false", new ItemBuilder(Material.SPLASH_POTION)
-                .withName("&#c8c8c8{name}: &cfalse"));
+            .withName("&#c8c8c8{name}: &cfalse"));
     }
 
     @Override

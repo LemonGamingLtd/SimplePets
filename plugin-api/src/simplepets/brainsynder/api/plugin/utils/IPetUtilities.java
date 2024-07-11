@@ -15,7 +15,7 @@ public interface IPetUtilities {
 
     String handlePlaceholders(PetUser owner, IEntityPet entity, Location petLoc, String text);
 
-    String translatePetName (String name);
+    String translatePetName(String name);
 
     default boolean isVanished(Player player) {
         if (player == null) return false;

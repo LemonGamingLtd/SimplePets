@@ -10,11 +10,11 @@ import simplepets.brainsynder.api.pet.PetData;
 public class WardenVibrationData extends PetData<IEntityWardenPet> {
     public WardenVibrationData() {
         addDefaultItem("true", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &atrue")
-                .setTexture("http://textures.minecraft.net/texture/c6f74361fb00490a0a98eeb814544ecdd775cb55633dbb114e60d27004cb1020"));
+            .withName("&#c8c8c8{name}: &atrue")
+            .setTexture("http://textures.minecraft.net/texture/c6f74361fb00490a0a98eeb814544ecdd775cb55633dbb114e60d27004cb1020"));
         addDefaultItem("false", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &cfalse")
-                .setTexture("http://textures.minecraft.net/texture/1dfd13ca08bf973bfef0293d770704a11ef5a9fe20d40671fb066724d3e18d8"));
+            .withName("&#c8c8c8{name}: &cfalse")
+            .setTexture("http://textures.minecraft.net/texture/1dfd13ca08bf973bfef0293d770704a11ef5a9fe20d40671fb066724d3e18d8"));
     }
 
     @Override

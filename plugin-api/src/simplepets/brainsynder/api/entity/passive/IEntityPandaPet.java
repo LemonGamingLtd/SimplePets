@@ -9,18 +9,22 @@ import simplepets.brainsynder.api.wrappers.PandaGene;
 @EntityPetType(petType = PetType.PANDA)
 public interface IEntityPandaPet extends IAgeablePet, ISpecialFlag {
 
-    PandaGene getGene ();
-    void setGene (PandaGene gene);
+    PandaGene getGene();
+
+    void setGene(PandaGene gene);
 
     void setSneezeProgress(int progress);
-    int getSneezeProgress ();
-    default void setSneezing (boolean value) {
+
+    int getSneezeProgress();
+
+    default void setSneezing(boolean value) {
         setSpecialFlag(2, value);
         if (!value) {
             setSneezeProgress(0);
             getPetUser().updateDataMenu();
         }
     }
+
     default boolean isSneezing() {
         return getSpecialFlag(2);
     }
@@ -28,6 +32,7 @@ public interface IEntityPandaPet extends IAgeablePet, ISpecialFlag {
     default boolean isSitting() {
         return getSpecialFlag(8);
     }
+
     default void setSitting(boolean value) {
         setSpecialFlag(8, value);
     }
@@ -35,6 +40,7 @@ public interface IEntityPandaPet extends IAgeablePet, ISpecialFlag {
     default boolean isPlaying() {
         return getSpecialFlag(4);
     }
+
     default void setPlaying(boolean value) {
         setSpecialFlag(4, value);
     }
@@ -42,6 +48,7 @@ public interface IEntityPandaPet extends IAgeablePet, ISpecialFlag {
     default boolean isLyingOnBack() {
         return getSpecialFlag(16);
     }
+
     default void setLyingOnBack(boolean value) {
         setSpecialFlag(16, value);
     }

@@ -12,8 +12,8 @@ public class HorseColorData extends PetData<IEntityHorsePet> {
     public HorseColorData() {
         for (HorseColorType color : HorseColorType.values()) {
             addDefaultItem(color.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+color.name())
-                    .setTexture(color.getTexture()));
+                .withName("&#c8c8c8{name}: &a" + color.name())
+                .setTexture(color.getTexture()));
         }
     }
 

@@ -151,19 +151,20 @@ public class DataMenu extends CustomInventory {
             inv.remove(ItemManager.PLACEHOLDER.getItemBuilder().build());
     }
 
-    private void addPetData (Inventory inv, IEntityPet entityPet) {
+    private void addPetData(Inventory inv, IEntityPet entityPet) {
         PetType type = entityPet.getPetType();
 
         IEntityPet pet = entityPet;
         if (entityPet instanceof IEntityControllerPet) {
-            pet = ((IEntityControllerPet)entityPet).getVisibleEntity();
+            pet = ((IEntityControllerPet) entityPet).getVisibleEntity();
         }
 
         IEntityPet finalPet = pet;
         type.getPetData().forEach(petData -> {
             if (!petData.isEnabled(finalPet)) return;
             if (ConfigOption.INSTANCE.PERMISSIONS_DATA_PERMS.getValue()
-                    && (!entityPet.getPetUser().getPlayer().hasPermission(type.getPermission("data."+petData.getNamespace().namespace())))) return;
+                && (!entityPet.getPetUser().getPlayer().hasPermission(type.getPermission("data." + petData.getNamespace().namespace()))))
+                return;
             if (!petData.isModifiable(finalPet)) return;
             petData.getItem(finalPet).ifPresent(o -> {
                 inv.addItem(((ItemBuilder) o).build());

@@ -53,10 +53,10 @@ public class PetSelectorMenu extends CustomInventory {
 
         Map<Integer, String> object = new HashMap<>();
         Arrays.asList(
-                11, 12, 13, 14, 15, 16, 17,
-                20, 21, 22, 23, 24, 25, 26,
-                29, 30, 31, 32, 33, 34, 35,
-                38, 39, 40, 41, 42, 43, 44
+            11, 12, 13, 14, 15, 16, 17,
+            20, 21, 22, 23, 24, 25, 26,
+            29, 30, 31, 32, 33, 34, 35,
+            38, 39, 40, 41, 42, 43, 44
         ).forEach(slot -> object.put(slot, "air"));
         object.put(46, "previouspage");
         object.put(54, "nextpage");
@@ -87,15 +87,15 @@ public class PetSelectorMenu extends CustomInventory {
         return InventoryType.TYPE_SELECTION_GUI;
     }
 
-    public void setTask (String name, BiTask<PetUser, PetType> task) {
+    public void setTask(String name, BiTask<PetUser, PetType> task) {
         taskMap.put(name, task);
     }
 
-    public BiTask<PetUser, PetType> getTask (String name) {
+    public BiTask<PetUser, PetType> getTask(String name) {
         return taskMap.getOrDefault(name, null);
     }
 
-    public void open (PetUser user, int page, String title) {
+    public void open(PetUser user, int page, String title) {
         Player player = user.getPlayer();
         pageSave.put(player.getName(), page);
         Inventory inv = Bukkit.createInventory(new SelectorHolder(), getInteger("size", 54), Colorize.translateBungeeHex(title));

@@ -22,12 +22,12 @@ public class ParticleManager implements ParticleHandler {
     private ParticleMaker teleportParticle;
     private ParticleMaker taskFailParticle;
 
-    public ParticleManager (PetCore plugin) {
+    public ParticleManager(PetCore plugin) {
         reload(plugin);
     }
 
-    public void reload (PetCore plugin) {
-        folder = new File(plugin.getDataFolder()+File.separator+"Particles");
+    public void reload(PetCore plugin) {
+        folder = new File(plugin.getDataFolder() + File.separator + "Particles");
         if (!folder.exists()) folder.mkdirs();
 
         spawnParticle = getCustomizedParticle(new ParticleMaker(Particle.SPELL_INSTANT, 15, 1.3), "SpawnParticle");
@@ -38,9 +38,9 @@ public class ParticleManager implements ParticleHandler {
         teleportParticle = getCustomizedParticle(new ParticleMaker(Particle.PORTAL, 20, 1, 0.3, 1), "TeleportParticle");
     }
 
-    private ParticleMaker getCustomizedParticle (ParticleMaker defaultParticle, String name) {
+    private ParticleMaker getCustomizedParticle(ParticleMaker defaultParticle, String name) {
         try {
-            JsonFile file = new JsonFile(new File(folder, name+".json")) {
+            JsonFile file = new JsonFile(new File(folder, name + ".json")) {
                 @Override
                 public void loadDefaults() {
                     setDefault("particle", StorageTagTools.toJsonObject(defaultParticle.toCompound()));
@@ -49,32 +49,38 @@ public class ParticleManager implements ParticleHandler {
             if (!file.hasKey("particle")) return defaultParticle;
 
             return new ParticleMaker(StorageTagTools.fromJsonObject((JsonObject) file.getValue("particle")));
-        }catch (Exception e) {
+        } catch (Exception e) {
             return defaultParticle;
         }
     }
 
     @Override
-    public void sendParticle (Reason reason, Player player, Location location) {
+    public void sendParticle(Reason reason, Player player, Location location) {
         if (player == null) return;
         switch (reason) {
             case SPAWN:
-                if (ConfigOption.INSTANCE.PARTICLES_SUMMON_TOGGLE.getValue()) spawnParticle.sendToPlayer(player, location);
+                if (ConfigOption.INSTANCE.PARTICLES_SUMMON_TOGGLE.getValue())
+                    spawnParticle.sendToPlayer(player, location);
                 break;
             case FAILED:
-                if (ConfigOption.INSTANCE.PARTICLES_FAILED_TOGGLE.getValue()) failSpawnParticle.sendToPlayer(player, location);
+                if (ConfigOption.INSTANCE.PARTICLES_FAILED_TOGGLE.getValue())
+                    failSpawnParticle.sendToPlayer(player, location);
                 break;
             case RENAME:
-                if (ConfigOption.INSTANCE.PARTICLES_RENAME_TOGGLE.getValue()) renameParticle.sendToPlayer(player, location);
+                if (ConfigOption.INSTANCE.PARTICLES_RENAME_TOGGLE.getValue())
+                    renameParticle.sendToPlayer(player, location);
                 break;
             case REMOVE:
-                if (ConfigOption.INSTANCE.PARTICLES_REMOVE_TOGGLE.getValue()) removeParticle.sendToPlayer(player, location);
+                if (ConfigOption.INSTANCE.PARTICLES_REMOVE_TOGGLE.getValue())
+                    removeParticle.sendToPlayer(player, location);
                 break;
             case TELEPORT:
-                if (ConfigOption.INSTANCE.PARTICLES_TELEPORT_TOGGLE.getValue()) teleportParticle.sendToPlayer(player, location);
+                if (ConfigOption.INSTANCE.PARTICLES_TELEPORT_TOGGLE.getValue())
+                    teleportParticle.sendToPlayer(player, location);
                 break;
             case TASK_FAILED:
-                if (ConfigOption.INSTANCE.PARTICLES_FAILED_TASK_TOGGLE.getValue()) taskFailParticle.sendToPlayer(player, location);
+                if (ConfigOption.INSTANCE.PARTICLES_FAILED_TASK_TOGGLE.getValue())
+                    taskFailParticle.sendToPlayer(player, location);
                 break;
         }
     }

@@ -22,14 +22,13 @@ public class AddonPermissions {
     /**
      * Will check if the sender has a permission, it will also check the registered parent permissions
      *
-     * @param addon The addon that the permission is for
-     * @param sender The CommandSender being checked
+     * @param addon      The addon that the permission is for
+     * @param sender     The CommandSender being checked
      * @param permission The permission in question
-     * @return
-     *      true | They have permission
-     *      false | They do not have permission
+     * @return true | They have permission
+     * false | They do not have permission
      */
-    public static boolean hasPermission (PetModule addon, CommandSender sender, String permission) {
+    public static boolean hasPermission(PetModule addon, CommandSender sender, String permission) {
         if (sender.isOp()) return true;
         String name = addon.getNamespace().namespace();
         Map<PermissionData, List<PermissionData>> map = parentPermissions.getOrDefault(name, new HashMap<>());
@@ -50,9 +49,9 @@ public class AddonPermissions {
      * Registers permissions to be listed in the `/pet permissions` command
      *
      * @param addon The addon that the permission is for
-     * @param data = The data for the permission
+     * @param data  = The data for the permission
      */
-    public static void register (PetModule addon, PermissionData data) {
+    public static void register(PetModule addon, PermissionData data) {
         Objects.requireNonNull(addon);
         Objects.requireNonNull(data);
         String name = addon.getNamespace().namespace();
@@ -62,16 +61,16 @@ public class AddonPermissions {
 
         list.add(data);
         permissions.put(addon.getNamespace().namespace(), list);
-        SimplePets.getDebugLogger().debug(REGISTER, "Registering '"+data.getPermission()+"' permission for the '"+addon.getNamespace().namespace()+"' addon");
+        SimplePets.getDebugLogger().debug(REGISTER, "Registering '" + data.getPermission() + "' permission for the '" + addon.getNamespace().namespace() + "' addon");
     }
 
     /**
      * Registers permissions to be listed in the `/pet permissions` command
      *
      * @param addon The addon that the permission is for
-     * @param data = The data for the permission
+     * @param data  = The data for the permission
      */
-    public static void register (PetModule addon, PermissionData parentPermission, PermissionData data) {
+    public static void register(PetModule addon, PermissionData parentPermission, PermissionData data) {
         Objects.requireNonNull(addon);
         Objects.requireNonNull(parentPermission);
         Objects.requireNonNull(data);
@@ -80,7 +79,7 @@ public class AddonPermissions {
         Map<PermissionData, List<PermissionData>> map = parentPermissions.getOrDefault(name, new HashMap<>());
         List<PermissionData> children = map.getOrDefault(parentPermission, new ArrayList<>());
         if (children.isEmpty()) {
-            SimplePets.getDebugLogger().debug(REGISTER, "Registering '"+parentPermission.getPermission()+"' permission and its children permissions for the '"+addon.getNamespace().namespace()+"' addon");
+            SimplePets.getDebugLogger().debug(REGISTER, "Registering '" + parentPermission.getPermission() + "' permission and its children permissions for the '" + addon.getNamespace().namespace() + "' addon");
         }
 
         if (!children.contains(data)) {
@@ -105,17 +104,18 @@ public class AddonPermissions {
         /**
          * Will not be given by default
          */
-        NONE ("false"),
+        NONE("false"),
         /**
          * Will allow players to have this permission by default
          */
-        DEFAULT ("true"),
+        DEFAULT("true"),
         /**
          * Will allow OPs to have access to this permission by default (even tho they normally do :P)
          */
         OP("op");
 
         private final String allow;
+
         AllowType(String allow) {
             this.allow = allow;
         }

@@ -25,12 +25,12 @@ public class RenameManager {
         this.plugin = plugin;
     }
 
-    public void renameViaAnvil (PetUser user, PetType type) {
+    public void renameViaAnvil(PetUser user, PetType type) {
         AnvilGUI.Builder builder = new AnvilGUI.Builder().plugin(plugin);
         builder.itemLeft(new ItemBuilder(Material.NAME_TAG).withName(MessageFile.getTranslation(MessageOption.RENAME_ANVIL_TAG)).build());
         builder.onComplete((player, name) -> {
             if (name.equalsIgnoreCase("reset")) name = null;
-            PetRenameEvent renameEvent = new PetRenameEvent (user, type, name);
+            PetRenameEvent renameEvent = new PetRenameEvent(user, type, name);
             Bukkit.getPluginManager().callEvent(renameEvent);
 
             if (!renameEvent.isCancelled()) user.setPetName(renameEvent.getName(), type);
@@ -39,29 +39,29 @@ public class RenameManager {
         builder.open(user.getPlayer());
     }
 
-    public void renameViaChat (PetUser user, PetType type) {
+    public void renameViaChat(PetUser user, PetType type) {
         ConversationFactory factory = new ConversationFactory(PetCore.getInstance());
         factory.withLocalEcho(false)
-                .withFirstPrompt(new PetRenamePrompt())
-                .addConversationAbandonedListener(event -> {
-                    if (event.gracefulExit()) {
-                        String name = event.getContext().getSessionData("name").toString(); // It's a string prompt for a reason
-                        if (name.equalsIgnoreCase("cancel")) {
-                            user.getPlayer().sendMessage(MessageFile.getTranslation(MessageOption.RENAME_VIA_CHAT_CANCEL));
-                            return;
-                        }
-                        if (name.equalsIgnoreCase("reset")) name = null;
-                        PetRenameEvent renameEvent = new PetRenameEvent (user, type, name);
-                        Bukkit.getPluginManager().callEvent(renameEvent);
-
-                        if (!renameEvent.isCancelled()) user.setPetName(renameEvent.getName(), type);
-
+            .withFirstPrompt(new PetRenamePrompt())
+            .addConversationAbandonedListener(event -> {
+                if (event.gracefulExit()) {
+                    String name = event.getContext().getSessionData("name").toString(); // It's a string prompt for a reason
+                    if (name.equalsIgnoreCase("cancel")) {
+                        user.getPlayer().sendMessage(MessageFile.getTranslation(MessageOption.RENAME_VIA_CHAT_CANCEL));
+                        return;
                     }
-                });
+                    if (name.equalsIgnoreCase("reset")) name = null;
+                    PetRenameEvent renameEvent = new PetRenameEvent(user, type, name);
+                    Bukkit.getPluginManager().callEvent(renameEvent);
+
+                    if (!renameEvent.isCancelled()) user.setPetName(renameEvent.getName(), type);
+
+                }
+            });
         factory.buildConversation(user.getPlayer()).begin();
     }
 
-    public void renameViaSign (PetUser user, PetType type) {
+    public void renameViaSign(PetUser user, PetType type) {
         Plugin protocol = plugin.getServer().getPluginManager().getPlugin("ProtocolLib");
         if ((protocol == null) || (!protocol.isEnabled())) {
             if (RenameType.getType(ConfigOption.INSTANCE.RENAME_TYPE.getValue(), RenameType.ANVIL) == RenameType.SIGN)

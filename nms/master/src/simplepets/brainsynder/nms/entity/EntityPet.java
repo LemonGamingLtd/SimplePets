@@ -10,7 +10,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.level.Level;
@@ -418,7 +417,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         Bukkit.getServer().getPluginManager().callEvent(moveEvent);
         if (moveEvent.isCancelled()) return;
 
-        double speed = getAttribute(Attributes.MOVEMENT_SPEED).getValue();
+        double speed = VersionTranslator.getWalkSpeed(this);
 
         Field jumpField = VersionTranslator.getJumpField();
         if ((jumpField != null) && (!passengers.isEmpty())) {
@@ -639,11 +638,6 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     @Override
     public boolean isOnPortalCooldown() {
         return true; // Prevents pets from teleporting from a portal
-    }
-
-    @Override
-    protected void handleNetherPortal() {
-        // fuck around and find out
     }
 
 

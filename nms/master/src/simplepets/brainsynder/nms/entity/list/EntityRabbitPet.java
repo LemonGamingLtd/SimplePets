@@ -142,20 +142,6 @@ public class EntityRabbitPet extends EntityAgeablePet implements IEntityRabbitPe
         this.moveControl.setWantedPosition(this.moveControl.getWantedX(), this.moveControl.getWantedY(), this.moveControl.getWantedZ(), d0);
     }
 
-    @Override
-    protected void jumpFromGround() {
-        super.jumpFromGround();
-        double speed = this.moveControl.getSpeedModifier();
-        if (speed > 0.0D) {
-            double length = getDeltaMovement().horizontalDistanceSqr();
-            if (length < 0.01D) {
-                this.moveRelative(0.1F, new Vec3(0.0D, 0.0D, 1.0D));
-            }
-        }
-
-        if (!VersionTranslator.getEntityLevel(this).isClientSide) VersionTranslator.getEntityLevel(this).broadcastEntityEvent(this, (byte)1);
-    }
-
     private Path getPath() {
         try {
             return navigation.getPath();

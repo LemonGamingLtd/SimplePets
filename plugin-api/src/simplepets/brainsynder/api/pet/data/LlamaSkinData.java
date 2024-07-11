@@ -12,8 +12,8 @@ public class LlamaSkinData extends PetData<IEntityLlamaPet> {
     public LlamaSkinData() {
         for (LlamaColor color : LlamaColor.values()) {
             addDefaultItem(color.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+color.name())
-                    .setTexture(color.getTexture()));
+                .withName("&#c8c8c8{name}: &a" + color.name())
+                .setTexture(color.getTexture()));
         }
     }
 

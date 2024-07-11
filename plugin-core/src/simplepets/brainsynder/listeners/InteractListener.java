@@ -18,7 +18,8 @@ public class InteractListener implements Listener {
                 e.setCancelled(true);
                 if (entity.getOwnerUUID().equals(e.getPlayer().getUniqueId())) {
                     if (ConfigOption.INSTANCE.MISC_TOGGLES_DISABLE_CLICKING.getValue()) return;
-                    if (InventoryManager.PET_DATA.getType(e.getPlayer()) != entity.getPetType()) InventoryManager.PET_DATA.setType(e.getPlayer(), entity.getPetType());
+                    if (InventoryManager.PET_DATA.getType(e.getPlayer()) != entity.getPetType())
+                        InventoryManager.PET_DATA.setType(e.getPlayer(), entity.getPetType());
                     InventoryManager.PET_DATA.open(entity.getPetUser());
                 }
             }
@@ -43,7 +44,8 @@ public class InteractListener implements Listener {
                 e.setCancelled(true);
                 if (entity.getOwnerUUID().equals(e.getPlayer().getUniqueId())) {
                     if (ConfigOption.INSTANCE.MISC_TOGGLES_DISABLE_CLICKING.getValue()) return;
-                    if (InventoryManager.PET_DATA.getType(e.getPlayer()) != entity.getPetType()) InventoryManager.PET_DATA.setType(e.getPlayer(), entity.getPetType());
+                    if (InventoryManager.PET_DATA.getType(e.getPlayer()) != entity.getPetType())
+                        InventoryManager.PET_DATA.setType(e.getPlayer(), entity.getPetType());
                     InventoryManager.PET_DATA.open(entity.getPetUser());
                 }
             }

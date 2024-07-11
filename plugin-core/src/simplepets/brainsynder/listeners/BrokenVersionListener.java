@@ -22,11 +22,11 @@ public class BrokenVersionListener implements Listener {
         PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, () -> {
             String version = ServerVersion.getVersion().name().replace("v", "").replace("_", ".");
             player.sendMessage("§4[§cSimplePets§4] §7SimplePets has encountered an error, " +
-                    "We seems to be missing support for your version §4(§c"+ version +"§4)");
+                "We seems to be missing support for your version §4(§c" + version + "§4)");
             Tellraw.fromLegacy("&4[&cSimplePets&4] &7Please download the version for your server from the ")
-                    .then("JENKINS (Click Me)").color(ChatColor.RED).link("https://ci.pluginwiki.us/job/SimplePets_v5/")
-                    .send(player);
-            player.sendMessage("§4[§cSimplePets§4] §7Check if there is a §cSimplePets-"+version+".jar §7download (IF AVAILABLE)");
+                .then("JENKINS (Click Me)").color(ChatColor.RED).link("https://ci.bsdevelopment.org/job/SimplePets_v5/")
+                .send(player);
+            player.sendMessage("§4[§cSimplePets§4] §7Check if there is a §cSimplePets-" + version + ".jar §7download (IF AVAILABLE)");
         }, 1L, TimeUnit.SECONDS);
     }
 }

@@ -12,7 +12,7 @@ public interface IEntityGhastPet extends IEntityPet, IFlyableEntity {
         return true;
     }
 
-    boolean isScreaming ();
+    boolean isScreaming();
 
-    void setScreaming (boolean var);
+    void setScreaming(boolean var);
 }

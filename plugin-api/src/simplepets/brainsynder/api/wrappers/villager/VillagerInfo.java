@@ -40,7 +40,7 @@ public class VillagerInfo {
         return new VillagerInfo(this.biome, this.type, level);
     }
 
-    public StorageTagCompound toCompound () {
+    public StorageTagCompound toCompound() {
         StorageTagCompound compound = new StorageTagCompound();
         compound.setEnum("biome", biome);
         compound.setEnum("type", type);
@@ -48,11 +48,11 @@ public class VillagerInfo {
         return compound;
     }
 
-    public static VillagerInfo getDefault () {
+    public static VillagerInfo getDefault() {
         return new VillagerInfo(BiomeType.PLAINS, VillagerType.NONE, VillagerLevel.NOVICE);
     }
 
-    public static VillagerInfo fromCompound (StorageTagCompound compound) {
+    public static VillagerInfo fromCompound(StorageTagCompound compound) {
         BiomeType biome = BiomeType.PLAINS;
         if (compound.hasKey("biome")) biome = compound.getEnum("biome", BiomeType.class, BiomeType.PLAINS);
 

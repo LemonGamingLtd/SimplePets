@@ -12,8 +12,8 @@ public class PufferSizeData extends PetData<IEntityPufferFishPet> {
     public PufferSizeData() {
         for (PufferState state : PufferState.values()) {
             addDefaultItem(state.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+state.name())
-                    .setTexture("http://textures.minecraft.net/texture/17152876bc3a96dd2a2299245edb3beef647c8a56ac8853a687c3e7b5d8bb"));
+                .withName("&#c8c8c8{name}: &a" + state.name())
+                .setTexture("http://textures.minecraft.net/texture/17152876bc3a96dd2a2299245edb3beef647c8a56ac8853a687c3e7b5d8bb"));
         }
     }
 

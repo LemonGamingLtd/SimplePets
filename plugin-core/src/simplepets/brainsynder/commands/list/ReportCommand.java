@@ -30,9 +30,9 @@ import simplepets.brainsynder.utils.Keys;
 import java.util.List;
 
 @ICommand(
-        name = "report",
-        usage = "<issue_title>",
-        description = "Used to report an issue with the plugin without opening discord/github"
+    name = "report",
+    usage = "<issue_title>",
+    description = "Used to report an issue with the plugin without opening discord/github"
 )
 @Permission(permission = "issue_report", adminCommand = true)
 public class ReportCommand extends PetSubCommand implements Listener {
@@ -57,10 +57,10 @@ public class ReportCommand extends PetSubCommand implements Listener {
         String title = messageMaker(args, 0);
 
         ItemBuilder builder = new ItemBuilder(Material.WRITABLE_BOOK);
-        builder.withName("Issue: "+title).addLore(
-                "Open the book to report an issue",
-                "Include all details to reproduce",
-                "Include a way to get in contact if we need more info"
+        builder.withName("Issue: " + title).addLore(
+            "Open the book to report an issue",
+            "Include all details to reproduce",
+            "Include a way to get in contact if we need more info"
         ).getMetaValue(BookMeta.class, bookMeta -> {
             bookMeta.setTitle(title);
             bookMeta.setPages("Steps to reproduce:\n1:\n2:\n3:", "What actually happens:\n1:\n2:\n3:", "Additional Info:");
@@ -69,11 +69,11 @@ public class ReportCommand extends PetSubCommand implements Listener {
             return bookMeta;
         });
 
-        ((Player)sender).getWorld().dropItem(((Player) sender).getLocation(), builder.build());
+        ((Player) sender).getWorld().dropItem(((Player) sender).getLocation(), builder.build());
     }
 
     @EventHandler
-    public void onDrop (PlayerDropItemEvent event) {
+    public void onDrop(PlayerDropItemEvent event) {
         ItemStack stack = event.getItemDrop().getItemStack();
         if (!stack.hasItemMeta()) return;
         if (stack.getType().name().contains("BOOK")) return;
@@ -82,7 +82,7 @@ public class ReportCommand extends PetSubCommand implements Listener {
     }
 
     @EventHandler
-    public void handleBook (PlayerEditBookEvent event) {
+    public void handleBook(PlayerEditBookEvent event) {
 
         // No changes to the meta
         if (event.getNewBookMeta() == event.getPreviousBookMeta()) return;
@@ -109,15 +109,15 @@ public class ReportCommand extends PetSubCommand implements Listener {
 
             PlayerInventory inventory = event.getPlayer().getInventory();
             for (int slot = 1; slot <= inventory.getSize(); slot++) {
-                ItemStack stack = inventory.getItem((slot-1));
+                ItemStack stack = inventory.getItem((slot - 1));
                 if (stack == null) continue;
                 if (!stack.getType().name().contains("BOOK")) continue;
                 if (!stack.hasItemMeta()) continue;
                 ItemMeta meta = stack.getItemMeta();
                 if (meta.getPersistentDataContainer().has(Keys.BOOK_KEY, PersistentDataType.STRING)
-                        || (meta == event.getNewBookMeta())
-                        || (meta == event.getPreviousBookMeta())) {
-                    inventory.setItem((slot-1), new ItemStack(Material.AIR));
+                    || (meta == event.getNewBookMeta())
+                    || (meta == event.getPreviousBookMeta())) {
+                    inventory.setItem((slot - 1), new ItemStack(Material.AIR));
                 }
             }
 
@@ -125,7 +125,7 @@ public class ReportCommand extends PetSubCommand implements Listener {
                 builder.append("\n\n").append(object.toString(WriterConfig.PRETTY_PRINT));
                 DiscordHook hook = new DiscordHook("https://discord.com/api/webhooks/802758724820533248/QgvJd0vYLOl5UHyLNDLboYjijLPhIaYTlRakazofNZAvduGpoL6XKAIRs7BI584W67GO");
                 hook.setUsername(event.getPlayer().getName());
-                hook.setAvatarUrl("https://minotar.net/cube/"+event.getPlayer().getUniqueId()+"/100.png");
+                hook.setAvatarUrl("https://minotar.net/cube/" + event.getPlayer().getUniqueId() + "/100.png");
 
                 WebConnector.uploadPaste(getPlugin(), builder.toString(), new Callback<String, String>() {
                     @Override
@@ -136,7 +136,7 @@ public class ReportCommand extends PetSubCommand implements Listener {
 
                     @Override
                     public void fail(String value) {
-                        WebConnector.getInputStreamString("https://pluginwiki.us/pastebin/paste.php?title="+newTitle+"&text="+newText, getPlugin(), s -> {
+                        WebConnector.getInputStreamString("https://pluginwiki.us/pastebin/paste.php?title=" + newTitle + "&text=" + newText, getPlugin(), s -> {
                             if (s.startsWith("http")) {
                                 hook.setContent(s);
                                 hook.send();

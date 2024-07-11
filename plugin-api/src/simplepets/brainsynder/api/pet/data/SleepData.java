@@ -10,9 +10,9 @@ import simplepets.brainsynder.api.pet.PetData;
 public class SleepData extends PetData<ISleeper> {
     public SleepData() {
         addDefaultItem("true", new ItemBuilder(Material.RED_BED)
-                .withName("&#c8c8c8{name}: &atrue"));
+            .withName("&#c8c8c8{name}: &atrue"));
         addDefaultItem("false", new ItemBuilder(Material.RED_BED)
-                .withName("&#c8c8c8{name}: &cfalse"));
+            .withName("&#c8c8c8{name}: &cfalse"));
     }
 
     @Override

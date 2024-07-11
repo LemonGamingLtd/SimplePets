@@ -4,6 +4,7 @@ import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -329,9 +330,11 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
         pet.setPetName(name);
     }
 
-    @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return VersionTranslator.getAddEntityPacket(this, EntityType.SHULKER, VersionTranslator.getPosition(this));
+    }
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entitytrackerentry) {
+        return VersionTranslator.getAddEntityPacket(this, entitytrackerentry, EntityType.SHULKER, VersionTranslator.getPosition(this));
     }
 
     @Override

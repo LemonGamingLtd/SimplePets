@@ -16,7 +16,7 @@ public enum VillagerLevel {
     private final ItemBuilder icon;
 
     VillagerLevel(String texture) {
-        this.icon = new ItemBuilder(Material.PLAYER_HEAD).setTexture("http://textures.minecraft.net/texture/"+texture);
+        this.icon = new ItemBuilder(Material.PLAYER_HEAD).setTexture("http://textures.minecraft.net/texture/" + texture);
     }
 
     VillagerLevel(ItemBuilder icon) {
@@ -25,7 +25,7 @@ public enum VillagerLevel {
 
     public static VillagerLevel getById(int id) {
         for (VillagerLevel wrapper : values()) {
-            if (wrapper.ordinal() == (id-1)) {
+            if (wrapper.ordinal() == (id - 1)) {
                 return wrapper;
             }
         }

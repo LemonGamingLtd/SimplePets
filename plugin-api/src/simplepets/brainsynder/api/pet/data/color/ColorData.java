@@ -15,11 +15,11 @@ public class ColorData extends PetData<IColorable> {
     public ColorData() {
         for (DyeColorWrapper color : DyeColorWrapper.values()) {
             addDefaultItem(color.name(), DataConverter.getColoredMaterial(DataConverter.MaterialType.CONCRETE, color)
-                    .withName(" ")
-                    .addLore(
-                            "&#c8c8c8Previous: {previousColor}{previousName}",
-                            "&#c8c8c8Current: {currentColor}{currentName}",
-                            "&#c8c8c8Next: {nextColor}{nextName}"));
+                .withName(" ")
+                .addLore(
+                    "&#c8c8c8Previous: {previousColor}{previousName}",
+                    "&#c8c8c8Current: {currentColor}{currentName}",
+                    "&#c8c8c8Next: {nextColor}{nextName}"));
         }
     }
 
@@ -39,11 +39,11 @@ public class ColorData extends PetData<IColorable> {
 
             ItemBuilder builder = optional.get();
             builder.replaceString("{previousColor}", previous.getChatColor())
-                    .replaceString("{currentColor}", entity.getColor().getChatColor())
-                    .replaceString("{nextColor}", next.getChatColor())
-                    .replaceString("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
-                    .replaceString("{currentName}", WordUtils.capitalize(entity.getColor().name().toLowerCase().replace("_", " ")))
-                    .replaceString("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
+                .replaceString("{currentColor}", entity.getColor().getChatColor())
+                .replaceString("{nextColor}", next.getChatColor())
+                .replaceString("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
+                .replaceString("{currentName}", WordUtils.capitalize(entity.getColor().name().toLowerCase().replace("_", " ")))
+                .replaceString("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
             return Optional.of(builder);
         }
         return optional;

@@ -24,8 +24,8 @@ public interface ISpawnUtil {
     /**
      * Will spawn the selected pet
      *
-     * @param type - The type of pet to be summoned
-     * @param user - User the pet is spawned for
+     * @param type     - The type of pet to be summoned
+     * @param user     - User the pet is spawned for
      * @param compound - Customization for the entity
      */
     BiOptional<IEntityPet, String> spawnEntityPet(PetType type, PetUser user, StorageTagCompound compound);
@@ -33,8 +33,8 @@ public interface ISpawnUtil {
     /**
      * Will spawn the selected pet
      *
-     * @param type - The type of pet to be summoned
-     * @param user - User the pet is spawned for
+     * @param type     - The type of pet to be summoned
+     * @param user     - User the pet is spawned for
      * @param location - Location to spawn the pet at
      */
     BiOptional<IEntityPet, String> spawnEntityPet(PetType type, PetUser user, Location location);
@@ -42,8 +42,8 @@ public interface ISpawnUtil {
     /**
      * Will spawn the selected pet
      *
-     * @param type - The type of pet to be summoned
-     * @param user - User the pet is spawned for
+     * @param type     - The type of pet to be summoned
+     * @param user     - User the pet is spawned for
      * @param compound - Customization for the entity
      * @param location - Location to spawn the pet at
      */
@@ -51,9 +51,10 @@ public interface ISpawnUtil {
 
     /**
      * Will check if the {@link PetType} is registered
+     *
      * @param type - Type being check
      */
-    boolean isRegistered (PetType type);
+    boolean isRegistered(PetType type);
 
     /**
      * Fetches the NMS version of the entity
@@ -65,5 +66,5 @@ public interface ISpawnUtil {
     /**
      * This method simply is a way to track how many times a pet was successfully spawned
      */
-    Map<PetType, Integer> getSpawnCount ();
+    Map<PetType, Integer> getSpawnCount();
 }

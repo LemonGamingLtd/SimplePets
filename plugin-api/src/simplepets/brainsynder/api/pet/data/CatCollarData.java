@@ -15,11 +15,11 @@ public class CatCollarData extends PetData<IEntityCatPet> {
     public CatCollarData() {
         for (DyeColorWrapper color : DyeColorWrapper.values()) {
             addDefaultItem(color.name(), DataConverter.getColoredMaterial(DataConverter.MaterialType.CONCRETE, color)
-                    .withName(" ")
-                    .addLore(
-                            "&#c8c8c8Previous: {previousColor}{previousName}",
-                            "&#c8c8c8Current: {currentColor}{currentName}",
-                            "&#c8c8c8Next: {nextColor}{nextName}"));
+                .withName(" ")
+                .addLore(
+                    "&#c8c8c8Previous: {previousColor}{previousName}",
+                    "&#c8c8c8Current: {currentColor}{currentName}",
+                    "&#c8c8c8Next: {nextColor}{nextName}"));
         }
     }
 
@@ -39,18 +39,18 @@ public class CatCollarData extends PetData<IEntityCatPet> {
 
             ItemBuilder builder = optional.get();
             builder.replaceInLore("{previousColor}", previous.getChatColor())
-                    .replaceInLore("{currentColor}", entity.getCollarColor().getChatColor())
-                    .replaceInLore("{nextColor}", next.getChatColor())
-                    .replaceInLore("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
-                    .replaceInLore("{currentName}", WordUtils.capitalize(entity.getCollarColor().name().toLowerCase().replace("_", " ")))
-                    .replaceInLore("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
+                .replaceInLore("{currentColor}", entity.getCollarColor().getChatColor())
+                .replaceInLore("{nextColor}", next.getChatColor())
+                .replaceInLore("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
+                .replaceInLore("{currentName}", WordUtils.capitalize(entity.getCollarColor().name().toLowerCase().replace("_", " ")))
+                .replaceInLore("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
 
             builder.replaceInName("{previousColor}", previous.getChatColor())
-                    .replaceInName("{currentColor}", entity.getCollarColor().getChatColor())
-                    .replaceInName("{nextColor}", next.getChatColor())
-                    .replaceInName("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
-                    .replaceInName("{currentName}", WordUtils.capitalize(entity.getCollarColor().name().toLowerCase().replace("_", " ")))
-                    .replaceInName("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
+                .replaceInName("{currentColor}", entity.getCollarColor().getChatColor())
+                .replaceInName("{nextColor}", next.getChatColor())
+                .replaceInName("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
+                .replaceInName("{currentName}", WordUtils.capitalize(entity.getCollarColor().name().toLowerCase().replace("_", " ")))
+                .replaceInName("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
             return Optional.of(builder);
         }
         return optional;

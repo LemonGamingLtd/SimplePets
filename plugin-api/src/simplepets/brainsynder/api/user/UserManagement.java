@@ -30,7 +30,7 @@ public interface UserManagement {
      */
     Optional<PetUser> getPetUser(Player player);
 
-    Collection<PetUser> getAllUsers ();
+    Collection<PetUser> getAllUsers();
 
     boolean isUserCached(Player player);
 }

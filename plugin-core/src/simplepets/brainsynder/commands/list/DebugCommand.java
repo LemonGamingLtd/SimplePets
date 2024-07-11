@@ -32,9 +32,9 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @ICommand(
-        name = "debug",
-        usage = "[skip-jenkins]",
-        description = "Generates debug information"
+    name = "debug",
+    usage = "[skip-jenkins]",
+    description = "Generates debug information"
 )
 @Permission(permission = "debug", adminCommand = true)
 public class DebugCommand extends PetSubCommand {
@@ -47,14 +47,14 @@ public class DebugCommand extends PetSubCommand {
 
     @Override
     public void run(CommandSender sender, String[] args) {
-        sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX)+" §7Fetching Debug Information...");
+        sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §7Fetching Debug Information...");
         boolean skipJenkins = false;
 
         if (args.length > 0) skipJenkins = Boolean.parseBoolean(args[0]);
 
         fetchDebug(json -> {
             log(getPlugin().getDataFolder(), "debug.json", json.toString(WriterConfig.PRETTY_PRINT));
-            sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX)+" §7Generated §e'plugins/SimplePets/debug.json'");
+            sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §7Generated §e'plugins/SimplePets/debug.json'");
 
             WebConnector.uploadPaste(PetCore.getInstance(), json.toString(WriterConfig.PRETTY_PRINT), s -> {
                 sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §7Uploaded to PasteLog:§e " + s);
@@ -62,7 +62,7 @@ public class DebugCommand extends PetSubCommand {
         }, skipJenkins);
     }
 
-    public static void fetchDebug (Consumer<JsonObject> consumer, boolean skipJenkins) {
+    public static void fetchDebug(Consumer<JsonObject> consumer, boolean skipJenkins) {
         JsonObject json = new JsonObject();
         json.add("premium_purchase", Premium.isPremium());
         json.add("reloaded", PetCore.getInstance().wasReloaded());
@@ -81,7 +81,7 @@ public class DebugCommand extends PetSubCommand {
                 });
 
                 addonJson.add("addon-name", localData.getName() + "(v" + localData.getVersion() + ") by: " + localData.getAuthors().toString()
-                        .replace("[", "").replace("]", ""));
+                    .replace("[", "").replace("]", ""));
                 addonJson.add("addon-file-name", localData.getFile().getName());
                 addonJson.add("addon-modules", moduleArray);
                 addons.add(addonJson);
@@ -93,17 +93,17 @@ public class DebugCommand extends PetSubCommand {
         });
     }
 
-    private static void fetchDebugMessages (Consumer<JsonArray> consumer) {
+    private static void fetchDebugMessages(Consumer<JsonArray> consumer) {
         LinkedList<DebugBuilder> debugLog = SimplePets.getDebugLogger().getDebugLog();
         JsonArray array = new JsonArray();
         while (!debugLog.isEmpty()) {
             JsonObject json = new JsonObject();
             DebugBuilder builder = debugLog.pollFirst();
 
-            Instant instant = Instant.ofEpochMilli ( builder.timestamp );
-            ZonedDateTime zdt = ZonedDateTime.ofInstant ( instant , ZoneOffset.UTC );
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy/MM/dd | HH:mm:ss:SSS" );
-            String output = formatter.format ( zdt );
+            Instant instant = Instant.ofEpochMilli(builder.timestamp);
+            ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd | HH:mm:ss:SSS");
+            String output = formatter.format(zdt);
             json.add("time/date", output);
             json.add("level", builder.getLevel().getName());
 
@@ -143,11 +143,11 @@ public class DebugCommand extends PetSubCommand {
                         if (build > latestBuild) jenkins.add("number_of_builds_behind", "From The Future :O");
 
                         jenkins.add("jenkins_build_number", latestBuild);
-                    }else{
-                        jenkins.add("reason", "Missing repo: "+result.getRepo());
+                    } else {
+                        jenkins.add("reason", "Missing repo: " + result.getRepo());
                         jenkins.add("parsed_string", string);
                     }
-                }else{
+                } else {
                     jenkins.add("reason", "Empty");
                     jenkins.add("parsed_string", string);
                 }
@@ -160,7 +160,7 @@ public class DebugCommand extends PetSubCommand {
         });
     }
 
-    private static JsonArray fetchPlugins () {
+    private static JsonArray fetchPlugins() {
         // Fetches the plugins the server uses (used for finding conflicts)
         JsonArray array = new JsonArray();
         List<String> plugins = new ArrayList<>();
@@ -168,7 +168,7 @@ public class DebugCommand extends PetSubCommand {
             if (plugin.isEnabled()) {
                 String name = plugin.getDescription().getName();
                 String ver = plugin.getDescription().getVersion();
-                plugins.add(name+" ("+ver+")");
+                plugins.add(name + " (" + ver + ")");
             }
         });
         plugins.sort(Comparator.naturalOrder());
@@ -184,15 +184,15 @@ public class DebugCommand extends PetSubCommand {
         info.add("java", serverInformation.getJava());
 
         info.add("server-information", new JsonObject()
-                .add("server-type", serverInformation.getServerType())
-                .add("minecraft-version", serverInformation.getMinecraftVersion())
-                .add("server-build", serverInformation.getBuildNumber())
-                .add("bukkit-version", serverInformation.getBukkitVersion())
-                .add("raw-version", serverInformation.getRawVersion())
+            .add("server-type", serverInformation.getServerType())
+            .add("minecraft-version", serverInformation.getMinecraftVersion())
+            .add("server-build", serverInformation.getBuildVersion())
+            .add("bukkit-version", serverInformation.getBukkitVersion())
+            .add("raw-version", serverInformation.getRawVersion())
         );
         info.add("bslib-server-version", new JsonObject()
-                .add("nms", ServerVersion.getVersion().getNMS())
-                .add("name", ServerVersion.getVersion().name())
+            .add("nms", ServerVersion.getVersion().getNMS())
+            .add("name", ServerVersion.getVersion().name())
         );
         info.add("simplepets", PetCore.getInstance().getDescription().getVersion());
 
@@ -217,7 +217,7 @@ public class DebugCommand extends PetSubCommand {
         }
     }
 
-    private static JsonArray toArray (List<String> list) {
+    private static JsonArray toArray(List<String> list) {
         JsonArray array = new JsonArray();
         list.forEach(array::add);
         return array;

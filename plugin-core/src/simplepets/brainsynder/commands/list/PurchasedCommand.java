@@ -18,9 +18,9 @@ import simplepets.brainsynder.files.options.MessageOption;
 import java.util.List;
 
 @ICommand(
-        name = "purchased",
-        usage = "<add/remove/list> <player> [type]",
-        description = "Controls what pets the player has purchased"
+    name = "purchased",
+    usage = "<add/remove/list> <player> [type]",
+    description = "Controls what pets the player has purchased"
 )
 @Permission(permission = "purchased", adminCommand = true, additionalPermissions = {"add", "remove", "list", "list.other"})
 public class PurchasedCommand extends PetSubCommand {
@@ -65,7 +65,7 @@ public class PurchasedCommand extends PetSubCommand {
         }
         Player target = Bukkit.getPlayerExact(args[1]);
 
-        if (args[0].equalsIgnoreCase("list") && (!sender.hasPermission(getPermission("list.other")))){
+        if (args[0].equalsIgnoreCase("list") && (!sender.hasPermission(getPermission("list.other")))) {
             if (sender instanceof Player) target = (Player) sender;
         }
 
@@ -77,7 +77,7 @@ public class PurchasedCommand extends PetSubCommand {
         Player finalTarget = target;
         SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
             if (args[0].equalsIgnoreCase("add")) {
-                if (!sender.hasPermission(getPermission("add"))){
+                if (!sender.hasPermission(getPermission("add"))) {
                     sender.sendMessage(MessageFile.getTranslation(MessageOption.NO_PERMISSION));
                     return;
                 }
@@ -90,15 +90,15 @@ public class PurchasedCommand extends PetSubCommand {
                 PetType.getPetType(args[2]).ifPresent(type -> {
                     user.addOwnedPet(type);
                     sender.sendMessage(MessageFile.getTranslation(MessageOption.PURCHASE_ADD)
-                            .replace("{player}", finalTarget.getName())
-                            .replace("{type}", type.getName())
+                        .replace("{player}", finalTarget.getName())
+                        .replace("{type}", type.getName())
                     );
                 });
                 return;
             }
 
             if (args[0].equalsIgnoreCase("remove")) {
-                if (!sender.hasPermission(getPermission("remove"))){
+                if (!sender.hasPermission(getPermission("remove"))) {
                     sender.sendMessage(MessageFile.getTranslation(MessageOption.NO_PERMISSION));
                     return;
                 }
@@ -110,21 +110,21 @@ public class PurchasedCommand extends PetSubCommand {
                 PetType.getPetType(args[2]).ifPresent(type -> {
                     user.removeOwnedPet(type);
                     sender.sendMessage(MessageFile.getTranslation(MessageOption.PURCHASE_REMOVE)
-                            .replace("{player}", finalTarget.getName())
-                            .replace("{type}", type.getName())
+                        .replace("{player}", finalTarget.getName())
+                        .replace("{type}", type.getName())
                     );
                 });
                 return;
             }
 
             if (args[0].equalsIgnoreCase("list")) {
-                if (!sender.hasPermission(getPermission("list"))){
+                if (!sender.hasPermission(getPermission("list"))) {
                     sender.sendMessage(MessageFile.getTranslation(MessageOption.NO_PERMISSION));
                     return;
                 }
 
                 String prefix = MessageFile.getTranslation(MessageOption.PURCHASE_LIST_PREFIX);
-                if (!prefix.endsWith(" ")) prefix = prefix+" ";
+                if (!prefix.endsWith(" ")) prefix = prefix + " ";
                 Tellraw tellraw = Tellraw.getInstance(prefix);
                 user.getOwnedPets().forEach(type -> {
                     tellraw.then(type.getName()).color(ChatColor.GREEN).then(", ").color(ChatColor.of("#d1c9c9"));

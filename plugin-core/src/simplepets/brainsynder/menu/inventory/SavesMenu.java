@@ -48,10 +48,10 @@ public class SavesMenu extends CustomInventory {
 
         Map<Integer, String> object = new HashMap<>();
         Arrays.asList(
-                11, 12, 13, 14, 15, 16, 17,
-                20, 21, 22, 23, 24, 25, 26,
-                29, 30, 31, 32, 33, 34, 35,
-                38, 39, 40, 41, 42, 43, 44
+            11, 12, 13, 14, 15, 16, 17,
+            20, 21, 22, 23, 24, 25, 26,
+            29, 30, 31, 32, 33, 34, 35,
+            38, 39, 40, 41, 42, 43, 44
         ).forEach(slot -> object.put(slot, "air"));
         object.put(28, "savepet");
         object.put(5, "name");
@@ -115,7 +115,7 @@ public class SavesMenu extends CustomInventory {
         user.getSavedPets().forEach(entry -> {
             PetType type = entry.getKey();
             if (type.isInDevelopment()
-                    && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue()))
+                && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue()))
                 return;
 
             SimplePets.getPetConfigManager().getPetConfig(type).ifPresent(config -> {
@@ -150,7 +150,7 @@ public class SavesMenu extends CustomInventory {
                     ItemStack stack;
                     if (storageMap.containsKey(compound)) {
                         stack = storageMap.get(compound).getValue();
-                    }else {
+                    } else {
                         ItemBuilder builder = type.getBuilder().clone();
                         if (petConfig != null) builder = petConfig.getBuilder();
                         builder.clearLore();
@@ -163,10 +163,10 @@ public class SavesMenu extends CustomInventory {
                                 StorageBase base = compound.getTag(key);
                                 if (base instanceof StorageTagCompound) {
                                     finalBuilder.addLore("  §e" + key + "§6:");
-                                    for (String keys : ((StorageTagCompound)base).getKeySet()) {
+                                    for (String keys : ((StorageTagCompound) base).getKeySet()) {
                                         finalBuilder.addLore("  - §e" + keys + "§6: §7" + fetchValue(compound.getTag(keys)));
                                     }
-                                }else{
+                                } else {
                                     finalBuilder.addLore("  §e" + key + "§6: §7" + fetchValue(base));
                                 }
                             }
@@ -226,7 +226,7 @@ public class SavesMenu extends CustomInventory {
         return "";
     }
 
-    public void resetMaps (PetUser owner) {
+    public void resetMaps(PetUser owner) {
         Player player = Bukkit.getPlayer(owner.getPlayer().getUniqueId());
         itemMap.remove(player.getName());
         pagerMap.remove(player.getName());
@@ -243,7 +243,6 @@ public class SavesMenu extends CustomInventory {
         Player player = Bukkit.getPlayer(owner.getPlayer().getUniqueId());
         return itemMap.getOrDefault(player.getName(), new HashMap<>());
     }
-
 
 
     @Override

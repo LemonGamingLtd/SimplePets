@@ -10,7 +10,7 @@ public class PandaTypeData extends PetData<IEntityPandaPet> {
     public PandaTypeData() {
         for (PandaGene gene : PandaGene.values()) {
             addDefaultItem(gene.name(), gene.getIcon()
-                    .withName("&#c8c8c8{name}: &a"+gene.name()));
+                .withName("&#c8c8c8{name}: &a" + gene.name()));
         }
     }
 

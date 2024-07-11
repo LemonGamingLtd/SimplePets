@@ -23,7 +23,7 @@ public abstract class CustomItem extends Item {
         super(file);
     }
 
-    public void runCommands (PetUser owner) {
+    public void runCommands(PetUser owner) {
         if (!hasKey(COMMANDS)) return;
         JsonArray array = (JsonArray) getValue(COMMANDS);
 
@@ -45,7 +45,7 @@ public abstract class CustomItem extends Item {
         }
 
         if (target == null) {
-            SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Custom Item '"+getName()+"' missing 'target' please add \"target\": \"player\" or use \"all\" or the actual pet type");
+            SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Custom Item '" + getName() + "' missing 'target' please add \"target\": \"player\" or use \"all\" or the actual pet type");
             return;
         }
 
@@ -62,9 +62,9 @@ public abstract class CustomItem extends Item {
 
                 array.forEach(jsonValue -> {
                     Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), jsonValue.asString()
-                            .replace("{location}", loc)
-                            .replace("{name}", owner.getPlayer().getName())
-                            .replace("{type}", entityPet.getPetType().getName())
+                        .replace("{location}", loc)
+                        .replace("{name}", owner.getPlayer().getName())
+                        .replace("{type}", entityPet.getPetType().getName())
                     );
                 });
             });
@@ -78,8 +78,8 @@ public abstract class CustomItem extends Item {
 
             array.forEach(jsonValue -> {
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), jsonValue.asString()
-                        .replace("{location}", loc)
-                        .replace("{name}", owner.getPlayer().getName())
+                    .replace("{location}", loc)
+                    .replace("{name}", owner.getPlayer().getName())
                 );
             });
             return;
@@ -92,9 +92,9 @@ public abstract class CustomItem extends Item {
 
                 array.forEach(jsonValue -> {
                     Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), jsonValue.asString()
-                            .replace("{location}", loc)
-                            .replace("{name}", owner.getPlayer().getName())
-                            .replace("{type}", entityPet.getPetType().getName())
+                        .replace("{location}", loc)
+                        .replace("{name}", owner.getPlayer().getName())
+                        .replace("{type}", entityPet.getPetType().getName())
                     );
                 });
             });

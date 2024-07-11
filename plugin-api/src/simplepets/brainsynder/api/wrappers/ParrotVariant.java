@@ -10,7 +10,7 @@ public enum ParrotVariant {
     private final String texture;
 
     ParrotVariant(String texture) {
-        this.texture = "http://textures.minecraft.net/texture/"+texture;
+        this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
     public String getTexture() {
@@ -26,7 +26,7 @@ public enum ParrotVariant {
         return null;
     }
 
-    public static ParrotVariant getByName (String name) {
+    public static ParrotVariant getByName(String name) {
         for (ParrotVariant wrapper : values()) {
             if (wrapper.name().equalsIgnoreCase(name)) return wrapper;
         }

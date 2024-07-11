@@ -10,6 +10,7 @@ import net.minecraft.core.Rotations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -341,9 +342,11 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         super.setSmall(flag);
     }
 
-    @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return VersionTranslator.getAddEntityPacket(this, EntityType.ARMOR_STAND, VersionTranslator.getPosition(this));
+    }
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entitytrackerentry) {
+        return VersionTranslator.getAddEntityPacket(this, entitytrackerentry, EntityType.ARMOR_STAND, VersionTranslator.getPosition(this));
     }
 
     @Override

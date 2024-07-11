@@ -9,8 +9,10 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface Permission {
     String permission() default "";
+
     String[] additionalPermissions() default {""};
 
     boolean defaultAllow() default false;
+
     boolean adminCommand() default false;
 }

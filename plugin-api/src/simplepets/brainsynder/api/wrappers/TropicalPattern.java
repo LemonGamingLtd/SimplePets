@@ -42,19 +42,19 @@ public enum TropicalPattern {
     }
 
     public static TropicalPattern getPrevious(TropicalPattern current) {
-        int target = current.ordinal()-1;
-        if (target < 0) target = (values().length-1);
+        int target = current.ordinal() - 1;
+        if (target < 0) target = (values().length - 1);
         return TropicalPattern.values()[target];
     }
 
     public static TropicalPattern getNext(TropicalPattern current) {
-        int target = current.ordinal()+1;
-        if (target > (values().length-1)) target = 0;
+        int target = current.ordinal() + 1;
+        if (target > (values().length - 1)) target = 0;
         return TropicalPattern.values()[target];
     }
 
     static {
-        for(TropicalPattern type : values()) {
+        for (TropicalPattern type : values()) {
             BY_DATA.put(type.getDataValue(), TropicalPattern.values()[type.ordinal()]);
         }
     }

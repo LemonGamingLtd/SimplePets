@@ -10,11 +10,11 @@ import simplepets.brainsynder.api.pet.PetData;
 public class StingerData extends PetData<IEntityBeePet> {
     public StingerData() {
         addDefaultItem("true", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &atrue")
-                .setTexture("http://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f"));
+            .withName("&#c8c8c8{name}: &atrue")
+            .setTexture("http://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f"));
         addDefaultItem("false", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &cfalse")
-                .setTexture("http://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f"));
+            .withName("&#c8c8c8{name}: &cfalse")
+            .setTexture("http://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f"));
     }
 
     @Override

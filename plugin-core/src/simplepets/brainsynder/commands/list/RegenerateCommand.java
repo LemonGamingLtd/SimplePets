@@ -20,19 +20,20 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @ICommand(
-        name = "regenerate",
-        usage = "<selector> [type]",
-        description = "Regenerates the a file/folder back to default (ignores plugin addons)"
+    name = "regenerate",
+    usage = "<selector> [type]",
+    description = "Regenerates the a file/folder back to default (ignores plugin addons)"
 )
 @Permission(permission = "regenerate", adminCommand = true)
 public class RegenerateCommand extends PetSubCommand {
     private final File petsFolder, inventoryFolder, itemFolder, particleFolder;
+
     public RegenerateCommand(PetCore plugin) {
         super(plugin);
-        petsFolder = new File(plugin.getDataFolder() +File.separator+"Pets");
-        inventoryFolder = new File(plugin.getDataFolder() +File.separator+"Inventories");
-        itemFolder = new File(plugin.getDataFolder() +File.separator+"Items");
-        particleFolder = new File(plugin.getDataFolder() +File.separator+"Particles");
+        petsFolder = new File(plugin.getDataFolder() + File.separator + "Pets");
+        inventoryFolder = new File(plugin.getDataFolder() + File.separator + "Inventories");
+        itemFolder = new File(plugin.getDataFolder() + File.separator + "Items");
+        particleFolder = new File(plugin.getDataFolder() + File.separator + "Particles");
     }
 
     @Override
@@ -58,7 +59,7 @@ public class RegenerateCommand extends PetSubCommand {
         if (args[0].equalsIgnoreCase("pets")) {
             deleteFiles(petsFolder);
             getPlugin().getScheduler().getImpl().runLater(() -> {
-                ((PetConfiguration)SimplePets.getPetConfigManager()).reset();
+                ((PetConfiguration) SimplePets.getPetConfigManager()).reset();
                 sender.sendMessage(MessageFile.getTranslation(MessageOption.PET_FILES_REGEN));
             }, 100L, TimeUnit.MILLISECONDS);
             return;
@@ -67,7 +68,7 @@ public class RegenerateCommand extends PetSubCommand {
         if (args[0].equalsIgnoreCase("inventories")) {
             deleteFiles(inventoryFolder);
             getPlugin().getScheduler().getImpl().runLater(() -> {
-                ((InventoryManager)getPlugin().getGUIHandler()).initiate();
+                ((InventoryManager) getPlugin().getGUIHandler()).initiate();
                 sender.sendMessage(MessageFile.getTranslation(MessageOption.INV_FILES_REGEN));
             }, 100L, TimeUnit.MILLISECONDS);
             return;
@@ -76,7 +77,7 @@ public class RegenerateCommand extends PetSubCommand {
         if (args[0].equalsIgnoreCase("items")) {
             deleteFiles(itemFolder);
             getPlugin().getScheduler().getImpl().runLater(() -> {
-                ((ItemManager)getPlugin().getItemHandler()).initiate();
+                ((ItemManager) getPlugin().getItemHandler()).initiate();
                 sender.sendMessage(MessageFile.getTranslation(MessageOption.ITEM_FILES_REGEN));
             }, 100L, TimeUnit.MILLISECONDS);
             return;
@@ -104,10 +105,10 @@ public class RegenerateCommand extends PetSubCommand {
             }
 
             PetType type = optional.get();
-            File petFile = new File(petsFolder, type.getName()+".json");
+            File petFile = new File(petsFolder, type.getName() + ".json");
             petFile.delete();
             getPlugin().getScheduler().getImpl().runLater(() -> {
-                ((PetConfiguration)SimplePets.getPetConfigManager()).reset(type);
+                ((PetConfiguration) SimplePets.getPetConfigManager()).reset(type);
                 sender.sendMessage(MessageFile.getTranslation(MessageOption.PET_TYPE_FILE_REGEN).replace("{type}", type.getName()));
             }, 50L, TimeUnit.MILLISECONDS);
         }
@@ -115,7 +116,7 @@ public class RegenerateCommand extends PetSubCommand {
         sendUsage(sender);
     }
 
-    private void deleteFiles (File folder) {
+    private void deleteFiles(File folder) {
         Lists.newArrayList(folder.listFiles()).forEach(file -> {
             if (file.isFile()) file.delete();
         });

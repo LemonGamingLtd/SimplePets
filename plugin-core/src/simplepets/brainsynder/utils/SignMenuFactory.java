@@ -104,8 +104,8 @@ public final class SignMenuFactory {
 
             player.sendBlockChange(location, Material.OAK_SIGN.createBlockData());
             player.sendSignChange(
-                    location,
-                    text.stream().map(this::color).toList().toArray(new String[4])
+                location,
+                text.stream().map(this::color).toList().toArray(new String[4])
             );
 
             PacketContainer openSign = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);

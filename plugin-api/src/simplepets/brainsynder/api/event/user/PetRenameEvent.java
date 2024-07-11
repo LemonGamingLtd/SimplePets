@@ -6,7 +6,7 @@ import simplepets.brainsynder.api.user.PetUser;
 
 /**
  * This event gets called when the player renames their pet
- *
+ * <p>
  * Called before {@link PetNameChangeEvent}
  */
 public class PetRenameEvent extends CancellablePetEvent {

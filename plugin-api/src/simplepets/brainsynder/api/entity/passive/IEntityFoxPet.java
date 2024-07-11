@@ -10,6 +10,7 @@ import simplepets.brainsynder.api.wrappers.FoxType;
 @EntityPetType(petType = PetType.FOX)
 public interface IEntityFoxPet extends IAgeablePet, ISpecialFlag, ISleeper {
     FoxType getFoxType();
+
     void setFoxType(FoxType type);
 
     /**
@@ -36,10 +37,12 @@ public interface IEntityFoxPet extends IAgeablePet, ISpecialFlag, ISleeper {
     default boolean isInterested() {
         return getSpecialFlag(8);
     }
-    default boolean isCrouching () {
+
+    default boolean isCrouching() {
         return getSpecialFlag(4);
     }
-    default boolean isSitting () {
+
+    default boolean isSitting() {
         return getSpecialFlag(1);
     }
 }

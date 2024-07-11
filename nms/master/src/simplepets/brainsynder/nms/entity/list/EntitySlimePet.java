@@ -67,11 +67,4 @@ public class EntitySlimePet extends EntityPet implements IEntitySlimePet {
             if (sound != null) sound.playSound(getEntity());
         });
     }
-
-    @Override
-    protected void jumpFromGround() {
-        Vec3 vec3d = this.getDeltaMovement();
-        this.setDeltaMovement(vec3d.x, this.getJumpPower(), vec3d.z);
-        this.hasImpulse = true;
-    }
 }

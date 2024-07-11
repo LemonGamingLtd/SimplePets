@@ -12,12 +12,12 @@ import simplepets.brainsynder.api.wrappers.horse.HorseArmorType;
 public class HorseArmorData extends PetData<IEntityHorsePet> {
     public HorseArmorData() {
         addDefaultItem(HorseArmorType.NONE.name(), new ItemBuilder(Material.BARRIER)
-                .withName("&#c8c8c8{name}: &aNONE"));
+            .withName("&#c8c8c8{name}: &aNONE"));
 
         for (HorseArmorType armor : HorseArmorType.values()) {
             if (armor == HorseArmorType.NONE) continue;
-            addDefaultItem(armor.name(), new ItemBuilder(DataConverter.getMaterial(armor.name()+"_HORSE_ARMOR"))
-                    .withName("&#c8c8c8{name}: &a"+armor.name()));
+            addDefaultItem(armor.name(), new ItemBuilder(DataConverter.getMaterial(armor.name() + "_HORSE_ARMOR"))
+                .withName("&#c8c8c8{name}: &a" + armor.name()));
         }
     }
 

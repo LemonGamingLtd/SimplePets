@@ -32,9 +32,9 @@ public class PermissionData {
     @Override
     public String toString() {
         return "PermissionData{" +
-                "permission='" + permission + '\'' +
-                ", type=" + type +
-                ", description='" + description + '\'' +
-                '}';
+            "permission='" + permission + '\'' +
+            ", type=" + type +
+            ", description='" + description + '\'' +
+            '}';
     }
 }

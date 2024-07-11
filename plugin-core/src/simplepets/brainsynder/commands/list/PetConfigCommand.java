@@ -21,9 +21,9 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @ICommand(
-        name = "petconfig",
-        usage = "<type> <key> <value|reset>",
-        description = "Modify settings for the selected pet type."
+    name = "petconfig",
+    usage = "<type> <key> <value|reset>",
+    description = "Modify settings for the selected pet type."
 )
 @Permission(permission = "petconfig", adminCommand = true)
 public class PetConfigCommand extends PetSubCommand {
@@ -114,7 +114,7 @@ public class PetConfigCommand extends PetSubCommand {
             JsonFile jsonFile = config.getJSON();
             if (!jsonFile.hasKey(key)) {
                 sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_UNKNOWN_KEY)
-                        .replace("{key}", key));
+                    .replace("{key}", key));
                 return;
             }
 
@@ -131,8 +131,8 @@ public class PetConfigCommand extends PetSubCommand {
                     updated = true;
                 } else {
                     sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_INVALID_BOOLEAN)
-                            .replace("{key}", key)
-                            .replace("{value}", newValue));
+                        .replace("{key}", key)
+                        .replace("{value}", newValue));
                     return;
                 }
 
@@ -144,19 +144,19 @@ public class PetConfigCommand extends PetSubCommand {
                         updated = true;
                     } catch (NumberFormatException e) {
                         sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_INVALID_DOUBLE)
-                                .replace("{key}", key)
-                                .replace("{value}", newValue));
+                            .replace("{key}", key)
+                            .replace("{value}", newValue));
                         return;
                     }
-                }else{
+                } else {
                     try {
                         int value = Integer.parseInt(newValue);
                         jsonFile.set(key, value);
                         updated = true;
                     } catch (NumberFormatException e) {
                         sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_INVALID_INT)
-                                .replace("{key}", key)
-                                .replace("{value}", newValue));
+                            .replace("{key}", key)
+                            .replace("{value}", newValue));
                         return;
                     }
                 }
@@ -172,25 +172,25 @@ public class PetConfigCommand extends PetSubCommand {
                 boolean finalReset = reset;
                 getPlugin().getScheduler().getImpl().runLater(() -> {
                     // Reloads the data to use the new values
-                    ((PetConfiguration)PetCore.getInstance().getPetConfigManager()).reset();
+                    ((PetConfiguration) PetCore.getInstance().getPetConfigManager()).reset();
                     InventoryManager.SELECTION.reloadAvailableTypes();
 
                     if (finalReset) {
                         sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_VALUE_RESET)
-                                .replace("{key}", key)
-                                .replace("{value}", jsonFile.getDefaultValue(key).toString())
-                                .replace("{type}", type.getName()));
-                    }else{
+                            .replace("{key}", key)
+                            .replace("{value}", jsonFile.getDefaultValue(key).toString())
+                            .replace("{type}", type.getName()));
+                    } else {
                         sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_VALUE_UPDATED)
-                                .replace("{key}", key)
-                                .replace("{value}", newValue)
-                                .replace("{type}", type.getName()));
+                            .replace("{key}", key)
+                            .replace("{value}", newValue)
+                            .replace("{type}", type.getName()));
                     }
                 }, 250L, TimeUnit.MILLISECONDS);
             } else {
                 sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_UNABLE_TO_UPDATE)
-                        .replace("{key}", key)
-                        .replace("{value}", newValue));
+                    .replace("{key}", key)
+                    .replace("{value}", newValue));
             }
         });
     }

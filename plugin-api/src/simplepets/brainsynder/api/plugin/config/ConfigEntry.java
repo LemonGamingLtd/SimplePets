@@ -22,7 +22,7 @@ public class ConfigEntry<T> {
     }
 
     ConfigEntry(String path, T value) {
-        this (path, value, null);
+        this(path, value, null);
     }
 
     public String getDescription() {
@@ -37,7 +37,7 @@ public class ConfigEntry<T> {
         return defaultValue;
     }
 
-    ConfigEntry<T> setPastPaths (String... paths) {
+    ConfigEntry<T> setPastPaths(String... paths) {
         PAST_PATHS.addAll(Arrays.asList(paths));
         return this;
     }
@@ -56,7 +56,7 @@ public class ConfigEntry<T> {
         return value;
     }
 
-    public String getExamples () {
+    public String getExamples() {
         String className = defaultValue.getClass().getSimpleName();
         if (className.equalsIgnoreCase("boolean")) return "true or false";
         if (className.equalsIgnoreCase("double")) return "1.0";
@@ -71,18 +71,18 @@ public class ConfigEntry<T> {
         List<String> paths = new ArrayList<>();
         ConfigOption.INSTANCE.getOptions().forEach((s, configEntry) -> {
             if (paths.contains(s)) {
-                System.out.println("*** Duplicate Key: "+s);
+                System.out.println("*** Duplicate Key: " + s);
                 return;
             }
-            System.out.println("Key:   "+s);
+            System.out.println("Key:   " + s);
             if (!configEntry.PAST_PATHS.isEmpty()) {
                 System.out.println("Past Keys:   ");
                 for (Object path : configEntry.PAST_PATHS) {
-                    System.out.println("  - "+path);
+                    System.out.println("  - " + path);
                 }
             }
             paths.add(s);
-            System.out.println("Value: "+configEntry.getValue() + " ("+configEntry.getValue().getClass().getSimpleName()+")");
+            System.out.println("Value: " + configEntry.getValue() + " (" + configEntry.getValue().getClass().getSimpleName() + ")");
             System.out.println("----------------------------------");
         });
     }

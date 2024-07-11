@@ -20,9 +20,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @ICommand(
-        name = "rename",
-        usage = "[player] <type> [name]",
-        description = "Renames the selected pet type"
+    name = "rename",
+    usage = "[player] <type> [name]",
+    description = "Renames the selected pet type"
 )
 @Permission(permission = "rename", defaultAllow = true, additionalPermissions = {"other"})
 public class RenameCommand extends PetSubCommand {
@@ -77,8 +77,8 @@ public class RenameCommand extends PetSubCommand {
 
         if (target == null) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED+"You must be a player to run this command for yourself.");
-            }else{
+                sender.sendMessage(ChatColor.RED + "You must be a player to run this command for yourself.");
+            } else {
                 target = (Player) sender;
             }
         }

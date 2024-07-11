@@ -12,7 +12,7 @@ public enum HorseColorType {
     private final String texture;
 
     HorseColorType(String texture) {
-        this.texture = "http://textures.minecraft.net/texture/"+texture;
+        this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
     public String getTexture() {

@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface IEntityControllerPet extends IEntityPet {
     Optional<Entity> getDisplayEntity();
 
-    Optional<Entity> getDisplayRider ();
+    Optional<Entity> getDisplayRider();
 
     void setDisplayEntity(Entity entity);
 

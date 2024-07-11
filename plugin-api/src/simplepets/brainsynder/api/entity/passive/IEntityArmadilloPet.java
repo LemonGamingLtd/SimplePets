@@ -10,7 +10,7 @@ import simplepets.brainsynder.api.wrappers.ArmadilloPhase;
 @SupportedVersion(version = ServerVersion.v1_20_5)
 @EntityPetType(petType = PetType.ARMADILLO)
 public interface IEntityArmadilloPet extends IAgeablePet {
-    ArmadilloPhase getPhase ();
+    ArmadilloPhase getPhase();
 
-    void setPhase (ArmadilloPhase phase);
+    void setPhase(ArmadilloPhase phase);
 }

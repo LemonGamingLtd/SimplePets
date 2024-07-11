@@ -16,23 +16,23 @@ import simplepets.brainsynder.debug.DebugLogger;
 import java.util.Optional;
 
 public interface IPetsPlugin extends Plugin {
-     YamlFile getConfiguration ();
+    YamlFile getConfiguration();
 
-    IPetUtilities getPetUtilities ();
+    IPetUtilities getPetUtilities();
 
-    UserManagement getUserManager ();
+    UserManagement getUserManager();
 
     ISpawnUtil getSpawnUtil();
 
-    PetConfigManager getPetConfigManager ();
+    PetConfigManager getPetConfigManager();
 
-    ItemHandler getItemHandler ();
+    ItemHandler getItemHandler();
 
-    GUIHandler getGUIHandler ();
+    GUIHandler getGUIHandler();
 
-    ParticleHandler getParticleHandler ();
+    ParticleHandler getParticleHandler();
 
-    DebugLogger getDebugLogger ();
+    DebugLogger getDebugLogger();
 
     boolean hasFullyStarted();
 
@@ -43,7 +43,7 @@ public interface IPetsPlugin extends Plugin {
      *
      * @param entity - Entity being checked
      */
-    default boolean isPetEntity (Entity entity) {
+    default boolean isPetEntity(Entity entity) {
         Optional<Object> optional = getSpawnUtil().getHandle(entity);
         return optional.filter(o -> (o instanceof IEntityBase)).isPresent();
     }

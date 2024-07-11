@@ -30,8 +30,8 @@ public class SavePet extends Item {
     @Override
     public ItemBuilder getDefaultItem() {
         return new ItemBuilder(Material.CHAIN_COMMAND_BLOCK)
-                .withName("&#e3c79a&lSave Pet")
-                .addLore("&7Click here to save your current","&7pet for you to spawn later");
+            .withName("&#e3c79a&lSave Pet")
+            .addLore("&7Click here to save your current", "&7pet for you to spawn later");
     }
 
     @Override
@@ -78,7 +78,7 @@ public class SavePet extends Item {
         menu.open(masterUser, 1, inventory.getTitle());
     }
 
-    private boolean canSavePet (PetUser user, IEntityPet entityPet) {
+    private boolean canSavePet(PetUser user, IEntityPet entityPet) {
         if (!ConfigOption.INSTANCE.PET_SAVES_ENABLED.getValue()) return false;
         Player player = user.getPlayer();
 
@@ -86,8 +86,8 @@ public class SavePet extends Item {
             player.sendMessage(MessageFile.getTranslation(MessageOption.PET_SAVES_LIMIT_REACHED));
             return false;
         }
-        
-        if (player.hasPermission("pet.saves."+entityPet.getPetType().getName()+".bypass")) return true;
+
+        if (player.hasPermission("pet.saves." + entityPet.getPetType().getName() + ".bypass")) return true;
 
         int saveLimit = Utilities.parseTypeSaveLimit(entityPet.getPetType());
         if (saveLimit < 0) return true;
@@ -97,7 +97,7 @@ public class SavePet extends Item {
             if (entry.getKey() == entityPet.getPetType()) typeCount++;
         }
 
-        if (typeCount < Utilities.getPermissionAmount(player, saveLimit, "pet.saves."+entityPet.getPetType().getName()+".")) {
+        if (typeCount < Utilities.getPermissionAmount(player, saveLimit, "pet.saves." + entityPet.getPetType().getName() + ".")) {
             return true;
         }
         player.sendMessage(MessageFile.getTranslation(MessageOption.PET_SAVES_LIMIT_REACHED_TYPE).replace("{type}", entityPet.getPetType().getName()));

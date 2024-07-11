@@ -54,10 +54,10 @@ public class SelectionMenu extends CustomInventory {
 
         Map<Integer, String> object = new HashMap<>();
         Arrays.asList(
-                11, 12, 13, 14, 15, 16, 17,
-                20, 21, 22, 23, 24, 25, 26,
-                29, 30, 31, 32, 33, 34, 35,
-                38, 39, 40, 41, 42, 43, 44
+            11, 12, 13, 14, 15, 16, 17,
+            20, 21, 22, 23, 24, 25, 26,
+            29, 30, 31, 32, 33, 34, 35,
+            38, 39, 40, 41, 42, 43, 44
         ).forEach(slot -> object.put(slot, "air"));
         object.put(4, "saves");
         object.put(6, "name");
@@ -86,7 +86,7 @@ public class SelectionMenu extends CustomInventory {
         for (PetType type : PetType.values()) {
             if (!type.isSupported()) continue;
             if (type.isInDevelopment()
-                    && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue()))
+                && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue()))
                 continue;
             Optional<IPetConfig> optional = SimplePets.getPetConfigManager().getPetConfig(type);
             if (!optional.isPresent()) continue;
@@ -151,7 +151,7 @@ public class SelectionMenu extends CustomInventory {
             PetInventoryAddPetItemEvent event = new PetInventoryAddPetItemEvent(this, user, storage.getType(), storage.getItem());
 
             if (Utilities.hasPermission(player, type.getPermission())
-                    || (user.getOwnedPets().contains(type) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
+                || (user.getOwnedPets().contains(type) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
                 Bukkit.getPluginManager().callEvent(event);
             } else {
                 if (!removeNoPerms) {
@@ -229,7 +229,7 @@ public class SelectionMenu extends CustomInventory {
             PetInventoryAddPetItemEvent event = new PetInventoryAddPetItemEvent(this, user, storage.getType(), storage.getItem());
 
             if (Utilities.hasPermission(player, type.getPermission())
-                    || (user.getOwnedPets().contains(type) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
+                || (user.getOwnedPets().contains(type) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
                 Bukkit.getPluginManager().callEvent(event);
             } else {
                 if (!removeNoPerms) {

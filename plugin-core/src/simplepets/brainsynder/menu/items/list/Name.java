@@ -47,7 +47,7 @@ public class Name extends Item {
         menu.setTask(masterUser.getPlayer().getName(), (user, type) -> {
             user.getPlayer().closeInventory();
             PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(user.getPlayer(), () ->
-                user.getPlayer().performCommand("pet rename "+type.getName()),
+                    user.getPlayer().performCommand("pet rename " + type.getName()),
                 100L, TimeUnit.MILLISECONDS
             );
         });

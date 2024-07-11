@@ -24,12 +24,13 @@ public abstract class Item extends JsonFile {
     /**
      * This method gets called when the user clicks this item
      *
-     * @param user - User clicking the item
+     * @param user      - User clicking the item
      * @param inventory - The inventory they are clicking in
      */
     public void onClick(PetUser user, CustomInventory inventory) {
         onClick(user, inventory, null);
     }
+
     public void onShiftClick(PetUser user, CustomInventory inventory) {
         onShiftClick(user, inventory, null);
     }
@@ -37,39 +38,38 @@ public abstract class Item extends JsonFile {
     /**
      * This method gets called when the user clicks this item
      *
-     * @param user - User clicking the item
+     * @param user      - User clicking the item
      * @param inventory - The inventory they are clicking in
      */
     public abstract void onClick(PetUser user, CustomInventory inventory, IEntityPet pet);
+
     public void onShiftClick(PetUser user, CustomInventory inventory, IEntityPet pet) {}
 
     /**
      * Should the item be added to the inventory
-     *      EG: Does the user have permission?
+     * EG: Does the user have permission?
      *
-     * @param user - User getting checked
+     * @param user      - User getting checked
      * @param inventory - Inventory it is viewed in
-     * @return
-     *      true - Item can be added
-     *      false - ITem will NOT be added
+     * @return true - Item can be added
+     * false - ITem will NOT be added
      */
-    public boolean addItemToInv(PetUser user, CustomInventory inventory) { return true; }
+    public boolean addItemToInv(PetUser user, CustomInventory inventory) {return true;}
 
     @Override
     public void loadDefaults() { // Generates the default files for the item
         setDefault("enabled", true);
         if (getDefaultItem() != null)
-        setDefault("item", StorageTagTools.toJsonObject(getDefaultItem().toCompound()));
+            setDefault("item", StorageTagTools.toJsonObject(getDefaultItem().toCompound()));
     }
 
     /**
      * This will fetch the customized item from the file (This method is used in the GUIs)
      *
-     * @return
-     *      - The customized item from the file
-     *      IF there is an error it will either return the {@link Item#getDefaultItem()} or red glass pain
+     * @return - The customized item from the file
+     * IF there is an error it will either return the {@link Item#getDefaultItem()} or red glass pain
      */
-    public ItemBuilder getItemBuilder () {
+    public ItemBuilder getItemBuilder() {
         if (hasKey("item")) {
             try {
                 return ItemBuilder.fromCompound(StorageTagTools.fromJsonObject((JsonObject) getValue("item")));
@@ -93,22 +93,24 @@ public abstract class Item extends JsonFile {
 
     /**
      * This method is only used when generating the default file.
-     *
+     * <p>
      * {@link Item#getItemBuilder()}
+     *
      * @return
      */
     @Deprecated
-    public abstract ItemBuilder getDefaultItem ();
+    public abstract ItemBuilder getDefaultItem();
 
-    public Optional<Namespace> getItemData () {
-        if (getClass().isAnnotationPresent(Namespace.class)) return Optional.of(getClass().getAnnotation(Namespace.class));
+    public Optional<Namespace> getItemData() {
+        if (getClass().isAnnotationPresent(Namespace.class))
+            return Optional.of(getClass().getAnnotation(Namespace.class));
         return Optional.empty();
     }
 
     /**
      * If the item enabled?
      */
-    public boolean isEnabled () {
+    public boolean isEnabled() {
         if (hasKey("enabled")) return getBoolean("enabled");
         return true;
     }

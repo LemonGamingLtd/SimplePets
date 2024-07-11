@@ -21,9 +21,9 @@ public class PreviousPage extends Item {
     @Override
     public ItemBuilder getDefaultItem() {
         return new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#e3aa4f&l<&#e3c79a&l----")
-                .addLore("&#d1c9c9Click Here to go", "&#d1c9c9the previous page")
-                .setTexture("http://textures.minecraft.net/texture/ee79665a21e660648990505a9667589325da403813bc9d8dbd180afef4d989f0");
+            .withName("&#e3aa4f&l<&#e3c79a&l----")
+            .addLore("&#d1c9c9Click Here to go", "&#d1c9c9the previous page")
+            .setTexture("http://textures.minecraft.net/texture/ee79665a21e660648990505a9667589325da403813bc9d8dbd180afef4d989f0");
     }
 
     @Override

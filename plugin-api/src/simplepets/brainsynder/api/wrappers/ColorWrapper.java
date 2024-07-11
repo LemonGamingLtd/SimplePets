@@ -30,7 +30,7 @@ public enum ColorWrapper {
         this.woolData = woolData;
         this.dyeData = dyeData;
         this.color = chatChar;
-        this.texture = "http://textures.minecraft.net/texture/"+texture;
+        this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
     public static ColorWrapper getByName(String name) {

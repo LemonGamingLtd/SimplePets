@@ -14,7 +14,7 @@ public class SQLData {
         if (!tablePrefix0.matches("^[_A-Za-z0-9]+$")) {
             SimplePets.getDebugLogger().debug(DebugLevel.WARNING, "Table prefix " + tablePrefix0 + " is not alphanumeric. Using simplepets...", true);
             TABLE_PREFIX = "simplepets";
-        }else{
+        } else {
             TABLE_PREFIX = tablePrefix0;
         }
 

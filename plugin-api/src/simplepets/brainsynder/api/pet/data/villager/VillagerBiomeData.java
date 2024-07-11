@@ -10,7 +10,7 @@ public class VillagerBiomeData extends PetData<IProfession> {
     public VillagerBiomeData() {
         for (BiomeType type : BiomeType.values()) {
             addDefaultItem(type.name(), type.getIcon()
-                    .withName("&#c8c8c8{name}: &a"+type.name()));
+                .withName("&#c8c8c8{name}: &a" + type.name()));
         }
     }
 

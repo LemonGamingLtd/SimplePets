@@ -32,10 +32,13 @@ public abstract class RegionModule extends PetModule {
 
     private PermissionData bypassPermission;
 
-    public abstract boolean isSpawningAllowed (PetUser user, Location location);
-    public abstract boolean isMovingAllowed (PetUser user, Location location);
-    public abstract boolean isRidingAllowed (PetUser user, Location location);
-    public abstract boolean isMountingAllowed (PetUser user, Location location);
+    public abstract boolean isSpawningAllowed(PetUser user, Location location);
+
+    public abstract boolean isMovingAllowed(PetUser user, Location location);
+
+    public abstract boolean isRidingAllowed(PetUser user, Location location);
+
+    public abstract boolean isMountingAllowed(PetUser user, Location location);
 
     @Override
     public void init() {
@@ -44,13 +47,13 @@ public abstract class RegionModule extends PetModule {
 
     @Override
     public void loadDefaults(AddonConfig config) {
-        config.addDefault("bypass-permission", "pet."+getNamespace().namespace().toLowerCase()+".bypass",
-                "What should the bypass permission be set to?");
+        config.addDefault("bypass-permission", "pet." + getNamespace().namespace().toLowerCase() + ".bypass",
+            "What should the bypass permission be set to?");
 
         config.addDefault("checks.spawning.enabled", true, "Should the addon check when a pet is spawned?");
         config.addDefault("checks.spawning.reason", "&cYour pet is not able to be spawned in this area",
-                "This message is only visible when you hover over the 'pet failed to spawn' message\n" +
-                        "You can make this blank or 'null' if you want no message");
+            "This message is only visible when you hover over the 'pet failed to spawn' message\n" +
+                "You can make this blank or 'null' if you want no message");
 
         config.addDefault("checks.mounting.enabled", true, "Should the addon check when the player mounts the pet?");
         config.addDefault("checks.mounting.remove-pet", true, "Should the pet be removed or should it just be canceled?");
@@ -75,8 +78,8 @@ public abstract class RegionModule extends PetModule {
         ridingRemove = config.getBoolean("checks.riding.remove-pet", true);
         ridingDismount = config.getBoolean("checks.riding.dismount", true);
 
-        bypassPermission = new PermissionData(config.getString("bypass-permission", "pet."+getNamespace().namespace().toLowerCase()+".bypass"))
-                .setDescription("When the player has this permission they will be able to bypass the checks");
+        bypassPermission = new PermissionData(config.getString("bypass-permission", "pet." + getNamespace().namespace().toLowerCase() + ".bypass"))
+            .setDescription("When the player has this permission they will be able to bypass the checks");
     }
 
     @EventHandler
@@ -90,13 +93,13 @@ public abstract class RegionModule extends PetModule {
 
         if ((spawningReason == null) || (spawningReason.equalsIgnoreCase("null")) || spawningReason.isEmpty()) {
             event.setCancelled(!allowed);
-        }else{
+        } else {
             event.setCancelled(!allowed, spawningReason);
         }
     }
 
     @EventHandler
-    public void onMove (PetMoveEvent event) {
+    public void onMove(PetMoveEvent event) {
         if (!movingEnabled) return; // Move checking is disabled
         Player player = event.getEntity().getPetUser().getPlayer();
         if (player == null) return;
@@ -109,7 +112,7 @@ public abstract class RegionModule extends PetModule {
     }
 
     @EventHandler
-    public void onRide (PetRideEvent event) {
+    public void onRide(PetRideEvent event) {
         if (!ridingEnabled) return; // Ride checking is disabled
         IEntityPet entityPet = event.getEntity();
         PetUser user = entityPet.getPetUser();
@@ -121,7 +124,7 @@ public abstract class RegionModule extends PetModule {
         if (ridingRemove) {
             user.removePet(entityPet.getPetType());
             return;
-        }else if (ridingDismount){
+        } else if (ridingDismount) {
             if (entityPet.getEntity().getPassenger() != null) {
                 if (entityPet instanceof IEntityControllerPet) {
                     ((IEntityControllerPet) entityPet).getDisplayEntity().ifPresent(Entity::eject);
@@ -135,7 +138,7 @@ public abstract class RegionModule extends PetModule {
     }
 
     @EventHandler
-    public void onMount (PetMountEvent event) {
+    public void onMount(PetMountEvent event) {
         if (!mountingEnabled) return; // Ride checking is disabled
         PetUser user = event.getEntity().getPetUser();
         Player player = user.getPlayer();

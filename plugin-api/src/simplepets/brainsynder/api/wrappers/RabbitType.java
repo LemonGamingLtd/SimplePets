@@ -12,7 +12,7 @@ public enum RabbitType {
     private final String texture;
 
     RabbitType(String texture) {
-        this.texture = "http://textures.minecraft.net/texture/"+texture;
+        this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
     public String getTexture() {
@@ -42,7 +42,7 @@ public enum RabbitType {
         return (current == THE_KILLER_BUNNY) ? BROWN : values()[current.ordinal() + 1];
     }
 
-    public int getId () {
+    public int getId() {
         if (this == THE_KILLER_BUNNY) return 99;
         return ordinal();
     }

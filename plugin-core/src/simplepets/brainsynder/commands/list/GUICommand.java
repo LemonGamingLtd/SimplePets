@@ -13,9 +13,9 @@ import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.menu.inventory.SelectionMenu;
 
 @ICommand(
-        name = "gui",
-        usage = "[player]",
-        description = "Opens the pet gui"
+    name = "gui",
+    usage = "[player]",
+    description = "Opens the pet gui"
 )
 @Permission(permission = "gui", defaultAllow = true, additionalPermissions = {"other"})
 public class GUICommand extends PetSubCommand {

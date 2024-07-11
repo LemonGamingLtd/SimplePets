@@ -21,8 +21,8 @@ public class ItemManager implements ItemHandler {
     private File registeredFolder;
     private static Air AIR;
     public static Placeholder PLACEHOLDER;
-//    public RedPlaceholder RED_PLACEHOLDER;
-//    public Data DATA;
+    //    public RedPlaceholder RED_PLACEHOLDER;
+    //    public Data DATA;
     private PetCore plugin;
     private final Map<String, Item> items = new HashMap<>();
 
@@ -41,16 +41,16 @@ public class ItemManager implements ItemHandler {
         if (!registeredFolder.exists()) registeredFolder.mkdirs();
         timer.label("folder generation");
 
-        add(new Air (getLocation(plugin, Air.class)));
-        add(new Hat (getLocation(plugin, Hat.class)));
-        add(new Name (getLocation(plugin, Name.class)));
-        add(new NextPage (getLocation(plugin, NextPage.class)));
+        add(new Air(getLocation(plugin, Air.class)));
+        add(new Hat(getLocation(plugin, Hat.class)));
+        add(new Name(getLocation(plugin, Name.class)));
+        add(new NextPage(getLocation(plugin, NextPage.class)));
         add(new PreviousPage(getLocation(plugin, PreviousPage.class)));
-        add(new Remove (getLocation(plugin, Remove.class)));
-        add(new Installer (getLocation(plugin, Installer.class)));
-        add(new Ride (getLocation(plugin, Ride.class)));
+        add(new Remove(getLocation(plugin, Remove.class)));
+        add(new Installer(getLocation(plugin, Installer.class)));
+        add(new Ride(getLocation(plugin, Ride.class)));
 //        add(new Storage (getLocation(plugin, Storage.class)));
-        add(new Placeholder (getLocation(plugin, Placeholder.class)));
+        add(new Placeholder(getLocation(plugin, Placeholder.class)));
 //        add(new Data(getLocation(plugin, Data.class)));
         add(new SavePet(getLocation(plugin, SavePet.class)));
         add(new Saves(getLocation(plugin, Saves.class)));
@@ -93,12 +93,12 @@ public class ItemManager implements ItemHandler {
     }
 
 
-    public static File getLocation (PetCore core, Class<? extends Item> clazz) {
+    public static File getLocation(PetCore core, Class<? extends Item> clazz) {
         File folder = new File(core.getDataFolder() + "/Items/");
         return new File(folder, clazz.getSimpleName() + ".json");
     }
 
-    private void add (Item item) {
+    private void add(Item item) {
         item.getItemData().ifPresent(itemData -> items.putIfAbsent(itemData.namespace(), item));
     }
 
@@ -111,15 +111,16 @@ public class ItemManager implements ItemHandler {
     public boolean register(Class<? extends Item> clazz) {
         Item item;
 
-        if (!clazz.isAnnotationPresent(Namespace.class)) throw new MissingResourceException("Missing ItemData annotation", clazz.getName(), "@ItemData");
+        if (!clazz.isAnnotationPresent(Namespace.class))
+            throw new MissingResourceException("Missing ItemData annotation", clazz.getName(), "@ItemData");
 
         Namespace data = clazz.getAnnotation(Namespace.class);
         String name = data.namespace();
 
         try {
             Constructor constructor = clazz.getConstructor(File.class);
-            item = (Item) constructor.newInstance(new File(registeredFolder, name+".json"));
-        }catch (Exception e) {
+            item = (Item) constructor.newInstance(new File(registeredFolder, name + ".json"));
+        } catch (Exception e) {
             return false;
         }
 

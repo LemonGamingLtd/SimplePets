@@ -17,9 +17,9 @@ import simplepets.brainsynder.utils.Premium;
 import java.util.List;
 
 @ICommand(
-        name = "pet",
-        alias = {"pets", "simplepets", "simplepet"},
-        description = "Main SimplePets Command/Opens The Pet Selection GUI"
+    name = "pet",
+    alias = {"pets", "simplepets", "simplepet"},
+    description = "Main SimplePets Command/Opens The Pet Selection GUI"
 )
 public class PetsCommand extends ParentCommand<PetSubCommand> {
     private final PetCore plugin;
@@ -35,12 +35,12 @@ public class PetsCommand extends ParentCommand<PetSubCommand> {
         registerSub(new DataCommand(plugin));
         if (ConfigOption.INSTANCE.RENAME_ENABLED.getValue())
             registerSub(new RenameCommand(plugin));
-        registerSub(new PurchasedCommand (plugin));
+        registerSub(new PurchasedCommand(plugin));
         registerSub(new PermissionsCommand(this));
-        registerSub(new RegenerateCommand (plugin));
-        registerSub(new DebugCommand (this));
-        registerSub(new AddonCommand (plugin));
-        registerSub(new DatabaseCommand (plugin));
+        registerSub(new RegenerateCommand(plugin));
+        registerSub(new DebugCommand(this));
+        registerSub(new AddonCommand(plugin));
+        registerSub(new DatabaseCommand(plugin));
         registerSub(new ReloadCommand(plugin));
         registerSub(new PetConfigCommand(plugin));
 
@@ -54,7 +54,7 @@ public class PetsCommand extends ParentCommand<PetSubCommand> {
 
     @Override
     protected void registerSub(PetSubCommand subCommand) {
-        SimplePets.getDebugLogger().debug(DebugLevel.HIDDEN, "- Registering sub-command: "+subCommand.getCommand(subCommand.getClass()).name());
+        SimplePets.getDebugLogger().debug(DebugLevel.HIDDEN, "- Registering sub-command: " + subCommand.getCommand(subCommand.getClass()).name());
         super.registerSub(subCommand);
     }
 
@@ -65,8 +65,8 @@ public class PetsCommand extends ParentCommand<PetSubCommand> {
     @Override
     public void run(CommandSender sender, String[] args) {
         if (ConfigOption.INSTANCE.SIMPLER_GUI.getValue()
-                && (sender instanceof Player)
-                && (args.length == 0)) {
+            && (sender instanceof Player)
+            && (args.length == 0)) {
             ((Player) sender).performCommand("pet gui");
             return;
         }

@@ -59,10 +59,10 @@ public class AddonMenu extends CustomInventory {
 
         Map<Integer, String> object = new HashMap<>();
         Arrays.asList(
-                11, 12, 13, 14, 15, 16, 17,
-                20, 21, 22, 23, 24, 25, 26,
-                29, 30, 31, 32, 33, 34, 35,
-                38, 39, 40, 41, 42, 43, 44
+            11, 12, 13, 14, 15, 16, 17,
+            20, 21, 22, 23, 24, 25, 26,
+            29, 30, 31, 32, 33, 34, 35,
+            38, 39, 40, 41, 42, 43, 44
         ).forEach(slot -> object.put(slot, "air"));
         object.put(46, "previouspage");
         object.put(50, "installer");
@@ -94,7 +94,7 @@ public class AddonMenu extends CustomInventory {
         return InventoryType.ADDON_GUI;
     }
 
-    public boolean isInstallerGUI (PetUser user) {
+    public boolean isInstallerGUI(PetUser user) {
         return installerMap.getOrDefault(user.getPlayer().getName(), false);
     }
 
@@ -126,7 +126,7 @@ public class AddonMenu extends CustomInventory {
                 inv.setItem(slot, item.getItemBuilder().build());
         });
         ItemBuilder master = new ItemBuilder(Material.PLAYER_HEAD)
-                .setTexture("http://textures.minecraft.net/texture/ce1f3cc63c73a6a1dde72fe09c6ac5569376d7b61231bb740764368788cbf1fa");
+            .setTexture("http://textures.minecraft.net/texture/ce1f3cc63c73a6a1dde72fe09c6ac5569376d7b61231bb740764368788cbf1fa");
 
         int finalMaxPets = maxPets;
 
@@ -173,7 +173,7 @@ public class AddonMenu extends CustomInventory {
 
             for (AddonCloudData data : addons) {
                 String name = data.getName();
-                if (!manager.fetchAddon(name).isPresent())  {
+                if (!manager.fetchAddon(name).isPresent()) {
                     ItemBuilder builder = master.clone();
                     builder.withName(Colorize.fetchColor("e1eb5b") + name);
                     List<String> description = Lists.newArrayList();

@@ -20,13 +20,13 @@ import java.util.concurrent.CompletableFuture;
 
 public interface SQLHandler {
     String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + SQLData.TABLE_PREFIX + "_players (" +
-            "`uuid` VARCHAR(265) NOT NULL," +
-            "`name` VARCHAR(265) NOT NULL," +
-            "`UnlockedPets` " + getStupidTextThing() + " NOT NULL," +
-            "`PetName` " + getStupidTextThing() + " NOT NULL," +
-            "`NeedsRespawn` " + getStupidTextThing() + " NOT NULL," +
-            "`SavedPets` " + getStupidTextThing() + " NOT NULL" +
-            ")";
+        "`uuid` VARCHAR(265) NOT NULL," +
+        "`name` VARCHAR(265) NOT NULL," +
+        "`UnlockedPets` " + getStupidTextThing() + " NOT NULL," +
+        "`PetName` " + getStupidTextThing() + " NOT NULL," +
+        "`NeedsRespawn` " + getStupidTextThing() + " NOT NULL," +
+        "`SavedPets` " + getStupidTextThing() + " NOT NULL" +
+        ")";
 
     /**
      * This function returns an implementation of the Connection interface in Java.
@@ -41,12 +41,12 @@ public interface SQLHandler {
      * This function sends player data, identified by UUID and name, along with a StorageTagCompound object, and returns a
      * CompletableFuture<Boolean>.
      *
-     * @param uuid UUID stands for Universally Unique Identifier. It is a 128-bit value that is used to identify
-     * information in computer systems. In this case, it is used to identify a specific player in the game.
-     * @param name The name parameter is a String that represents the name of the player whose data is being sent.
+     * @param uuid     UUID stands for Universally Unique Identifier. It is a 128-bit value that is used to identify
+     *                 information in computer systems. In this case, it is used to identify a specific player in the game.
+     * @param name     The name parameter is a String that represents the name of the player whose data is being sent.
      * @param compound `compound` is a `StorageTagCompound` object that represents a collection of key-value pairs, similar
-     * to a dictionary or a map. It is commonly used in Minecraft modding to store and retrieve data associated with game
-     * entities or items. In this context, it likely contains data related to a player
+     *                 to a dictionary or a map. It is commonly used in Minecraft modding to store and retrieve data associated with game
+     *                 entities or items. In this context, it likely contains data related to a player
      * @return The method `sendPlayerData` returns a `CompletableFuture<Boolean>`. This is a Java class that represents a
      * future result of an asynchronous computation that will eventually produce a `Boolean` value. The `Boolean` value
      * indicates whether the player data was successfully sent or not.
@@ -57,16 +57,15 @@ public interface SQLHandler {
      * This function is used to send player data synchronization with a UUID, name, and storage
      * tag compound.
      *
-     * @param uuid The UUID (Universally Unique Identifier) of the player whose data is being sent. This is a unique
-     * identifier assigned to each player by Minecraft.
-     * @param name The name parameter is a String that represents the name of the player whose data is being synchronized.
+     * @param uuid     The UUID (Universally Unique Identifier) of the player whose data is being sent. This is a unique
+     *                 identifier assigned to each player by Minecraft.
+     * @param name     The name parameter is a String that represents the name of the player whose data is being synchronized.
      * @param compound The "compound" parameter is likely a StorageTagCompound object, which is a data structure used to
-     * store and manipulate NBT (Named Binary Tag) data. NBT is a format used by Minecraft to store various types of game
-     * data, such as player inventories, entity data, and world information
+     *                 store and manipulate NBT (Named Binary Tag) data. NBT is a format used by Minecraft to store various types of game
+     *                 data, such as player inventories, entity data, and world information
      * @return The method is marked as deprecated, which means it is no longer recommended to use it. However, based on the
      * method signature, it appears that it used to return a boolean value indicating whether the player data
      * synchronization was successful or not.
-     *
      * @Deprecated Might be removed in favor of a different way
      */
     @Deprecated
@@ -77,8 +76,8 @@ public interface SQLHandler {
      * UUID.
      *
      * @param uuid UUID stands for Universally Unique Identifier. It is a 128-bit value used for identifying information in
-     * computer systems. In this context, the UUID is likely being used to identify a specific user or entity for which
-     * data is being fetched.
+     *             computer systems. In this context, the UUID is likely being used to identify a specific user or entity for which
+     *             data is being fetched.
      * @return A `CompletableFuture` object that will eventually contain a `StorageTagCompound` object after the data for
      * the specified UUID has been fetched.
      */
@@ -91,7 +90,7 @@ public interface SQLHandler {
      * `CompletableFuture` is a way to perform asynchronous programming in Java, allowing the caller to continue executing
      * other tasks while waiting for the row count to be calculated.
      */
-    CompletableFuture<Integer> getRowCount ();
+    CompletableFuture<Integer> getRowCount();
 
     /**
      * The function returns a CompletableFuture that removes duplicates from a pair of integers and returns them as a
@@ -119,7 +118,7 @@ public interface SQLHandler {
      * `Triple` objects. Each `Triple` contains a `UUID`, a `String`, and an `Integer`. The `List` will contain all the
      * duplicates found in the data.
      */
-    CompletableFuture<List<Triple<UUID, String, Integer>>> findDuplicates ();
+    CompletableFuture<List<Triple<UUID, String, Integer>>> findDuplicates();
 
     /**
      * This function returns either "TEXT" or "LONGTEXT" depending on the value of SQLData.USE_SQLITE.
@@ -135,10 +134,10 @@ public interface SQLHandler {
     /**
      * This Java function loads various pet-related data from a SQL database and stores it in a StorageTagCompound.
      *
-     * @param uuid The UUID of a player whose data is being loaded from a database.
-     * @param results A ResultSet object containing the data retrieved from the database query.
+     * @param uuid     The UUID of a player whose data is being loaded from a database.
+     * @param results  A ResultSet object containing the data retrieved from the database query.
      * @param syncLogs A boolean value indicating whether to synchronize the logging output. If set to true, the
-     * logging output will be synchronized across multiple threads.
+     *                 logging output will be synchronized across multiple threads.
      * @return A StorageTagCompound object.
      */
     default StorageTagCompound rowToCompound(UUID uuid, ResultSet results, boolean syncLogs) throws SQLException {
@@ -152,8 +151,8 @@ public interface SQLHandler {
             }
         } catch (NBTException e) {
             SimplePets.getDebugLogger().debug(DebugBuilder.build().setMessages(
-                    "Failed to load 'UnlockedPets' for uuid: " + uuid,
-                    "Result: " + raw
+                "Failed to load 'UnlockedPets' for uuid: " + uuid,
+                "Result: " + raw
             ).setSync(syncLogs).setLevel(DebugLevel.ERROR));
         }
 

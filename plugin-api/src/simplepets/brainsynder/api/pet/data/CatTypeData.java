@@ -12,8 +12,8 @@ public class CatTypeData extends PetData<IEntityCatPet> {
     public CatTypeData() {
         for (CatType type : CatType.values()) {
             addDefaultItem(type.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+type.name())
-                    .setTexture(type.getTexture()));
+                .withName("&#c8c8c8{name}: &a" + type.name())
+                .setTexture(type.getTexture()));
         }
     }
 

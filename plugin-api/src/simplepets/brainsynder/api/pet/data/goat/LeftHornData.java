@@ -13,11 +13,11 @@ import simplepets.brainsynder.api.pet.PetData;
 public class LeftHornData extends PetData<IEntityGoatPet> {
     public LeftHornData() {
         addDefaultItem("true", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &atrue")
-                .setTexture("http://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21"));
+            .withName("&#c8c8c8{name}: &atrue")
+            .setTexture("http://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21"));
         addDefaultItem("false", new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &cfalse")
-                .setTexture("http://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21"));
+            .withName("&#c8c8c8{name}: &cfalse")
+            .setTexture("http://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21"));
     }
 
     @Override

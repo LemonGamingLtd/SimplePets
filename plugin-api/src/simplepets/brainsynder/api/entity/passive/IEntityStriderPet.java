@@ -12,5 +12,6 @@ import simplepets.brainsynder.api.pet.PetType;
 @SupportedVersion(version = ServerVersion.v1_16_R1)
 public interface IEntityStriderPet extends IAgeablePet, ISaddle {
     boolean isCold();
+
     void setCold(boolean cold);
 }

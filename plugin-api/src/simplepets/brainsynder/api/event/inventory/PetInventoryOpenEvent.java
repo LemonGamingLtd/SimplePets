@@ -36,5 +36,5 @@ public class PetInventoryOpenEvent extends CancellablePetEvent {
 
     public IStorage<ItemStack> getItems() {return this.items;}
 
-    public void setItems(IStorage<ItemStack> items) {this.items = items; }
+    public void setItems(IStorage<ItemStack> items) {this.items = items;}
 }

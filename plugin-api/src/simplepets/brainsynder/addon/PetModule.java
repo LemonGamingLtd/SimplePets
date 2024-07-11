@@ -20,22 +20,22 @@ public abstract class PetModule implements Listener {
     /**
      * This method is used to generate the default values for the addons config file
      */
-    public void loadDefaults (AddonConfig config) {}
+    public void loadDefaults(AddonConfig config) {}
 
     /**
      * This will be called when the addon is initialized by SimplePets
      */
-    public abstract void init ();
+    public abstract void init();
 
     /**
      * This will be called when the addon is being unloading
      */
-    public void cleanup (){}
+    public void cleanup() {}
 
     /**
      * Should the plugin enable (could be used when linking into another plugin)
      */
-    public boolean shouldEnable () {
+    public boolean shouldEnable() {
         return true;
     }
 
@@ -55,15 +55,15 @@ public abstract class PetModule implements Listener {
         throw new NullPointerException(getClass().getSimpleName() + " is missing @Namespace annotation for the module");
     }
 
-    public ItemStack getAddonIcon (){
+    public ItemStack getAddonIcon() {
         StringBuilder authors = new StringBuilder();
         localData.getAuthors().forEach(s -> authors.append(s).append(", "));
-        return new ItemBuilder (Material.PLAYER_HEAD)
-                .setTexture("http://textures.minecraft.net/texture/" +
-                        (enabled ? "78d58a7651fedae4c03efebc226c03fd791eb74a132babb974e8d838ac6882" : "2da1508d47ed73b5c515e3b93928b728e4bc6278569a79b3723ab6972ce05357"))
-                .withName(Colorize.fetchColor("e1eb5b")+getNamespace().namespace() + " Module").withLore(localData.getDescription())
-                .addLore("&r ", "&7Author: &e"+ AdvString.replaceLast(", ", "", authors.toString()))
-                .addLore("&7Addon: &e"+localData.getName()+" (v"+localData.getVersion()+")").build();
+        return new ItemBuilder(Material.PLAYER_HEAD)
+            .setTexture("http://textures.minecraft.net/texture/" +
+                (enabled ? "78d58a7651fedae4c03efebc226c03fd791eb74a132babb974e8d838ac6882" : "2da1508d47ed73b5c515e3b93928b728e4bc6278569a79b3723ab6972ce05357"))
+            .withName(Colorize.fetchColor("e1eb5b") + getNamespace().namespace() + " Module").withLore(localData.getDescription())
+            .addLore("&r ", "&7Author: &e" + AdvString.replaceLast(", ", "", authors.toString()))
+            .addLore("&7Addon: &e" + localData.getName() + " (v" + localData.getVersion() + ")").build();
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class PetModule implements Listener {
     /**
      * does this addon have a new version available?
      */
-    public boolean hasUpdate () {
+    public boolean hasUpdate() {
         return update;
     }
 

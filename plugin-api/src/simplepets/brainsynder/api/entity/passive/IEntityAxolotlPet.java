@@ -12,9 +12,11 @@ import simplepets.brainsynder.api.wrappers.AxolotlVariant;
 public interface IEntityAxolotlPet extends IAgeablePet {
 
     boolean isPlayingDead();
+
     void setPlayingDead(boolean playingDead);
 
-    AxolotlVariant getVariant ();
-    void setVariant (AxolotlVariant variant);
+    AxolotlVariant getVariant();
+
+    void setVariant(AxolotlVariant variant);
 
 }

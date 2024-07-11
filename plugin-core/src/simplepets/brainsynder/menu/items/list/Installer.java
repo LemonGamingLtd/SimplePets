@@ -21,13 +21,13 @@ public class Installer extends Item {
     @Override
     public ItemBuilder getDefaultItem() {
         return new ItemBuilder(Material.PLAYER_HEAD)
-                .setTexture("http://textures.minecraft.net/texture/ce1f3cc63c73a6a1dde72fe09c6ac5569376d7b61231bb740764368788cbf1fa")
-                .withName("&#e3c79aInstall Addons");
+            .setTexture("http://textures.minecraft.net/texture/ce1f3cc63c73a6a1dde72fe09c6ac5569376d7b61231bb740764368788cbf1fa")
+            .withName("&#e3c79aInstall Addons");
     }
 
     @Override
     public boolean addItemToInv(PetUser user, CustomInventory inventory) {
-        return (inventory instanceof AddonMenu) && !((AddonMenu)inventory).isInstallerGUI(user); // Should only be added to the Addon GUI
+        return (inventory instanceof AddonMenu) && !((AddonMenu) inventory).isInstallerGUI(user); // Should only be added to the Addon GUI
     }
 
     @Override

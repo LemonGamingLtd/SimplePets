@@ -106,6 +106,5 @@ public class EntityGhostStand extends ArmorStand {
         return true;
     }
 
-    @Override
     protected void handleNetherPortal() {}
 }

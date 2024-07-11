@@ -6,10 +6,10 @@ public enum RenameType {
     ANVIL,
     SIGN;
 
-    public static RenameType getType (String name, RenameType fallback) {
+    public static RenameType getType(String name, RenameType fallback) {
         try {
             return valueOf(name.toUpperCase());
-        }catch (Exception e) {
+        } catch (Exception e) {
             return fallback;
         }
     }

@@ -13,8 +13,8 @@ import simplepets.brainsynder.commands.PetsCommand;
 import java.util.List;
 
 @ICommand(
-        name = "help",
-        description = "Lists all the commands for the plugin"
+    name = "help",
+    description = "Lists all the commands for the plugin"
 )
 @Permission(permission = "help", defaultAllow = true)
 public class HelpCommand extends PetSubCommand {

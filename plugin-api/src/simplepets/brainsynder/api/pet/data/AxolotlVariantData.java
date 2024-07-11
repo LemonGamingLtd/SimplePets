@@ -12,8 +12,8 @@ public class AxolotlVariantData extends PetData<IEntityAxolotlPet> {
     public AxolotlVariantData() {
         for (AxolotlVariant type : AxolotlVariant.values()) {
             addDefaultItem(type.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                    .withName("&#c8c8c8{name}: &a"+type.name())
-                    .setTexture(type.getTexture()));
+                .withName("&#c8c8c8{name}: &a" + type.name())
+                .setTexture(type.getTexture()));
         }
     }
 

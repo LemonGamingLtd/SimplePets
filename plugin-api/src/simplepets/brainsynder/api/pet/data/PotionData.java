@@ -10,9 +10,9 @@ import simplepets.brainsynder.api.pet.PetData;
 public class PotionData extends PetData<IEntityWitchPet> {
     public PotionData() {
         addDefaultItem("true", new ItemBuilder(Material.POTION)
-                .withName("&#c8c8c8{name}: &atrue"));
+            .withName("&#c8c8c8{name}: &atrue"));
         addDefaultItem("false", new ItemBuilder(Material.POTION)
-                .withName("&#c8c8c8{name}: &cfalse"));
+            .withName("&#c8c8c8{name}: &cfalse"));
     }
 
     @Override

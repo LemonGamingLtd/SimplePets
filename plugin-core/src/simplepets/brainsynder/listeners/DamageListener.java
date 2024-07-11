@@ -16,7 +16,8 @@ public class DamageListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerFall(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (!event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) return; // Only listen if the cause is Fall Damage
+        if (!event.getCause().equals(EntityDamageEvent.DamageCause.FALL))
+            return; // Only listen if the cause is Fall Damage
 
         Entity vehicle = player.getVehicle();
         if (vehicle == null) return;

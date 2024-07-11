@@ -12,9 +12,9 @@ import simplepets.brainsynder.api.pet.PetData;
 public class ArmsData extends PetData {
     public ArmsData() {
         addDefaultItem("true", new ItemBuilder(Material.STICK)
-                .withName("&#c8c8c8{name}: &atrue"));
+            .withName("&#c8c8c8{name}: &atrue"));
         addDefaultItem("false", new ItemBuilder(Material.STICK)
-                .withName("&#c8c8c8{name}: &cfalse"));
+            .withName("&#c8c8c8{name}: &cfalse"));
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ArmsData extends PetData {
     public void onLeftClick(IEntityPet entity) {
         if (entity instanceof IEntityZombiePet zombie) {
             zombie.setArmsRaised(!zombie.isArmsRaised());
-        }else if (entity instanceof ISkeletonAbstract skeleton) {
+        } else if (entity instanceof ISkeletonAbstract skeleton) {
             skeleton.setArmsRaised(!skeleton.isArmsRaised());
         }
     }
@@ -35,7 +35,7 @@ public class ArmsData extends PetData {
     public Object value(IEntityPet entity) {
         if (entity instanceof IEntityZombiePet zombie) {
             return zombie.isArmsRaised();
-        }else if (entity instanceof ISkeletonAbstract skeleton) {
+        } else if (entity instanceof ISkeletonAbstract skeleton) {
             return skeleton.isArmsRaised();
         }
         return false;

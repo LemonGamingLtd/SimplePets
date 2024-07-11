@@ -19,9 +19,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @ICommand(
-        name = "data",
-        usage = "[player] <type>",
-        description = "Opens the Pet Data GUI to customize your pet"
+    name = "data",
+    usage = "[player] <type>",
+    description = "Opens the Pet Data GUI to customize your pet"
 )
 @Permission(permission = "data", defaultAllow = true, additionalPermissions = {"other"})
 public class DataCommand extends PetSubCommand {
@@ -74,8 +74,8 @@ public class DataCommand extends PetSubCommand {
 
         if (target == null) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED+"You must be a player to run this command for yourself.");
-            }else{
+                sender.sendMessage(ChatColor.RED + "You must be a player to run this command for yourself.");
+            } else {
                 target = (Player) sender;
             }
         }

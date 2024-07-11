@@ -35,12 +35,12 @@ public abstract class PetData<EntityParam extends IEntityPet> {
 
     /**
      * This is only used when generating the pet data for the files
-     *  Use {@link PetData#getDefault(IEntityPet)}
+     * Use {@link PetData#getDefault(IEntityPet)}
      */
     @Deprecated
     public abstract Object getDefaultValue();
 
-    public Optional<Object> getDefault (PetType type) {
+    public Optional<Object> getDefault(PetType type) {
         Optional<IPetConfig> optional = SimplePets.getPetConfigManager().getPetConfig(type);
         Namespace namespace = getNamespace();
         if (optional.isPresent()) {
@@ -60,7 +60,7 @@ public abstract class PetData<EntityParam extends IEntityPet> {
         return defaultItems;
     }
 
-    public boolean isEnabled (EntityParam entity) {
+    public boolean isEnabled(EntityParam entity) {
         Optional<IPetConfig> optional = SimplePets.getPetConfigManager().getPetConfig(entity.getPetType());
         Namespace namespace = getNamespace();
         return optional.map(config -> config.getRawData(namespace.namespace()).getBoolean("enabled", true)).orElse(true);
@@ -80,22 +80,23 @@ public abstract class PetData<EntityParam extends IEntityPet> {
         // Could not find the pet config, using default item if available
         if (!optional.isPresent()) {
             if (defaultItems.containsKey(value)) return Optional.of(defaultItems.get(value));
-            SimplePets.getDebugLogger().debug(DebugLevel.ERROR, getClass().getSimpleName()+" had no default item for '"+value+"'");
+            SimplePets.getDebugLogger().debug(DebugLevel.ERROR, getClass().getSimpleName() + " had no default item for '" + value + "'");
             return Optional.empty();
         }
 
         IPetConfig config = optional.get();
-        if (defaultItems.containsKey(value)) return config.getDataItem(namespace.namespace(), value, defaultItems.get(value));
+        if (defaultItems.containsKey(value))
+            return config.getDataItem(namespace.namespace(), value, defaultItems.get(value));
         return config.getDataItem(namespace.namespace(), value);
     }
 
     /**
      * Adds a default item for the value
      *
-     * @param value - Value name (EG: true/false or 1/2 or BLACK/WHITE)
+     * @param value   - Value name (EG: true/false or 1/2 or BLACK/WHITE)
      * @param builder
      */
-    public void addDefaultItem (String value, ItemBuilder builder) {
+    public void addDefaultItem(String value, ItemBuilder builder) {
         defaultItems.put(value, builder);
     }
 
@@ -104,14 +105,14 @@ public abstract class PetData<EntityParam extends IEntityPet> {
      *
      * @param entity - The Entity that is being modified
      */
-    public abstract void onLeftClick (EntityParam entity);
+    public abstract void onLeftClick(EntityParam entity);
 
     /**
      * Called when ever the item is right clicked
      *
      * @param entity - The Entity that is being modified
      */
-    public void onRightClick (EntityParam entity) {
+    public void onRightClick(EntityParam entity) {
         onLeftClick(entity);
     }
 
@@ -120,17 +121,16 @@ public abstract class PetData<EntityParam extends IEntityPet> {
      *
      * @param entity - Entity that is being modified
      */
-    public abstract Object value (EntityParam entity);
+    public abstract Object value(EntityParam entity);
 
     /**
      * Checks if the PetData is able to be changed for the entity
      *
      * @param entity - Entity that is being modified
-     * @return
-     *      true - Entity can be modified
-     *      false - Entity cant be modified
+     * @return true - Entity can be modified
+     * false - Entity cant be modified
      */
-    public boolean isModifiable (EntityParam entity) {
+    public boolean isModifiable(EntityParam entity) {
         return true;
     }
 }

@@ -112,11 +112,11 @@ public class AddonManager {
 
             if (missingSupport) {
                 SimplePets.getDebugLogger().debug(DebugBuilder.build().setLevel(SimplePets.ADDON).setMessages(
-                        "The "+(localData.getName().endsWith("Addon") ? localData.getName() : localData.getName()+"Addon")+" could not find plugin requirements:"
+                    "The " + (localData.getName().endsWith("Addon") ? localData.getName() : localData.getName() + "Addon") + " could not find plugin requirements:"
                 ));
                 localData.getPluginSupport().forEach(supportData -> {
                     SimplePets.getDebugLogger().debug(DebugBuilder.build().setLevel(SimplePets.ADDON).setMessages(
-                            " - "+supportData.url()+" ("+supportData.name()+")"
+                        " - " + supportData.url() + " (" + supportData.name() + ")"
                     ));
                 });
                 return;
@@ -128,9 +128,9 @@ public class AddonManager {
             for (String path : localData.getClassChecks()) {
                 try {
                     Class.forName(path, false, PetCore.getInstance().getClass().getClassLoader());
-                }catch (Exception e) {
+                } catch (Exception e) {
                     SimplePets.getDebugLogger().debug(DebugBuilder.build().setLevel(DebugLevel.ERROR).setMessages(
-                            "Failed to locate '"+path+"' used for the "+localData.getName()+" addon."
+                        "Failed to locate '" + path + "' used for the " + localData.getName() + " addon."
                     ));
                     return;
                 }
@@ -157,8 +157,8 @@ public class AddonManager {
                         addon.setLocalData(localData);
                         rawAddons.add(addon);
                         modules.add(addon);
-                    }catch (NoSuchMethodException | InvocationTargetException e1) {
-                        SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "An error occurred when trying to load a module in the addon: "+localData.getName());
+                    } catch (NoSuchMethodException | InvocationTargetException e1) {
+                        SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "An error occurred when trying to load a module in the addon: " + localData.getName());
                     }
                 }
                 localDataMap.putIfAbsent(localData, modules);
@@ -167,13 +167,13 @@ public class AddonManager {
 
             if (rawAddons.isEmpty())
                 SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(SimplePets.ADDON).setMessages(
-                        "Could not find a class that extends PetModule",
-                        "Are you sure '" + file.getName() + "' is an addon?"
+                    "Could not find a class that extends PetModule",
+                    "Are you sure '" + file.getName() + "' is an addon?"
                 ));
         } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(DebugLevel.ERROR).setMessages(
-                    "Failed to load addon: " + file.getName(),
-                    "Error Message: " + e.getMessage()
+                "Failed to load addon: " + file.getName(),
+                "Error Message: " + e.getMessage()
             ));
             e.printStackTrace();
         }
@@ -193,12 +193,12 @@ public class AddonManager {
         tempMap.forEach((localData, modules) -> {
             if (!isSupported(localData.getSupportedBuild())) {
                 SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(SimplePets.ADDON).setMessages(
-                        localData.getName() + " (by " + localData.getAuthors() + ") is not supported for version " + PetCore.getInstance().getDescription().getVersion()
+                    localData.getName() + " (by " + localData.getAuthors() + ") is not supported for version " + PetCore.getInstance().getDescription().getVersion()
                 ));
                 return;
             }
 
-            SimplePets.getDebugLogger().debug(SimplePets.ADDON, "Loading modules for the "+localData.getName() + " addon");
+            SimplePets.getDebugLogger().debug(SimplePets.ADDON, "Loading modules for the " + localData.getName() + " addon");
             modules.forEach(module -> {
                 try {
                     String name = module.getNamespace().namespace();
@@ -229,9 +229,9 @@ public class AddonManager {
                         Bukkit.getPluginManager().registerEvents(module, plugin);
                         module.init();
                     }
-                }catch (Exception e) {
+                } catch (Exception e) {
                     SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(SimplePets.ADDON).setMessages(
-                            "Failed to initialize addon module: " + module.getClass().getSimpleName()
+                        "Failed to initialize addon module: " + module.getClass().getSimpleName()
                     ));
                     e.printStackTrace();
                 }
@@ -249,7 +249,7 @@ public class AddonManager {
         return cloudAddons;
     }
 
-    public void downloadViaName (String name, String url, Runnable runnable) {
+    public void downloadViaName(String name, String url, Runnable runnable) {
         CompletableFuture.runAsync(() -> {
             try {
                 download(url, name, file -> {
@@ -388,7 +388,7 @@ public class AddonManager {
             updateNeeded.forEach(addonData -> {
 
                 SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(DebugLevel.UPDATE).setMessages(
-                        "There is an update for the addon '" + addonData.getName() + "' version " + addonData.getVersion()
+                    "There is an update for the addon '" + addonData.getName() + "' version " + addonData.getVersion()
                 ));
             });
         });
@@ -406,14 +406,14 @@ public class AddonManager {
             array.forEach(jsonValue -> {
                 JsonObject json = jsonValue.asObject();
                 AddonCloudData data = new AddonCloudData(
-                        json.get("id").asString(),
-                        json.get("name").asString(),
-                        json.get("description").asString(),
-                        json.get("author").asString(),
-                        json.get("version").asString(),
-                        json.get("download_url").asString(),
-                        json.get("last_updated").asString(),
-                        json.get("download_count").asInt()
+                    json.get("id").asString(),
+                    json.get("name").asString(),
+                    json.get("description").asString(),
+                    json.get("author").asString(),
+                    json.get("version").asString(),
+                    json.get("download_url").asString(),
+                    json.get("last_updated").asString(),
+                    json.get("download_count").asInt()
                 );
 
                 addons.add(data);
@@ -427,7 +427,7 @@ public class AddonManager {
         return registeredAddons;
     }
 
-    private void download (String rawURL, String backup, Consumer<File> fileConsumer) {
+    private void download(String rawURL, String backup, Consumer<File> fileConsumer) {
         try {
             URL url = new URL(rawURL);
             URLConnection connection = url.openConnection();
@@ -452,7 +452,7 @@ public class AddonManager {
                 fos.close();
                 fileConsumer.accept(download);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

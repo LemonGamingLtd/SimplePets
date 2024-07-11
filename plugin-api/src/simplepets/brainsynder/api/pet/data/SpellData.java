@@ -10,7 +10,7 @@ import simplepets.brainsynder.api.wrappers.WizardSpell;
 public class SpellData extends PetData<IEntityWizard> {
     public SpellData() {
         for (WizardSpell spell : WizardSpell.values()) {
-            addDefaultItem(spell.name(), spell.getIcon().withName("&#c8c8c8{name}: &a"+ WordUtils.capitalize(spell.name().toLowerCase().replace('_', ' '))));
+            addDefaultItem(spell.name(), spell.getIcon().withName("&#c8c8c8{name}: &a" + WordUtils.capitalize(spell.name().toLowerCase().replace('_', ' '))));
         }
     }
 

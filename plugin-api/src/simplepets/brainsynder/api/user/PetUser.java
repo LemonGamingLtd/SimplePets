@@ -16,7 +16,7 @@ public interface PetUser {
     /**
      * Returns the UUID of the player.
      */
-    UUID getOwnerUUID ();
+    UUID getOwnerUUID();
 
     /**
      * Returns the name of the player.
@@ -26,13 +26,13 @@ public interface PetUser {
     /**
      * Player instance
      */
-    Player getPlayer ();
+    Player getPlayer();
 
     /**
      * Will fetch the players location
-     *      If player is offline will return empty
+     * If player is offline will return empty
      */
-    default Optional<Location> getUserLocation () {
+    default Optional<Location> getUserLocation() {
         if (getPlayer() instanceof Player) {
             return Optional.of(getPlayer().getLocation());
         }
@@ -44,83 +44,83 @@ public interface PetUser {
      *
      * @param compound - The compound being checked
      */
-    boolean hasPetSave (StorageTagCompound compound);
+    boolean hasPetSave(StorageTagCompound compound);
 
     /**
      * Will remove the compound from the players saved pets list
      *
      * @param compound - The compound being removed
      */
-    void removePetSave (StorageTagCompound compound);
+    void removePetSave(StorageTagCompound compound);
 
     /**
      * Will save the entities data to the players saved pets list
      *
      * @param entity - The Entity being saved
      */
-    default void addPetSave (IEntityPet entity) {
+    default void addPetSave(IEntityPet entity) {
         if (entity == null) return;
         addPetSave(entity.asCompound());
     }
 
     /**
      * Whether the user is able to save more pets.
-     *
+     * <p>
      * If pet-saves is disabled, it will return false.
      */
-    boolean canSaveMorePets ();
+    boolean canSaveMorePets();
 
-    boolean summonCachedPets ();
+    boolean summonCachedPets();
 
     /**
      * - Will save all the pets currently spawned.
      * - Then it will cache the pets to the server (and database if need be)
      * - Then remove the pets
      */
-    void cacheAndRemove ();
+    void cacheAndRemove();
 
     /**
      * Will save the compound to the players saved pets list
      *
      * @param compound - The compound being saved
      */
-    void addPetSave (StorageTagCompound compound);
+    void addPetSave(StorageTagCompound compound);
 
     /**
      * Will fetch the list of pets the player has saved
      */
-    List<Entry<PetType, StorageTagCompound>> getSavedPets ();
+    List<Entry<PetType, StorageTagCompound>> getSavedPets();
 
     /**
      * List of pets the player owns.
      * must be purchased via the plugins economy link
      */
-    List<PetType> getOwnedPets ();
+    List<PetType> getOwnedPets();
 
     /**
      * Adds the selected {@link PetType} to the players OwnedPets list
      */
-    void addOwnedPet (PetType type);
+    void addOwnedPet(PetType type);
 
     /**
      * Removes the selected {@link PetType} from the players OwnedPets list
      */
-    void removeOwnedPet (PetType type);
+    void removeOwnedPet(PetType type);
 
     /**
      * Will fetch what name the player gave the {@link PetType}
      *
      * @param type - Type of pet to get the name for
      */
-    Optional<String> getPetName (PetType type);
+    Optional<String> getPetName(PetType type);
 
     /**
      * Sets the player pets name
-     *     IT WILL OVERRIDE WHAT THE PLAYER HAS CUSTOMIZED
+     * IT WILL OVERRIDE WHAT THE PLAYER HAS CUSTOMIZED
      *
      * @param name - name of the pet
      */
-    void setPetName (String name, PetType type);
+    void setPetName(String name, PetType type);
 
     /**
      * Contains all the pets that the player has on their heads
@@ -130,50 +130,48 @@ public interface PetUser {
     /**
      * Does the player any pets spawned
      */
-    boolean hasPets ();
+    boolean hasPets();
 
     /**
      * Will check if the player has the selected {@link PetType} spawned
      *
      * @param type - The type of pet being checked
      */
-    boolean hasPet (PetType type);
+    boolean hasPet(PetType type);
 
     /**
      * Will remove the selected {@link PetType}
      *
      * @param type - The type of pet being removed
-     * @return
-     *      - true - if the {@link PetType} was removed
-     *      - false - if they didn't have the pet spawned
+     * @return - true - if the {@link PetType} was removed
+     * - false - if they didn't have the pet spawned
      */
-    boolean removePet (PetType type);
+    boolean removePet(PetType type);
 
     /**
      * Will remove all the players pets
      *
-     * @return
-     *      - true - if pets were removed
-     *      - false - if no pets were removes
+     * @return - true - if pets were removed
+     * - false - if no pets were removes
      */
-    boolean removePets ();
+    boolean removePets();
 
     /**
      * Will return all the players currently spawned pets
      */
-    Collection<IEntityPet> getPetEntities ();
+    Collection<IEntityPet> getPetEntities();
 
     /**
      * Will return the users pet
      */
-    Optional<IEntityPet> getPetEntity (PetType type);
+    Optional<IEntityPet> getPetEntity(PetType type);
 
     /**
      * Sets the users current pet
      *
      * @param entity
      */
-    void setPet (IEntityPet entity);
+    void setPet(IEntityPet entity);
 
     /**
      * Is there a pet currently on their owners head
@@ -186,7 +184,7 @@ public interface PetUser {
      * @param type
      * @return
      */
-    boolean isPetHat (PetType type);
+    boolean isPetHat(PetType type);
 
     /**
      * Sets the pet to be a hat or not
@@ -211,7 +209,7 @@ public interface PetUser {
      * @param type
      * @return
      */
-    boolean isPetVehicle (PetType type);
+    boolean isPetVehicle(PetType type);
 
     /**
      * Sets the pet to be a vehicle or not
@@ -223,15 +221,15 @@ public interface PetUser {
     /**
      * Updates the pet data gui the player has open (if it is open)
      */
-    void updateDataMenu ();
+    void updateDataMenu();
 
     /**
      * Updates the Pet Selection GUI (If it is open)
      */
-    void updateSelectionMenu ();
+    void updateSelectionMenu();
 
 
-    class Entry<K,V> {
+    class Entry<K, V> {
         private final K key;
         private final V value;
 

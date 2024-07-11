@@ -32,7 +32,6 @@ public class PetUtility implements IPetUtilities {
     }
 
 
-
     /**
      * This method replaces all the placeholders with the correct replacements
      * <p>
@@ -50,9 +49,9 @@ public class PetUtility implements IPetUtilities {
      *     <li>{petUUID} - The UUID of pet</li>
      * </ul>
      *
-     * @param owner   The owner of the pet
-     * @param entity  The pet the commands are run for
-     * @param text The command that is being run
+     * @param owner  The owner of the pet
+     * @param entity The pet the commands are run for
+     * @param text   The command that is being run
      * @return | Returns the command with all the replaced placeholders
      */
     @Override
@@ -61,15 +60,15 @@ public class PetUtility implements IPetUtilities {
         if ((petLoc == null) && (entity != null)) petLoc = entity.getEntity().getLocation();
 
         if (petLoc != null) text = text.replace("{petX}", String.valueOf(petLoc.getX()))
-                .replace("{petY}", String.valueOf(petLoc.getY()))
-                .replace("{petZ}", String.valueOf(petLoc.getZ()));
+            .replace("{petY}", String.valueOf(petLoc.getY()))
+            .replace("{petZ}", String.valueOf(petLoc.getZ()));
 
         text = text.replace("{ownerX}", String.valueOf(ownerLoc.getX()))
-                .replace("{ownerY}", String.valueOf(ownerLoc.getY()))
-                .replace("{ownerZ}", String.valueOf(ownerLoc.getZ()))
-                .replace("{ownerName}", owner.getOwnerName())
-                .replace("{petType}", entity.getPetType().getName())
-                .replace("{petUUID}", entity.getEntity().getUniqueId().toString());
+            .replace("{ownerY}", String.valueOf(ownerLoc.getY()))
+            .replace("{ownerZ}", String.valueOf(ownerLoc.getZ()))
+            .replace("{ownerName}", owner.getOwnerName())
+            .replace("{petType}", entity.getPetType().getName())
+            .replace("{petUUID}", entity.getEntity().getUniqueId().toString());
         if ((entity != null) && entity.getPetName().isPresent())
             text = text.replace("{petName}", entity.getPetName().get());
         return text;
