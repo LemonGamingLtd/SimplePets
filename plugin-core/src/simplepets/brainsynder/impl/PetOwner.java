@@ -231,7 +231,7 @@ public class PetOwner implements PetUser {
 
                 entityPet.getEntities().forEach(entity -> {
                     SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, getPlayer(), entity.getLocation());
-                    entity.remove();
+                    PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, entity::remove);
                 });
             });
 
@@ -415,7 +415,7 @@ public class PetOwner implements PetUser {
 
         entityPet.getEntities().forEach(entity -> {
             SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, getPlayer(), entity.getLocation());
-            entity.remove();
+            PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, entity::remove);
         });
         petMap.remove(type);
         return true;
@@ -436,7 +436,7 @@ public class PetOwner implements PetUser {
 
             entityPet.getEntities().forEach(entity -> {
                 SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, getPlayer(), entity.getLocation());
-                entity.remove();
+                PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, entity::remove);
             });
         });
         petMap.clear();

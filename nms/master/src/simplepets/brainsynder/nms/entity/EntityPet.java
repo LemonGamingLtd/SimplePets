@@ -119,7 +119,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         });
 
         VersionTranslator.setAttributes(this, walkSpeed, flySpeed);
-        EntityUtils.fetchTeam(user.getPlayer()).addEntry(getUUID().toString());
+        //EntityUtils.fetchTeam(user.getPlayer()).addEntry(getUUID().toString());
 
         verticalWorldConfines = ConfigOption.INSTANCE.MISC_TOGGLES_WORLD_CONFINES_PET_LIMITS.getValue();
         maxHeight = getEntity().getWorld().getMaxHeight();
