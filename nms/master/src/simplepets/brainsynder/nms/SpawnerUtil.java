@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.ISpawnUtil;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.event.entity.PetEntitySpawnEvent;
@@ -133,7 +134,8 @@ public class SpawnerUtil implements ISpawnUtil {
                 if (compound.hasKey("name")) {
                     String name = compound.getString("name");
                     if (name != null) name = name.replace("~", " ");
-                    customEntity.setPetName(name);
+                    final String finalName = name;
+                    PetCore.getInstance().getScheduler().getImpl().runAtEntity(customEntity.getEntity(), () -> customEntity.setPetName(finalName));
                 }
                 SimplePets.getPetUtilities().runPetCommands(CommandReason.SPAWN, user, type);
                 int count = spawnCount.getOrDefault(type, 0);
