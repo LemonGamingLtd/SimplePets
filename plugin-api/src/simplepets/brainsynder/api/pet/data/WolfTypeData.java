@@ -20,7 +20,7 @@ public class WolfTypeData extends PetData<IEntityWolfPet> {
 
     @Override
     public Object getDefaultValue() {
-        return ArmadilloPhase.STANDING;
+        return WolfType.PALE;
     }
 
     @Override

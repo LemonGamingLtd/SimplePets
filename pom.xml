@@ -18,7 +18,7 @@
         <revision>5.0-BUILD-0</revision>
 
         <java.version>17</java.version>
-        <bslib.version>B130</bslib.version>
+        <bslib.version>B131</bslib.version>
         <anvilgui.version>1.6.18-CUSTOM</anvilgui.version>
         <spigotupdatechecker.version>3.0.3</spigotupdatechecker.version>
         <protocol-lib.version>5.0.0</protocol-lib.version>
@@ -26,7 +26,7 @@
         <specialsource.version>2.0.3</specialsource.version>
         <shade.version>3.5.0</shade.version>
 
-        <minecraft.version>1.21</minecraft.version>
+        <minecraft.version>1.21.1</minecraft.version>
         <spigot.version>${minecraft.version}-R0.1-SNAPSHOT</spigot.version>
         <spigot.nms>v1_21_R1</spigot.nms>
 
@@ -117,6 +117,7 @@
                 <module>nms/version-1.20.5</module>
                 <module>nms/version-1.20.6</module>
                 <module>nms/version-1.21</module>
+                <module>nms/version-1.21.1</module>
                 <!-- AUTOMATION: INSERTION POINT -->
             </modules>
 

@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import simplepets.brainsynder.nms.VersionTranslator;
 
 public class EntityGhostStand extends ArmorStand {
@@ -79,7 +80,11 @@ public class EntityGhostStand extends ArmorStand {
         return false;
     }
 
-
+    // Method signature changed again
+    // https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/764a541c5b5fd872ec3cacfc3d51d88e8599d569#nms-patches%2Fnet%2Fminecraft%2Fworld%2Fentity%2FEntityLiving.patch?t=872
+    protected boolean actuallyHurt(DamageSource damageSource, float f, EntityDamageEvent event) {
+        return false;
+    }
 
 
     /**

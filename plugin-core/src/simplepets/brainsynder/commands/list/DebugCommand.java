@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
 import simplepets.brainsynder.commands.PetsCommand;
@@ -194,7 +195,10 @@ public class DebugCommand extends PetSubCommand {
             .add("nms", ServerVersion.getVersion().getNMS())
             .add("name", ServerVersion.getVersion().name())
         );
-        info.add("simplepets", PetCore.getInstance().getDescription().getVersion());
+        info.add("simplepets", new JsonObject()
+                .add("version", PetCore.getInstance().getDescription().getVersion())
+                .add("legacy-pathfinding", ConfigOption.INSTANCE.LEGACY_PATHFINDING_ENABLED.getValue())
+        );
 
         consumer.accept(info);
     }

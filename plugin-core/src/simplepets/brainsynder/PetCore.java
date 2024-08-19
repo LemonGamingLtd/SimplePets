@@ -7,7 +7,6 @@ import lib.brainsynder.ServerVersion;
 import lib.brainsynder.commands.CommandRegistry;
 import lib.brainsynder.json.WriterConfig;
 import lib.brainsynder.metric.bukkit.Metrics;
-import lib.brainsynder.reflection.FieldAccessor;
 import lib.brainsynder.reflection.Reflection;
 import lib.brainsynder.update.UpdateResult;
 import lib.brainsynder.update.UpdateUtils;
@@ -53,7 +52,6 @@ import simplepets.brainsynder.utils.debug.Debug;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -155,6 +153,17 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         reloaded = ConfigOption.INSTANCE.RELOAD_DETECT.getValue();
         ConfigOption.INSTANCE.RELOAD_DETECT.setValue(false, true);
         debug.debug(DebugLevel.HIDDEN, "Plugin reloaded: " + reloaded);
+
+        if (ConfigOption.INSTANCE.LEGACY_PATHFINDING_ENABLED.getValue()) {
+            SimplePets.getDebugLogger().debug(DebugBuilder.build()
+                    .setLevel(DebugLevel.WARNING).setBroadcast(true)
+                    .setMessages(
+                            " ",
+                            " *** NOTICE: Legacy Pathfinding is currently enabled",
+                            " *** No support will be given if this is enabled and an issue occurs pertaining to it",
+                            " "
+                    ));
+        }
 
 //        debug.debug(DebugLevel.HIDDEN, "Initializing Inventory SQL");
 //        new InventorySQL();

@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import simplepets.brainsynder.api.entity.hostile.IEntityShulkerPet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.other.ParticleHandler;
@@ -373,6 +374,12 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
     // God damnit Spigot changing the method name...
     // See: https://tiny.bsdevelopment.org/spigot-changed-damage-method
     protected boolean actuallyHurt(DamageSource damagesource, float f) {
+        return false;
+    }
+
+    // Method signature changed again
+    // https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/764a541c5b5fd872ec3cacfc3d51d88e8599d569#nms-patches%2Fnet%2Fminecraft%2Fworld%2Fentity%2FEntityLiving.patch?t=872
+    protected boolean actuallyHurt(DamageSource damageSource, float f, EntityDamageEvent event) {
         return false;
     }
 

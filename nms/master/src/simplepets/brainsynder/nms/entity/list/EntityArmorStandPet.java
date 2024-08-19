@@ -27,6 +27,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.EulerAngle;
@@ -665,6 +666,12 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
     // God damnit Spigot changing the method name...
     // See: https://tiny.bsdevelopment.org/spigot-changed-damage-method
     protected boolean actuallyHurt(DamageSource damagesource, float f) {
+        return false;
+    }
+
+    // Method signature changed again
+    // https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/764a541c5b5fd872ec3cacfc3d51d88e8599d569#nms-patches%2Fnet%2Fminecraft%2Fworld%2Fentity%2FEntityLiving.patch?t=872
+    protected boolean actuallyHurt(DamageSource damageSource, float f, EntityDamageEvent event) {
         return false;
     }
 

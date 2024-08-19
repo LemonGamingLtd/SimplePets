@@ -20,6 +20,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.event.entity.EntityNameChangeEvent;
@@ -34,6 +35,7 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
+import simplepets.brainsynder.nms.pathfinder.LegacyPathfinderFollowPlayer;
 import simplepets.brainsynder.nms.pathfinder.PathfinderFollowPlayer;
 import simplepets.brainsynder.nms.pathfinder.PathfinderGoalLookAtOwner;
 import simplepets.brainsynder.nms.utils.EntityUtils;
@@ -165,11 +167,22 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         return false;
     }
 
+    // Method signature changed again
+    // https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/764a541c5b5fd872ec3cacfc3d51d88e8599d569#nms-patches%2Fnet%2Fminecraft%2Fworld%2Fentity%2FEntityLiving.patch?t=872
+    protected boolean actuallyHurt(DamageSource damageSource, float f, EntityDamageEvent event) {
+        return false;
+    }
+
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
-        if (getPetType() != PetType.SHULKER)
-            goalSelector.addGoal(2, new PathfinderFollowPlayer(this));
+        if (getPetType() != PetType.SHULKER) {
+            if (ConfigOption.INSTANCE.LEGACY_PATHFINDING_ENABLED.getValue()) {
+                goalSelector.addGoal(2, new LegacyPathfinderFollowPlayer(this, 3, 10));
+            }else{
+                goalSelector.addGoal(2, new PathfinderFollowPlayer(this));
+            }
+        }
         goalSelector.addGoal(3, new PathfinderGoalLookAtOwner(this, 3f, 0.2f));
         goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
