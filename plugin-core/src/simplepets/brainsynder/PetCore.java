@@ -345,15 +345,17 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             updateUtils.startUpdateTask(time, unit); // Runs the update check every 12 hours
         }
         if (Premium.getDownloadType().fromDownloadSite()) {
-            int resourceID = Integer.parseInt(Premium.RESOURCE_ID);
-            new UpdateChecker(this, Premium.getDownloadType().toSource(), Premium.RESOURCE_ID)
-                .setChangelogLink(resourceID)
-                .setDownloadLink(resourceID)
-                .setColoredConsoleOutput(true)
-                .setNotifyOpsOnJoin(true).setNotifyByPermissionOnJoin("pet.update")
-                .suppressUpToDateMessage(true)
-                .checkEveryXHours(12)
-                .checkNow();
+            try {
+                int resourceID = Integer.parseInt(Premium.RESOURCE_ID);
+                new UpdateChecker(this, Premium.getDownloadType().toSource(), Premium.RESOURCE_ID)
+                        .setChangelogLink(resourceID)
+                        .setDownloadLink(resourceID)
+                        .setColoredConsoleOutput(true)
+                        .setNotifyOpsOnJoin(true).setNotifyByPermissionOnJoin("pet.update")
+                        .suppressUpToDateMessage(true)
+                        .checkEveryXHours(12)
+                        .checkNow();
+            }catch (Exception ignored) {}
         }
     }
 
