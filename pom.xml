@@ -19,7 +19,7 @@
 
         <java.version>17</java.version>
         <bslib.version>B131</bslib.version>
-        <anvilgui.version>1.6.19-CUSTOM</anvilgui.version>
+        <anvilgui.version>1.6.20-CUSTOM</anvilgui.version>
         <spigotupdatechecker.version>3.0.3</spigotupdatechecker.version>
         <protocol-lib.version>5.0.0</protocol-lib.version>
         <commons-io.version>2.11.0</commons-io.version>
