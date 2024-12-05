@@ -7,6 +7,7 @@ package simplepets.brainsynder.nms.entity.special;
 
 import lib.brainsynder.reflection.Reflection;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,7 +26,7 @@ public class EntityGhostStand extends ArmorStand {
 
     public EntityGhostStand(EntityType<? extends ArmorStand> entitytypes, Level world) {
         super(entitytypes, world);
-        kill();
+        VersionTranslator.killEntity(this, (ServerLevel) world);
     }
 
     public EntityGhostStand(EntityType<? extends ArmorStand> entitytypes, Level world, EntityControllerPet controllerPet) {
@@ -57,7 +58,7 @@ public class EntityGhostStand extends ArmorStand {
                 || (this.controllerPet.getEntity().isDead())
                 || (!this.controllerPet.getEntity().isValid())) {
             controllerPet = null;
-            kill();
+            VersionTranslator.killEntity(this, (ServerLevel) level());
             return;
         }
 

@@ -20,7 +20,7 @@ import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.AngerLevel;
 import simplepets.brainsynder.nms.VersionTranslator;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.util.concurrent.TimeUnit;
@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * NMS: {@link net.minecraft.world.entity.monster.warden.Warden}
  */
 @SupportedVersion(version = ServerVersion.v1_19)
-public class EntityWardenPet extends EntityPet implements IEntityWardenPet {
+public class EntityWardenPet extends EntityPetOverride implements IEntityWardenPet {
     protected static final EntityDataAccessor<Integer> ANGER_LEVEL = SynchedEntityData.defineId(EntityWardenPet.class, EntityDataSerializers.INT);
     private boolean vibrationEffect = false;
     private int vibrationTick = 0;

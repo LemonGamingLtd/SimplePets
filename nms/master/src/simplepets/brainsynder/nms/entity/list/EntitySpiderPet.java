@@ -9,13 +9,13 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.Spider}
  */
-public class EntitySpiderPet extends EntityPet implements IEntitySpiderPet {
+public class EntitySpiderPet extends EntityPetOverride implements IEntitySpiderPet {
     private static final EntityDataAccessor<Byte> WALL_CLIMB_FLAG = SynchedEntityData.defineId(EntitySpiderPet.class, EntityDataSerializers.BYTE);
     private final boolean wallClimbing;
 

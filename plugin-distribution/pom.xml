@@ -85,6 +85,14 @@
         <module.info/>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>anvil.brainsynder</groupId>
+            <artifactId>anvilgui</artifactId>
+            <version>${anvilgui.version}</version>
+        </dependency>
+    </dependencies>
+
     <profiles>
         <profile>
             <!-- Used to compile only the 1.19 MC versions  -->
@@ -96,30 +104,60 @@
                     <artifactId>Version_1.19</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.19.1</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.19.2</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.19.3</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.19.4</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
             </dependencies>
         </profile>
@@ -130,15 +168,87 @@
             <dependencies>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
+                    <artifactId>Version_1.20</artifactId>
+                    <version>${revision}</version>
+                    <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>simplepets.brainsynder</groupId>
+                    <artifactId>Version_1.20.1</artifactId>
+                    <version>${revision}</version>
+                    <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>simplepets.brainsynder</groupId>
+                    <artifactId>Version_1.20.2</artifactId>
+                    <version>${revision}</version>
+                    <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>simplepets.brainsynder</groupId>
+                    <artifactId>Version_1.20.3</artifactId>
+                    <version>${revision}</version>
+                    <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.4</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>simplepets.brainsynder</groupId>
+                    <artifactId>Version_1.20.5</artifactId>
+                    <version>${revision}</version>
+                    <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.6</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
             </dependencies>
         </profile>
@@ -152,12 +262,36 @@
                     <artifactId>Version_1.21</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.21.1</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>simplepets.brainsynder</groupId>
+                    <artifactId>Version_1.21.3</artifactId>
+                    <version>${revision}</version>
+                    <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
             </dependencies>
         </profile>
@@ -172,6 +306,12 @@
                     <artifactId>Version_${minecraft.version}</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
             </dependencies>
         </profile>
@@ -191,6 +331,12 @@
                     <artifactId>Version_${target-mc}</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
             </dependencies>
         </profile>
@@ -205,45 +351,39 @@
             <dependencies>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20.2</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20.3</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20.4</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20.5</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20.6</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.21</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.21.1</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>simplepets.brainsynder</groupId>
+                    <artifactId>Version_1.21.3</artifactId>
+                    <version>${revision}</version>
+                    <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>anvil.brainsynder</groupId>
+                            <artifactId>anvilgui</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <!-- AUTOMATION: INSERTION POINT -->
             </dependencies>

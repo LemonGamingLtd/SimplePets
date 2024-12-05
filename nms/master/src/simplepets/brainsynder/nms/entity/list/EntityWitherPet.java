@@ -8,13 +8,13 @@ import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.hostile.IEntityWitherPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.boss.wither.WitherBoss}
  */
-public class EntityWitherPet extends EntityPet implements IEntityWitherPet {
+public class EntityWitherPet extends EntityPetOverride implements IEntityWitherPet {
     private static final EntityDataAccessor<Integer> FIRST_HEAD_TARGET = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SECOND_HEAD_TARGET = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> THIRD_HEAD_TARGET = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);

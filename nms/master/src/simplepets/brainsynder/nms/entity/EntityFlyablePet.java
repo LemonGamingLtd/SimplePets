@@ -13,7 +13,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
 
-public abstract class EntityFlyablePet extends EntityPet implements IFlyableEntity {
+public abstract class EntityFlyablePet extends EntityPetOverride implements IFlyableEntity {
     public EntityFlyablePet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
         this.moveControl = new FlyingMoveControl(this, 20, false);

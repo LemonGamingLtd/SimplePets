@@ -8,7 +8,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.phys.Vec3;
 import simplepets.brainsynder.api.entity.passive.IEntityPandaPet;
 import simplepets.brainsynder.api.pet.PetType;
@@ -134,7 +133,7 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
         VersionTranslator.getEntityLevel(this).addParticle(ParticleTypes.SNEEZE, x, y, z, var0.x, 0.0D, var0.z);
         this.playSound(SoundEvents.PANDA_SNEEZE, 1.0F, 1.0F);
 
-        List<EntityPandaPet> nearby = VersionTranslator.getEntityLevel(this).getNearbyEntities(EntityPandaPet.class, TargetingConditions.forNonCombat(), this, this.getBoundingBox().inflate(10.0D));
+        List<EntityPandaPet> nearby = VersionTranslator.getEntityLevel(this).getEntitiesOfClass(EntityPandaPet.class, this.getBoundingBox().inflate(10.0D));
         nearby.forEach(panda -> {
             if (panda.onGround && !panda.isInWater() && panda.isSpookedBySneeze()) {
                 panda.jumpFromGround();

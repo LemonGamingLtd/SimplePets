@@ -109,7 +109,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         debug = new Debug(this);
         SERVER_INFORMATION = new ServerInformation();
 
-        if (ServerVersion.isEqualNew(ServerVersion.v1_21)) {
+        if (ServerVersion.isEqualNew(ServerVersion.v1_21_3)) {
             SimplePets.getDebugLogger().debug(DebugBuilder.build()
                 .setLevel(DebugLevel.WARNING).setBroadcast(true)
                 .setMessages(

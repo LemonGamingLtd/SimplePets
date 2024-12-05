@@ -16,7 +16,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.debug.DebugBuilder;
 import simplepets.brainsynder.debug.DebugLevel;
 import simplepets.brainsynder.nms.VersionTranslator;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.util.Optional;
@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * NMS: {@link net.minecraft.world.entity.monster.Enderman}
  */
-public class EntityEndermanPet extends EntityPet implements IEntityEndermanPet {
+public class EntityEndermanPet extends EntityPetOverride implements IEntityEndermanPet {
     private static final EntityDataAccessor<Optional<BlockState>> CARRIED_BLOCK = SynchedEntityData.defineId(EntityEndermanPet.class, VersionTranslator.OPTIONAL_BLOCK_STATE);
     private static final EntityDataAccessor<Boolean> SCREAMING = SynchedEntityData.defineId(EntityEndermanPet.class, EntityDataSerializers.BOOLEAN);
 

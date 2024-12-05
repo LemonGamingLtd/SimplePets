@@ -8,13 +8,13 @@ import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.hostile.IEntityCreeperPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.Creeper}
  */
-public class EntityCreeperPet extends EntityPet implements IEntityCreeperPet {
+public class EntityCreeperPet extends EntityPetOverride implements IEntityCreeperPet {
     protected static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(EntityCreeperPet.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> POWERED = SynchedEntityData.defineId(EntityCreeperPet.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> IGNITED = SynchedEntityData.defineId(EntityCreeperPet.class, EntityDataSerializers.BOOLEAN);

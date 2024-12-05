@@ -14,12 +14,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WoolCarpetBlock;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.v1_21_R1.util.CraftNamespacedKey;
 import simplepets.brainsynder.api.entity.passive.IEntityLlamaPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.ColorWrapper;
 import simplepets.brainsynder.api.wrappers.LlamaColor;
+import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.branch.EntityDonkeyAbstractPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -89,7 +89,7 @@ public class EntityLlamaPet extends EntityDonkeyAbstractPet implements IEntityLl
             return;
         }
         DyeColor dyeColor = DyeColor.byId(color.getWoolData());
-        Item item = BuiltInRegistries.ITEM.get(CraftNamespacedKey.toMinecraft(NamespacedKey.minecraft(dyeColor.getName()+"_carpet")));
+        Item item = VersionTranslator.getRegistryValue(BuiltInRegistries.ITEM, NamespacedKey.minecraft(dyeColor.getName()+"_carpet"));
 
         setItemSlot(EquipmentSlot.BODY, new ItemStack(item));
     }

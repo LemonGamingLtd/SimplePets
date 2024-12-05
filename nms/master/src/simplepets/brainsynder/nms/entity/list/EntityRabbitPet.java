@@ -5,6 +5,7 @@ import lib.brainsynder.reflection.Reflection;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -14,7 +15,6 @@ import simplepets.brainsynder.api.entity.passive.IEntityRabbitPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.RabbitType;
-import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.entity.controller.ControllerJumpRabbit;
 import simplepets.brainsynder.nms.entity.controller.ControllerMoveRabbit;
@@ -74,7 +74,7 @@ public class EntityRabbitPet extends EntityAgeablePet implements IEntityRabbitPe
     }
 
     @Override
-    public void customServerAiStep() {
+    protected void customServerAiStep(ServerLevel worldserver) {
         if (this.ticksUntilJump > 0) {
             --this.ticksUntilJump;
         }

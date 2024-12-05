@@ -95,6 +95,7 @@
             <groupId>anvil.brainsynder</groupId>
             <artifactId>anvilgui</artifactId>
             <version>${anvilgui.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

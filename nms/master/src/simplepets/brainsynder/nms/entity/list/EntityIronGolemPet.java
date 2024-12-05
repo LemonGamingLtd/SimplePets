@@ -4,12 +4,12 @@ import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.passive.IEntityIronGolemPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityPetOverride;
 
 /**
  * NMS: {@link net.minecraft.world.entity.animal.IronGolem}
  */
-public class EntityIronGolemPet extends EntityPet implements IEntityIronGolemPet {
+public class EntityIronGolemPet extends EntityPetOverride implements IEntityIronGolemPet {
     public EntityIronGolemPet(PetType type, PetUser user) {
         super(EntityType.IRON_GOLEM, type, user);
     }

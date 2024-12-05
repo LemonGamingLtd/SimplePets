@@ -12,7 +12,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
-public abstract class EntityAgeablePet extends EntityPet implements IAgeablePet {
+public abstract class EntityAgeablePet extends EntityPetOverride implements IAgeablePet {
     private static final EntityDataAccessor<Boolean> BABY = SynchedEntityData.defineId(EntityAgeablePet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityAgeablePet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {

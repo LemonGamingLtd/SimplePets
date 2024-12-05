@@ -11,12 +11,12 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.CatVariant;
-import org.bukkit.craftbukkit.v1_21_R1.CraftRegistry;
-import org.bukkit.craftbukkit.v1_21_R1.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_21_R2.CraftRegistry;
 import simplepets.brainsynder.api.entity.passive.IEntityCatPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.CatType;
+import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityTameablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -73,7 +73,7 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
         this.type = type;
 
         Registry<CatVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.CAT_VARIANT);
-        entityData.set(TYPE, registry.wrapAsHolder(registry.get(CraftNamespacedKey.toMinecraft(type.getKey()))));
+        entityData.set(TYPE, registry.wrapAsHolder(VersionTranslator.getRegistryValue(registry, type.getKey())));
     }
 
     @Override

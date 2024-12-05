@@ -1,10 +1,8 @@
 package simplepets.brainsynder.nms.entity;
 
-import lib.brainsynder.ServerVersion;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import simplepets.brainsynder.api.pet.PetType;
@@ -13,9 +11,6 @@ import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.list.EntityRabbitPet;
 import simplepets.brainsynder.nms.entity.list.EntitySlimePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
-import simplepets.brainsynder.utils.VersionFields;
-
-import java.lang.reflect.Field;
 
 public class EntityBase extends Mob {
     protected  final EntityType<? extends Mob> entityType;
@@ -89,19 +84,6 @@ public class EntityBase extends Mob {
     }
 
     EntityType<? extends Mob> getEntityType(EntityType<? extends Mob> originalType)  {
-        try {
-            Field field = EntityType.class.getDeclaredField(VersionFields.fromServerVersion(ServerVersion.getVersion()).getEntityFactoryField());
-            field.setAccessible(true);
-            EntityType.Builder<? extends Mob> builder = EntityType.Builder.of((EntityType.EntityFactory<? extends Mob>) field.get(originalType), MobCategory.AMBIENT);
-            builder.sized(0.1f, 0.1f);
-            return builder.build(petType.name().toLowerCase());
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            e.printStackTrace();
-            return originalType;
-        }
-    }
-
-    public boolean alwaysAccepts() {
-        return super.alwaysAccepts();
+        return null;
     }
 }

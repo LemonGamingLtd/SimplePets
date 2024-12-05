@@ -3,6 +3,7 @@ package simplepets.brainsynder.nms.entity.special;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.sounds.SoundMaker;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -103,7 +104,7 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
                 || (this.displayEntity.isDead())
                 || (!this.displayEntity.isValid())) {
             displayEntity = null;
-            kill();
+            VersionTranslator.killEntity(this, (ServerLevel) level());
             return;
         }
 
@@ -116,7 +117,7 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
                 }
             }else{
                 displayEntity = null;
-                kill();
+                VersionTranslator.killEntity(this, (ServerLevel) level());
                 return;
             }
         }else if (this.displayEntity != null) {
@@ -132,7 +133,7 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
                 }
             }else{
                 displayEntity = null;
-                kill();
+                VersionTranslator.killEntity(this, (ServerLevel) level());
                 return;
             }
         }
@@ -219,7 +220,7 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
             displayEntity.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
             loc.getWorld().getNearbyEntities(loc, 100, 100, 100).forEach(entity -> {
                 if (entity instanceof Player player) {
-                    ClientboundTeleportEntityPacket packet = new ClientboundTeleportEntityPacket(displayEntity);
+                    ClientboundTeleportEntityPacket packet = VersionTranslator.getTeleportPacket(displayEntity);
                     VersionTranslator.<ServerPlayer>getEntityHandle(player).connection.send(packet);
                 }
             });
@@ -242,7 +243,7 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
         displayEntity.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         loc.getWorld().getNearbyEntities(loc, 100, 100, 100).forEach(entity -> {
             if (entity instanceof Player player) {
-                ClientboundTeleportEntityPacket packet = new ClientboundTeleportEntityPacket(displayEntity);
+                ClientboundTeleportEntityPacket packet = VersionTranslator.getTeleportPacket(displayEntity);
                 VersionTranslator.<ServerPlayer>getEntityHandle(player).connection.send(packet);
             }
         });

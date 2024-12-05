@@ -9,13 +9,13 @@ import net.minecraft.world.entity.Mob;
 import simplepets.brainsynder.api.entity.hostile.IEntityZombiePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.Zombie}
  */
-public class EntityZombiePet extends EntityPet implements IEntityZombiePet {
+public class EntityZombiePet extends EntityPetOverride implements IEntityZombiePet {
     private static final EntityDataAccessor<Boolean> BABY = SynchedEntityData.defineId(EntityZombiePet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> UNKNOWN = SynchedEntityData.defineId(EntityZombiePet.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DROWN_CONVERTING = SynchedEntityData.defineId(EntityZombiePet.class, EntityDataSerializers.BOOLEAN);

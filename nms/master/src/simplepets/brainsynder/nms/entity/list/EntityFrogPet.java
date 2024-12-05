@@ -16,12 +16,12 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.FrogVariant;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.craftbukkit.v1_21_R1.CraftRegistry;
-import org.bukkit.craftbukkit.v1_21_R1.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_21_R2.CraftRegistry;
 import simplepets.brainsynder.api.entity.passive.IEntityFrogPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.FrogType;
+import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -120,7 +120,7 @@ public class EntityFrogPet extends EntityAgeablePet implements IEntityFrogPet {
         this.type = type;
 
         Registry<FrogVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.FROG_VARIANT);
-        entityData.set(DATA_VARIANT, registry.wrapAsHolder(registry.get(CraftNamespacedKey.toMinecraft(type.getKey()))));
+        entityData.set(DATA_VARIANT, registry.wrapAsHolder(VersionTranslator.getRegistryValue(registry, type.getKey())));
     }
 
     @Override

@@ -116,5 +116,11 @@
             <artifactId>NMS_Master</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <dependency>
+            <groupId>anvil.brainsynder</groupId>
+            <artifactId>anvilgui</artifactId>
+            <version>${anvilgui.version}</version>
+        </dependency>
     </dependencies>
 </project>

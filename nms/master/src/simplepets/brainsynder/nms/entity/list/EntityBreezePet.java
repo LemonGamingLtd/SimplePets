@@ -6,13 +6,13 @@ import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.hostile.IEntityBreezePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityPetOverride;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.breeze.Breeze}
  */
 @SupportedVersion(version = ServerVersion.v1_21)
-public class EntityBreezePet extends EntityPet implements IEntityBreezePet {
+public class EntityBreezePet extends EntityPetOverride implements IEntityBreezePet {
     public EntityBreezePet(PetType type, PetUser user) {
         super(EntityType.BREEZE, type, user);
     }

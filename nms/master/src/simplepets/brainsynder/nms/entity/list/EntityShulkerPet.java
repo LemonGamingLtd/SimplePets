@@ -177,7 +177,7 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
         if ((this.pet == null)
                 || (VersionTranslator.getBukkitEntity(pet).isDead())
                 || (!VersionTranslator.getBukkitEntity(pet).isValid())) {
-            kill();
+            VersionTranslator.killEntity(this, (ServerLevel) level());
             return;
         }
 
@@ -381,10 +381,5 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
     // https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/764a541c5b5fd872ec3cacfc3d51d88e8599d569#nms-patches%2Fnet%2Fminecraft%2Fworld%2Fentity%2FEntityLiving.patch?t=872
     protected boolean actuallyHurt(DamageSource damageSource, float f, EntityDamageEvent event) {
         return false;
-    }
-
-    @Override
-    public boolean alwaysAccepts() {
-        return super.alwaysAccepts();
     }
 }

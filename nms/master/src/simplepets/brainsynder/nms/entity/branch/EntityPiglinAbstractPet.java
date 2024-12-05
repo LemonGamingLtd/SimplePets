@@ -9,10 +9,10 @@ import net.minecraft.world.entity.Mob;
 import simplepets.brainsynder.api.entity.misc.IShaking;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
-public abstract class EntityPiglinAbstractPet extends EntityPet implements IShaking {
+public abstract class EntityPiglinAbstractPet extends EntityPetOverride implements IShaking {
     private static final EntityDataAccessor<Boolean> IMMUNE_TO_ZOMBIFICATION = SynchedEntityData.defineId(EntityPiglinAbstractPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityPiglinAbstractPet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {

@@ -12,6 +12,7 @@ import lib.brainsynder.reflection.FieldAccessor;
 import lib.brainsynder.storage.RandomCollection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -19,11 +20,13 @@ import net.minecraft.nbt.TagParser;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -289,5 +292,18 @@ public class VersionTranslator {
     // ADDED DURING 1.20.5 DEVELOPMENT
     public static boolean isWalkable (EntityPet entity, BlockPos.MutableBlockPos blockposition) {
         return WalkNodeEvaluator.getPathTypeStatic(entity, blockposition) == PathType.WALKABLE;
+    }
+
+    // ADDED DURING 1.21.3 DEVELOPMENT
+    public static <T> T getRegistryValue (Registry<T> registry, NamespacedKey key) {
+        return registry.get(CraftNamespacedKey.toMinecraft(key));
+    }
+
+    public static void killEntity (Entity entity, ServerLevel level) {
+        entity.kill();
+    }
+
+    public static ClientboundTeleportEntityPacket getTeleportPacket (Entity entity) {
+        return new ClientboundTeleportEntityPacket(entity);
     }
 }

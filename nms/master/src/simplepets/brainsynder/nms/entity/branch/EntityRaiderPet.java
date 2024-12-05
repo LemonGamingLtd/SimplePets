@@ -9,10 +9,10 @@ import net.minecraft.world.entity.Mob;
 import simplepets.brainsynder.api.entity.misc.IRaider;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
-public abstract class EntityRaiderPet extends EntityPet implements IRaider {
+public abstract class EntityRaiderPet extends EntityPetOverride implements IRaider {
     private static final EntityDataAccessor<Boolean> CELEBRATING = SynchedEntityData.defineId(EntityRaiderPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityRaiderPet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {

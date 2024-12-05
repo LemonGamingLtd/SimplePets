@@ -18,7 +18,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 // Implement Bucketable so the server resends the entity when the client tries
 // to pick it up with a bucket
-public class EntityFishPet extends EntityPet implements IEntityFishPet, Bucketable {
+public class EntityFishPet extends EntityPetOverride implements IEntityFishPet, Bucketable {
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityFishPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityFishPet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
