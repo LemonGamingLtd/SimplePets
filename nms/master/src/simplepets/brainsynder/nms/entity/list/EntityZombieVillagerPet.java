@@ -1,5 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
+import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -26,6 +27,16 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
 
     public EntityZombieVillagerPet(PetType type, PetUser user) {
         super(EntityType.ZOMBIE_VILLAGER, type, user);
+    }
+
+    @Override
+    public void fetchPetData(JsonObject data) {
+        super.fetchPetData(data);
+        data.add("raised-arms", isArmsRaised());
+        data.add("shaking", isShaking());
+        data.add("profession", getVillagerType().name());
+        data.add("biome", getBiome().name());
+        data.add("level", getMasteryLevel().name());
     }
 
     @Override

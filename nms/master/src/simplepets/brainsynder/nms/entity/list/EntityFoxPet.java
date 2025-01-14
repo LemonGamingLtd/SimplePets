@@ -1,5 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
+import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -27,6 +28,16 @@ public class EntityFoxPet extends EntityAgeablePet implements IEntityFoxPet {
 
     public EntityFoxPet(PetType type, PetUser user) {
         super(EntityType.FOX, type, user);
+    }
+
+    @Override
+    public void fetchPetData(JsonObject data) {
+        super.fetchPetData(data);
+        data.add("type", getFoxType().name());
+        data.add("interested", isInterested());
+        data.add("crouching", isCrouching());
+        data.add("sitting", isSitting());
+        data.add("sleep", isPetSleeping());
     }
 
     @Override

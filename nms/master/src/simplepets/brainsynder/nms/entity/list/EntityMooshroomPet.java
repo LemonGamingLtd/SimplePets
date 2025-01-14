@@ -1,5 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
+import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,6 +21,12 @@ public class EntityMooshroomPet extends EntityAgeablePet implements IEntityMoosh
 
     public EntityMooshroomPet(PetType type, PetUser user) {
         super(EntityType.MOOSHROOM, type, user);
+    }
+
+    @Override
+    public void fetchPetData(JsonObject data) {
+        super.fetchPetData(data);
+        data.add("type", getMooshroomType().name());
     }
 
     @Override

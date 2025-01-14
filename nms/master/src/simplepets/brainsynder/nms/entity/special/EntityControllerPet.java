@@ -104,6 +104,7 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
                 || (this.displayEntity.isDead())
                 || (!this.displayEntity.isValid())) {
             displayEntity = null;
+            System.out.println("Killing entity");
             VersionTranslator.killEntity(this, (ServerLevel) level());
             return;
         }
@@ -118,6 +119,7 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
             }else{
                 displayEntity = null;
                 VersionTranslator.killEntity(this, (ServerLevel) level());
+                System.out.println("Killing entity - 2");
                 return;
             }
         }else if (this.displayEntity != null) {
@@ -129,10 +131,11 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
                 }
                 updateName(entity);
                 if (!canIgnoreVanish()) {
-                    if (VersionTranslator.getEntityHandle(p).isInvisible() != entity.isInvisible()) entity.setInvisible(!entity.isInvisible());
+                    // if (VersionTranslator.getEntityHandle(p).isInvisible() != entity.isInvisible()) entity.setInvisible(!entity.isInvisible());
                 }
             }else{
                 displayEntity = null;
+                System.out.println("Killing entity - 3");
                 VersionTranslator.killEntity(this, (ServerLevel) level());
                 return;
             }
@@ -199,6 +202,7 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
         VersionTranslator.getBukkitEntity(this).remove();
         for (Entity ent : ENTITIES) ent.remove();
         displayEntity = null;
+        System.out.println("Removing entity");
         displayRider = null;
     }
 

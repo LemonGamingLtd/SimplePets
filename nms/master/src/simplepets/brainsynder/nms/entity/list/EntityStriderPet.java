@@ -1,5 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
+import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,6 +23,13 @@ public class EntityStriderPet extends EntityAgeablePet implements IEntityStrider
     public EntityStriderPet(PetType type, PetUser user) {
         super(EntityType.STRIDER, type, user);
         doIndirectAttach = true;
+    }
+
+    @Override
+    public void fetchPetData(JsonObject data) {
+        super.fetchPetData(data);
+        data.add("cold", isCold());
+        data.add("saddled", isSaddled());
     }
 
     @Override

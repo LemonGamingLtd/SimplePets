@@ -2,6 +2,7 @@ package simplepets.brainsynder.nms.entity.list;
 
 import lib.brainsynder.ServerVersion;
 import lib.brainsynder.SupportedVersion;
+import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.math.MathUtils;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.core.Holder;
@@ -16,7 +17,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.FrogVariant;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.craftbukkit.v1_21_R2.CraftRegistry;
+import org.bukkit.craftbukkit.v1_21_R3.CraftRegistry;
 import simplepets.brainsynder.api.entity.passive.IEntityFrogPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -45,6 +46,14 @@ public class EntityFrogPet extends EntityAgeablePet implements IEntityFrogPet {
     public EntityFrogPet(PetType type, PetUser user) {
         super(EntityType.FROG, type, user);
         //this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true);
+    }
+
+    @Override
+    public void fetchPetData(JsonObject data) {
+        super.fetchPetData(data);
+        data.add("variant", getVariant().name());
+        data.add("croaking", isCroaking());
+        data.add("tongue", isUsingTongue());
     }
 
     @Override

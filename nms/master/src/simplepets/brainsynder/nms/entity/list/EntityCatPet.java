@@ -1,5 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
+import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.utils.DyeColorWrapper;
 import net.minecraft.core.Holder;
@@ -11,7 +12,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.CatVariant;
-import org.bukkit.craftbukkit.v1_21_R2.CraftRegistry;
+import org.bukkit.craftbukkit.v1_21_R3.CraftRegistry;
 import simplepets.brainsynder.api.entity.passive.IEntityCatPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -32,6 +33,17 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
 
     public EntityCatPet(PetType type, PetUser user) {
         super(EntityType.CAT, type, user);
+    }
+
+    @Override
+    public void fetchPetData(JsonObject data) {
+        super.fetchPetData(data);
+        data.add("type", getCatType().name());
+        data.add("collar", getCollarColor().name());
+        data.add("sleeping", isPetSleeping());
+        data.add("head-up", isHeadUp());
+        data.add("tamed", isTamed());
+        data.add("sitting", isSitting());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
+import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.utils.DyeColorWrapper;
 import net.minecraft.core.Holder;
@@ -10,8 +11,8 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.WolfVariant;
-import org.bukkit.craftbukkit.v1_21_R2.CraftRegistry;
-import org.bukkit.craftbukkit.v1_21_R2.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_21_R3.CraftRegistry;
+import org.bukkit.craftbukkit.v1_21_R3.util.CraftNamespacedKey;
 import org.bukkit.entity.Wolf;
 import simplepets.brainsynder.api.entity.passive.IEntityWolfPet;
 import simplepets.brainsynder.api.pet.PetType;
@@ -37,6 +38,16 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
 
     public EntityWolfPet(PetType type, PetUser user) {
         super(EntityType.WOLF, type, user);
+    }
+
+    @Override
+    public void fetchPetData(JsonObject data) {
+        super.fetchPetData(data);
+        data.add("anger", isAngry());
+        data.add("shaking", isShaking());
+        data.add("head-tilted", isHeadTilted());
+        data.add("collar-color", getColor().name());
+        data.add("type", getWolfType().name());
     }
 
     @Override

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.craftbukkit.v1_21_R2.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_21_R3.util.CraftNamespacedKey;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.nms.entity.EntityPet;
 
@@ -192,5 +193,13 @@ public class VersionTranslator {
 
     public static ClientboundTeleportEntityPacket getTeleportPacket (Entity entity) {
         throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
+    }
+
+    // ADDED DURING 1.21.4 DEVELOPMENT
+    public static void setupFlyingNavigation (EntityPet entityPet, Level level, FlyingPathNavigation navigation) {
+        // throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
+        navigation.setCanOpenDoors(false);
+        navigation.setCanFloat(false);
+        // navigation.setCanPassDoors(true);
     }
 }

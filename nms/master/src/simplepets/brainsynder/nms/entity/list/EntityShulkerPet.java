@@ -1,6 +1,7 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import io.papermc.lib.PaperLib;
+import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -59,6 +60,13 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
         pet.setBabySafe(true);
         this.user = user;
         this.additional = new HashMap<>();
+    }
+
+    @Override
+    public void fetchPetDebugInformation(JsonObject debugInfo) {
+        if (!isRainbow()) debugInfo.add("color", getColorWrapper().name());
+        debugInfo.add("rainbow", isRainbow());
+        debugInfo.add("closed", isShulkerClosed());
     }
 
     @Override

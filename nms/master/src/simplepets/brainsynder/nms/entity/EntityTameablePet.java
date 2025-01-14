@@ -1,5 +1,6 @@
 package simplepets.brainsynder.nms.entity;
 
+import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,6 +21,13 @@ public class EntityTameablePet extends EntityAgeablePet implements ITameable {
 
     public EntityTameablePet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
+    }
+
+    @Override
+    public void fetchPetData(JsonObject data) {
+        super.fetchPetData(data);
+        data.add("tamed", isTamed());
+        data.add("sitting", isSitting());
     }
 
     @Override

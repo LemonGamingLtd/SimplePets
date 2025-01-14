@@ -3,10 +3,12 @@ package simplepets.brainsynder.nms.entity.list;
 import com.mojang.authlib.GameProfile;
 import io.papermc.lib.PaperLib;
 import lib.brainsynder.item.ItemBuilder;
+import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageBase;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.StorageTagString;
 import lib.brainsynder.utils.Base64Wrapper;
+import lib.brainsynder.utils.Utilities;
 import net.minecraft.core.Rotations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -30,7 +32,9 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
+import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.entity.ambient.IEntityArmorStandPet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.other.ParticleHandler;
@@ -77,6 +81,13 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
     }
 
     @Override
+    public void fetchPetDebugInformation(JsonObject debugInfo) {
+        debugInfo.set("small", isSmallStand());
+        debugInfo.set("clone", isOwner());
+        debugInfo.set("restricted", isRestricted());
+    }
+
+    @Override
     public EntityType<?> getType() {
         return EntityType.ARMOR_STAND;
     }
@@ -89,8 +100,22 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         stand.setInvulnerable(true);
         stand.persist = true;
         stand.setSpecial(true);
+        stand.setInvisible(false);
         VersionTranslator.addEntity(VersionTranslator.getWorldHandle(location.getWorld()), stand, CreatureSpawnEvent.SpawnReason.CUSTOM);
         pet.setIgnoreVanish(true);
+        System.out.println("Spawning entity at " + location.getX() + ", " + location.getY() + ", " + location.getZ());
+        System.out.println("Valid? " + stand.valid);
+        System.out.println("Dead? " + stand.isDeadOrDying());
+        System.out.println("Invisible? " + stand.isInvisible());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                stand.getBukkitEntity().setGravity(true);
+                System.out.println("2- Valid? " + Utilities.isValid(stand.getBukkitEntity()));
+                System.out.println("2- Dead? " + stand.isDeadOrDying());
+                System.out.println("2- Invisible? " + stand.isInvisible());
+            }
+        }.runTaskLater(PetCore.getInstance(), 60);
         return stand;
     }
 

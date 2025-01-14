@@ -117,7 +117,10 @@ public enum PetType {
 
     @PetCustomization(ambient = SoundMaker.ENTITY_CREEPER_HURT, weight = PetWeight.SLIGHTLY_HEAVY)
     CREEPER(IEntityCreeperPet.class, Material.CREEPER_HEAD,
-        PoweredData.class),
+            PoweredData.class),
+
+    @PetCustomization(ambient = SoundMaker.ENTITY_CREAKING_AMBIENT, weight = PetWeight.SLIGHTLY_HEAVY)
+    CREAKING(IEntityCreakingPet.class, "77b5be72769ccff1a6cb77c5848e01d7e5704a3d349c0737ff93cb54d02380ac"),
 
     @PetCustomization(ambient = SoundMaker.ENTITY_DOLPHIN_AMBIENT, weight = PetWeight.SLIGHTLY_HEAVY)
     DOLPHIN(IEntityDolphinPet.class, "8e9688b950d880b55b7aa2cfcd76e5a0fa94aac6d16f78e833f7443ea29fed3"),
