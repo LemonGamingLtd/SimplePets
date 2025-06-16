@@ -10,10 +10,10 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.WolfVariant;
-import org.bukkit.craftbukkit.v1_21_R3.CraftRegistry;
-import org.bukkit.craftbukkit.v1_21_R3.util.CraftNamespacedKey;
-import org.bukkit.entity.Wolf;
+import net.minecraft.world.entity.animal.wolf.WolfVariant;
+import net.minecraft.world.entity.animal.wolf.WolfVariants;
+import org.bukkit.craftbukkit.v1_21_R4.CraftRegistry;
+import org.bukkit.craftbukkit.v1_21_R4.util.CraftNamespacedKey;
 import simplepets.brainsynder.api.entity.passive.IEntityWolfPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -21,6 +21,7 @@ import simplepets.brainsynder.api.wrappers.WolfType;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityTameablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
+import simplepets.brainsynder.nms.utils.VariantUtils;
 
 /**
  * NMS: {@link net.minecraft.world.entity.animal.Wolf}
@@ -53,7 +54,7 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
     @Override
     public void populateDataAccess(PetDataAccess dataAccess) {
         super.populateDataAccess(dataAccess);
-        dataAccess.define(DATA_VARIANT_ID, VersionTranslator.getRegistryValue(CraftRegistry.getMinecraftRegistry(Registries.WOLF_VARIANT), Wolf.Variant.PALE.getKey()));
+        dataAccess.define(DATA_VARIANT_ID, VariantUtils.getDefaultOrAny(registryAccess(), WolfVariants.PALE));
         dataAccess.define(BEGGING, false);
         dataAccess.define(COLLAR_COLOR, DyeColorWrapper.WHITE.getWoolData());
         dataAccess.define(ANGER_TIME, 0);

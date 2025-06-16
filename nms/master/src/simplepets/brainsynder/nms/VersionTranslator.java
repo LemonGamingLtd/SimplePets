@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.craftbukkit.v1_21_R3.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_21_R4.util.CraftNamespacedKey;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.nms.entity.EntityPet;
 
@@ -201,5 +201,10 @@ public class VersionTranslator {
         navigation.setCanOpenDoors(false);
         navigation.setCanFloat(false);
         // navigation.setCanPassDoors(true);
+    }
+
+    // ADDED DURING 1.21.5 DEVELOPMENT
+    public static void moveTo (Entity entityPet, double x, double y, double z, float yaw, float pitch) {
+        throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
     }
 }

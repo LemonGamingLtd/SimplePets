@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface ISpawnUtil {
+    // TODO: Once we get our base supported version above 1.21.4 we can remove this
+    //       and just use the new method in the SpawnerUtils class in the 1.21.4 module
+    default void renameViaAnvil (PetUser user, PetType type) {}
 
     /**
      * Will spawn the selected pet

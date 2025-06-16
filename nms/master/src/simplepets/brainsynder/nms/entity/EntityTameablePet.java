@@ -5,7 +5,9 @@ import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import simplepets.brainsynder.api.entity.misc.ITameable;
 import simplepets.brainsynder.api.pet.PetType;
@@ -13,11 +15,10 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public class EntityTameablePet extends EntityAgeablePet implements ITameable {
     private static final EntityDataAccessor<Byte> TAMEABLE_FLAGS = SynchedEntityData.defineId(EntityTameablePet.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(EntityTameablePet.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<EntityReference<LivingEntity>>> OWNER_UUID = SynchedEntityData.defineId(EntityTameablePet.class, EntityDataSerializers.OPTIONAL_LIVING_ENTITY_REFERENCE);
 
     public EntityTameablePet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);

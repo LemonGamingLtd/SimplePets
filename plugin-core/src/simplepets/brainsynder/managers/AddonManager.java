@@ -403,10 +403,6 @@ public class AddonManager {
         WebConnector.getInputStreamString("https://bsdevelopment.org/api/addons/list/SimplePets", plugin, result -> {
             List<AddonCloudData> addons = Lists.newArrayList();
 
-            // Send a debug message with the result of the request, this is hidden so it doesn't spam the console
-            // but can be viewed in the debug report
-            SimplePets.getDebugLogger().debug(DebugLevel.HIDDEN, "Fetched Addons: `" + result+"`");
-
             JsonArray array = Json.parse(result).asArray();
             array.forEach(jsonValue -> {
                 JsonObject json = jsonValue.asObject();
@@ -416,24 +412,29 @@ public class AddonManager {
                     throw new AddonParsingException("Json object is not empty: '" + jsonValue + "'");
 
                 // Check for missing fields, output an error if any are missing containing the json object
-                for (String key : Arrays.asList("id", "name", "description", "author", "version", "download_url", "last_updated", "download_count")) {
-                    if (!json.names().contains(key))
-                        throw new AddonParsingException("Missing '" + key + "' field in addon data: '" + jsonValue + "'");
+//                for (String key : Arrays.asList("id", "name", "description", "author", "version", "download_url", "last_updated", "download_count")) {
+//                    if (!json.names().contains(key))
+//                        throw new AddonParsingException("Missing '" + key + "' field in addon data: '" + jsonValue + "'");
+//                }
+
+                try {
+                    AddonCloudData data = new AddonCloudData(
+                            json.get("id").asString(),
+                            json.get("name").asString(),
+                            json.get("description").asString(),
+                            json.get("author").asString(),
+                            json.get("version").asString(),
+                            json.get("download_url").asString(),
+                            json.get("last_updated").asString(),
+                            json.get("download_count").asInt()
+                    );
+
+                    addons.add(data);
+                    registeredAddons.add(data.getName());
+                } catch (Exception e) {
+                    // Failed to fetch addon data
+                    SimplePets.getDebugLogger().debug(DebugLevel.HIDDEN, "Failed to fetch data for addon: "+json.getString("name", "UNKNOWN NAME")+" (v"+json.getString("version", "UNKNOWN VERSION")+")");
                 }
-
-                AddonCloudData data = new AddonCloudData(
-                    json.get("id").asString(),
-                    json.get("name").asString(),
-                    json.get("description").asString(),
-                    json.get("author").asString(),
-                    json.get("version").asString(),
-                    json.get("download_url").asString(),
-                    json.get("last_updated").asString(),
-                    json.get("download_count").asInt()
-                );
-
-                addons.add(data);
-                registeredAddons.add(data.getName());
             });
             consumer.accept(addons);
         });

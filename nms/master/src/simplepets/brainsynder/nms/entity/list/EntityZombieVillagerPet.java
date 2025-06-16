@@ -2,12 +2,15 @@ package simplepets.brainsynder.nms.entity.list;
 
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import org.bukkit.craftbukkit.v1_21_R4.entity.CraftVillager;
+import org.bukkit.entity.Villager;
 import simplepets.brainsynder.api.entity.hostile.IEntityZombieVillagerPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -15,7 +18,6 @@ import simplepets.brainsynder.api.wrappers.villager.BiomeType;
 import simplepets.brainsynder.api.wrappers.villager.VillagerInfo;
 import simplepets.brainsynder.api.wrappers.villager.VillagerLevel;
 import simplepets.brainsynder.api.wrappers.villager.VillagerType;
-import simplepets.brainsynder.nms.utils.EntityUtils;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
@@ -43,7 +45,11 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
     public void populateDataAccess(PetDataAccess dataAccess) {
         super.populateDataAccess(dataAccess);
         dataAccess.define(CONVERTING, false);
-        dataAccess.define(VILLAGER_DATA, new VillagerData(EntityUtils.getTypeFromBiome(BiomeType.PLAINS), VillagerProfession.NONE, 1));
+        dataAccess.define(VILLAGER_DATA, new VillagerData(
+                BuiltInRegistries.VILLAGER_TYPE.getOrThrow(net.minecraft.world.entity.npc.VillagerType.PLAINS),
+                BuiltInRegistries.VILLAGER_PROFESSION.getOrThrow(VillagerProfession.NONE),
+                1
+        ));
     }
 
     @Override
@@ -82,13 +88,20 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
 
     @Override
     public VillagerInfo getVillagerData() {
-        return  new VillagerInfo(EntityUtils.getBiomeFromType(getRawData().getType()), VillagerType.getVillagerType(getRawData().getProfession().toString()), VillagerLevel.getById(getRawData().getLevel()));
+        net.minecraft.world.entity.npc.VillagerData raw = getRawData();
+        return  new VillagerInfo(
+                BiomeType.valueOf(CraftVillager.CraftType.minecraftHolderToBukkit(raw.type()).name()),
+                VillagerType.valueOf(CraftVillager.CraftProfession.minecraftHolderToBukkit(raw.profession()).name()),
+                VillagerLevel.getById(raw.level())
+        );
     }
 
     @Override
     public void setVillagerData(VillagerInfo data) {
-        net.minecraft.world.entity.npc.VillagerType biome = EntityUtils.getTypeFromBiome(data.getBiome());
-
-        entityData.set(VILLAGER_DATA, new VillagerData(biome, EntityUtils.getProfession(data.getType()), data.getLevel().ordinal()+1));
+        entityData.set(VILLAGER_DATA, new VillagerData(
+                CraftVillager.CraftType.bukkitToMinecraftHolder(Villager.Type.valueOf(data.getBiome().name())),
+                CraftVillager.CraftProfession.bukkitToMinecraftHolder(Villager.Profession.valueOf(data.getType().name())),
+                data.getLevel().ordinal()+1
+        ));
     }
 }

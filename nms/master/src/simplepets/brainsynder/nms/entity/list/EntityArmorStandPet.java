@@ -9,7 +9,6 @@ import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.StorageTagString;
 import lib.brainsynder.utils.Base64Wrapper;
 import lib.brainsynder.utils.Utilities;
-import net.minecraft.core.Rotations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -543,14 +542,6 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
     @Override
     public void setArmsVisibile(boolean flag) {
         ((org.bukkit.entity.ArmorStand)VersionTranslator.getBukkitEntity(this)).setArms(flag);
-    }
-
-    // CONVERSIONS
-    private EulerAngle toBukkit(Rotations vector3f) {
-        return new EulerAngle(vector3f.getX(), vector3f.getY(), vector3f.getZ());
-    }
-    private Rotations toNMS(EulerAngle angle) {
-        return new Rotations((float)angle.getX(), (float)angle.getY(), (float)angle.getZ());
     }
 
     public ItemStack getItems(EquipmentSlot enumitemslot) {

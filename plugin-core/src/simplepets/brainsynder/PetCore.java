@@ -6,12 +6,15 @@ import io.papermc.lib.PaperLib;
 import lib.brainsynder.ServerVersion;
 import lib.brainsynder.commands.CommandRegistry;
 import lib.brainsynder.json.WriterConfig;
-import lib.brainsynder.metric.bukkit.Metrics;
 import lib.brainsynder.reflection.Reflection;
 import lib.brainsynder.update.UpdateResult;
 import lib.brainsynder.update.UpdateUtils;
 import lib.brainsynder.utils.AdvString;
 import lib.brainsynder.utils.Utilities;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.AdvancedPie;
+import org.bstats.charts.DrilldownPie;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -517,11 +520,12 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
     private void handleMetrics() {
         SimplePets.getDebugLogger().debug(DebugLevel.HIDDEN, "Loading Metrics");
-        Metrics metrics = new Metrics(this);
-        metrics.addCustomChart(new Metrics.SimplePie("stupid_config_option_for_gui_command", () -> String.valueOf(ConfigOption.INSTANCE.SIMPLER_GUI.getValue())));
-        metrics.addCustomChart(new Metrics.AdvancedPie("spawned_pet_counter", this::getSpawnedPetCounts));
-        metrics.addCustomChart(new Metrics.AdvancedPie("active_pets", this::getActivePets));
-        metrics.addCustomChart(new Metrics.DrilldownPie("loaded_addons", () -> {
+        Metrics metrics = new Metrics(this, 244);
+        metrics.addCustomChart(new SimplePie("server_type", () -> String.valueOf(SERVER_INFORMATION.serverType)));
+        metrics.addCustomChart(new SimplePie("stupid_config_option_for_gui_command", () -> String.valueOf(ConfigOption.INSTANCE.SIMPLER_GUI.getValue())));
+        metrics.addCustomChart(new AdvancedPie("spawned_pet_counter", this::getSpawnedPetCounts));
+        metrics.addCustomChart(new AdvancedPie("active_pets", this::getActivePets));
+        metrics.addCustomChart(new DrilldownPie("loaded_addons", () -> {
             Map<String, Map<String, Integer>> map = new HashMap<>();
 
             Map<String, Integer> entry = new HashMap<>();
@@ -532,14 +536,14 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             });
             return map;
         }));
-        metrics.addCustomChart(new Metrics.DrilldownPie("download_type", () -> {
+        metrics.addCustomChart(new DrilldownPie("download_type", () -> {
             Map<String, Map<String, Integer>> map = new HashMap<>();
             Map<String, Integer> entry = new HashMap<>();
             entry.put("download_type", 1);
             map.put(Premium.getDownloadType().name(), entry);
             return map;
         }));
-        metrics.addCustomChart(new Metrics.AdvancedPie("addon_tracker", () -> {
+        metrics.addCustomChart(new AdvancedPie("addon_tracker", () -> {
             Map<String, Integer> valueMap = new HashMap<>();
 
             int custom = 0;

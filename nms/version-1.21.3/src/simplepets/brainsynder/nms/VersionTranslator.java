@@ -314,4 +314,9 @@ public class VersionTranslator {
         navigation.setCanFloat(false);
         navigation.setCanPassDoors(true);
     }
+
+    // ADDED DURING 1.21.5 DEVELOPMENT
+    public static void moveTo (Entity entityPet, double x, double y, double z, float yaw, float pitch) {
+        entityPet.moveTo(x, y, z, yaw, pitch);
+    }
 }

@@ -1,7 +1,8 @@
 package simplepets.brainsynder.managers;
 
-import anvil.brainsynder.AnvilGUI;
+import lib.brainsynder.ServerVersion;
 import lib.brainsynder.item.ItemBuilder;
+import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.conversations.ConversationContext;
@@ -18,6 +19,9 @@ import simplepets.brainsynder.files.MessageFile;
 import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.utils.RenameType;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 public class RenameManager {
     private final PetCore plugin;
 
@@ -26,16 +30,29 @@ public class RenameManager {
     }
 
     public void renameViaAnvil(PetUser user, PetType type) {
-        AnvilGUI.Builder builder = new AnvilGUI.Builder().plugin(plugin);
+        // TODO: Once we get our base supported version above 1.21.4 we can remove this
+        //       and just use the new method in the SpawnerUtils class in the 1.21.4 module
+
+        if (ServerVersion.isNewer(ServerVersion.v1_21_4)) {
+            plugin.getSpawnUtil().renameViaAnvil(user, type);
+            return;
+        }
+
+        AnvilGUI.Builder builder = new AnvilGUI.Builder().plugin(PetCore.getInstance());
         builder.itemLeft(new ItemBuilder(Material.NAME_TAG).withName(MessageFile.getTranslation(MessageOption.RENAME_ANVIL_TAG)).build());
-        builder.onComplete((player, name) -> {
+        builder.onClick((slot, stateSnapshot) -> {
+            if (slot != AnvilGUI.Slot.OUTPUT) return Collections.emptyList();
+
+            String name = stateSnapshot.getText();
+
             if (name.equalsIgnoreCase("reset")) name = null;
             PetRenameEvent renameEvent = new PetRenameEvent(user, type, name);
             Bukkit.getPluginManager().callEvent(renameEvent);
 
             if (!renameEvent.isCancelled()) user.setPetName(renameEvent.getName(), type);
-            return AnvilGUI.Response.close();
-        }).title(MessageFile.getTranslation(MessageOption.RENAME_ANVIL_TITLE));
+            return Arrays.asList(AnvilGUI.ResponseAction.close());
+        });
+        builder.title(MessageFile.getTranslation(MessageOption.RENAME_ANVIL_TITLE));
         builder.open(user.getPlayer());
     }
 

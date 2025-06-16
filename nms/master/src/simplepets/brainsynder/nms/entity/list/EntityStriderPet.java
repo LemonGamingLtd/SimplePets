@@ -6,6 +6,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import simplepets.brainsynder.api.entity.passive.IEntityStriderPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -18,7 +21,6 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 public class EntityStriderPet extends EntityAgeablePet implements IEntityStriderPet {
     private static final EntityDataAccessor<Integer> BOOST_TIME = SynchedEntityData.defineId(EntityStriderPet.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> COLD = SynchedEntityData.defineId(EntityStriderPet.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(EntityStriderPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityStriderPet(PetType type, PetUser user) {
         super(EntityType.STRIDER, type, user);
@@ -37,7 +39,6 @@ public class EntityStriderPet extends EntityAgeablePet implements IEntityStrider
         super.populateDataAccess(dataAccess);
         dataAccess.define(BOOST_TIME, 0);
         dataAccess.define(COLD, false);
-        dataAccess.define(SADDLED, false);
     }
 
     @Override
@@ -57,12 +58,12 @@ public class EntityStriderPet extends EntityAgeablePet implements IEntityStrider
 
     @Override
     public boolean isSaddled() {
-        return entityData.get(SADDLED);
+        return !getItemBySlot(EquipmentSlot.SADDLE).isEmpty();
     }
 
     @Override
     public void setSaddled(boolean saddled) {
-        entityData.set(SADDLED, saddled);
+        setItemSlot(EquipmentSlot.SADDLE, saddled ? new ItemStack(Items.SADDLE) : ItemStack.EMPTY);
     }
 
     @Override
