@@ -179,6 +179,11 @@ public enum PetType {
     GUARDIAN(IEntityGuardianPet.class, "a0bf34a71e7715b6ba52d5dd1bae5cb85f773dc9b0d457b4bfc5f9dd3cc7c94"),
 
     @LargePet
+    @PetCustomization(ambient = SoundMaker.ENTITY_HAPPY_GHAST_AMBIENT, weight = PetWeight.HEAVY)
+    HAPPY_GHAST(IEntityHappyGhastPet.class, "a1a36cb93d01675c4622dd5c8d872110911ec12c372e89afa8ba03862867f6fb",
+            AgeData.class, ResetColorData.class),
+
+    @LargePet
     @PetCustomization(ambient = SoundMaker.ENTITY_HOGLIN_AMBIENT, weight = PetWeight.YOUR_KILLING_ME)
     HOGLIN(IEntityHoglinPet.class, "9bb9bc0f01dbd762a08d9e77c08069ed7c95364aa30ca1072208561b730e8d75",
         AgeData.class, ShakeData.class),

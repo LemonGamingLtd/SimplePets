@@ -14,8 +14,8 @@ import net.minecraft.world.entity.animal.PigVariant;
 import net.minecraft.world.entity.animal.PigVariants;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import org.bukkit.craftbukkit.v1_21_R4.CraftRegistry;
-import org.bukkit.craftbukkit.v1_21_R4.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_21_R5.CraftRegistry;
+import org.bukkit.craftbukkit.v1_21_R5.util.CraftNamespacedKey;
 import simplepets.brainsynder.api.entity.passive.IEntityPigPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -58,13 +58,13 @@ public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
     }
 
     @Override
-    public boolean isSaddled() {
+    public boolean isPetSaddled() {
         return getItemBySlot(EquipmentSlot.SADDLE).is(Items.SADDLE);
     }
 
     @Override
-    public void setSaddled(boolean flag) {
-        if (flag) {
+    public void setPetSaddled(boolean saddled) {
+        if (saddled) {
             setItemSlot(EquipmentSlot.SADDLE, Items.SADDLE.getDefaultInstance(), true);
         } else {
             setItemSlot(EquipmentSlot.SADDLE, ItemStack.EMPTY, true);
@@ -74,21 +74,21 @@ public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
     @Override
     public void fetchPetData(JsonObject data) {
         super.fetchPetData(data);
-        data.add("saddled", isSaddled());
+        data.add("saddled", isPetSaddled());
         data.add("variant", variant.getKey().toString());
     }
 
     @Override
     public StorageTagCompound asCompound() {
         StorageTagCompound object = super.asCompound();
-        object.setBoolean("saddled", isSaddled());
+        object.setBoolean("saddled", isPetSaddled());
         object.setEnum("variant", getVariant());
         return object;
     }
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("saddled")) setSaddled(object.getBoolean("saddled"));
+        if (object.hasKey("saddled")) setPetSaddled(object.getBoolean("saddled"));
         if (object.hasKey("variant")) setVariant(object.getEnum("variant", TemperatureVariant.class, TemperatureVariant.TEMPERATE));
         super.applyCompound(object);
     }

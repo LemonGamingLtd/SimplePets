@@ -9,7 +9,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.npc.VillagerProfession;
-import org.bukkit.craftbukkit.v1_21_R4.entity.CraftVillager;
+import org.bukkit.craftbukkit.v1_21_R5.entity.CraftVillager;
 import org.bukkit.entity.Villager;
 import simplepets.brainsynder.api.entity.hostile.IEntityZombieVillagerPet;
 import simplepets.brainsynder.api.pet.PetType;

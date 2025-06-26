@@ -1,8 +1,8 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import io.papermc.lib.PaperLib;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerEntity;
@@ -10,8 +10,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Shulker;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -241,8 +239,8 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
     @Override
     public void teleportToOwner() {
         user.getUserLocation().ifPresent(location -> {
-            PaperLib.teleportAsync(getEntity(), location);
-            PaperLib.teleportAsync(pet.getEntity(), location);
+            setPos(location.getX(), location.getY(), location.getZ());
+            pet.setPos(location.getX(), location.getY(), location.getZ());
             SimplePets.getPetUtilities().runPetCommands(CommandReason.TELEPORT, user, getPetType());
             SimplePets.getParticleHandler().sendParticle(ParticleHandler.Reason.TELEPORT, user.getPlayer(), location);
         });
@@ -341,7 +339,6 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
         pet.setPetName(name);
     }
 
-    @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entitytrackerentry) {
         return VersionTranslator.getAddEntityPacket(this, entitytrackerentry, EntityType.SHULKER, VersionTranslator.getPosition(this));
     }
@@ -361,17 +358,17 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
      * These methods prevent pets from being saved in the worlds
      */
     @Override
-    public boolean saveAsPassenger(ValueOutput output) {
+    public boolean saveAsPassenger(CompoundTag nbttagcompound) {// Calls e
         return false;
     }
 
     @Override
-    public boolean save(ValueOutput output) {// Calls e
+    public boolean save(CompoundTag nbttagcompound) {// Calls e
         return false;
     }
 
     @Override
-    public void load(ValueInput input) {
+    public void load(CompoundTag nbttagcompound) {
     }
 
     protected boolean damageEntity0(DamageSource damagesource, float f) {

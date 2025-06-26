@@ -36,7 +36,7 @@ public class EntityHorseAbstractPet extends EntityAgeablePet implements IHorseAb
     @Override
     public void fetchPetData(JsonObject data) {
         super.fetchPetData(data);
-        data.add("saddled", isSaddled());
+        data.add("saddled", isPetSaddled());
         data.add("eating", isEating());
         data.add("angry", isAngry());
         data.add("rearing", isRearing());
@@ -80,7 +80,7 @@ public class EntityHorseAbstractPet extends EntityAgeablePet implements IHorseAb
     @Override
     public StorageTagCompound asCompound() {
         StorageTagCompound object = super.asCompound();
-        object.setBoolean("saddled", isSaddled());
+        object.setBoolean("saddled", isPetSaddled());
         object.setBoolean("eating", isEating());
         object.setBoolean("angry", isAngry());
         object.setBoolean("rearing", isRearing());
@@ -89,7 +89,7 @@ public class EntityHorseAbstractPet extends EntityAgeablePet implements IHorseAb
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("saddled")) setSaddled(object.getBoolean("saddled"));
+        if (object.hasKey("saddled")) setPetSaddled(object.getBoolean("saddled"));
         if (object.hasKey("eating")) setEating(object.getBoolean("eating"));
         if (object.hasKey("angry")) setAngry(object.getBoolean("angry"));
         if (object.hasKey("rearing")) setRearing(object.getBoolean("rearing"));

@@ -4,6 +4,7 @@ import lib.brainsynder.reflection.Reflection;
 import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -169,5 +170,23 @@ public class EntityBase extends Mob {
 
     public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entitytrackerentry) {
         return VersionTranslator.getAddEntityPacket(this, entitytrackerentry, originalEntityType, VersionTranslator.getPosition(this));
+    }
+
+
+    /**
+     * These methods prevent pets from being saved in the worlds
+     */
+    @Override
+    public boolean saveAsPassenger(CompoundTag nbttagcompound) {// Calls e
+        return false;
+    }
+
+    @Override
+    public boolean save(CompoundTag nbttagcompound) {// Calls e
+        return false;
+    }
+
+    @Override
+    public void load(CompoundTag nbttagcompound) {
     }
 }

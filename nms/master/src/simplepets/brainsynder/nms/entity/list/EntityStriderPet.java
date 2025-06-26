@@ -31,7 +31,7 @@ public class EntityStriderPet extends EntityAgeablePet implements IEntityStrider
     public void fetchPetData(JsonObject data) {
         super.fetchPetData(data);
         data.add("cold", isCold());
-        data.add("saddled", isSaddled());
+        data.add("saddled", isPetSaddled());
     }
 
     @Override
@@ -45,24 +45,24 @@ public class EntityStriderPet extends EntityAgeablePet implements IEntityStrider
     public StorageTagCompound asCompound() {
         StorageTagCompound object = super.asCompound();
         object.setBoolean("cold", isCold());
-        object.setBoolean("saddled", isSaddled());
+        object.setBoolean("saddled", isPetSaddled());
         return object;
     }
 
     @Override
     public void applyCompound(StorageTagCompound object) {
         if (object.hasKey("cold")) setCold(object.getBoolean("cold"));
-        if (object.hasKey("saddled")) setSaddled(object.getBoolean("saddled"));
+        if (object.hasKey("saddled")) setPetSaddled(object.getBoolean("saddled"));
         super.applyCompound(object);
     }
 
     @Override
-    public boolean isSaddled() {
+    public boolean isPetSaddled() {
         return !getItemBySlot(EquipmentSlot.SADDLE).isEmpty();
     }
 
     @Override
-    public void setSaddled(boolean saddled) {
+    public void setPetSaddled(boolean saddled) {
         setItemSlot(EquipmentSlot.SADDLE, saddled ? new ItemStack(Items.SADDLE) : ItemStack.EMPTY);
     }
 

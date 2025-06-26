@@ -1,7 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import com.mojang.authlib.GameProfile;
-import io.papermc.lib.PaperLib;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageBase;
@@ -9,6 +8,7 @@ import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.StorageTagString;
 import lib.brainsynder.utils.Base64Wrapper;
 import lib.brainsynder.utils.Utilities;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerEntity;
@@ -18,8 +18,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -254,8 +252,8 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
     @Override
     public void teleportToOwner() {
         user.getUserLocation().ifPresent(location -> {
-            PaperLib.teleportAsync(getEntity(), location);
-            PaperLib.teleportAsync(pet.getEntity(), location);
+            setPos(location.getX(), location.getY(), location.getZ());
+            pet.setPos(location.getX(), location.getY(), location.getZ());
             SimplePets.getPetUtilities().runPetCommands(CommandReason.TELEPORT, user, getPetType());
             SimplePets.getParticleHandler().sendParticle(ParticleHandler.Reason.TELEPORT, user.getPlayer(), location);
         });
@@ -369,9 +367,6 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         super.setSmall(flag);
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return VersionTranslator.getAddEntityPacket(this, EntityType.ARMOR_STAND, VersionTranslator.getPosition(this));
-    }
     public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entitytrackerentry) {
         return VersionTranslator.getAddEntityPacket(this, entitytrackerentry, EntityType.ARMOR_STAND, VersionTranslator.getPosition(this));
     }
@@ -696,16 +691,16 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
      * These methods prevent pets from being saved in the worlds
      */
     @Override
-    public boolean saveAsPassenger(ValueOutput output) {
+    public boolean saveAsPassenger(CompoundTag nbttagcompound) {// Calls e
         return false;
     }
 
     @Override
-    public boolean save(ValueOutput output) {// Calls e
+    public boolean save(CompoundTag nbttagcompound) {// Calls e
         return false;
     }
 
     @Override
-    public void load(ValueInput input) {
+    public void load(CompoundTag nbttagcompound) {
     }
 }

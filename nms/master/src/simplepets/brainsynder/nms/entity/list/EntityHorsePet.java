@@ -7,15 +7,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import net.minecraft.world.item.Items;
 import simplepets.brainsynder.api.entity.passive.IEntityHorsePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.horse.HorseArmorType;
 import simplepets.brainsynder.api.wrappers.horse.HorseColorType;
 import simplepets.brainsynder.api.wrappers.horse.HorseStyleType;
-import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.branch.EntityHorseAbstractPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -70,16 +68,14 @@ public class EntityHorsePet extends EntityHorseAbstractPet implements IEntityHor
     @Override
     public void setArmor(HorseArmorType armor) {
         this.armor = armor;
-        Material material = switch (armor) {
-            case LEATHER -> Material.LEATHER_HORSE_ARMOR;
-            case IRON -> Material.IRON_HORSE_ARMOR;
-            case GOLD -> Material.GOLDEN_HORSE_ARMOR;
-            case DIAMOND -> Material.DIAMOND_HORSE_ARMOR;
-            default -> Material.AIR;
-        };
-        ItemStack stack = new ItemStack(material);
-        this.setItemSlot(EquipmentSlot.CHEST, VersionTranslator.toNMSStack(stack));
-        this.setDropChance(EquipmentSlot.CHEST, 0.0F);
+
+        switch (armor) {
+            case LEATHER -> setItemSlot(EquipmentSlot.BODY, Items.LEATHER_HORSE_ARMOR.getDefaultInstance());
+            case IRON -> setItemSlot(EquipmentSlot.BODY, Items.IRON_HORSE_ARMOR.getDefaultInstance());
+            case GOLD -> setItemSlot(EquipmentSlot.BODY, Items.GOLDEN_HORSE_ARMOR.getDefaultInstance());
+            case DIAMOND -> setItemSlot(EquipmentSlot.BODY, Items.DIAMOND_HORSE_ARMOR.getDefaultInstance());
+            default -> setItemSlot(EquipmentSlot.BODY, Items.AIR.getDefaultInstance());
+        }
     }
 
     @Override

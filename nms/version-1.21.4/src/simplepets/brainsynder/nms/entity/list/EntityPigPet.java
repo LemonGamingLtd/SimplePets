@@ -26,7 +26,7 @@ public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
     @Override
     public void fetchPetData(JsonObject data) {
         super.fetchPetData(data);
-        data.add("saddled", isSaddled());
+        data.add("saddled", this.isPetSaddled());
     }
 
     @Override
@@ -38,23 +38,23 @@ public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
     @Override
     public StorageTagCompound asCompound() {
         StorageTagCompound object = super.asCompound();
-        object.setBoolean("saddled", isSaddled());
+        object.setBoolean("saddled", this.isPetSaddled());
         return object;
     }
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("saddled")) setSaddled(object.getBoolean("saddled"));
+        if (object.hasKey("saddled")) this.setPetSaddled(object.getBoolean("saddled"));
         super.applyCompound(object);
     }
 
     @Override
-    public boolean isSaddled() {
+    public boolean isPetSaddled() {
         return entityData.get(SADDLE);
     }
 
     @Override
-    public void setSaddled(boolean flag) {
-        entityData.set(SADDLE, flag);
+    public void setPetSaddled(boolean saddled) {
+        entityData.set(SADDLE, saddled);
     }
 }

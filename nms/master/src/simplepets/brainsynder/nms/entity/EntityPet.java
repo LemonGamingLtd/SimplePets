@@ -5,7 +5,6 @@ import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.sounds.SoundMaker;
 import lib.brainsynder.utils.Colorize;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -622,24 +621,6 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 //        if (!immovable) return;
 //        super.push(x, y, z);
 //    }
-
-
-    /**
-     * These methods prevent pets from being saved in the worlds
-     */
-    @Override
-    public boolean saveAsPassenger(CompoundTag nbttagcompound) {// Calls e
-        return false;
-    }
-
-    @Override
-    public boolean save(CompoundTag nbttagcompound) {// Calls e
-        return false;
-    }
-
-    @Override
-    public void load(CompoundTag nbttagcompound) {
-    }
 
     @Override
     public boolean isOnPortalCooldown() {

@@ -4,7 +4,6 @@ import lib.brainsynder.reflection.Reflection;
 import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -15,9 +14,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.craftbukkit.v1_21_R4.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_21_R4.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_21_R5.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R5.entity.CraftLivingEntity;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.CitizensFixer;
@@ -114,11 +115,11 @@ public class EntityBase extends Mob {
             CitizensFixer.overrideRegistry(registry);
 
             // Melts the frozen status, so we can register the mob...
-            Field frozen = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_21_5.getRegistryFrozenField());
+            Field frozen = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_21_6.getRegistryFrozenField());
             if (frozen != null) frozen.set(registry, false);
 
             // Clears the intrusive holder field to an empty map
-            Field intrusiveField = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_21_5.getRegistryIntrusiveField());
+            Field intrusiveField = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_21_6.getRegistryIntrusiveField());
             if (intrusiveField != null) intrusiveField.set(registry, new IdentityHashMap<>());
 
             // Fetch the entity type instance before we resume
@@ -138,7 +139,7 @@ public class EntityBase extends Mob {
     }
 
     private EntityType<? extends Mob> handleMobBuilder(EntityType<? extends Mob> originalType) throws NoSuchFieldException, IllegalAccessException {
-        Field field = Reflection.getField(EntityType.class, VersionFields.v1_21_5.getEntityFactoryField());
+        Field field = Reflection.getField(EntityType.class, VersionFields.v1_21_6.getEntityFactoryField());
 
         EntityType.Builder<? extends Mob> builder = EntityType.Builder.of(
                 (EntityType.EntityFactory<? extends Mob>) field.get(originalType),
@@ -173,20 +174,21 @@ public class EntityBase extends Mob {
     }
 
 
+
     /**
      * These methods prevent pets from being saved in the worlds
      */
     @Override
-    public boolean saveAsPassenger(CompoundTag nbttagcompound) {// Calls e
+    public boolean saveAsPassenger(ValueOutput output) {
         return false;
     }
 
     @Override
-    public boolean save(CompoundTag nbttagcompound) {// Calls e
+    public boolean save(ValueOutput output) {// Calls e
         return false;
     }
 
     @Override
-    public void load(CompoundTag nbttagcompound) {
+    public void load(ValueInput input) {
     }
 }

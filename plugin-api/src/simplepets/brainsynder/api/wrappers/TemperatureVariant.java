@@ -20,7 +20,6 @@ public enum TemperatureVariant {
 
     public String getTextureByEntity(Class<? extends IEntityPet> entityPet) {
         if (entityPet.isAssignableFrom(IEntityFrogPet.class)) {
-            System.out.println("FROG");
             return switch (this) {
                 case TEMPERATE -> "23ce6f9998ed2da757d1e6372f04efa20e57dfc17c3a06478657bbdf51c2f2a2";
                 case WARM -> "f77314fa038ec31357845a93274b4dc884124686728ffe0ded9c35466aca0aab";
@@ -28,7 +27,6 @@ public enum TemperatureVariant {
             };
         }
         if (entityPet.isAssignableFrom(IEntityChickenPet.class)) {
-            System.out.println("CHICKEN");
             return switch (this) {
                 case TEMPERATE -> "3ad3dd0083faa69a062f9ad81418f5a596180bf1592e4b8d1303b230b64bc79e";
                 case WARM -> "58c231bf464f9a6c6786a22a4d119ea5e5057624c5a391470d35fa2b6ffa5183";
@@ -36,7 +34,6 @@ public enum TemperatureVariant {
             };
         }
         if (entityPet.isAssignableFrom(IEntityCowPet.class)) {
-            System.out.println("COW");
             return switch (this) {
                 case TEMPERATE -> "5cc04c81f781b46db142a15eb23b06e21b8a3c5627d0e8e70e61fe09ee372f54";
                 case WARM -> "23b3376faf281c14ba472d2e7f6b6d0169e4bc2374835a9f8d0788e04d81343d";
@@ -44,7 +41,6 @@ public enum TemperatureVariant {
             };
         }
         if (entityPet.isAssignableFrom(IEntityPigPet.class)) {
-            System.out.println("PIG");
             return "http://textures.minecraft.net/texture/" + switch (this) {
                 case TEMPERATE -> "9b1760e3778f8087046b86bec6a0a83a567625f30f0d6bce866d4bed95dba6c1";
                 case WARM -> "7beba1a2d56e84f8e51fed6659f2cb7c14fed43859af584737897bf70c039475";

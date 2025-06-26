@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.craftbukkit.v1_21_R4.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_21_R5.util.CraftNamespacedKey;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.nms.entity.EntityPet;
 
