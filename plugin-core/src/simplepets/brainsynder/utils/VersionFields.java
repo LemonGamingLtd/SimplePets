@@ -206,6 +206,17 @@ public enum VersionFields implements FieldValues {
             "W", // net.minecraft.world.entity.Entity$boardingCooldown
             "R", // net.minecraft.server.MinecraftServer$running
             "cc" // net.minecraft.world.entity.LivingEntity$attributes
+    ),
+    v1_21_7 (
+            "e", // net.minecraft.network.syncher.SynchedEntityData$itemsById
+            "cc", // net.minecraft.world.entity.EntityType$factory
+            "l", // net.minecraft.core.MappedRegistry$frozen
+            "m", // net.minecraft.core.MappedRegistry$unregisteredIntrusiveHolders
+            "f", // net.minecraft.core.registries.BuiltInRegistries#ENTITY_TYPE
+            "bB", // net.minecraft.world.entity.LivingEntity$jumping
+            "W", // net.minecraft.world.entity.Entity$boardingCooldown
+            "R", // net.minecraft.server.MinecraftServer$running
+            "cc" // net.minecraft.world.entity.LivingEntity$attributes
     );
 
     public static VersionFields fromServerVersion (ServerVersion version) {
