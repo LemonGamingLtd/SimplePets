@@ -114,11 +114,11 @@ public class EntityBase extends Mob {
             CitizensFixer.overrideRegistry(registry);
 
             // Melts the frozen status, so we can register the mob...
-            Field frozen = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_21_4.getRegistryFrozenField());
+            Field frozen = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.current().getRegistryFrozenField());
             if (frozen != null) frozen.set(registry, false);
 
             // Clears the intrusive holder field to an empty map
-            Field intrusiveField = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_21_4.getRegistryIntrusiveField());
+            Field intrusiveField = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.current().getRegistryIntrusiveField());
             if (intrusiveField != null) intrusiveField.set(registry, new IdentityHashMap<>());
 
             // Fetch the entity type instance before we resume
@@ -138,7 +138,7 @@ public class EntityBase extends Mob {
     }
 
     private EntityType<? extends Mob> handleMobBuilder(EntityType<? extends Mob> originalType) throws NoSuchFieldException, IllegalAccessException {
-        Field field = Reflection.getField(EntityType.class, VersionFields.v1_21_4.getEntityFactoryField());
+        Field field = Reflection.getField(EntityType.class, VersionFields.current().getEntityFactoryField());
 
         EntityType.Builder<? extends Mob> builder = EntityType.Builder.of(
                 (EntityType.EntityFactory<? extends Mob>) field.get(originalType),

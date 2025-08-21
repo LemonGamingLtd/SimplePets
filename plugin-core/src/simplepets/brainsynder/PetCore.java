@@ -134,7 +134,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
                 .setBroadcast(true)
                 .setMessages(
                     "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().name().replace("v", "").replace("_", "."),
-                    "Please check the Jenkins for an updated build: https://ci.pluginwiki.us/job/SimplePets_v5/",
+                    "Please check the Jenkins for an updated build: https://ci.bsdevelopment.org/job/SimplePets_v5/",
                     "Check if there is a SimplePets-" + ServerVersion.getVersion().name().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
                     "Current SimplePets jar name: " + getJarName()
                 )

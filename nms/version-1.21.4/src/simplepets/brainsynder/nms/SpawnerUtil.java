@@ -1,19 +1,33 @@
 package simplepets.brainsynder.nms;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import lib.brainsynder.ServerVersion;
 import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.item.ItemBuilder;
+import lib.brainsynder.nbt.JsonToNBT;
 import lib.brainsynder.nbt.StorageTagCompound;
+import lib.brainsynder.nbt.other.NBTException;
 import lib.brainsynder.optional.BiOptional;
 import lib.brainsynder.storage.RandomCollection;
 import lib.brainsynder.utils.Colorize;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.TagParser;
+import net.minecraft.resources.RegistryOps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_21_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_21_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.ItemStack;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.ISpawnUtil;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -64,6 +78,35 @@ public class SpawnerUtil implements ISpawnUtil {
                         "The '"+type.getName()+" ("+name+")' pet is not available for your server version [will NOT affect your server]"
                 ));
             }
+        }
+    }
+
+    public ItemStack convertToItemStack (StorageTagCompound compound) {
+        Codec<net.minecraft.world.item.ItemStack> codec = net.minecraft.world.item.ItemStack.CODEC;
+        DataResult<net.minecraft.world.item.ItemStack> result = null;
+        try {
+            CompoundTag nbtTag = TagParser.parseTag(compound.toString());
+            RegistryAccess.Frozen registryAccess = ((CraftServer)Bukkit.getServer()).getServer().registryAccess();
+            RegistryOps<Tag> registryOps = registryAccess.createSerializationContext(NbtOps.INSTANCE);
+            result = codec.parse(registryOps, nbtTag);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return CraftItemStack.asBukkitCopy(result.getOrThrow());
+    }
+
+    public StorageTagCompound convertToCompound (ItemStack stack) {
+        net.minecraft.world.item.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
+        RegistryAccess.Frozen registryAccess = ((CraftServer)Bukkit.getServer()).getServer().registryAccess();
+        RegistryOps<Tag> registryOps = registryAccess.createSerializationContext(NbtOps.INSTANCE);
+        Tag tag = net.minecraft.world.item.ItemStack.CODEC.encodeStart(registryOps, nmsStack).getOrThrow();
+
+        try {
+            return JsonToNBT.getTagFromJson(tag.toString());
+        } catch (NBTException e) {
+            throw new RuntimeException(e);
         }
     }
 

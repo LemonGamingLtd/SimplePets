@@ -64,10 +64,10 @@ public class VersionTranslator {
     private static Field jumpingField = null;
 
     static {
-        accessor = FieldAccessor.getField(LivingEntity.class, VersionFields.v1_21_4.getAttributesField(), AttributeMap.class);
+        accessor = FieldAccessor.getField(LivingEntity.class, VersionFields.current().getAttributesField(), AttributeMap.class);
 
         try {
-            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_21_4.getEntityJumpField());
+            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.current().getEntityJumpField());
             jumpingField.setAccessible(true);
             VersionTranslator.jumpingField = jumpingField;
         } catch (Exception ex) {
@@ -172,7 +172,7 @@ public class VersionTranslator {
                                       boolean glow) throws IllegalAccessException {
         Int2ObjectMap<SynchedEntityData.DataItem<Byte>> newMap =
                 (Int2ObjectMap<SynchedEntityData.DataItem<Byte>>) FieldUtils.readDeclaredField(toCloneDataWatcher,
-                        VersionFields.v1_21_4.getEntityDataMapField(), true);
+                        VersionFields.current().getEntityDataMapField(), true);
 
         SynchedEntityData.DataItem<Byte> item = newMap.get(0);
         byte initialBitMask = item.getValue();
@@ -182,7 +182,7 @@ public class VersionTranslator {
         } else {
             item.setValue((byte) (initialBitMask & ~(1 << bitMaskIndex)));
         }
-        FieldUtils.writeDeclaredField(newDataWatcher, VersionFields.v1_21_4.getEntityDataMapField(), newMap, true);
+        FieldUtils.writeDeclaredField(newDataWatcher, VersionFields.current().getEntityDataMapField(), newMap, true);
     }
 
     public static org.bukkit.inventory.ItemStack toItemStack(StorageTagCompound compound) {
