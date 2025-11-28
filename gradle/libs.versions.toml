@@ -1,0 +1,18 @@
+[versions]
+# Libraries
+pluginutils = "0.1.12"
+brigadier = "1.3.10"
+commandapi = "10.1.2"
+
+# Plugins
+hangar = "0.0.5" # hangar plugin is not used yet...
+shadow = "9.0.0-beta8"
+
+[libraries]
+pluginutils = { module = "org.bsdevelopment.pluginutils:BSPluginUtils", version.ref = "pluginutils" }
+brigadier = { module = "com.mojang:brigadier", version.ref = "brigadier" }
+commandapi = { module = "dev.jorel:commandapi-bukkit-shade", version.ref = "commandapi" }
+
+[plugins]
+hangar = { id = "io.papermc.hangar-publish-plugin", version.ref = "hangar" } # hangar plugin is not used yet...
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
