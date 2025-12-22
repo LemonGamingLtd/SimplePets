@@ -56,9 +56,13 @@ public class EntityMooshroomPet extends EntityAgeablePet implements IEntityMoosh
 
     @Override
     public MooshroomType getMooshroomType() {
-        // Check if the ordinal is valid
-        int ordinal = entityData.get(TYPE);
-        if (ordinal == 1) return MooshroomType.BROWN;
+        try {
+            int ordinal = entityData.get(TYPE);
+            if (ordinal == 1) return MooshroomType.BROWN;
+        } catch (Exception ignored) {
+            // Randomly the entityData thinks the type is not an Integer...
+            // So lets just ignore this as it mostly happens when removing the pet
+        }
         return MooshroomType.RED;
     }
 }

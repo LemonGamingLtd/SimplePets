@@ -10,7 +10,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -25,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.craftbukkit.v1_21_R5.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_21_R7.util.CraftNamespacedKey;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.nms.entity.EntityPet;
 
@@ -158,12 +157,6 @@ public class VersionTranslator {
         throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
     }
     public static BlockPos getPosition (Entity entity) {
-        throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
-    }
-    public static ResourceLocation toMinecraftResource (NamespacedKey key) {
-        throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
-    }
-    public static NamespacedKey toBukkitNamespace (ResourceLocation resource) {
         throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
     }
 

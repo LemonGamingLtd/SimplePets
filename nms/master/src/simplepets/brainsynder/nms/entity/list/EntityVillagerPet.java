@@ -7,9 +7,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.npc.VillagerData;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import org.bukkit.craftbukkit.v1_21_R5.entity.CraftVillager;
+import net.minecraft.world.entity.npc.villager.VillagerData;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import org.bukkit.craftbukkit.v1_21_R7.entity.CraftVillager;
 import org.bukkit.entity.Villager;
 import simplepets.brainsynder.api.entity.passive.IEntityVillagerPet;
 import simplepets.brainsynder.api.pet.PetType;
@@ -22,7 +22,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.world.entity.npc.Villager}
+ * NMS: {@link net.minecraft.world.entity.npc.villager.Villager}
  */
 public class EntityVillagerPet extends EntityAgeablePet implements IEntityVillagerPet {
     private static final EntityDataAccessor<Integer> HEAD_ROLLING_TIME_LEFT = SynchedEntityData.defineId(EntityVillagerPet.class, EntityDataSerializers.INT);
@@ -47,7 +47,7 @@ public class EntityVillagerPet extends EntityAgeablePet implements IEntityVillag
         super.populateDataAccess(dataAccess);
         dataAccess.define(HEAD_ROLLING_TIME_LEFT, 0);
         dataAccess.define(VILLAGER_DATA, new VillagerData(
-                BuiltInRegistries.VILLAGER_TYPE.getOrThrow(net.minecraft.world.entity.npc.VillagerType.PLAINS),
+                BuiltInRegistries.VILLAGER_TYPE.getOrThrow(net.minecraft.world.entity.npc.villager.VillagerType.PLAINS),
                 BuiltInRegistries.VILLAGER_PROFESSION.getOrThrow(VillagerProfession.NONE),
                 1
         ));
@@ -83,7 +83,7 @@ public class EntityVillagerPet extends EntityAgeablePet implements IEntityVillag
 
     @Override
     public VillagerInfo getVillagerData() {
-        net.minecraft.world.entity.npc.VillagerData raw = getRawData();
+        net.minecraft.world.entity.npc.villager.VillagerData raw = getRawData();
         return  new VillagerInfo(
                 BiomeType.valueOf(CraftVillager.CraftType.minecraftHolderToBukkit(raw.type()).name()),
                 VillagerType.valueOf(CraftVillager.CraftProfession.minecraftHolderToBukkit(raw.profession()).name()),

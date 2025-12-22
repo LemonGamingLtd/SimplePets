@@ -6,7 +6,6 @@ import lib.brainsynder.json.Json;
 import lib.brainsynder.json.JsonArray;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.json.WriterConfig;
-import lib.brainsynder.update.UpdateResult;
 import lib.brainsynder.web.WebConnector;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -151,11 +150,15 @@ public class DebugCommand extends PetSubCommand {
             return;
         }
 
-        UpdateResult result = PetCore.getInstance().getUpdateUtils().getResult();
-        int build = result.getCurrentBuild();
-        WebConnector.getInputStreamString("https://bsdevelopment.org/api/jenkins/build-number/" + result.getRepo(), PetCore.getInstance(), string -> {
+        Properties prop = new Properties();
+        try {
+            prop.load(PetCore.getInstance().getClass().getResourceAsStream("/jenkins.properties"));
+        } catch (IOException ignored) {} // If it fails, it means there is no 'jenkins.properties' file
+        int build = Integer.parseInt(String.valueOf(prop.getOrDefault("buildnumber", -1)));
+
+        WebConnector.getInputStreamString("https://bsdevelopment.org/api/jenkins/build-number/SimplePets_v5", PetCore.getInstance(), string -> {
             JsonObject jenkins = new JsonObject();
-            jenkins.add("repo", result.getRepo());
+            jenkins.add("repo", "SimplePets_v5");
             jenkins.add("plugin_build_number", build);
 
             try {
@@ -173,7 +176,7 @@ public class DebugCommand extends PetSubCommand {
 
                         jenkins.add("jenkins_build_number", latestBuild);
                     } else {
-                        jenkins.add("reason", "Missing repo: " + result.getRepo());
+                        jenkins.add("reason", "Missing repo: SimplePets_v5");
                         jenkins.add("parsed_string", string);
                     }
                 } else {

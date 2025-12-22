@@ -7,9 +7,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.npc.VillagerData;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import org.bukkit.craftbukkit.v1_21_R5.entity.CraftVillager;
+import net.minecraft.world.entity.npc.villager.VillagerData;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import org.bukkit.craftbukkit.v1_21_R7.entity.CraftVillager;
 import org.bukkit.entity.Villager;
 import simplepets.brainsynder.api.entity.hostile.IEntityZombieVillagerPet;
 import simplepets.brainsynder.api.pet.PetType;
@@ -21,7 +21,7 @@ import simplepets.brainsynder.api.wrappers.villager.VillagerType;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.world.entity.monster.ZombieVillager}
+ * NMS: {@link net.minecraft.world.entity.monster.zombie.ZombieVillager}
  */
 public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZombieVillagerPet {
     private static final EntityDataAccessor<Boolean> CONVERTING = SynchedEntityData.defineId(EntityZombieVillagerPet.class, EntityDataSerializers.BOOLEAN);
@@ -46,7 +46,7 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
         super.populateDataAccess(dataAccess);
         dataAccess.define(CONVERTING, false);
         dataAccess.define(VILLAGER_DATA, new VillagerData(
-                BuiltInRegistries.VILLAGER_TYPE.getOrThrow(net.minecraft.world.entity.npc.VillagerType.PLAINS),
+                BuiltInRegistries.VILLAGER_TYPE.getOrThrow(net.minecraft.world.entity.npc.villager.VillagerType.PLAINS),
                 BuiltInRegistries.VILLAGER_PROFESSION.getOrThrow(VillagerProfession.NONE),
                 1
         ));
@@ -88,7 +88,7 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
 
     @Override
     public VillagerInfo getVillagerData() {
-        net.minecraft.world.entity.npc.VillagerData raw = getRawData();
+        net.minecraft.world.entity.npc.villager.VillagerData raw = getRawData();
         return  new VillagerInfo(
                 BiomeType.valueOf(CraftVillager.CraftType.minecraftHolderToBukkit(raw.type()).name()),
                 VillagerType.valueOf(CraftVillager.CraftProfession.minecraftHolderToBukkit(raw.profession()).name()),

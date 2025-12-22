@@ -9,10 +9,10 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.ChickenVariant;
-import net.minecraft.world.entity.animal.ChickenVariants;
-import org.bukkit.craftbukkit.v1_21_R5.CraftRegistry;
-import org.bukkit.craftbukkit.v1_21_R5.util.CraftNamespacedKey;
+import net.minecraft.world.entity.animal.chicken.ChickenVariant;
+import net.minecraft.world.entity.animal.chicken.ChickenVariants;
+import org.bukkit.craftbukkit.v1_21_R7.CraftRegistry;
+import org.bukkit.craftbukkit.v1_21_R7.util.CraftNamespacedKey;
 import simplepets.brainsynder.api.entity.passive.IEntityChickenPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -22,7 +22,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 import simplepets.brainsynder.nms.utils.VariantUtils;
 
 /**
- * NMS: {@link net.minecraft.world.entity.animal.Chicken}
+ * NMS: {@link net.minecraft.world.entity.animal.chicken.Chicken}
  */
 public class EntityChickenPet extends EntityAgeablePet implements IEntityChickenPet {
     private static final EntityDataAccessor<Holder<ChickenVariant>> VARIANT = SynchedEntityData.defineId(EntityChickenPet.class, EntityDataSerializers.CHICKEN_VARIANT);

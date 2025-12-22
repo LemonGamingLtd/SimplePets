@@ -5,7 +5,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import lib.brainsynder.ServerVersion;
 import lib.brainsynder.SupportedVersion;
-import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.nbt.JsonToNBT;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.other.NBTException;
@@ -21,18 +20,15 @@ import net.minecraft.resources.RegistryOps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_21_R5.CraftServer;
 import org.bukkit.craftbukkit.v1_21_R5.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
-import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.ISpawnUtil;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.event.entity.PetEntitySpawnEvent;
-import simplepets.brainsynder.api.event.user.PetRenameEvent;
 import simplepets.brainsynder.api.pet.CommandReason;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
@@ -40,12 +36,14 @@ import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.debug.DebugBuilder;
 import simplepets.brainsynder.debug.DebugLevel;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.entity.special.EntityControllerPet;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class SpawnerUtil implements ISpawnUtil {
     private final Map<PetType, Class<?>> petMap;
@@ -108,26 +106,6 @@ public class SpawnerUtil implements ISpawnUtil {
         } catch (NBTException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void renameViaAnvil(PetUser user, PetType type) {
-        AnvilGUI.Builder builder = new AnvilGUI.Builder().plugin(PetCore.getInstance());
-        builder.itemLeft(new ItemBuilder(Material.NAME_TAG).withName(MessageFile.getTranslation(MessageOption.RENAME_ANVIL_TAG)).build());
-        builder.onClick((slot, stateSnapshot) -> {
-            if (slot != AnvilGUI.Slot.OUTPUT) return Collections.emptyList();
-
-            String name = stateSnapshot.text();
-
-            if (name.equalsIgnoreCase("reset")) name = null;
-            PetRenameEvent renameEvent = new PetRenameEvent(user, type, name);
-            Bukkit.getPluginManager().callEvent(renameEvent);
-
-            if (!renameEvent.isCancelled()) user.setPetName(renameEvent.getName(), type);
-            return Arrays.asList(AnvilGUI.ResponseAction.close());
-        });
-        builder.title(MessageFile.getTranslation(MessageOption.RENAME_ANVIL_TITLE));
-        builder.open(user.getPlayer());
     }
 
     @Override

@@ -18,7 +18,7 @@
         <revision>5.0-BUILD-0</revision>
 
         <java.version>17</java.version>
-        <bslib.version>B140</bslib.version>
+        <bslib.version>B144</bslib.version>
         <anvilgui.version>1.10.4-SNAPSHOT</anvilgui.version>
         <spigotupdatechecker.version>3.0.3</spigotupdatechecker.version>
         <protocol-lib.version>5.0.0</protocol-lib.version>
@@ -26,9 +26,9 @@
         <specialsource.version>2.0.4</specialsource.version>
         <shade.version>3.5.0</shade.version>
 
-        <minecraft.version>1.21.8</minecraft.version>
+        <minecraft.version>1.21.11</minecraft.version>
         <spigot.version>${minecraft.version}-R0.1-SNAPSHOT</spigot.version>
-        <spigot.nms>v1_21_R5</spigot.nms>
+        <spigot.nms>v1_21_R7</spigot.nms>
 
         <!-- Used to compile specific versions -->
         <target-mc>${minecraft.version}</target-mc>
@@ -127,13 +127,15 @@
 
                 <module>nms/version-1.21</module>
                 <module>nms/version-1.21.1</module>
-                <module>nms/version-1.21.2</module>
                 <module>nms/version-1.21.3</module>
                 <module>nms/version-1.21.4</module>
                 <module>nms/version-1.21.5</module>
                 <module>nms/version-1.21.6</module>
                 <module>nms/version-1.21.7</module>
                 <module>nms/version-1.21.8</module>
+                <module>nms/version-1.21.9</module>
+                <module>nms/version-1.21.10</module>
+                <module>nms/version-1.21.11</module>
             </modules>
         </profile>
 
@@ -151,11 +153,11 @@
 
                 <module>nms/master</module>
 
-                <module>nms/version-1.21.4</module>
-                <module>nms/version-1.21.5</module>
                 <module>nms/version-1.21.6</module>
                 <module>nms/version-1.21.7</module>
                 <module>nms/version-1.21.8</module>
+                <module>nms/version-1.21.10</module>
+                <module>nms/version-1.21.11</module>
                 <!-- AUTOMATION: INSERTION POINT -->
             </modules>
 

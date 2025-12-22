@@ -10,9 +10,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.CatVariant;
-import net.minecraft.world.entity.animal.CatVariants;
-import org.bukkit.craftbukkit.v1_21_R5.CraftRegistry;
+import net.minecraft.world.entity.animal.feline.CatVariant;
+import net.minecraft.world.entity.animal.feline.CatVariants;
+import org.bukkit.craftbukkit.v1_21_R7.CraftRegistry;
 import simplepets.brainsynder.api.entity.passive.IEntityCatPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -23,7 +23,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 import simplepets.brainsynder.nms.utils.VariantUtils;
 
 /**
- * NMS: {@link net.minecraft.world.entity.animal.Cat}
+ * NMS: {@link net.minecraft.world.entity.animal.feline.Cat}
  */
 public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
     private static final EntityDataAccessor<Holder<CatVariant>> TYPE = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.CAT_VARIANT);

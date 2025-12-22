@@ -73,7 +73,7 @@ public class EntityBase extends Mob {
                 }
             }
 
-            if (!VersionTranslator.getEntityLevel(this).isClientSide) VersionTranslator.getEntityLevel(this).broadcastEntityEvent(this, (byte)1);
+            if (!VersionTranslator.getEntityLevel(this).isClientSide()) VersionTranslator.getEntityLevel(this).broadcastEntityEvent(this, (byte)1);
         }
     }
 

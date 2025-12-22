@@ -7,6 +7,7 @@ import lib.brainsynder.sounds.SoundMaker;
 import lib.brainsynder.utils.Colorize;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -570,6 +571,15 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
      */
     @Override
     public void playAmbientSound() {
+        if (silent || isInvisible()) return;
+        SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
+            SoundMaker sound = config.getSound();
+            if (sound != null) sound.playSound(getEntity());
+        });
+    }
+
+    @Override
+    public void playSound(SoundEvent soundeffect, float f, float f1) {
         if (silent || isInvisible()) return;
         SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
             SoundMaker sound = config.getSound();

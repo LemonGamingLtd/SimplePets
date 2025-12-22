@@ -7,7 +7,6 @@ import lib.brainsynder.nbt.StorageBase;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.StorageTagString;
 import lib.brainsynder.utils.Base64Wrapper;
-import lib.brainsynder.utils.Utilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -101,17 +100,10 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         stand.setInvisible(false);
         VersionTranslator.addEntity(VersionTranslator.getWorldHandle(location.getWorld()), stand, CreatureSpawnEvent.SpawnReason.CUSTOM);
         pet.setIgnoreVanish(true);
-        System.out.println("Spawning entity at " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-        System.out.println("Valid? " + stand.valid);
-        System.out.println("Dead? " + stand.isDeadOrDying());
-        System.out.println("Invisible? " + stand.isInvisible());
         new BukkitRunnable() {
             @Override
             public void run() {
                 stand.getBukkitEntity().setGravity(true);
-                System.out.println("2- Valid? " + Utilities.isValid(stand.getBukkitEntity()));
-                System.out.println("2- Dead? " + stand.isDeadOrDying());
-                System.out.println("2- Invisible? " + stand.isInvisible());
             }
         }.runTaskLater(PetCore.getInstance(), 60);
         return stand;
