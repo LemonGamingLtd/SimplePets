@@ -1,0 +1,44 @@
+plugins {
+    id("org.bsdevelopment.java-conventions")
+    alias(libs.plugins.shadow)
+}
+
+group = "org.bsdevelopment.simplepets"
+description = "main"
+
+dependencies {
+    compileOnly(libs.spigotapi)
+    compileOnly(project(":api"))
+
+    compileOnly(libs.protocollib)
+    compileOnly(libs.commonsio)
+
+    implementation(libs.bslib)
+    implementation(libs.updatechecker)
+    implementation(libs.bstats)
+}
+
+tasks {
+    assemble {
+        dependsOn(shadowJar)
+    }
+
+    processResources {
+        filesMatching(listOf("plugin.yml")) {
+            // filter<ReplaceTokens>("tokens" to mapOf("VERSION" to version, "BUILD_NUMBER" to (System.getenv("BUILD_NUMBER") ?: "")))
+        }
+    }
+
+    shadowJar {
+        archiveBaseName.set("SimplePets")
+        archiveClassifier.set("")
+        archiveVersion.set("")
+
+        var groupID = "simplepets.brainsynder"
+
+        relocate("com.jeff_media.updatechecker", "$groupID.libs.updatechecker")
+        relocate("io.papermc.lib", "$groupID.libs.paperlib")
+        relocate("lib.brainsynder", "$groupID.libs.bslib")
+        relocate("org.bstats", "$groupID.libs.bstats")
+    }
+}
