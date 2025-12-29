@@ -9,7 +9,7 @@ rootProject.name = "SimplePets"
 include(":api")
 include(":main")
 
-include(":versions:v1_21_4")
+include(":versions:v1_21_6")
 
-project(":api").projectDir  = file("modules/api")
-project(":main").projectDir = file("modules/main")
+project(":api").projectDir  = file("plugin-modules/api")
+project(":main").projectDir = file("plugin-modules/main")

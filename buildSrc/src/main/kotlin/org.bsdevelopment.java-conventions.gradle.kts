@@ -10,12 +10,10 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://jitpack.io/")
     maven("https://repo.bsdevelopment.org/releases/")
+    maven("https://repo.dmulloy2.net/repository/public/")
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://libraries.minecraft.net/")
 }
-
-group = "org.bsdevelopment.simplepets"
-version = "0.1.0"
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
