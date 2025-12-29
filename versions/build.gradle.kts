@@ -2,7 +2,7 @@ plugins {
     id("org.bsdevelopment.java-conventions")
     alias(libs.plugins.paperweight)
 }
-var latestMinecraft = "1.21.6-R0.1-SNAPSHOT"
+var latestMinecraft = "1.21.11-R0.1-SNAPSHOT"
 
 dependencies {
     compileOnly(project(":api"))
