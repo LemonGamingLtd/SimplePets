@@ -66,3 +66,13 @@ tasks.named("build") {
 artifacts {
     add("archives", tasks.named("multiprojectJar"))
 }
+
+val downloadVariantsScript = file("gradle/download-variants.gradle.kts")
+if (downloadVariantsScript.exists()) {
+    apply(from = downloadVariantsScript)
+}
+
+val jenkinsVersioning = file("gradle/jenkins-versioning.gradle.kts")
+if (jenkinsVersioning.exists()) {
+    apply(from = jenkinsVersioning)
+}

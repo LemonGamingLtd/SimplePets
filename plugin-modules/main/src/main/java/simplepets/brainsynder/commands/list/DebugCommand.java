@@ -152,9 +152,9 @@ public class DebugCommand extends PetSubCommand {
 
         Properties prop = new Properties();
         try {
-            prop.load(PetCore.getInstance().getClass().getResourceAsStream("/jenkins.properties"));
+            prop.load(PetCore.getInstance().getClass().getResourceAsStream("/plugin.properties"));
         } catch (IOException ignored) {} // If it fails, it means there is no 'jenkins.properties' file
-        int build = Integer.parseInt(String.valueOf(prop.getOrDefault("buildnumber", -1)));
+        int build = Integer.parseInt(String.valueOf(prop.getOrDefault("build", -1)));
 
         WebConnector.getInputStreamString("https://bsdevelopment.org/api/jenkins/build-number/SimplePets_v5", PetCore.getInstance(), string -> {
             JsonObject jenkins = new JsonObject();

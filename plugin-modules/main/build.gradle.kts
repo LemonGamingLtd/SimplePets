@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id("org.bsdevelopment.java-conventions")
     alias(libs.plugins.shadow)
@@ -24,8 +26,13 @@ tasks {
     }
 
     processResources {
-        filesMatching(listOf("plugin.yml")) {
-            // filter<ReplaceTokens>("tokens" to mapOf("VERSION" to version, "BUILD_NUMBER" to (System.getenv("BUILD_NUMBER") ?: "")))
+        filesMatching("plugin.yml") {
+            filteringCharset = "UTF-8"
+            filter<ReplaceTokens>(
+                "tokens" to mapOf(
+                    "VERSION" to project.version.toString()
+                )
+            )
         }
     }
 
