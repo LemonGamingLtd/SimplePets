@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-var mcVersion = "1.21.6"
+var mcVersion = "1.21.8"
 var spigotNMS = "v1_21_R5"
 
 var nmsVersion = "v$mcVersion".replace(".", "_")

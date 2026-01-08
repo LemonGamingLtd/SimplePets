@@ -15,7 +15,10 @@ dependencies {
     compileOnly(libs.protocollib)
     compileOnly(libs.commonsio)
 
-    implementation(libs.bslib)
+    implementation(libs.bslib) {
+        exclude(group = "io.papermc", module = "paperlib")
+        exclude(group = "de.tr7zw", module = "item-nbt-api-plugin")
+    }
     implementation(libs.updatechecker)
     implementation(libs.bstats)
 }

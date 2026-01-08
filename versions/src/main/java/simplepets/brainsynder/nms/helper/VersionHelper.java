@@ -1,22 +1,21 @@
 package simplepets.brainsynder.nms.helper;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import lib.brainsynder.ServerVersion;
 import lib.brainsynder.internal.nbtapi.nbtapi.NBTContainer;
 import lib.brainsynder.internal.nbtapi.nbtapi.NBTReflectionUtil;
 import lib.brainsynder.nbt.JsonToNBT;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.other.NBTException;
+import lib.brainsynder.reflection.FieldAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.PositionMoveRotation;
-import net.minecraft.world.entity.Relative;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
@@ -34,12 +33,18 @@ import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.api.plugin.utils.HelperUtilities;
 import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.utils.InvalidInputException;
+import simplepets.brainsynder.utils.VersionFields;
 
 public class VersionHelper {
     public static final VersionTranslator VERSION_TRANSLATOR = HelperUtilities.getVersionedClass(
             "NMSVersionTranslator",
             VersionTranslator.class,
             DefaultVersionTranslator.class);
+
+    private static final FieldAccessor<AttributeMap> accessor = FieldAccessor.getField(
+            LivingEntity.class,
+            VersionFields.current().getAttributesField(),
+            AttributeMap.class);
 
     public static BlockPos getPosition (Entity entity) {
         return BlockPos.containing(new Vec3(entity.getX(), entity.getY(), entity.getZ()));
@@ -53,7 +58,15 @@ public class VersionHelper {
     }
 
     public static void overrideAttributeMap (EntityPet entityPet) {
-        throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
+        accessor.set(entityPet, new AttributeMap(createAttributes(entityPet).build()));
+    }
+
+    private static AttributeSupplier.Builder createAttributes (EntityPet entityPet) {
+        AttributeSupplier.Builder builder = Mob.createMobAttributes();
+        if (entityPet instanceof IFlyableEntity) builder.add(Attributes.FLYING_SPEED, 1);
+        builder.add(Attributes.SCALE, 1);
+        builder.add(Attributes.STEP_HEIGHT, 1);
+        return builder.add(Attributes.MOVEMENT_SPEED, 1);
     }
 
     // ADDED DURING 1.21.3 DEVELOPMENT
@@ -69,7 +82,6 @@ public class VersionHelper {
         return new ClientboundTeleportEntityPacket(entity.getId(), PositionMoveRotation.of(entity), Relative.ALL, entity.onGround);
     }
 
-    // ADDED DURING 1.21.5 DEVELOPMENT
     public static void moveTo (Entity entityPet, double x, double y, double z, float yaw, float pitch) {
         entityPet.snapTo(x, y, z, yaw, pitch);
     }

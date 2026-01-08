@@ -46,6 +46,10 @@ tasks.register<Jar>("multiprojectJar") {
     description = "Merges all subproject jars into a single jar"
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
+    archiveBaseName.set("SimplePets")
+    archiveVersion.set("")
+    archiveClassifier.set("")
+
     val projectsToMerge = subprojects.filter { it.path != ":versions" }
 
     val producers = projectsToMerge.map { it.outputJarProducer() }
@@ -54,8 +58,21 @@ tasks.register<Jar>("multiprojectJar") {
 
     producers.forEach { (_, fileProvider) ->
         from(fileProvider.map { zipTree(it.asFile) }) {
-            exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "LICENSE")
+            exclude(
+                "plugin.yml",
+                "META-INF/*.SF",
+                "META-INF/*.DSA",
+                "META-INF/*.RSA"
+            )
         }
+    }
+
+    val mainProcessResources = project(":main").tasks.named("processResources")
+    dependsOn(mainProcessResources)
+
+    from(project(":main").layout.buildDirectory.dir("resources/main")) {
+        include("plugin.yml")
+        into("")
     }
 }
 

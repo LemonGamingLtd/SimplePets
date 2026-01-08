@@ -4,8 +4,8 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-var mcVersion = "1.21.6"
-var spigotNMS = "v1_21_R5"
+var mcVersion = "1.21.10"
+var spigotNMS = "v1_21_R6"
 
 var nmsVersion = "v$mcVersion".replace(".", "_")
 var latestMinecraft = "$mcVersion-R0.1-SNAPSHOT"
