@@ -10,6 +10,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.wolf.WolfSoundVariant;
+import net.minecraft.world.entity.animal.wolf.WolfSoundVariants;
 import net.minecraft.world.entity.animal.wolf.WolfVariant;
 import net.minecraft.world.entity.animal.wolf.WolfVariants;
 import org.bukkit.craftbukkit.CraftRegistry;
@@ -22,14 +24,17 @@ import simplepets.brainsynder.nms.entity.EntityTameablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 import simplepets.brainsynder.nms.utils.VariantUtils;
 
+import java.util.Optional;
+
 /**
- * NMS: {@link net.minecraft.world.entity.animal.Wolf}
+ * NMS: {@link net.minecraft.world.entity.animal.wolf.Wolf}
  */
 public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
     private static final EntityDataAccessor<Boolean> BEGGING = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> COLLAR_COLOR = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> ANGER_TIME = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Long> ANGER_TIME = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Holder<WolfVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.WOLF_VARIANT);
+    private static final EntityDataAccessor<Holder<WolfSoundVariant>> DATA_SOUND_VARIANT_ID = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.WOLF_SOUND_VARIANT);
 
     private boolean angry = false;
     private boolean furWet = false;
@@ -53,7 +58,11 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
     @Override
     public void populateDataAccess(PetDataAccess dataAccess) {
         super.populateDataAccess(dataAccess);
+        Registry<WolfSoundVariant> registry = this.registryAccess().lookupOrThrow(Registries.WOLF_SOUND_VARIANT);
+        Optional soundReference = registry.get(WolfSoundVariants.CLASSIC);
+
         dataAccess.define(DATA_VARIANT_ID, VariantUtils.getDefaultOrAny(registryAccess(), WolfVariants.PALE));
+        dataAccess.define(DATA_SOUND_VARIANT_ID, soundReference.or(registry::getAny).orElseThrow());
         dataAccess.define(BEGGING, false);
         dataAccess.define(COLLAR_COLOR, DyeColorWrapper.WHITE.getWoolData());
         dataAccess.define(ANGER_TIME, 0);
@@ -74,7 +83,7 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
                 level().broadcastEntityEvent(this, (byte)8); // Wolf shaking
             }
         }
-        if (this.angry && (entityData.get(ANGER_TIME) < 50)) entityData.set(ANGER_TIME, 500);
+        if (this.angry && (entityData.get(ANGER_TIME) < 50)) entityData.set(ANGER_TIME, 500L);
     }
 
     @Override
@@ -116,7 +125,7 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
     @Override
     public void setAngry(boolean angry) {
         this.angry = angry;
-        entityData.set(ANGER_TIME, angry ? 500 : 0);
+        entityData.set(ANGER_TIME, angry ? 500L : 0L);
     }
 
     @Override
