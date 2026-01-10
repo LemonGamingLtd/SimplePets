@@ -19,11 +19,11 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.world.entity.animal.Bee}
+ * NMS: {@link net.minecraft.world.entity.animal.bee.Bee}
  */
 public class EntityBeePet extends EntityAgeablePet implements IEntityBeePet {
     private static final EntityDataAccessor<Byte> FLAGS = SynchedEntityData.defineId(EntityBeePet.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Integer> ANGER = SynchedEntityData.defineId(EntityBeePet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Long> ANGER = SynchedEntityData.defineId(EntityBeePet.class, EntityDataSerializers.LONG);
 
     public EntityBeePet(PetType type, PetUser user) {
         super(EntityType.BEE, type, user);
@@ -51,7 +51,7 @@ public class EntityBeePet extends EntityAgeablePet implements IEntityBeePet {
     public void populateDataAccess(PetDataAccess dataAccess) {
         super.populateDataAccess(dataAccess);
         dataAccess.define(FLAGS, (byte) 4);
-        dataAccess.define(ANGER, 0);
+        dataAccess.define(ANGER, 0L);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class EntityBeePet extends EntityAgeablePet implements IEntityBeePet {
 
     @Override
     public void setAngry(boolean angry) {
-        entityData.set(ANGER, (angry) ? 25562256 : 0);
+        entityData.set(ANGER, (angry) ? 25562256L : 0L);
     }
 
     @Override
