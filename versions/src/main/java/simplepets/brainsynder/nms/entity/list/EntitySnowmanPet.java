@@ -13,7 +13,7 @@ import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.world.entity.animal.SnowGolem}
+ * NMS: {@link net.minecraft.world.entity.animal.golem.SnowGolem}
  */
 public class EntitySnowmanPet extends EntityPetOverride implements IEntitySnowmanPet {
     private static final EntityDataAccessor<Byte> PUMPKIN = SynchedEntityData.defineId(EntitySnowmanPet.class, EntityDataSerializers.BYTE);

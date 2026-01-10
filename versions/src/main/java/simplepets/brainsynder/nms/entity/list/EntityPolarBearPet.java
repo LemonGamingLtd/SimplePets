@@ -13,7 +13,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.world.entity.animal.PolarBear}
+ * NMS: {@link net.minecraft.world.entity.animal.polarbear.PolarBear}
  */
 public class EntityPolarBearPet extends EntityAgeablePet implements IEntityPolarBearPet {
     private static final EntityDataAccessor<Boolean> IS_STANDING = SynchedEntityData.defineId(EntityPolarBearPet.class, EntityDataSerializers.BOOLEAN);
