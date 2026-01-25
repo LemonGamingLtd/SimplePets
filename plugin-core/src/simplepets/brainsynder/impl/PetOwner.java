@@ -47,6 +47,8 @@ public class PetOwner implements PetUser {
     private final Map<PetType, IEntityPet> petMap;
     private final Map<PetType, String> nameMap;
 
+    private final Set<UUID> pendingRemovalEntityUUIDs;
+
     public PetOwner(Player player) {
         Validate.notNull(player, "Player can not be null (They Offline?)");
         this.uuid = player.getUniqueId();
@@ -58,6 +60,7 @@ public class PetOwner implements PetUser {
         petMap = new HashMap<>();
         nameMap = new HashMap<>();
         ownedPets = new ArrayList<>();
+        pendingRemovalEntityUUIDs = new HashSet<>();
     }
 
     public PetOwner(String username) {
@@ -71,6 +74,7 @@ public class PetOwner implements PetUser {
         petMap.clear();
         nameMap.clear();
         ownedPets.clear();
+        pendingRemovalEntityUUIDs.clear();
 
         PetCore.getInstance().getScheduler().getImpl().runNextTick(() -> {
             if (compound.hasKey("pet_names")) {
@@ -174,6 +178,37 @@ public class PetOwner implements PetUser {
         ISpawnUtil spawnUtil = SimplePets.getSpawnUtil();
         if (spawnUtil == null) return false;
 
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) return false;
+
+        if (!petMap.isEmpty()) {
+            petMap.forEach((type, entityPet) -> {
+                entityPet.getEntities().forEach(entity -> {
+                    try {
+                        entity.remove();
+                    } catch (Exception ignored) {}
+                });
+            });
+            petMap.clear();
+        }
+
+        if (!pendingRemovalEntityUUIDs.isEmpty()) {
+            Set<UUID> toRemove = new HashSet<>(pendingRemovalEntityUUIDs);
+            pendingRemovalEntityUUIDs.clear();
+
+            for (org.bukkit.World world : Bukkit.getWorlds()) {
+                for (Entity entity : world.getEntities()) {
+                    if (toRemove.contains(entity.getUniqueId())) {
+                        PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, () -> {
+                            if (entity.isValid() && !entity.isDead()) {
+                                entity.remove();
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
         List<BiOptional<PetType, StorageTagCompound>> laterTasks = Lists.newArrayList();
         this.respawnPets.forEach(tag -> {
             PetType.getPetType(tag.getString("type", "unknown")).ifPresent(type -> {
@@ -181,14 +216,13 @@ public class PetOwner implements PetUser {
                     if (!config.isEnabled()) return;
                     if (!type.isSupported()) return;
                     if (!spawnUtil.isRegistered(type)) return;
-                    Player player = Bukkit.getPlayer(uuid);
-                    if (player != null) {
-                        if (!Utilities.hasPermission(player, type.getPermission())) return;
-                        if (hasPet(type)) {
-                            laterTasks.add(BiOptional.of(type, tag.getCompoundTag("data")));
-                        } else {
+                    if (!Utilities.hasPermission(player, type.getPermission())) return;
+                    if (hasPet(type)) {
+                        laterTasks.add(BiOptional.of(type, tag.getCompoundTag("data")));
+                    } else {
+                        PetCore.getInstance().getScheduler().getImpl().runAtLocation(player.getLocation(), () -> {
                             spawnUtil.spawnEntityPet(type, PetOwner.this, tag.getCompoundTag("data"));
-                        }
+                        });
                     }
                 });
             });
@@ -199,7 +233,9 @@ public class PetOwner implements PetUser {
             StorageTagCompound compound = biOptional.second().get();
             removePet(type);
 
-            spawnUtil.spawnEntityPet(type, PetOwner.this, compound);
+            PetCore.getInstance().getScheduler().getImpl().runAtLocation(player.getLocation(), () -> {
+                spawnUtil.spawnEntityPet(type, PetOwner.this, compound);
+            });
         });
 
         this.respawnPets.clear();
@@ -208,37 +244,46 @@ public class PetOwner implements PetUser {
 
     @Override
     public void cacheAndRemove() {
+        Player player = getPlayer();
+
+        if (player != null && !hatPets.isEmpty()) {
+            player.eject();
+            hatPets.clear();
+        }
+
         petMap.forEach((type, entityPet) -> {
             respawnPets.add(new StorageTagCompound()
                 .setTag("data", entityPet.asCompound())
                 .setString("type", type.getName())
             );
+
+            PetRemoveEvent event = new PetRemoveEvent(this, entityPet);
+            Bukkit.getPluginManager().callEvent(event);
+            Utilities.runPetCommands(CommandReason.REVOKE, this, type);
+
+            entityPet.getEntities().forEach(entity -> {
+                pendingRemovalEntityUUIDs.add(entity.getUniqueId());
+            });
+
+            entityPet.getEntities().forEach(entity -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, () -> {
+                    if (entity.isValid() && !entity.isDead()) {
+                        SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, player, entity.getLocation());
+                        entity.remove();
+                    }
+                    pendingRemovalEntityUUIDs.remove(entity.getUniqueId());
+                });
+            });
         });
 
-        // If the server is shutting down, JUST IN CASE
+        petMap.clear();
+
         if (!PetCore.getInstance().isEnabled()) {
-            // TBD: We want to block the thread to save everything...
             PetCore.getInstance().getSqlHandler().sendPlayerDataSync(uuid, name, toCompound());
             return;
         }
 
-        updateDatabase().thenAccept(callback -> {
-            // Just remove the pets, the player didn't disconnect
-            petMap.forEach((type, entityPet) -> {
-                if (!hasPet(type)) return;
-                if (isPetHat(type)) setPetHat(type, false);
-                PetRemoveEvent event = new PetRemoveEvent(this, petMap.get(type));
-                Bukkit.getPluginManager().callEvent(event);
-                Utilities.runPetCommands(CommandReason.REVOKE, this, type);
-
-                entityPet.getEntities().forEach(entity -> {
-                    SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, getPlayer(), entity.getLocation());
-                    PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, entity::remove);
-                });
-            });
-
-            petMap.clear();
-        });
+        updateDatabase();
     }
 
     /**
@@ -267,6 +312,7 @@ public class PetOwner implements PetUser {
             this.ownedPets.clear();
             this.petMap.clear();
             this.respawnPets.clear();
+            this.pendingRemovalEntityUUIDs.clear();
             isLoaded = false;
         });
     }

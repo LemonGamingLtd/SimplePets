@@ -47,6 +47,7 @@ import simplepets.brainsynder.listeners.DataGUIListener;
 import simplepets.brainsynder.listeners.InteractListener;
 import simplepets.brainsynder.listeners.JoinLeaveListeners;
 import simplepets.brainsynder.listeners.LocationChangeListener;
+import simplepets.brainsynder.listeners.PortalListener;
 import simplepets.brainsynder.listeners.PetEventListener;
 import simplepets.brainsynder.listeners.PetSelectorGUIListener;
 import simplepets.brainsynder.listeners.PetSpawnListener;
@@ -414,6 +415,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         manager.registerEvents(new SavesGUIListener(), this);
         manager.registerEvents(new SelectionGUIListener(), this);
         manager.registerEvents(new LocationChangeListener(), this);
+        manager.registerEvents(new PortalListener(), this);
         manager.registerEvents(new DismountListener(), this);
     }
 
