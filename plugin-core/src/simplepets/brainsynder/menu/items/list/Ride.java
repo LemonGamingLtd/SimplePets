@@ -45,23 +45,37 @@ public class Ride extends Item {
         if (pet != null) {
             if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_RIDE.getValue())
                 masterUser.getPlayer().closeInventory();
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(), () -> masterUser.setPetVehicle(pet.getPetType(), !masterUser.isPetVehicle(pet.getPetType())), 100L, TimeUnit.MILLISECONDS);
+            // Schedule on pet entity to avoid Folia cross-region thread access issues
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(pet.getEntity(), () -> {
+                if (!pet.getEntity().isValid() || pet.getEntity().isDead()) return;
+                masterUser.setPetVehicle(pet.getPetType(), !masterUser.isPetVehicle(pet.getPetType()));
+            }, 100L, TimeUnit.MILLISECONDS);
             return;
         }
 
         if (masterUser.getPetEntities().size() == 1) {
             if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_RIDE.getValue())
                 masterUser.getPlayer().closeInventory();
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(), () -> masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
-                masterUser.setPetVehicle(iEntityPet.getPetType(), !masterUser.isPetVehicle(iEntityPet.getPetType()));
-            }), 100L, TimeUnit.MILLISECONDS);
+            masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
+                // Schedule on pet entity to avoid Folia cross-region thread access issues
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(iEntityPet.getEntity(), () -> {
+                    if (!iEntityPet.getEntity().isValid() || iEntityPet.getEntity().isDead()) return;
+                    masterUser.setPetVehicle(iEntityPet.getPetType(), !masterUser.isPetVehicle(iEntityPet.getPetType()));
+                }, 100L, TimeUnit.MILLISECONDS);
+            });
             return;
         }
         PetSelectorMenu menu = InventoryManager.SELECTOR;
         menu.setTask(masterUser.getPlayer().getName(), (user, type) -> {
             if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_RIDE.getValue())
                 user.getPlayer().closeInventory();
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(user.getPlayer(), () -> user.setPetVehicle(type, !user.isPetVehicle(type)), 100L, TimeUnit.MILLISECONDS);
+            // Get pet entity and schedule on it to avoid Folia cross-region thread access issues
+            user.getPetEntity(type).ifPresent(entityPet -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(entityPet.getEntity(), () -> {
+                    if (!entityPet.getEntity().isValid() || entityPet.getEntity().isDead()) return;
+                    user.setPetVehicle(type, !user.isPetVehicle(type));
+                }, 100L, TimeUnit.MILLISECONDS);
+            });
         });
         menu.open(masterUser, 1, inventory.getTitle());
     }

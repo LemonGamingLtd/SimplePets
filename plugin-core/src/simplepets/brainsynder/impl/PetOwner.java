@@ -7,9 +7,13 @@ import lib.brainsynder.nbt.StorageTagList;
 import lib.brainsynder.nbt.StorageTagString;
 import lib.brainsynder.optional.BiOptional;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.BlockIterator;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.ISpawnUtil;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -581,7 +585,9 @@ public class PetOwner implements PetUser {
                 Bukkit.getPluginManager().callEvent(hatEvent);
                 // Set the pet as a hat
                 Entity finalEnt = ent;
-                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(getPlayer(), () -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(finalEnt, () -> {
+                    // Verify entity is still valid before attempting hat operation
+                    if (!finalEnt.isValid() || finalEnt.isDead()) return;
                     Utilities.runPetCommands(CommandReason.HAT, PetOwner.this, type);
                     Utilities.setPassenger(getPlayer(), getTopEntity(getPlayer()), finalEnt);
                     entityPet.togglePetHatTask(hat);
@@ -712,6 +718,14 @@ public class PetOwner implements PetUser {
                 return;
             }
 
+            if (ConfigOption.INSTANCE.MISC_TOGGLES_LINE_OF_SIGHT_REQUIRED.getValue()
+                    && !hasLineOfSight(player, entityPet.getEntity())) {
+                Utilities.runPetCommands(CommandReason.FAILED, PetOwner.this, type);
+                SimplePets.getParticleHandler().sendParticle(ParticleHandler.Reason.FAILED, player, entityPet.getEntity().getLocation());
+                this.vehicle = null;
+                return;
+            }
+
             PetMountEvent event = new PetMountEvent(entityPet);
             Bukkit.getPluginManager().callEvent(event);
 
@@ -730,9 +744,52 @@ public class PetOwner implements PetUser {
                 entityPet.teleportToOwner();
             }
 
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(getPlayer(), entityPet::attachOwner, 100L, TimeUnit.MILLISECONDS);
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(entityPet.getEntity(), () -> {
+                // Verify entity is still valid before attempting mount
+                if (!entityPet.getEntity().isValid() || entityPet.getEntity().isDead()) return;
+                entityPet.attachOwner();
+            }, 100L, TimeUnit.MILLISECONDS);
         });
         return false;
+    }
+
+    /**
+     * Checks if a player has clear line of sight to the target entity.
+     * This prevents exploits where players mount pets through walls.
+     *
+     * @param player The player to check line of sight from
+     * @param target The entity the player is trying to interact with
+     * @return true if the player can see the target entity, false if blocked
+     */
+    private static boolean hasLineOfSight(Player player, Entity target) {
+        Location eye = player.getEyeLocation();
+        Location targetLoc = target.getLocation().add(0, target.getHeight() / 2, 0);
+        Material eyeMaterial = eye.getBlock().getType();
+        boolean passThroughWater = (eyeMaterial == Material.WATER);
+
+        double distance = eye.distance(targetLoc);
+        int maxDistance = (int) Math.ceil(distance) + 1;
+
+        try {
+            BlockIterator iterator = new BlockIterator(player.getLocation(), player.getEyeHeight(), maxDistance);
+            while (iterator.hasNext()) {
+                Block block = iterator.next();
+                Location blockCenter = block.getLocation().add(0.5, 0.5, 0.5);
+
+                if (blockCenter.distance(targetLoc) < 1.5) {
+                    return true;
+                }
+
+                Material type = block.getType();
+                if (!Tag.REPLACEABLE.isTagged(type) && (!passThroughWater || type != Material.WATER)) {
+                    return false;
+                }
+            }
+        } catch (IllegalStateException ignored) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override

@@ -45,19 +45,24 @@ public class Hat extends Item {
         if (pet != null) {
             if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_HAT.getValue())
                 masterUser.getPlayer().closeInventory();
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(),
-                () -> masterUser.setPetHat(pet.getPetType(), !masterUser.isPetHat(pet.getPetType())),
-                100L, TimeUnit.MILLISECONDS
-            );
+            // Schedule on pet entity to avoid Folia cross-region thread access issues
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(pet.getEntity(), () -> {
+                if (!pet.getEntity().isValid() || pet.getEntity().isDead()) return;
+                masterUser.setPetHat(pet.getPetType(), !masterUser.isPetHat(pet.getPetType()));
+            }, 100L, TimeUnit.MILLISECONDS);
             return;
         }
 
         if (masterUser.getPetEntities().size() == 1) {
             if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_HAT.getValue())
                 masterUser.getPlayer().closeInventory();
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(), () -> masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
-                masterUser.setPetHat(iEntityPet.getPetType(), !masterUser.isPetHat(iEntityPet.getPetType()));
-            }), 100L, TimeUnit.MILLISECONDS);
+            masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
+                // Schedule on pet entity to avoid Folia cross-region thread access issues
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(iEntityPet.getEntity(), () -> {
+                    if (!iEntityPet.getEntity().isValid() || iEntityPet.getEntity().isDead()) return;
+                    masterUser.setPetHat(iEntityPet.getPetType(), !masterUser.isPetHat(iEntityPet.getPetType()));
+                }, 100L, TimeUnit.MILLISECONDS);
+            });
             return;
         }
 
@@ -65,7 +70,13 @@ public class Hat extends Item {
         menu.setTask(masterUser.getPlayer().getName(), (user, type) -> {
             if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_HAT.getValue())
                 user.getPlayer().closeInventory();
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(user.getPlayer(), () -> user.setPetHat(type, !user.isPetHat(type)), 100L, TimeUnit.MILLISECONDS);
+            // Get pet entity and schedule on it to avoid Folia cross-region thread access issues
+            user.getPetEntity(type).ifPresent(entityPet -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(entityPet.getEntity(), () -> {
+                    if (!entityPet.getEntity().isValid() || entityPet.getEntity().isDead()) return;
+                    user.setPetHat(type, !user.isPetHat(type));
+                }, 100L, TimeUnit.MILLISECONDS);
+            });
         });
         menu.open(masterUser, 1, inventory.getTitle());
     }
