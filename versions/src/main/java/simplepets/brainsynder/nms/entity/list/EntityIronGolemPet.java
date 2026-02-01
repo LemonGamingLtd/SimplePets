@@ -7,8 +7,9 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPetOverride;
 
 /**
- * NMS: {@link net.minecraft.world.entity.animal.IronGolem}
+ * NMS: {@link net.minecraft.world.entity.animal.golem.IronGolem}
  */
+// TODO: With the new HalfScale DataItem, the golem seems to be getting cracked when its not supposed to be...
 public class EntityIronGolemPet extends EntityPetOverride implements IEntityIronGolemPet {
     public EntityIronGolemPet(PetType type, PetUser user) {
         super(EntityType.IRON_GOLEM, type, user);
