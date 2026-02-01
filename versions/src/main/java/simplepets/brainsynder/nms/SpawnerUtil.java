@@ -3,7 +3,6 @@ package simplepets.brainsynder.nms;
 import lib.brainsynder.ServerVersion;
 import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.optional.BiOptional;
 import lib.brainsynder.storage.RandomCollection;
 import lib.brainsynder.utils.Colorize;
 import org.bukkit.Bukkit;
@@ -14,6 +13,7 @@ import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.api.ISpawnUtil;
+import simplepets.brainsynder.api.SpawnResult;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.event.entity.PetEntitySpawnEvent;
 import simplepets.brainsynder.api.pet.CommandReason;
@@ -64,27 +64,27 @@ public class SpawnerUtil implements ISpawnUtil {
     }
 
     @Override
-    public BiOptional<IEntityPet, String> spawnEntityPet(PetType type, PetUser user) {
+    public SpawnResult<IEntityPet> spawnEntityPet(PetType type, PetUser user) {
         if (user.getUserLocation().isPresent()) return spawnEntityPet(type, user, getRandomLocation(type, user.getUserLocation().get()));
-        return BiOptional.empty();
+        return SpawnResult.fail("missing user location, unable to spawn pet due to no location provided");
     }
 
     @Override
-    public BiOptional<IEntityPet, String> spawnEntityPet(PetType type, PetUser user, StorageTagCompound compound) {
+    public SpawnResult<IEntityPet> spawnEntityPet(PetType type, PetUser user, StorageTagCompound compound) {
         if (user.getUserLocation().isPresent()) return spawnEntityPet(type, user, compound, getRandomLocation(type, user.getUserLocation().get()));
-        return BiOptional.empty();
+        return SpawnResult.fail("missing user location, unable to spawn pet due to no location provided");
     }
 
     @Override
-    public BiOptional<IEntityPet, String> spawnEntityPet(PetType type, PetUser user, Location location) {
+    public SpawnResult<IEntityPet> spawnEntityPet(PetType type, PetUser user, Location location) {
         return spawnEntityPet(type, user, new StorageTagCompound(), location);
     }
 
     @Override
-    public BiOptional<IEntityPet, String> spawnEntityPet(PetType type, PetUser user, StorageTagCompound compound, Location location) {
+    public SpawnResult<IEntityPet> spawnEntityPet(PetType type, PetUser user, StorageTagCompound compound, Location location) {
         if (ConfigOption.INSTANCE.WORLDS_ENABLED.getValue()) {
             if (!ConfigOption.INSTANCE.WORLDS_ALLOWED_WORLDS.getValue().contains(location.getWorld().getName()))
-                return BiOptional.of(null, Colorize.translateBungeeHex(ConfigOption.INSTANCE.WORLDS_FAIL_MESSAGE.getValue()));
+                return SpawnResult.fail(Colorize.translateBungeeHex(ConfigOption.INSTANCE.WORLDS_FAIL_MESSAGE.getValue()));
         }
 
         if (ConfigOption.INSTANCE.MISC_TOGGLES_WORLD_CONFINES_PET_LIMITS.getValue()) {
@@ -93,7 +93,7 @@ public class SpawnerUtil implements ISpawnUtil {
             int y = location.getBlockY();
 
             if ( (y > maxHeight) || (minHeight > y) )
-                return BiOptional.of(null, Colorize.translateBungeeHex(ConfigOption.INSTANCE.MISC_TOGGLES_EXCEEDS_WORLD_CONFINES.getValue()));
+                return SpawnResult.fail(Colorize.translateBungeeHex(ConfigOption.INSTANCE.MISC_TOGGLES_EXCEEDS_WORLD_CONFINES.getValue()));
         }
 
         try {
@@ -109,7 +109,7 @@ public class SpawnerUtil implements ISpawnUtil {
                 try {
                     customEntity.applyCompound(compound);
                 } catch (Exception e) {
-                    return BiOptional.of(null, ChatColor.RED + e.getMessage());
+                    return SpawnResult.fail(ChatColor.RED+"An error occurred while applying NBT data to the pet: " + e.getMessage());
                 }
             }
 
@@ -125,8 +125,8 @@ public class SpawnerUtil implements ISpawnUtil {
                 SimplePets.getPetUtilities().runPetCommands(CommandReason.FAILED, user, type);
                 String reason = "";
                 if (event.getReason() != null) reason = event.getReason();
-                if (!reason.isEmpty()) return BiOptional.of(null, reason);
-                return BiOptional.empty();
+                if (!reason.isEmpty()) return SpawnResult.fail(reason);
+                return SpawnResult.fail("The spawning of this pet was cancelled by another plugin.");
             }
 
             if (!location.getChunk().isLoaded()) location.getChunk().load();
@@ -141,15 +141,15 @@ public class SpawnerUtil implements ISpawnUtil {
                 SimplePets.getPetUtilities().runPetCommands(CommandReason.SPAWN, user, type);
                 int count = spawnCount.getOrDefault(type, 0);
                 spawnCount.put(type, (count+1));
-                return BiOptional.of(customEntity);
+                return SpawnResult.success(customEntity);
             }
         }catch (Exception e) {
             e.printStackTrace();
             SimplePets.getPetUtilities().runPetCommands(CommandReason.FAILED, user, type, location);
-            return BiOptional.of(null, e.getMessage());
+            return SpawnResult.fail("An error occurred while trying to spawn the pet: " + e.getMessage());
         }
 
-        return BiOptional.empty();
+        return SpawnResult.fail("An unknown error occurred while trying to spawn the pet.");
     }
 
     @Override

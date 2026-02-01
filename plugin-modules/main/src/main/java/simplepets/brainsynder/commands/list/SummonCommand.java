@@ -5,12 +5,12 @@ import lib.brainsynder.nbt.JsonToNBT;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.other.NBTException;
 import lib.brainsynder.nms.Tellraw;
-import lib.brainsynder.optional.BiOptional;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.ISpawnUtil;
+import simplepets.brainsynder.api.SpawnResult;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.event.inventory.PetSelectTypeEvent;
@@ -175,11 +175,11 @@ public class SummonCommand extends PetSubCommand {
                 if (event.isCancelled()) return;
             }
 
-            BiOptional<IEntityPet, String> entityPet = spawner.spawnEntityPet(type, user, finalCompound);
-            if (!entityPet.isFirstPresent()) {
-                if (entityPet.isSecondPresent()) {
+            SpawnResult<IEntityPet> entityPet = spawner.spawnEntityPet(type, user, finalCompound);
+            if (!entityPet.isSuccess()) {
+                if (entityPet.isFailure()) {
                     Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
-                        .tooltip(entityPet.second().get()).send(sender);
+                        .tooltip(entityPet.failMessage()).send(sender);
                     return;
                 }
 
@@ -187,7 +187,7 @@ public class SummonCommand extends PetSubCommand {
                 return;
             }
             if (type == PetType.ARMOR_STAND) {
-                ((IEntityControllerPet) entityPet.first().get()).getVisibleEntity().applyCompound(finalCompound);
+                ((IEntityControllerPet) entityPet.value()).getVisibleEntity().applyCompound(finalCompound);
             }
             sender.sendMessage(MessageFile.getTranslation(MessageOption.SUMMONED_PET).replace("{type}", type.getName()));
         });

@@ -1,7 +1,6 @@
 package simplepets.brainsynder.api;
 
 import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.optional.BiOptional;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -18,7 +17,7 @@ public interface ISpawnUtil {
      * @param type - The type of pet to be summoned
      * @param user - User the pet is spawned for
      */
-    BiOptional<IEntityPet, String> spawnEntityPet(PetType type, PetUser user);
+    SpawnResult<IEntityPet> spawnEntityPet(PetType type, PetUser user);
 
     /**
      * Will spawn the selected pet
@@ -27,7 +26,7 @@ public interface ISpawnUtil {
      * @param user     - User the pet is spawned for
      * @param compound - Customization for the entity
      */
-    BiOptional<IEntityPet, String> spawnEntityPet(PetType type, PetUser user, StorageTagCompound compound);
+    SpawnResult<IEntityPet> spawnEntityPet(PetType type, PetUser user, StorageTagCompound compound);
 
     /**
      * Will spawn the selected pet
@@ -36,7 +35,7 @@ public interface ISpawnUtil {
      * @param user     - User the pet is spawned for
      * @param location - Location to spawn the pet at
      */
-    BiOptional<IEntityPet, String> spawnEntityPet(PetType type, PetUser user, Location location);
+    SpawnResult<IEntityPet> spawnEntityPet(PetType type, PetUser user, Location location);
 
     /**
      * Will spawn the selected pet
@@ -46,7 +45,7 @@ public interface ISpawnUtil {
      * @param compound - Customization for the entity
      * @param location - Location to spawn the pet at
      */
-    BiOptional<IEntityPet, String> spawnEntityPet(PetType type, PetUser user, StorageTagCompound compound, Location location);
+    SpawnResult<IEntityPet> spawnEntityPet(PetType type, PetUser user, StorageTagCompound compound, Location location);
 
     /**
      * Will check if the {@link PetType} is registered

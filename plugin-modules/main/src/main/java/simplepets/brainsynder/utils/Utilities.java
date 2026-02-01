@@ -4,7 +4,6 @@ import lib.brainsynder.ServerVersion;
 import lib.brainsynder.files.YamlFile;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nms.Tellraw;
-import lib.brainsynder.optional.BiOptional;
 import lib.brainsynder.reflection.FieldAccessor;
 import lib.brainsynder.reflection.Reflection;
 import org.apache.commons.io.FileUtils;
@@ -19,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import simplepets.brainsynder.api.ISpawnUtil;
+import simplepets.brainsynder.api.SpawnResult;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.pet.CommandReason;
@@ -58,8 +58,7 @@ public class Utilities {
 
     public static boolean handlePetSpawning(PetUser user, PetType type, StorageTagCompound compound, boolean checkDataPermissions) {
         Player player = user.getPlayer();
-        if (type.isInDevelopment()
-            && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue())) {
+        if (type.isInDevelopment() && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue())) {
             player.sendMessage(MessageFile.getTranslation(MessageOption.PET_IN_DEVELOPMENT).replace("{type}", type.getName()));
             return false;
         }
@@ -69,48 +68,51 @@ public class Utilities {
             return false;
         }
 
-        if (!SimplePets.getSpawnUtil().isRegistered(type)) {
+        ISpawnUtil spawner = SimplePets.getSpawnUtil();
+        if (spawner == null) return false;
+
+        if (!spawner.isRegistered(type)) {
             player.sendMessage(MessageFile.getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
             return false;
         }
 
         if (!Utilities.hasPermission(player, type.getPermission())
-            && ((!user.getOwnedPets().contains(type)) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
-            return false;
-        }
-
-        ISpawnUtil spawner = SimplePets.getSpawnUtil();
-        if (spawner == null) {
+                && ((!user.getOwnedPets().contains(type)) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
             return false;
         }
 
         if (compound.hasNoTags()) {
-            // Should load the defaults based on the Pet data
+            // Load defaults based on the Pet data
             for (PetData petData : type.getPetData()) {
-                if (checkDataPermissions && (!hasPermission(player, type.getPermission("data." + petData.getNamespace().namespace()))))
-                    continue;
-                petData.getDefault(type).ifPresent(o -> {
-                    compound.set(petData.getNamespace().namespace(), o);
-                });
+                if (checkDataPermissions && (!hasPermission(player, type.getPermission("data." + petData.getNamespace().namespace())))) continue;
+
+                petData.getDefault(type).ifPresent(o -> compound.set(petData.getNamespace().namespace(), o));
             }
         }
 
-        BiOptional<IEntityPet, String> entityPet = spawner.spawnEntityPet(type, user, compound);
+        SpawnResult<IEntityPet> result = spawner.spawnEntityPet(type, user, compound);
 
-        if (entityPet.isFirstPresent()) {
-            player.sendMessage(MessageFile.getTranslation(MessageOption.SUMMONED_PET).replace("{type}", type.getName()));
-            return true;
-        } else {
-            SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.FAILED, player, player.getLocation());
-            if (entityPet.isSecondPresent()) {
+        return switch (result.state()) {
+            case SUCCESS -> {
+                player.sendMessage(MessageFile.getTranslation(MessageOption.SUMMONED_PET).replace("{type}", type.getName()));
+                yield true;
+            }
+
+            case FAILURE -> {
+                SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.FAILED, player, player.getLocation());
                 Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
-                    .tooltip(entityPet.second().get()).send(player);
-                return false;
+                        .tooltip(result.failMessage())
+                        .send(player);
+
+                yield false;
             }
 
-            player.sendMessage(MessageFile.getTranslation(MessageOption.FAILED_SUMMON).replace("{type}", type.getName()));
-            return false;
-        }
+            case EMPTY -> {
+                SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.FAILED, player, player.getLocation());
+                player.sendMessage(MessageFile.getTranslation(MessageOption.FAILED_SUMMON).replace("{type}", type.getName()));
+                yield false;
+            }
+        };
     }
 
     public static void runPetCommands(CommandReason reason, PetUser owner, PetType type) {
