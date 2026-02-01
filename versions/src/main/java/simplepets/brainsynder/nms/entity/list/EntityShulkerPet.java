@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -314,6 +315,22 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
             additional.getKeySet().forEach(pluginKey -> this.additional.put(pluginKey, additional.getCompoundTag(pluginKey)));
         }
         pet.applyCompound(object);
+    }
+
+    @Override
+    public double getPetScale() {
+        return getAttribute(Attributes.SCALE).getValue();
+    }
+
+    @Override
+    public void setPetScale(double scale) {
+        getAttribute(Attributes.SCALE).setBaseValue(scale);
+    }
+
+    @Override
+    public boolean isFullSize() {
+        // Checks scale to see if its 1.0 (default size)
+        return getPetScale() == 1.0;
     }
 
     @Override
