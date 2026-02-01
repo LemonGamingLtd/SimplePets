@@ -442,6 +442,8 @@ public enum PetType {
         list.addFirst(BurningData.class);
         list.addFirst(FrozenData.class);
         list.addFirst(Visible.class);
+        if ((!IEntityArmorStandPet.class.isInstance(entityClass)) && (!IEntityShulkerPet.class.isInstance(entityClass)))
+            list.addFirst(HalfScaleData.class);
         Arrays.asList(petData).forEach(dataClass -> {
             if (dataClass.isAnnotationPresent(SupportedVersion.class)) {
                 SupportedVersion support = dataClass.getAnnotation(SupportedVersion.class);

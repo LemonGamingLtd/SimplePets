@@ -144,4 +144,8 @@ public interface IEntityPet extends IEntityBase, IBurnablePet {
      * Returns what color the pet will glow as
      */
     ChatColor getGlowColor();
+
+    double getPetScale();
+    void setPetScale(double scale);
+    boolean isFullSize();
 }

@@ -309,6 +309,22 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     }
 
     @Override
+    public double getPetScale() {
+        return getAttribute(Attributes.SCALE).getValue();
+    }
+
+    @Override
+    public void setPetScale(double scale) {
+        getAttribute(Attributes.SCALE).setBaseValue(scale);
+    }
+
+    @Override
+    public boolean isFullSize() {
+        // Checks scale to see if its 1.0 (default size)
+        return getPetScale() == 1.0;
+    }
+
+    @Override
     public StorageTagCompound asCompound() {
         StorageTagCompound object = new StorageTagCompound();
         object.setString("PetType", getPetType().getName());
@@ -326,7 +342,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
             object.setTag("additional", additional);
         }
 
-        object.setDouble("scale", getAttribute(Attributes.SCALE).getValue());
+        object.setDouble("scale", getPetScale());
         object.setBoolean("frozen", isFrozen());
         object.setBoolean("burning", isBurning());
         object.setEnum("glow-color", getGlowColor());
@@ -372,7 +388,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
             flySpeed = object.getDouble("flySpeed");
             VersionHelper.setAttributes(this, -1, flySpeed);
         }
-        if (object.hasKey("scale")) getAttribute(Attributes.SCALE).setBaseValue(object.getDouble("scale"));
+        if (object.hasKey("scale")) setPetScale(object.getDouble("scale"));
     }
 
     @Override
