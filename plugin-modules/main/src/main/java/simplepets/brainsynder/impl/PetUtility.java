@@ -56,22 +56,33 @@ public class PetUtility implements IPetUtilities {
      */
     @Override
     public String handlePlaceholders(PetUser owner, IEntityPet entity, Location petLoc, String text) {
-        Location ownerLoc = owner.getPlayer().getLocation();
-        if ((petLoc == null) && (entity != null)) petLoc = entity.getEntity().getLocation();
+        if (text == null || owner == null) return text;
+
+        var player = owner.getPlayer();
+        Location ownerLoc = player != null ? player.getLocation() : null;
+
+        if (petLoc == null && entity != null && entity.getEntity() != null) petLoc = entity.getEntity().getLocation();
+
+        String petType = "Unknown", petUuid = "Unknown", petName = "Pet";
+        if (entity != null && entity.getEntity() != null) {
+            var type = entity.getPetType();
+            if (type != null) petType = type.getName();
+            petUuid = entity.getEntity().getUniqueId().toString();
+            if (entity.getPetName().isPresent()) petName = entity.getPetName().get();
+        }
 
         if (petLoc != null) text = text.replace("{petX}", String.valueOf(petLoc.getX()))
-            .replace("{petY}", String.valueOf(petLoc.getY()))
-            .replace("{petZ}", String.valueOf(petLoc.getZ()));
+                .replace("{petY}", String.valueOf(petLoc.getY()))
+                .replace("{petZ}", String.valueOf(petLoc.getZ()));
 
-        text = text.replace("{ownerX}", String.valueOf(ownerLoc.getX()))
-            .replace("{ownerY}", String.valueOf(ownerLoc.getY()))
-            .replace("{ownerZ}", String.valueOf(ownerLoc.getZ()))
-            .replace("{ownerName}", owner.getOwnerName())
-            .replace("{petType}", entity.getPetType().getName())
-            .replace("{petUUID}", entity.getEntity().getUniqueId().toString());
-        if ((entity != null) && entity.getPetName().isPresent())
-            text = text.replace("{petName}", entity.getPetName().get());
-        return text;
+        if (ownerLoc != null) text = text.replace("{ownerX}", String.valueOf(ownerLoc.getX()))
+                .replace("{ownerY}", String.valueOf(ownerLoc.getY()))
+                .replace("{ownerZ}", String.valueOf(ownerLoc.getZ()));
+
+        return text.replace("{ownerName}", owner.getOwnerName())
+                .replace("{petType}", petType)
+                .replace("{petUUID}", petUuid)
+                .replace("{petName}", petName);
     }
 
     @Override
