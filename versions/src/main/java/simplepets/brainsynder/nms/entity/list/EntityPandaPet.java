@@ -1,13 +1,13 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import lib.brainsynder.json.JsonObject;
+import lib.brainsynder.math.MathUtils;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
 import simplepets.brainsynder.api.entity.passive.IEntityPandaPet;
@@ -136,9 +136,9 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
 
     private void handleSneeze() {
         Vec3 var0 = this.getDeltaMovement();
-        double x = (this.getX() - (double)(this.getBbWidth() + 1.0F) * 0.5D * (double) Mth.sin(this.yBodyRot * 0.017453292F));
+        double x = (this.getX() - (double)(this.getBbWidth() + 1.0F) * 0.5D * (double) MathUtils.sin(this.yBodyRot * 0.017453292F));
         double y = (this.getY() + this.getEyeY() - 0.10000000149011612D);
-        double z = (this.getZ() + (double)(this.getBbHeight() + 1.0F) * 0.5D * (double)Mth.cos(this.yBodyRot * 0.017453292F));
+        double z = (this.getZ() + (double)(this.getBbHeight() + 1.0F) * 0.5D * (double)MathUtils.cos(this.yBodyRot * 0.017453292F));
         level().addParticle(ParticleTypes.SNEEZE, x, y, z, var0.x, 0.0D, var0.z);
         this.playSound(SoundEvents.PANDA_SNEEZE, 1.0F, 1.0F);
 
