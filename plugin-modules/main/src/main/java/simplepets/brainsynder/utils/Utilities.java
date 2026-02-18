@@ -20,7 +20,6 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import simplepets.brainsynder.api.ISpawnUtil;
 import simplepets.brainsynder.api.SpawnResult;
 import simplepets.brainsynder.api.entity.IEntityPet;
-import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.pet.CommandReason;
 import simplepets.brainsynder.api.pet.PetData;
 import simplepets.brainsynder.api.pet.PetType;
@@ -35,10 +34,8 @@ import simplepets.brainsynder.managers.ParticleManager;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Utilities {
     public static List<Material> getBlacklistedMaterials() {
@@ -252,27 +249,6 @@ public class Utilities {
         );
 
         field.set(Reflection.getHandle(entity), 0);
-    }
-
-    public static void hidePet(PetUser user, IEntityPet entityPet) {
-        UUID entityID = entityPet.getEntity().getUniqueId();
-        if (entityPet instanceof IEntityControllerPet)
-            entityID = ((IEntityControllerPet) entityPet).getVisibleEntity().getEntity().getUniqueId();
-        managePetVisibility(user.getPlayer(), "PacketPlayOutEntityDestroy", Integer.TYPE, entityID);
-    }
-
-    public static void showPet(PetUser user, IEntityPet entityPet) {
-        Entity entity = entityPet.getEntity();
-        if (entityPet instanceof IEntityControllerPet)
-            entity = ((IEntityControllerPet) entityPet).getVisibleEntity().getEntity();
-        managePetVisibility(user.getPlayer(), "PacketPlayOutSpawnEntityLiving", Reflection.getNmsClass("EntityLiving"), entity);
-    }
-
-    private static void managePetVisibility(Player p, String nmsClass, Class<?> o1, Object o2) {
-        Class<?> entity = Reflection.getNmsClass(nmsClass);
-        Constructor<?> constructor = Reflection.fillConstructor(entity, o1);
-        Object packet = Reflection.initiateClass(constructor, o2);
-        Reflection.sendPacket(p, packet);
     }
 
     public static boolean isSimilar(ItemStack main, ItemStack check) {
