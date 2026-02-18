@@ -65,7 +65,7 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
         dataAccess.define(DATA_SOUND_VARIANT_ID, soundReference.or(registry::getAny).orElseThrow());
         dataAccess.define(BEGGING, false);
         dataAccess.define(COLLAR_COLOR, DyeColorWrapper.WHITE.getWoolData());
-        dataAccess.define(ANGER_TIME, 0);
+        dataAccess.define(ANGER_TIME, 0L);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
 
     @Override
     public boolean isAngry() {
-        return entityData.get(ANGER_TIME) > 0;
+        return entityData.get(ANGER_TIME) > 0L;
     }
 
     @Override
