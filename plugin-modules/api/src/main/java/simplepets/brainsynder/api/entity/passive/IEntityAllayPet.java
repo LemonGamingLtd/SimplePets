@@ -8,4 +8,8 @@ import simplepets.brainsynder.api.pet.PetType;
 
 @SupportedVersion(version = ServerVersion.v1_19)
 @EntityPetType(petType = PetType.ALLAY)
-public interface IEntityAllayPet extends IFlyableEntity {}
+public interface IEntityAllayPet extends IFlyableEntity {
+    boolean isDancing();
+
+    void setDancing(boolean dancing);
+}

@@ -61,7 +61,8 @@ public enum PetType {
     UNKNOWN(new ItemBuilder(Material.STONE)),
 
     @PetCustomization(ambient = SoundMaker.ENTITY_ALLAY_AMBIENT_WITHOUT_ITEM, weight = PetWeight.LIGHT)
-    ALLAY(IEntityAllayPet.class, "40e1c7064af7dee68677efaa95f6e6e01430b006dd91638ea2a61849254488ec"),
+    ALLAY(IEntityAllayPet.class, "40e1c7064af7dee68677efaa95f6e6e01430b006dd91638ea2a61849254488ec",
+            AllayDancingData.class),
 
     @PetCustomization(ambient = SoundMaker.ENTITY_ARMADILLO_AMBIENT, weight = PetWeight.HEAVY)
     ARMADILLO(IEntityArmadilloPet.class, "9164ed0e0ef69b0ce7815e4300b4413a4828fcb0092918543545a418a48e0c3c",
