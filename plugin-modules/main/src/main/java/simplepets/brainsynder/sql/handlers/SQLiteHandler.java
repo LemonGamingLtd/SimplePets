@@ -164,26 +164,106 @@ public class SQLiteHandler implements SQLHandler {
 
             try {
                 Connection connection = implementConnection();
-
-                PreparedStatement statement = connection.prepareStatement("SELECT `uuid`, COUNT(`uuid`) FROM `" + SQLData.TABLE_PREFIX + "_players` GROUP BY `uuid` HAVING COUNT(`uuid`) > 1;");
+                connection.setAutoCommit(false);
 
                 List<String> list = new ArrayList<>();
-                try (ResultSet result = statement.executeQuery()) {
-                    while (result.next()) {
-                        ++rawCount;
-                        list.add(result.getString("uuid"));
+
+                try (PreparedStatement statement = connection.prepareStatement("SELECT `uuid`, COUNT(`uuid`) AS `count` FROM `" + SQLData.TABLE_PREFIX + "_players` " + "GROUP BY `uuid` HAVING COUNT(`uuid`) > 1;")) {
+                    try (ResultSet result = statement.executeQuery()) {
+                        while (result.next()) {
+                            ++rawCount;
+                            list.add(result.getString("uuid"));
+                        }
                     }
                 }
 
-                statement = connection.prepareStatement("DELETE FROM `" + SQLData.TABLE_PREFIX + "_players` WHERE `uuid`=?");
-
-                for (String string : list) {
-                    statement.setString(1, string);
-                    statement.addBatch();
+                if (list.isEmpty()) {
+                    connection.rollback();
+                    connection.setAutoCommit(true);
+                    return BiOptional.of(0, 0);
                 }
-                totalCount = statement.executeBatch().length;
 
-                statement.close();
+                PreparedStatement fetch = connection.prepareStatement(
+                        "SELECT `uuid`,`name`,`UnlockedPets`,`PetName`,`NeedsRespawn`,`SavedPets` " + "FROM `" + SQLData.TABLE_PREFIX + "_players` WHERE `uuid`=?;"
+                );
+                PreparedStatement delete = connection.prepareStatement(
+                        "DELETE FROM `" + SQLData.TABLE_PREFIX + "_players` WHERE `uuid`=?;"
+                );
+                PreparedStatement insert = connection.prepareStatement(
+                        "INSERT INTO `" + SQLData.TABLE_PREFIX + "_players` " + "(`uuid`, `name`, `UnlockedPets`, `PetName`, `NeedsRespawn`, `SavedPets`) " + "VALUES (?, ?, ?, ?, ?, ?);"
+                );
+                PreparedStatement countRows = connection.prepareStatement(
+                        "SELECT COUNT(*) AS `c` FROM `" + SQLData.TABLE_PREFIX + "_players` WHERE `uuid`=?;"
+                );
+
+                for (String uuid : list) {
+                    int rows = 0;
+                    countRows.setString(1, uuid);
+                    try (ResultSet c = countRows.executeQuery()) {
+                        if (c.next()) rows = c.getInt("c");
+                    }
+
+                    if (rows <= 1) continue;
+
+                    String keepUuid = null;
+                    String keepName = null;
+                    String keepUnlocked = null;
+                    String keepPetName = null;
+                    String keepNeedsRespawn = null;
+                    String keepSavedPets = null;
+                    int bestScore = -1;
+
+                    fetch.setString(1, uuid);
+                    try (ResultSet resultSet = fetch.executeQuery()) {
+                        while (resultSet.next()) {
+                            String storedUUID = resultSet.getString("uuid");
+                            String storeName = resultSet.getString("name");
+                            String storeUnlockedPets = resultSet.getString("UnlockedPets");
+                            String storePetName = resultSet.getString("PetName");
+                            String storeRespawn = resultSet.getString("NeedsRespawn");
+                            String storeSavedPets = resultSet.getString("SavedPets");
+
+                            int score = 0;
+                            if (storeUnlockedPets != null) score += storeUnlockedPets.length();
+                            if (storePetName != null) score += storePetName.length();
+                            if (storeRespawn != null) score += storeRespawn.length();
+                            if (storeSavedPets != null) score += storeSavedPets.length();
+
+                            if (score <= bestScore) continue;
+
+                            bestScore = score;
+                            keepUuid = storedUUID;
+                            keepName = storeName;
+                            keepUnlocked = storeUnlockedPets;
+                            keepPetName = storePetName;
+                            keepNeedsRespawn = storeRespawn;
+                            keepSavedPets = storeSavedPets;
+                        }
+                    }
+
+                    if (keepUuid == null) continue;
+
+                    delete.setString(1, uuid);
+                    delete.executeUpdate();
+
+                    insert.setString(1, keepUuid);
+                    insert.setString(2, keepName);
+                    insert.setString(3, keepUnlocked);
+                    insert.setString(4, keepPetName);
+                    insert.setString(5, keepNeedsRespawn);
+                    insert.setString(6, keepSavedPets);
+                    insert.executeUpdate();
+
+                    totalCount += (rows - 1);
+                }
+
+                countRows.close();
+                fetch.close();
+                delete.close();
+                insert.close();
+
+                connection.commit();
+                connection.setAutoCommit(true);
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
