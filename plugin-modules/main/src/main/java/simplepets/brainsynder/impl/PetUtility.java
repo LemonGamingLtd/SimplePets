@@ -22,15 +22,35 @@ public class PetUtility implements IPetUtilities {
     public void runPetCommands(CommandReason reason, PetUser owner, PetType type, Location location) {
         SimplePets.getPetConfigManager().getPetConfig(type).ifPresent(config -> {
             List<String> commands = config.getCommands().getOrDefault(reason, Lists.newArrayList());
-            if (owner.getPetEntity(type).isPresent()) {
-                commands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), handlePlaceholders(owner, owner.getPetEntity(type).get(), null, command)));
-                return;
-            }
-            commands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), handlePlaceholders(owner, null, location, command)));
-        });
+            IEntityPet pet = owner.getPetEntity(type).orElse(null);
 
+            commands.forEach(command -> Bukkit.dispatchCommand(
+                    Bukkit.getConsoleSender(),
+                    handleCommand(owner, pet, pet != null ? null : location, command)
+            ));
+        });
     }
 
+    private String handleCommand(PetUser owner, IEntityPet entity, Location petLoc, String command) {
+        String text = handlePlaceholders(owner, entity, petLoc, command);
+        if (text == null) return null;
+        if (text.startsWith("/")) text = text.substring(1);
+        if (text.contains("{petName}")) text = text.replace("{petName}", safePetName(entity));
+        return text;
+    }
+
+    private String safePetName(IEntityPet entity) {
+        if (entity == null || entity.getPetName().isEmpty()) return "Pet";
+
+        String name = org.bukkit.ChatColor.stripColor(entity.getPetName().get());
+        name = name.replace("\r", "").replace("\n", "").replace("\t", "");
+        name = name.replaceAll("[;&|`$<>\\\\]", "").replaceAll("\\s+", "_");
+        name = name.replaceAll("[^A-Za-z0-9_\\-]", "_").replaceAll("_+", "_");
+
+        if (name.isBlank()) name = "Pet";
+        if (name.length() > 32) name = name.substring(0, 32);
+        return name;
+    }
 
     /**
      * This method replaces all the placeholders with the correct replacements
