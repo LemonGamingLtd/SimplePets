@@ -389,6 +389,13 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
             VersionHelper.setAttributes(this, -1, flySpeed);
         }
         if (object.hasKey("scale")) setPetScale(object.getDouble("scale"));
+        if (object.hasKey("half_scale")) {
+            if (object.getBoolean("half_scale", false)) {
+                setPetScale(0.5);
+            }else{
+                setPetScale(1.0);
+            }
+        }
     }
 
     @Override

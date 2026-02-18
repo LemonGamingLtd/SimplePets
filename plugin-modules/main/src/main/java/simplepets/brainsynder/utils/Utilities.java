@@ -81,14 +81,7 @@ public class Utilities {
             return false;
         }
 
-        if (compound.hasNoTags()) {
-            // Load defaults based on the Pet data
-            for (PetData petData : type.getPetData()) {
-                if (checkDataPermissions && (!hasPermission(player, type.getPermission("data." + petData.getNamespace().namespace())))) continue;
-
-                petData.getDefault(type).ifPresent(o -> compound.set(petData.getNamespace().namespace(), o));
-            }
-        }
+        applyPetDataDefaults(type, compound);
 
         SpawnResult<IEntityPet> result = spawner.spawnEntityPet(type, user, compound);
 
@@ -113,6 +106,20 @@ public class Utilities {
                 yield false;
             }
         };
+    }
+
+    public static void applyPetDataDefaults(PetType type, StorageTagCompound compound) {
+        if (type == null || compound == null) return;
+
+        for (PetData petData : type.getPetData()) {
+            String key = petData.getNamespace().namespace();
+            if (compound.hasKey(key)) continue;
+
+            Object value = petData.getDefault(type).orElseGet(petData::getDefaultValue);
+            if (value != null) {
+                compound.set(key, value);
+            }
+        }
     }
 
     public static void runPetCommands(CommandReason reason, PetUser owner, PetType type) {

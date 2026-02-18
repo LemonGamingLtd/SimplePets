@@ -14,7 +14,6 @@ import simplepets.brainsynder.api.SpawnResult;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.event.inventory.PetSelectTypeEvent;
-import simplepets.brainsynder.api.pet.PetData;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
@@ -146,13 +145,7 @@ public class SummonCommand extends PetSubCommand {
         }
 
         StorageTagCompound finalCompound = compound;
-        if (finalCompound.hasNoTags()) {
-            for (PetData petData : type.getPetData()) {
-                petData.getDefault(type).ifPresent(o -> {
-                    finalCompound.set(petData.getNamespace().namespace(), o);
-                });
-            }
-        }
+        Utilities.applyPetDataDefaults(type, finalCompound);
 
         Player finalTarget = target;
         getPlugin().getUserManager().getPetUser(target.getUniqueId()).ifPresent(user -> {
