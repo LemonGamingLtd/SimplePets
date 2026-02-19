@@ -9,6 +9,7 @@ version = "0.1.0"
 
 allprojects {
     apply(plugin = "java")
+    version = (findProperty("version") ?: "0.0.0-SNAPSHOT").toString()
 
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(21))
@@ -87,6 +88,11 @@ artifacts {
 val downloadVariantsScript = file("gradle/download-variants.gradle.kts")
 if (downloadVariantsScript.exists()) {
     apply(from = downloadVariantsScript)
+}
+
+val readmeVersioning = file("gradle/readme-versioning.gradle.kts")
+if (readmeVersioning.exists()) {
+    apply(from = readmeVersioning)
 }
 
 val jenkinsVersioning = file("gradle/jenkins-versioning.gradle.kts")
