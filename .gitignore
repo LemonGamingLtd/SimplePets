@@ -179,5 +179,6 @@ gradle-app.setting
 /build/
 /**/**/.gradle/
 gradle/download-variants.gradle.kts
+gradle/readme-versioning.gradle.kts
 gradle/jenkins-versioning.gradle.kts
 
