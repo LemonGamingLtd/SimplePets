@@ -279,16 +279,29 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     }
 
     private boolean checkJavaVersion() {
-        if (ServerVersion.isEqualNew(ServerVersion.v1_20_5)
-            && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21))) {
+        if (ServerVersion.isNewer(ServerVersion.v1_21_11)
+                && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_25))) {
             debug.debug(DebugBuilder.build(getClass())
-                .setLevel(DebugLevel.CRITICAL)
-                .setBroadcast(true)
-                .setMessages(
-                    "Your server does not support Java 21!",
-                    "Java 21 is required for servers 1.20.5 -> 1.21.11 (Mojang Requirement)",
-                    "Disabling the plugin..."
-                )
+                    .setLevel(DebugLevel.CRITICAL)
+                    .setBroadcast(true)
+                    .setMessages(
+                            "Your server does not support Java 25!",
+                            "Java 25 is required for servers 26.1 -> LATEST (Mojang Requirement)",
+                            "Disabling the plugin..."
+                    )
+            );
+            return false;
+        }
+        if (ServerVersion.isEqualNew(ServerVersion.v1_20_5)
+                && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21))) {
+            debug.debug(DebugBuilder.build(getClass())
+                    .setLevel(DebugLevel.CRITICAL)
+                    .setBroadcast(true)
+                    .setMessages(
+                            "Your server does not support Java 21!",
+                            "Java 21 is required for servers 1.20.5 -> 1.21.11 (Mojang Requirement)",
+                            "Disabling the plugin..."
+                    )
             );
             return false;
         }
