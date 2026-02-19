@@ -70,9 +70,6 @@ permissions:
     pet.commands.petconfig: # Grants access to the '/pet petconfig' command
         default: op # Only Operators should be given this permission
 
-    pet.commands.issue_report: # Grants access to the '/pet report' command
-        default: op # Only Operators should be given this permission
-
 
     pet.commands.*:  # Grants the player to use all commands (NOT recommended)
         default: false
@@ -111,7 +108,6 @@ permissions:
             pet.commands.database.findduplicates: true
             pet.commands.reload: true
             pet.commands.petconfig: true
-            pet.commands.issue_report: true
 
 
     pet.saves.bypass:  # Will allow all player to bypass the saves limit (if enabled)
