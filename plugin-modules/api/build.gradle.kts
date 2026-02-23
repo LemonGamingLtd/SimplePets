@@ -12,6 +12,7 @@ description = "api"
 dependencies {
     compileOnly(libs.spigotapi)
     compileOnly(libs.bslib)
+    compileOnly(libs.pluginutils)
 }
 
 java {
