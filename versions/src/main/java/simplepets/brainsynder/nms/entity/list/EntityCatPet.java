@@ -40,7 +40,7 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
     public void fetchPetData(JsonObject data) {
         super.fetchPetData(data);
         data.add("type", getCatType().name());
-        data.add("collar", getCollarColor().name());
+        data.add("collar", getColor().name());
         data.add("sleeping", isPetSleeping());
         data.add("head-up", isHeadUp());
         data.add("tamed", isTamed());
@@ -60,7 +60,7 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
     public StorageTagCompound asCompound() {
         StorageTagCompound compound = super.asCompound();
         compound.setEnum("type", getCatType());
-        compound.setEnum("collar", getCollarColor());
+        compound.setEnum("color", getColor());
         compound.setBoolean("sleeping", isPetSleeping());
         compound.setBoolean("head_up", isHeadUp());
         return compound;
@@ -69,8 +69,8 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
     @Override
     public void applyCompound(StorageTagCompound object) {
         if (object.hasKey("type")) setCatType(object.getEnum("type", CatType.class, CatType.TABBY));
-        if (object.hasKey("collar"))
-            setCollarColor(object.getEnum("collar", DyeColorWrapper.class, DyeColorWrapper.WHITE));
+        if (object.hasKey("color")) setColor(object.getEnum("color", DyeColorWrapper.class, DyeColorWrapper.WHITE));
+        if (object.hasKey("collar")) setColor(object.getEnum("collar", DyeColorWrapper.class, DyeColorWrapper.WHITE));
         if (object.hasKey("sleeping")) setPetSleeping(object.getBoolean("sleeping", false));
         if (object.hasKey("head_up")) setHeadUp(object.getBoolean("head_up", false));
         super.applyCompound(object);
@@ -90,12 +90,12 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
     }
 
     @Override
-    public DyeColorWrapper getCollarColor() {
+    public DyeColorWrapper getColor() {
         return DyeColorWrapper.getByWoolData((byte) ((int) entityData.get(COLLAR_COLOR)));
     }
 
     @Override
-    public void setCollarColor(DyeColorWrapper color) {
+    public void setColor(DyeColorWrapper color) {
         entityData.set(COLLAR_COLOR, color.ordinal());
     }
 
