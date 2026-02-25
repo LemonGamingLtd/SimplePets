@@ -39,7 +39,7 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
         super.fetchPetData(data);
         data.add("type", getGene().name());
         data.add("sitting", isSitting());
-        data.add("sleeping", isLyingOnBack());
+        data.add("sleeping", isPetSleeping());
         data.add("sneeze", isSneezing());
     }
 
@@ -59,7 +59,7 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
         StorageTagCompound object = super.asCompound();
         object.setEnum("type", getGene());
         object.setBoolean("sitting", isSitting());
-        object.setBoolean("sleeping", isLyingOnBack());
+        object.setBoolean("sleeping", isPetSleeping());
         object.setBoolean("sneeze", isSneezing());
         return object;
     }
@@ -68,7 +68,8 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
     public void applyCompound(StorageTagCompound object) {
         if (object.hasKey("type")) setGene(object.getEnum("type", PandaGene.class, PandaGene.NORMAL));
         if (object.hasKey("sitting")) setSitting(object.getBoolean("sitting", false));
-        if (object.hasKey("sleeping")) setLyingOnBack(object.getBoolean("sleeping", false));
+        if (object.hasKey("sleeping")) setPetSleeping(object.getBoolean("sleeping", false));
+        if (object.hasKey("sleep")) setPetSleeping(object.getBoolean("sleep", false));
         if (object.hasKey("sneeze")) setSneezing(object.getBoolean("sneeze", false));
         super.applyCompound(object);
     }
@@ -117,6 +118,26 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
         return (entityData.get(PANDA_FLAGS) & flag) != 0x0;
     }
 
+    @Override
+    public boolean isPetSleeping() {
+        return getSpecialFlag(16);
+    }
+
+    @Override
+    public void setPetSleeping(boolean value) {
+        setSpecialFlag(16, value);
+    }
+
+    @Override
+    public boolean isSitting() {
+        return getSpecialFlag(8);
+    }
+
+    @Override
+    public void setSitting(boolean value) {
+        setSpecialFlag(8, value);
+    }
+
 
 
     @Override
@@ -151,7 +172,7 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
     }
 
     private boolean isSpookedBySneeze () {
-        if (isLyingOnBack()) return false;
+        if (isPetSleeping()) return false;
         return !isPlaying();
     }
 }
