@@ -108,11 +108,11 @@ public class Utilities {
     public static void applyPetDataDefaults(PetType type, StorageTagCompound compound) {
         if (type == null || compound == null) return;
 
-        for (PetData petData : type.getPetData()) {
-            String key = petData.getNamespace().namespace();
+        for (PetData<?> petData : type.getPetData()) {
+            String key = petData.namespace();
             if (compound.hasKey(key)) continue;
 
-            Object value = petData.getDefault(type).orElseGet(petData::getDefaultValue);
+            Object value = petData.getDefault(type).orElseGet(petData::defaultValue);
             if (value != null) {
                 compound.set(key, value);
             }

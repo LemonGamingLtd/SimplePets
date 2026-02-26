@@ -3,14 +3,12 @@ package simplepets.brainsynder.api.pet.data.color;
 import lib.brainsynder.apache.WordUtils;
 import lib.brainsynder.item.ItemBuilder;
 import org.bukkit.Material;
-import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.misc.IResetColor;
 import simplepets.brainsynder.api.pet.PetData;
 import simplepets.brainsynder.api.wrappers.ColorWrapper;
 
 import java.util.Optional;
 
-@Namespace(namespace = "color")
 public class ResetColorData extends PetData<IResetColor> {
     public ResetColorData() {
         for (ColorWrapper color : ColorWrapper.values()) {
@@ -24,7 +22,10 @@ public class ResetColorData extends PetData<IResetColor> {
     }
 
     @Override
-    public Object getDefaultValue() {
+    public String namespace() { return "color"; }
+
+    @Override
+    public Object defaultValue() {
         return ColorWrapper.NONE;
     }
 

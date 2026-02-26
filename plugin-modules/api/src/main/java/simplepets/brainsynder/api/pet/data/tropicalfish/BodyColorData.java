@@ -1,20 +1,18 @@
-package simplepets.brainsynder.api.pet.data;
+package simplepets.brainsynder.api.pet.data.tropicalfish;
 
 import lib.brainsynder.apache.WordUtils;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.nms.DataConverter;
 import lib.brainsynder.utils.DyeColorWrapper;
-import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.passive.IEntityTropicalFishPet;
 import simplepets.brainsynder.api.pet.PetData;
 
 import java.util.Optional;
 
-@Namespace(namespace = "pattern_color")
-public class TropicalPatternColorData extends PetData<IEntityTropicalFishPet> {
-    public TropicalPatternColorData() {
+public class BodyColorData extends PetData<IEntityTropicalFishPet> {
+    public BodyColorData() {
         for (DyeColorWrapper color : DyeColorWrapper.values()) {
-            addDefaultItem(color.name(), DataConverter.getColoredMaterial(DataConverter.MaterialType.STAINED_CLAY, color)
+            addDefaultItem(color.name(), DataConverter.getColoredMaterial(DataConverter.MaterialType.WOOL, color)
                 .withName(" ")
                 .addLore(
                     "&#c8c8c8Previous: {previousColor}{previousName}",
@@ -24,7 +22,10 @@ public class TropicalPatternColorData extends PetData<IEntityTropicalFishPet> {
     }
 
     @Override
-    public Object getDefaultValue() {
+    public String namespace() { return "body_color"; }
+
+    @Override
+    public Object defaultValue() {
         return DyeColorWrapper.WHITE;
     }
 
@@ -34,22 +35,22 @@ public class TropicalPatternColorData extends PetData<IEntityTropicalFishPet> {
         if (optional.isPresent()) {
             // We have to do this to replace the placholders if there is any
 
-            DyeColorWrapper previous = DyeColorWrapper.getPrevious(entity.getPatternColor());
-            DyeColorWrapper next = DyeColorWrapper.getNext(entity.getPatternColor());
+            DyeColorWrapper previous = DyeColorWrapper.getPrevious(entity.getBodyColor());
+            DyeColorWrapper next = DyeColorWrapper.getNext(entity.getBodyColor());
 
             ItemBuilder builder = optional.get();
             builder.replaceInLore("{previousColor}", previous.getChatColor())
-                .replaceInLore("{currentColor}", entity.getPatternColor().getChatColor())
+                .replaceInLore("{currentColor}", entity.getBodyColor().getChatColor())
                 .replaceInLore("{nextColor}", next.getChatColor())
                 .replaceInLore("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
-                .replaceInLore("{currentName}", WordUtils.capitalize(entity.getPatternColor().name().toLowerCase().replace("_", " ")))
+                .replaceInLore("{currentName}", WordUtils.capitalize(entity.getBodyColor().name().toLowerCase().replace("_", " ")))
                 .replaceInLore("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
 
             builder.replaceInName("{previousColor}", previous.getChatColor())
-                .replaceInName("{currentColor}", entity.getPatternColor().getChatColor())
+                .replaceInName("{currentColor}", entity.getBodyColor().getChatColor())
                 .replaceInName("{nextColor}", next.getChatColor())
                 .replaceInName("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
-                .replaceInName("{currentName}", WordUtils.capitalize(entity.getPatternColor().name().toLowerCase().replace("_", " ")))
+                .replaceInName("{currentName}", WordUtils.capitalize(entity.getBodyColor().name().toLowerCase().replace("_", " ")))
                 .replaceInName("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
             return Optional.of(builder);
         }
@@ -58,16 +59,16 @@ public class TropicalPatternColorData extends PetData<IEntityTropicalFishPet> {
 
     @Override
     public void onLeftClick(IEntityTropicalFishPet entity) {
-        entity.setPatternColor(DyeColorWrapper.getNext(entity.getPatternColor()));
+        entity.setBodyColor(DyeColorWrapper.getNext(entity.getBodyColor()));
     }
 
     @Override
     public void onRightClick(IEntityTropicalFishPet entity) {
-        entity.setPatternColor(DyeColorWrapper.getPrevious(entity.getPatternColor()));
+        entity.setBodyColor(DyeColorWrapper.getPrevious(entity.getBodyColor()));
     }
 
     @Override
     public Object value(IEntityTropicalFishPet entity) {
-        return entity.getPatternColor();
+        return entity.getBodyColor();
     }
 }

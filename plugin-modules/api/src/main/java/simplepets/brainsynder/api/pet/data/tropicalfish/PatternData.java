@@ -1,19 +1,17 @@
-package simplepets.brainsynder.api.pet.data;
+package simplepets.brainsynder.api.pet.data.tropicalfish;
 
 import lib.brainsynder.apache.WordUtils;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.utils.DyeColorWrapper;
 import org.bukkit.Material;
-import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.passive.IEntityTropicalFishPet;
 import simplepets.brainsynder.api.pet.PetData;
 import simplepets.brainsynder.api.wrappers.TropicalPattern;
 
 import java.util.Optional;
 
-@Namespace(namespace = "pattern")
-public class TropicalPatternData extends PetData<IEntityTropicalFishPet> {
-    public TropicalPatternData() {
+public class PatternData extends PetData<IEntityTropicalFishPet> {
+    public PatternData() {
         for (TropicalPattern pattern : TropicalPattern.values()) {
             addDefaultItem(pattern.name(), new ItemBuilder(Material.PLAYER_HEAD)
                 .setTexture("http://textures.minecraft.net/texture/36d149e4d499929672e2768949e6477959c21e65254613b327b538df1e4df")
@@ -22,7 +20,10 @@ public class TropicalPatternData extends PetData<IEntityTropicalFishPet> {
     }
 
     @Override
-    public Object getDefaultValue() {
+    public String namespace() { return "pattern"; }
+
+    @Override
+    public Object defaultValue() {
         return TropicalPattern.KOB;
     }
 

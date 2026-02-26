@@ -15,7 +15,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.pet.*;
-import simplepets.brainsynder.api.pet.annotations.DisableDefault;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.debug.DebugLevel;
@@ -103,13 +102,13 @@ public class PetConfiguration implements PetConfigManager {
                     JsonObject dataObject = new JsonObject();
                     type.getPetData().forEach(petData -> {
                         JsonObject data = new JsonObject();
-                        data.set("enabled", !petData.getClass().isAnnotationPresent(DisableDefault.class));
+                        data.set("enabled", petData.isEnabledByDefault());
 
-                        setJsonDefaultValue(data, "default", petData.getDefaultValue());
+                        setJsonDefaultValue(data, "default", petData.defaultValue());
 
                         JsonObject values = new JsonObject();
                         petData.getDefaultItems().forEach((value, item) -> {
-                            String name = petData.getNamespace().namespace();
+                            String name = petData.namespace();
                             name = name.replace("_", " ");
                             name = WordUtils.capitalize(name);
 
@@ -122,7 +121,7 @@ public class PetConfiguration implements PetConfigManager {
                         });
                         data.set("values", values);
 
-                        dataObject.add(petData.getNamespace().namespace(), data);
+                        dataObject.add(petData.namespace(), data);
                     });
                     setDefault("data", dataObject);
                 }
@@ -284,34 +283,32 @@ public class PetConfiguration implements PetConfigManager {
             return commandMap;
         }
 
-        private boolean checkPetData(PetData petData) {
-            String namespace = petData.getNamespace().namespace();
+        private boolean checkPetData(PetData<?> petData) {
+            String namespace = petData.namespace();
 
             JsonObject dataRoot = ensureDataRoot(false);
             JsonObject section = dataRoot.names().contains(namespace) ? (JsonObject) dataRoot.get(namespace) : new JsonObject();
 
             boolean changed = false;
 
-            boolean expectedEnabledDefault = !petData.getClass().isAnnotationPresent(DisableDefault.class);
+            boolean expectedEnabledDefault = petData.isEnabledByDefault();
             if (!section.names().contains("enabled")) {
                 section.set("enabled", expectedEnabledDefault);
                 changed = true;
             }
 
             if (!section.names().contains("default")) {
-                setJsonDefaultValue(section, "default", petData.getDefaultValue());
+                setJsonDefaultValue(section, "default", petData.defaultValue());
                 changed = true;
             }
 
             JsonObject values = section.names().contains("values") ? (JsonObject) section.get("values") : new JsonObject();
             if (values.names().isEmpty()) {
-                petData.getDefaultItems().forEach((val, item) -> values.add(String.valueOf(val), StorageTagTools.toJsonObject(((ItemBuilder) item).toCompound())));
+                petData.getDefaultItems().forEach((val, item) -> values.add(String.valueOf(val), StorageTagTools.toJsonObject(item.toCompound())));
                 changed = true;
             } else {
-                for (Object object : petData.getDefaultItems().entrySet()) {
-                    Map.Entry<String, ItemBuilder> entry = (Map.Entry<String, ItemBuilder>) object;
-
-                    String key = String.valueOf(entry.getKey());
+                for (Map.Entry<String, ItemBuilder> entry : petData.getDefaultItems().entrySet()) {
+                    String key = entry.getKey();
                     if (!values.names().contains(key)) {
                         values.add(key, StorageTagTools.toJsonObject(entry.getValue().toCompound()));
                         changed = true;
@@ -344,16 +341,16 @@ public class PetConfiguration implements PetConfigManager {
         private JsonObject ensureValuesObject(JsonObject dataRoot, String namespace, JsonObject section, boolean save) {
             JsonObject values = section.names().contains("values") ? (JsonObject) section.get("values") : new JsonObject();
             if (values.names().isEmpty()) {
-                for (PetData petData : type.getPetData()) {
-                    if (!petData.getNamespace().namespace().equals(namespace)) continue;
+                for (PetData<?> petData : type.getPetData()) {
+                    if (!petData.namespace().equals(namespace)) continue;
 
-                    petData.getDefaultItems().forEach((val, item) -> values.add(String.valueOf(val), StorageTagTools.toJsonObject(((ItemBuilder) item).toCompound())));
+                    petData.getDefaultItems().forEach((val, item) -> values.add(String.valueOf(val), StorageTagTools.toJsonObject(item.toCompound())));
 
                     if (!section.names().contains("default")) {
-                        setJsonDefaultValue(section, "default", petData.getDefaultValue());
+                        setJsonDefaultValue(section, "default", petData.defaultValue());
                     }
                     if (!section.names().contains("enabled")) {
-                        section.set("enabled", !petData.getClass().isAnnotationPresent(DisableDefault.class));
+                        section.set("enabled", petData.isEnabledByDefault());
                     }
                     break;
                 }

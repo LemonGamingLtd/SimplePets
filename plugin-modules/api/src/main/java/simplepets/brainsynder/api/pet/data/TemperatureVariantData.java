@@ -1,10 +1,9 @@
-package simplepets.brainsynder.api.pet.data.temperature;
+package simplepets.brainsynder.api.pet.data;
 
 import lib.brainsynder.ServerVersion;
 import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.item.ItemBuilder;
 import org.bukkit.Material;
-import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.entity.misc.ITemperaturePet;
 import simplepets.brainsynder.api.entity.passive.IEntityChickenPet;
@@ -24,7 +23,10 @@ public class TemperatureVariantData extends PetData<ITemperaturePet> {
     }
 
     @Override
-    public Object getDefaultValue() {
+    public String namespace() { return "variant"; }
+
+    @Override
+    public Object defaultValue() {
         return TemperatureVariant.TEMPERATE;
     }
 
@@ -44,33 +46,38 @@ public class TemperatureVariantData extends PetData<ITemperaturePet> {
     }
 
     @SupportedVersion(version = ServerVersion.v1_21_5)
-    @Namespace(namespace = "variant")
-    public static class ChickenTemperature extends TemperatureVariantData {
+        public static class ChickenTemperature extends TemperatureVariantData {
         public ChickenTemperature() {
             super(IEntityChickenPet.class);
         }
     }
 
     @SupportedVersion(version = ServerVersion.v1_21_5)
-    @Namespace(namespace = "variant")
     public static class CowTemperature extends TemperatureVariantData {
         public CowTemperature() {
             super(IEntityCowPet.class);
         }
+
+        @Override
+        public String namespace() { return "variant"; }
     }
 
-    @Namespace(namespace = "variant")
     public static class FrogTemperature extends TemperatureVariantData {
         public FrogTemperature() {
             super(IEntityFrogPet.class);
         }
+
+        @Override
+        public String namespace() { return "variant"; }
     }
 
     @SupportedVersion(version = ServerVersion.v1_21_5)
-    @Namespace(namespace = "variant")
     public static class PigTemperature extends TemperatureVariantData {
         public PigTemperature() {
             super(IEntityPigPet.class);
         }
+
+        @Override
+        public String namespace() { return "variant"; }
     }
 }

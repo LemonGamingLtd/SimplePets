@@ -18,7 +18,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 import java.util.Optional;
 
 /**
- * NMS: {@link net.minecraft.world.entity.animal.Fox}
+ * NMS: {@link net.minecraft.world.entity.animal.fox.Fox}
  */
 public class EntityFoxPet extends EntityAgeablePet implements IEntityFoxPet {
     private static final EntityDataAccessor<Integer> TYPE = SynchedEntityData.defineId(EntityFoxPet.class, EntityDataSerializers.INT);

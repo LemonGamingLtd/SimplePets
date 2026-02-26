@@ -164,7 +164,7 @@ public class DataMenu extends CustomInventory {
         type.getPetData().forEach(petData -> {
             if (!petData.isEnabled(finalPet)) return;
             if (ConfigOption.INSTANCE.PERMISSIONS_DATA_PERMS.getValue()
-                && (!entityPet.getPetUser().getPlayer().hasPermission(type.getPermission("data." + petData.getNamespace().namespace()))))
+                && (!entityPet.getPetUser().getPlayer().hasPermission(type.getPermission("data." + petData.namespace()))))
                 return;
             if (!petData.isModifiable(finalPet)) return;
             petData.getItem(finalPet).ifPresent(o -> {

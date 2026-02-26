@@ -4,13 +4,11 @@ import lib.brainsynder.apache.WordUtils;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.nms.DataConverter;
 import lib.brainsynder.utils.DyeColorWrapper;
-import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.misc.IColorable;
 import simplepets.brainsynder.api.pet.PetData;
 
 import java.util.Optional;
 
-@Namespace(namespace = "color")
 public class ColorData extends PetData<IColorable> {
     public ColorData() {
         for (DyeColorWrapper color : DyeColorWrapper.values()) {
@@ -24,7 +22,10 @@ public class ColorData extends PetData<IColorable> {
     }
 
     @Override
-    public Object getDefaultValue() {
+    public String namespace() { return "color"; }
+
+    @Override
+    public Object defaultValue() {
         return DyeColorWrapper.WHITE;
     }
 

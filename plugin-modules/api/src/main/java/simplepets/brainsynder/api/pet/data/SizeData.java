@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.json.JsonObject;
 import org.bukkit.Material;
-import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.misc.ISizable;
 import simplepets.brainsynder.api.pet.IPetConfig;
 import simplepets.brainsynder.api.pet.PetData;
@@ -13,7 +12,6 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import java.util.LinkedList;
 import java.util.Optional;
 
-@Namespace(namespace = "size")
 public class SizeData extends PetData<ISizable> {
     public SizeData() {
         addDefaultItem("1", new ItemBuilder(Material.PLAYER_HEAD)
@@ -31,7 +29,10 @@ public class SizeData extends PetData<ISizable> {
     }
 
     @Override
-    public Object getDefaultValue() {
+    public String namespace() { return "size"; }
+
+    @Override
+    public Object defaultValue() {
         return 1;
     }
 
@@ -53,10 +54,9 @@ public class SizeData extends PetData<ISizable> {
         LinkedList<Integer> sizes = new LinkedList<>();
 
         Optional<IPetConfig> optional = SimplePets.getPetConfigManager().getPetConfig(entity.getPetType());
-        Namespace namespace = getNamespace();
         if (optional.isPresent()) {
             IPetConfig config = optional.get();
-            JsonObject json = config.getRawData(namespace.namespace());
+            JsonObject json = config.getRawData(namespace());
 
             json.names().forEach(string -> {
                 try {

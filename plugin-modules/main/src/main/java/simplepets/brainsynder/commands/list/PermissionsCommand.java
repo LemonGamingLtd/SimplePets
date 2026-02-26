@@ -172,7 +172,7 @@ public class PermissionsCommand extends PetSubCommand {
             builder.append("            ").append(permission).append(".mount: true  # Will allow ").append(type.getName()).append(" to be mounted (if enabled)\n");
             builder.append("            ").append(permission).append(".data.*").append(": true\n");
             type.getPetData().forEach(petData -> {
-                String name = petData.getNamespace().namespace();
+                String name = petData.namespace();
                 allData.append("            ").append(permission).append(".data.").append(name).append(": true\n");
             });
             other.add(allData);
