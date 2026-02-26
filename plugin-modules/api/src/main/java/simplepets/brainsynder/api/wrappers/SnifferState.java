@@ -1,6 +1,9 @@
 package simplepets.brainsynder.api.wrappers;
 
-public enum SnifferState {
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
+
+public enum SnifferState implements Iconable {
     IDLING("87ad920a66e38cc3426a5bff084667e8772116915e298098567c139f222e2c42"),
     FEELING_HAPPY("87ad920a66e38cc3426a5bff084667e8772116915e298098567c139f222e2c42"),
     SCENTING("87ad920a66e38cc3426a5bff084667e8772116915e298098567c139f222e2c42"),
@@ -13,8 +16,9 @@ public enum SnifferState {
         this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
     public static SnifferState getByID(int id) {

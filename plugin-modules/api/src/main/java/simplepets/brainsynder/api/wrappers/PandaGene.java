@@ -3,7 +3,7 @@ package simplepets.brainsynder.api.wrappers;
 import lib.brainsynder.item.ItemBuilder;
 import org.bukkit.Material;
 
-public enum PandaGene {
+public enum PandaGene implements Iconable {
     NORMAL("dca096eea506301bea6d4b17ee1605625a6f5082c71f74a639cc940439f47166"),
     LAZY("7818b681cace1c641919f53edadecb142330d089a826b56219138c33b7a5e0db"),
     WORRIED("c8e921c57e54dd07337ffba629e72caf3850d836b76562b1bc3bc5949f2d41d"),
@@ -18,6 +18,7 @@ public enum PandaGene {
         this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
+    @Override
     public ItemBuilder getIcon() {
         ItemBuilder builder = new ItemBuilder(Material.PLAYER_HEAD);
         builder.setTexture(texture);

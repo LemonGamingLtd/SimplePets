@@ -1,6 +1,9 @@
 package simplepets.brainsynder.api.wrappers;
 
-public enum LlamaColor {
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
+
+public enum LlamaColor implements Iconable {
     CREAMY("2a5f10e6e6232f182fe966f501f1c3799d45ae19031a1e4941b5dee0feff059b"),
     WHITE("83d9b5915912ffc2b85761d6adcb428a812f9b83ff634e331162ce46c99e9"),
     BROWN("818cd457fbaf327fa39f10b5b36166fd018264036865164c02d9e5ff53f45"),
@@ -37,7 +40,8 @@ public enum LlamaColor {
         return (current == GRAY) ? CREAMY : values()[current.ordinal() + 1];
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 }

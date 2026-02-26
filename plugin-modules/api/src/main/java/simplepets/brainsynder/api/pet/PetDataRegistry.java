@@ -208,7 +208,7 @@ public interface PetDataRegistry {
     interface Armadillo {
         PetData<IEntityArmadilloPet> PHASE = PetData.of("phase", IEntityArmadilloPet.class)
                 .defaultValue(ArmadilloPhase.STANDING)
-                .items(ArmadilloPhase.values(), value -> new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &a" + value.name()).setTexture(value.getTexture()))
+                .items(ArmadilloPhase.values(), value -> value.getIcon().withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setPhase(PetData.cycleForward(entityPet.getPhase(), ArmadilloPhase.values())))
                 .onRightClick(entityPet -> entityPet.setPhase(PetData.cycleBackward(entityPet.getPhase(), ArmadilloPhase.values())))
                 .value(IEntityArmadilloPet::getPhase).build();
@@ -217,7 +217,7 @@ public interface PetDataRegistry {
     interface Axolotl {
         PetData<IEntityAxolotlPet> VARIANT = PetData.of("variant", IEntityAxolotlPet.class)
                 .defaultValue(AxolotlVariant.LUCY)
-                .items(AxolotlVariant.values(), value -> new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &a" + value.name()).setTexture(value.getTexture()))
+                .items(AxolotlVariant.values(), value -> value.getIcon().withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setVariant(PetData.cycleForward(entityPet.getVariant(), AxolotlVariant.values())))
                 .onRightClick(entityPet -> entityPet.setVariant(PetData.cycleBackward(entityPet.getVariant(), AxolotlVariant.values())))
                 .value(IEntityAxolotlPet::getVariant).build();
@@ -225,7 +225,7 @@ public interface PetDataRegistry {
         PetData<IEntityAxolotlPet> PLAY_DEAD = PetData.of("playing_dead", IEntityAxolotlPet.class)
                 .defaultValue(false)
                 .item(true, new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &atrue").setTexture("https://textures.minecraft.net/texture/88fd654d856bde8b69f0c3567d28fafe94e71eae10d32ea59ee23e9bd64b41b0"))
-                .item(false, new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &cfalse").setTexture(AxolotlVariant.LUCY.getTexture()))
+                .item(false, AxolotlVariant.LUCY.getIcon().withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setPlayingDead(!entityPet.isPlayingDead()))
                 .value(IEntityAxolotlPet::isPlayingDead).build();
     }
@@ -272,7 +272,7 @@ public interface PetDataRegistry {
     interface Cat {
         PetData<IEntityCatPet> TYPE = PetData.of("type", IEntityCatPet.class)
                 .defaultValue(CatType.TABBY)
-                .items(CatType.values(), value -> new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &a" + value.name()).setTexture(value.getTexture()))
+                .items(CatType.values(), value -> value.getIcon().withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setCatType(PetData.cycleForward(entityPet.getCatType(), CatType.values())))
                 .onRightClick(entityPet -> entityPet.setCatType(PetData.cycleBackward(entityPet.getCatType(), CatType.values())))
                 .value(IEntityCatPet::getCatType).build();
@@ -292,7 +292,7 @@ public interface PetDataRegistry {
     interface CopperGolem {
         PetData<IEntityCopperGolemPet> OXIDATION = PetData.of("oxidation", IEntityCopperGolemPet.class)
                 .defaultValue(OxidationWrapper.UNAFFECTED)
-                .items(OxidationWrapper.values(), value -> new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &a" + value.name()).setTexture(value.getTexture()))
+                .items(OxidationWrapper.values(), value -> value.getIcon().withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setOxidation(PetData.cycleForward(entityPet.getOxidation(), OxidationWrapper.values())))
                 .onRightClick(entityPet -> entityPet.setOxidation(PetData.cycleBackward(entityPet.getOxidation(), OxidationWrapper.values())))
                 .value(IEntityCopperGolemPet::getOxidation).build();
@@ -419,7 +419,7 @@ public interface PetDataRegistry {
 
         PetData<IEntityHorsePet> COLOR = PetData.of("color", IEntityHorsePet.class)
                 .defaultValue(HorseColorType.WHITE)
-                .items(HorseColorType.values(), value -> new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &a" + value.name()).setTexture(value.getTexture()))
+                .items(HorseColorType.values(), value -> value.getIcon().withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setColor(PetData.cycleForward(entityPet.getColor(), HorseColorType.values())))
                 .onRightClick(entityPet -> entityPet.setColor(PetData.cycleBackward(entityPet.getColor(), HorseColorType.values())))
                 .value(IEntityHorsePet::getColor).build();
@@ -435,7 +435,7 @@ public interface PetDataRegistry {
     interface Llama {
         PetData<IEntityLlamaPet> SKIN = PetData.of("skin", IEntityLlamaPet.class)
                 .defaultValue(LlamaColor.CREAMY)
-                .items(LlamaColor.values(), value -> new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &a" + value.name()).setTexture(value.getTexture()))
+                .items(LlamaColor.values(), value -> value.getIcon().withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setSkinColor(PetData.cycleForward(entityPet.getSkinColor(), LlamaColor.values())))
                 .onRightClick(entityPet -> entityPet.setSkinColor(PetData.cycleBackward(entityPet.getSkinColor(), LlamaColor.values())))
                 .value(IEntityLlamaPet::getSkinColor).build();
@@ -480,7 +480,7 @@ public interface PetDataRegistry {
     interface Parrot {
         PetData<IEntityParrotPet> VARIANT = PetData.of("variant", IEntityParrotPet.class)
                 .defaultValue(ParrotVariant.RED)
-                .items(ParrotVariant.values(), value -> new ItemBuilder(Material.PLAYER_HEAD).setTexture(value.getTexture()).withName("&#c8c8c8{name}: &a" + value.name()))
+                .items(ParrotVariant.values(), value -> value.getIcon().withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setVariant(PetData.cycleForward(entityPet.getVariant(), ParrotVariant.values())))
                 .onRightClick(entityPet -> entityPet.setVariant(PetData.cycleBackward(entityPet.getVariant(), ParrotVariant.values())))
                 .value(IEntityParrotPet::getVariant).build();
@@ -556,7 +556,7 @@ public interface PetDataRegistry {
     interface Sniffer {
         PetData<IEntitySnifferPet> STATE = PetData.of("state", IEntitySnifferPet.class)
                 .defaultValue(SnifferState.IDLING)
-                .items(SnifferState.values(), value -> new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &a" + value.name()).setTexture(value.getTexture()))
+                .items(SnifferState.values(), value -> value.getIcon().withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setSnifferState(PetData.cycleForward(entityPet.getSnifferState(), SnifferState.values())))
                 .onRightClick(entityPet -> entityPet.setSnifferState(PetData.cycleBackward(entityPet.getSnifferState(), SnifferState.values())))
                 .value(IEntitySnifferPet::getSnifferState).build();
@@ -668,7 +668,7 @@ public interface PetDataRegistry {
 
         PetData<IEntityWolfPet> VARIANT = PetData.of("type", IEntityWolfPet.class)
                 .defaultValue(WolfType.PALE)
-                .items(WolfType.values(), value -> new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &a" + value.name()).setTexture(value.getTexture()))
+                .items(WolfType.values(), value -> value.getIcon().withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setWolfType(PetData.cycleForward(entityPet.getWolfType(), WolfType.values())))
                 .onRightClick(entityPet -> entityPet.setWolfType(PetData.cycleBackward(entityPet.getWolfType(), WolfType.values())))
                 .value(IEntityWolfPet::getWolfType).build();
@@ -677,7 +677,7 @@ public interface PetDataRegistry {
     interface ZombieNautilus {
         PetData<IEntityZombieNautilusPet> VARIANT = PetData.of("variant", IEntityZombieNautilusPet.class)
                 .defaultValue(ZombieNautilusPetVariant.TEMPERATE)
-                .items(ZombieNautilusPetVariant.values(), value -> new ItemBuilder(Material.PLAYER_HEAD).withName("&#c8c8c8{name}: &a" + value.name()).setTexture(value.getTexture()))
+                .items(ZombieNautilusPetVariant.values(), value -> value.getIcon().withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setVariant(PetData.cycleForward(entityPet.getVariant(), ZombieNautilusPetVariant.values())))
                 .onRightClick(entityPet -> entityPet.setVariant(PetData.cycleBackward(entityPet.getVariant(), ZombieNautilusPetVariant.values())))
                 .value(IEntityZombieNautilusPet::getVariant).build();

@@ -1,10 +1,12 @@
 package simplepets.brainsynder.api.wrappers;
 
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 
 import java.util.Locale;
 
-public enum CatType {
+public enum CatType implements Iconable {
     TABBY("16df72c34e7fdad4bea41d96678b72f29f606e2ca75e3590a278932714be98"),
     BLACK("3a12188258601bcb7f76e3e2489555a26c0d76e6efec2fd966ca372b6dde00"),
     RED("04098414ab31179e9e18bc3e7e8c9666c26ac39d5eb53a571cef3d5cfacc42"),
@@ -25,8 +27,9 @@ public enum CatType {
         this.key = NamespacedKey.minecraft(name().toLowerCase(Locale.ROOT));
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
     public NamespacedKey getKey() {

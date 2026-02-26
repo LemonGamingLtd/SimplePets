@@ -1,6 +1,9 @@
 package simplepets.brainsynder.api.wrappers;
 
-public enum RabbitType {
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
+
+public enum RabbitType implements Iconable {
     BROWN("7d1169b2694a6aba826360992365bcda5a10c89a3aa2b48c438531dd8685c3a7"),
     WHITE("374d8298797e712bb1f75ad6ffa7734ac4237ea69be1db92f0e41115a2c170cf"),
     BLACK("72c58116a147d1a9a26269224a8be184fe8e5f3f3df9b61751369ad87382ec9"),
@@ -15,8 +18,9 @@ public enum RabbitType {
         this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
     public static RabbitType getByID(int id) {

@@ -6,7 +6,9 @@ import org.bukkit.Material;
 /**
  * This is used to handle the 1.14 Villager Biome Types
  */
-public enum BiomeType {
+import simplepets.brainsynder.api.wrappers.Iconable;
+
+public enum BiomeType implements Iconable {
     DESERT(new ItemBuilder(Material.SAND)),
     JUNGLE(new ItemBuilder(Material.VINE)),
     PLAINS(new ItemBuilder(Material.GRASS_BLOCK)),
@@ -21,6 +23,7 @@ public enum BiomeType {
         this.icon = icon;
     }
 
+    @Override
     public ItemBuilder getIcon() {
         return icon;
     }

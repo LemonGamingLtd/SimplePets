@@ -6,7 +6,9 @@ import org.bukkit.Material;
 /**
  * This is used to handle the 1.14 Villager Types/Professions
  */
-public enum VillagerType {
+import simplepets.brainsynder.api.wrappers.Iconable;
+
+public enum VillagerType implements Iconable {
     NONE("41b830eb4082acec836bc835e40a11282bb51193315f91184337e8d3555583"),
     ARMORER("c29676ee6da5a3521cb478463779b8711e31887cd9a6d9fdecfcbc55083e5515"),
     BUTCHER("73bd1e78664d76aab13706f7ce91f75a52cec017d60446fb43bd8bf2042dd3b3"),
@@ -60,6 +62,7 @@ public enum VillagerType {
         return FARMER;
     }
 
+    @Override
     public ItemBuilder getIcon() {
         return icon;
     }

@@ -1,10 +1,12 @@
 package simplepets.brainsynder.api.wrappers;
 
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 
 import java.util.Locale;
 
-public enum ArmadilloPhase {
+public enum ArmadilloPhase implements Iconable {
     STANDING("9164ed0e0ef69b0ce7815e4300b4413a4828fcb0092918543545a418a48e0c3c", "IDLE"),
     ROLLED_UP("404d9164e8f76dcdde5f8d10ff67deb2d658a6008d23c44fb2f844e08591c01d", "ROLLING");
 
@@ -22,8 +24,9 @@ public enum ArmadilloPhase {
         return mojangName;
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
     public NamespacedKey getKey() {

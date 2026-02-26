@@ -1,10 +1,12 @@
 package simplepets.brainsynder.api.wrappers;
 
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 
 import java.util.Locale;
 
-public enum FrogType {
+public enum FrogType implements Iconable {
     TEMPERATE("23ce6f9998ed2da757d1e6372f04efa20e57dfc17c3a06478657bbdf51c2f2a2"),
     WARM("f77314fa038ec31357845a93274b4dc884124686728ffe0ded9c35466aca0aab"),
     COLD("ce62e8a048d040eb0533ba26a866cd9c2d0928c931c50b4482ac3a3261fab6f0");
@@ -15,8 +17,9 @@ public enum FrogType {
         this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
     public static FrogType getByID(int id) {

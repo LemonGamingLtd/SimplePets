@@ -5,7 +5,7 @@ import lib.brainsynder.nms.DataConverter;
 import lib.brainsynder.utils.DyeColorWrapper;
 import org.bukkit.Material;
 
-public enum WizardSpell {
+public enum WizardSpell implements Iconable {
     NONE(0, 0.0D, 0.0D, 0.0D, new ItemBuilder(Material.BARRIER)),
     SUMMON_VEX(1, 0.7D, 0.7D, 0.8D, DataConverter.getColoredMaterial(DataConverter.MaterialType.INK_SACK, DyeColorWrapper.GRAY)),
     FANGS(2, 0.4D, 0.3D, 0.35D, DataConverter.getColoredMaterial(DataConverter.MaterialType.INK_SACK, DyeColorWrapper.BROWN)),
@@ -23,6 +23,7 @@ public enum WizardSpell {
         this.array = new double[]{var4, var6, var8};
     }
 
+    @Override
     public ItemBuilder getIcon() {
         return this.builder;
     }

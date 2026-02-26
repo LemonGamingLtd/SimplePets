@@ -2,7 +2,6 @@ package simplepets.brainsynder.api.pet.data.color;
 
 import lib.brainsynder.apache.WordUtils;
 import lib.brainsynder.item.ItemBuilder;
-import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.misc.IResetColor;
 import simplepets.brainsynder.api.pet.PetData;
 import simplepets.brainsynder.api.wrappers.ColorWrapper;
@@ -12,7 +11,7 @@ import java.util.Optional;
 public class ResetColorData extends PetData<IResetColor> {
     public ResetColorData() {
         for (ColorWrapper color : ColorWrapper.values()) {
-            addDefaultItem(color.name(), new ItemBuilder(Material.PLAYER_HEAD).setTexture(color.getTexture())
+            addDefaultItem(color.name(), color.getIcon()
                 .withName(" ")
                 .addLore(
                     "&#c8c8c8Previous: {previousColor}{previousName}",

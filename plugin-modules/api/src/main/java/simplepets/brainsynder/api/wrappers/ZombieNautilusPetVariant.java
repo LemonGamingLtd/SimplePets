@@ -1,10 +1,12 @@
 package simplepets.brainsynder.api.wrappers;
 
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 
 import java.util.Locale;
 
-public enum ZombieNautilusPetVariant {
+public enum ZombieNautilusPetVariant implements Iconable {
     TEMPERATE ("fd9a933376da44c3391307cb9f4cf03f16f3a54f495fd5a11bad8a373f9d5720"),
     WARM ("d516e18f400b8c48190b3438a75feefda45367f0ae5d4e49732c417251650ecf");
 
@@ -18,8 +20,9 @@ public enum ZombieNautilusPetVariant {
         return NamespacedKey.minecraft(this.name().toLowerCase(Locale.ROOT));
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
     public static ZombieNautilusPetVariant getByName(String name) {

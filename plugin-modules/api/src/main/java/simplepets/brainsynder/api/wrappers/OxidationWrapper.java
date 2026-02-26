@@ -1,10 +1,12 @@
 package simplepets.brainsynder.api.wrappers;
 
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 
 import java.util.Locale;
 
-public enum OxidationWrapper {
+public enum OxidationWrapper implements Iconable {
     UNAFFECTED("99e24e94dbe42e230d83293a77d61ff7101a8c68ab68bbc6a93f9630fb2fdb4"),
     EXPOSED("8a9e410c8b7fdbd4b9d8ea8075bc66a9c1ada9bc15873b4b1deadaa2812b847d"),
     WEATHERED("8262992d6d5a62a1dd3ede8e4c34f1c18050bab64271d926c1c0c6162b2cd74e"),
@@ -18,8 +20,9 @@ public enum OxidationWrapper {
         this.key = NamespacedKey.minecraft(name().toLowerCase(Locale.ROOT));
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
     public NamespacedKey getKey() {

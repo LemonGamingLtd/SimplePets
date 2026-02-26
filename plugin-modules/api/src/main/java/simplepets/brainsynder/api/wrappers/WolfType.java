@@ -1,10 +1,12 @@
 package simplepets.brainsynder.api.wrappers;
 
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 
 import java.util.Locale;
 
-public enum WolfType {
+public enum WolfType implements Iconable {
     PALE("72ce161e3205d89e7e4d3ec04d25abfea6231a2277a2bd76f4693f4ce6189a2d"),
     SPOTTED("bbd23b4ceac1258132bcb7be63dee7cb0ce269a48640e72d4f9c2d4af74af670"),
     SNOWY("50b8e8a15dff16be494c687f13793ee35ac992a2cacff25f327bd240416851f2"),
@@ -23,8 +25,9 @@ public enum WolfType {
         this.key = NamespacedKey.minecraft(name().toLowerCase(Locale.ROOT));
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
     public NamespacedKey getKey() {

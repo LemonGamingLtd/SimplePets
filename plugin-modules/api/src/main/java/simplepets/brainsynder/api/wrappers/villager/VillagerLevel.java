@@ -6,7 +6,9 @@ import org.bukkit.Material;
 /**
  * This is used to handle the 1.14 Villager Types/Professions
  */
-public enum VillagerLevel {
+import simplepets.brainsynder.api.wrappers.Iconable;
+
+public enum VillagerLevel implements Iconable {
     NOVICE("8e140dc30e7bd57d0c5ff71a6818500434692f492479a5426aa231d7ad994d8a"),
     APPRENTICE("126b772329cf32f8643c4928626b6a325233ff61aa9c7725873a4bd66db3d692"),
     JOURNEYMAN("97f57e7aa8de86591bb0bc52cba30a49d931bfabbd47bbc80bdd662251392161"),
@@ -50,6 +52,7 @@ public enum VillagerLevel {
         return NOVICE;
     }
 
+    @Override
     public ItemBuilder getIcon() {
         return icon;
     }

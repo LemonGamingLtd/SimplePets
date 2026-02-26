@@ -1,6 +1,10 @@
 package simplepets.brainsynder.api.wrappers.horse;
 
-public enum HorseColorType {
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
+import simplepets.brainsynder.api.wrappers.Iconable;
+
+public enum HorseColorType implements Iconable {
     WHITE("9f4bdd59d4f8f1d5782e0fee4bd64aed100627f188a91489ba37eeadededd827"),
     CREAMY("a6dae0ade0e0dafb6dbc7786ce4241242b6b6df527a0f7af0a42184c93fd646b"),
     CHESTNUT("9717d71025f7a62c90a333c51663ffeb385a9a0d92af68083c5b045c0524b23f"),
@@ -15,8 +19,9 @@ public enum HorseColorType {
         this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
     public static HorseColorType getByName(String name) {

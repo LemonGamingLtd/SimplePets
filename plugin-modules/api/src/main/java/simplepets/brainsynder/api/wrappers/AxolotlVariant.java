@@ -1,6 +1,9 @@
 package simplepets.brainsynder.api.wrappers;
 
-public enum AxolotlVariant {
+import lib.brainsynder.item.ItemBuilder;
+import org.bukkit.Material;
+
+public enum AxolotlVariant implements Iconable {
     LUCY("3b83a38a458c3cca0761e2c8210c6f5d2f3380e860d50d2f4756516a2642617d"),
     WILD("4d7efe02012cf31ae2708e7d7df079726575c7ee8504328175fe544708187dce"),
     GOLD("7f80cc1492e44668cccdb40178c3a6689e8dfc0d234e98553fb7debc26fcaeac"),
@@ -13,8 +16,9 @@ public enum AxolotlVariant {
         this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
-    public String getTexture() {
-        return texture;
+    @Override
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
     public static AxolotlVariant getPrevious(AxolotlVariant current) {
