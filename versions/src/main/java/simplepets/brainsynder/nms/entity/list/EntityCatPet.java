@@ -10,13 +10,12 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.feline.CatVariant;
 import net.minecraft.world.entity.animal.feline.CatVariants;
 import org.bukkit.craftbukkit.CraftRegistry;
 import simplepets.brainsynder.api.entity.passive.IEntityCatPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.api.wrappers.CatType;
+import simplepets.brainsynder.api.wrappers.CatVariant;
 import simplepets.brainsynder.nms.entity.EntityTameablePet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
@@ -26,11 +25,11 @@ import simplepets.brainsynder.nms.utils.VariantUtils;
  * NMS: {@link net.minecraft.world.entity.animal.feline.Cat}
  */
 public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
-    private static final EntityDataAccessor<Holder<CatVariant>> TYPE = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.CAT_VARIANT);
+    private static final EntityDataAccessor<Holder<net.minecraft.world.entity.animal.feline.CatVariant>> TYPE = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.CAT_VARIANT);
     private static final EntityDataAccessor<Boolean> SLEEPING_WITH_OWNER = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HEAD_UP = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> COLLAR_COLOR = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.INT);
-    private CatType type = CatType.TABBY;
+    private CatVariant type = CatVariant.TABBY;
 
     public EntityCatPet(PetType type, PetUser user) {
         super(EntityType.CAT, type, user);
@@ -68,7 +67,7 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("type")) setCatType(object.getEnum("type", CatType.class, CatType.TABBY));
+        if (object.hasKey("type")) setCatType(object.getEnum("type", CatVariant.class, CatVariant.TABBY));
         if (object.hasKey("color")) setColor(object.getEnum("color", DyeColorWrapper.class, DyeColorWrapper.WHITE));
         if (object.hasKey("collar")) setColor(object.getEnum("collar", DyeColorWrapper.class, DyeColorWrapper.WHITE));
         if (object.hasKey("sleeping")) setPetSleeping(object.getBoolean("sleeping", false));
@@ -77,15 +76,15 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
     }
 
     @Override
-    public CatType getCatType() {
+    public CatVariant getCatType() {
         return type;
     }
 
     @Override
-    public void setCatType(CatType type) {
+    public void setCatType(CatVariant type) {
         this.type = type;
 
-        Registry<CatVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.CAT_VARIANT);
+        Registry<net.minecraft.world.entity.animal.feline.CatVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.CAT_VARIANT);
         entityData.set(TYPE, registry.wrapAsHolder(VersionHelper.getRegistryValue(registry, type.getKey())));
     }
 

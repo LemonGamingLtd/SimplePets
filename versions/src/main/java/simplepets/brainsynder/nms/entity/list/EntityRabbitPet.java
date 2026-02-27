@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import simplepets.brainsynder.api.entity.passive.IEntityRabbitPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.api.wrappers.RabbitType;
+import simplepets.brainsynder.api.wrappers.RabbitVariant;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.entity.controller.ControllerJumpRabbit;
 import simplepets.brainsynder.nms.entity.controller.ControllerMoveRabbit;
@@ -53,7 +53,7 @@ public class EntityRabbitPet extends EntityAgeablePet implements IEntityRabbitPe
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("variant")) setRabbitType(object.getEnum("variant", RabbitType.class, RabbitType.BROWN));
+        if (object.hasKey("variant")) setRabbitType(object.getEnum("variant", RabbitVariant.class, RabbitVariant.BROWN));
         super.applyCompound(object);
     }
 
@@ -65,12 +65,12 @@ public class EntityRabbitPet extends EntityAgeablePet implements IEntityRabbitPe
     }
 
     @Override
-    public RabbitType getRabbitType() {
-        return RabbitType.getByID(this.entityData.get(RABBIT_TYPE));
+    public RabbitVariant getRabbitType() {
+        return RabbitVariant.getByID(this.entityData.get(RABBIT_TYPE));
     }
 
     @Override
-    public void setRabbitType(RabbitType type) {
+    public void setRabbitType(RabbitVariant type) {
         this.entityData.set(RABBIT_TYPE, type.getId());
     }
 

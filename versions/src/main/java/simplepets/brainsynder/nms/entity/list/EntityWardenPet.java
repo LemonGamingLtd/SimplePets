@@ -18,7 +18,7 @@ import simplepets.brainsynder.api.entity.hostile.IEntityWardenPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.api.wrappers.AngerLevel;
+import simplepets.brainsynder.api.wrappers.WardenAnger;
 import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -67,19 +67,19 @@ public class EntityWardenPet extends EntityPetOverride implements IEntityWardenP
     }
 
     @Override
-    public void setAngerLevel(AngerLevel level) {
+    public void setAngerLevel(WardenAnger level) {
         int anger = 10;
-        if (level == AngerLevel.AGITATED) anger = 50;
-        if (level == AngerLevel.ANGRY) anger = 90;
+        if (level == WardenAnger.AGITATED) anger = 50;
+        if (level == WardenAnger.ANGRY) anger = 90;
         entityData.set(ANGER_LEVEL, anger);
     }
 
     @Override
-    public AngerLevel getAngerLevel() {
+    public WardenAnger getAngerLevel() {
         int anger = entityData.get(ANGER_LEVEL);
-        if (anger >= 80) return AngerLevel.ANGRY;
-        if (anger <= 39) return AngerLevel.CALM;
-        return AngerLevel.AGITATED;
+        if (anger >= 80) return WardenAnger.ANGRY;
+        if (anger <= 39) return WardenAnger.CALM;
+        return WardenAnger.AGITATED;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class EntityWardenPet extends EntityPetOverride implements IEntityWardenP
     public void applyCompound(StorageTagCompound object) {
         if (object.hasKey("raw-anger")) entityData.set(ANGER_LEVEL, object.getInteger("raw-anger"));
         if (object.hasKey("anger-level"))
-            setAngerLevel(object.getEnum("anger-level", AngerLevel.class, AngerLevel.CALM));
+            setAngerLevel(object.getEnum("anger-level", WardenAnger.class, WardenAnger.CALM));
         if (object.hasKey("vibration")) setVibrationEffect(object.getBoolean("vibration"));
         super.applyCompound(object);
     }

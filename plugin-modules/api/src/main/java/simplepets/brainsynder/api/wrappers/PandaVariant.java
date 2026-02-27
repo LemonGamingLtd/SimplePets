@@ -3,7 +3,7 @@ package simplepets.brainsynder.api.wrappers;
 import lib.brainsynder.item.ItemBuilder;
 import org.bukkit.Material;
 
-public enum PandaGene implements Iconable {
+public enum PandaVariant implements Iconable {
     NORMAL("dca096eea506301bea6d4b17ee1605625a6f5082c71f74a639cc940439f47166"),
     LAZY("7818b681cace1c641919f53edadecb142330d089a826b56219138c33b7a5e0db"),
     WORRIED("c8e921c57e54dd07337ffba629e72caf3850d836b76562b1bc3bc5949f2d41d"),
@@ -14,7 +14,7 @@ public enum PandaGene implements Iconable {
 
     private final String texture;
 
-    PandaGene(String texture) {
+    PandaVariant(String texture) {
         this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
@@ -25,22 +25,22 @@ public enum PandaGene implements Iconable {
         return builder;
     }
 
-    public static PandaGene byId(int id) {
-        for (PandaGene gene : values()) if (gene.ordinal() == id) return gene;
+    public static PandaVariant byId(int id) {
+        for (PandaVariant gene : values()) if (gene.ordinal() == id) return gene;
         return NORMAL;
     }
 
-    public static PandaGene byName(String name) {
-        for (PandaGene gene : values()) if (gene.name().equalsIgnoreCase(name)) return gene;
+    public static PandaVariant byName(String name) {
+        for (PandaVariant gene : values()) if (gene.name().equalsIgnoreCase(name)) return gene;
         return NORMAL;
     }
 
-    public static PandaGene getPrevious(PandaGene current) {
+    public static PandaVariant getPrevious(PandaVariant current) {
         if (current == NORMAL) return AGGRESSIVE;
         return values()[(current.ordinal() - 1)];
     }
 
-    public static PandaGene getNext(PandaGene current) {
+    public static PandaVariant getNext(PandaVariant current) {
         if (current == AGGRESSIVE) return NORMAL;
         return values()[(current.ordinal() + 1)];
     }

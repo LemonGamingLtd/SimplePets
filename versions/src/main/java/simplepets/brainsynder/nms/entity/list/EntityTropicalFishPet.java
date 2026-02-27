@@ -10,7 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.passive.IEntityTropicalFishPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.api.wrappers.TropicalPattern;
+import simplepets.brainsynder.api.wrappers.TropicalFishPattern;
 import simplepets.brainsynder.nms.entity.EntityFishPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -59,12 +59,12 @@ public class EntityTropicalFishPet extends EntityFishPet implements IEntityTropi
     }
 
     @Override
-    public TropicalPattern getPattern() {
+    public TropicalFishPattern getPattern() {
         return getRawPattern(entityData.get(VARIANT));
     }
 
     @Override
-    public void setPattern(TropicalPattern pattern) {
+    public void setPattern(TropicalFishPattern pattern) {
         entityData.set(VARIANT, getRawData(getPatternColor(), getBodyColor(), pattern));
     }
 
@@ -74,10 +74,10 @@ public class EntityTropicalFishPet extends EntityFishPet implements IEntityTropi
     private DyeColorWrapper getRawBodyColor(int data) {
         return DyeColorWrapper.getByWoolData((byte)(data >> 16 & 255));
     }
-    private TropicalPattern getRawPattern(int data) {
-        return TropicalPattern.fromData(data & '\uffff');
+    private TropicalFishPattern getRawPattern(int data) {
+        return TropicalFishPattern.fromData(data & '\uffff');
     }
-    private int getRawData(DyeColorWrapper patternColor, DyeColorWrapper bodyColor, TropicalPattern type) {
+    private int getRawData(DyeColorWrapper patternColor, DyeColorWrapper bodyColor, TropicalFishPattern type) {
         return patternColor.getWoolData() << 24 | bodyColor.getWoolData() << 16 | type.getDataValue();
     }
 
@@ -96,7 +96,7 @@ public class EntityTropicalFishPet extends EntityFishPet implements IEntityTropi
         if (compound.hasKey("body"))
             setBodyColor(DyeColorWrapper.getByName(compound.getString("body")));
         if (compound.hasKey("pattern"))
-            setPattern(TropicalPattern.getByName(compound.getString("pattern")));
+            setPattern(TropicalFishPattern.getByName(compound.getString("pattern")));
         if (compound.hasKey("color"))
             setPatternColor(DyeColorWrapper.getByName(compound.getString("color")));
     }

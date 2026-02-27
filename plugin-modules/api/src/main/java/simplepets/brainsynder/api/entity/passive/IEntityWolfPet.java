@@ -6,7 +6,7 @@ import simplepets.brainsynder.api.entity.misc.IColorable;
 import simplepets.brainsynder.api.entity.misc.IShaking;
 import simplepets.brainsynder.api.entity.misc.ITameable;
 import simplepets.brainsynder.api.pet.PetType;
-import simplepets.brainsynder.api.wrappers.WolfType;
+import simplepets.brainsynder.api.wrappers.WolfVariant;
 
 @EntityPetType(petType = PetType.WOLF)
 public interface IEntityWolfPet extends ITameable, IColorable, IShaking {
@@ -19,9 +19,9 @@ public interface IEntityWolfPet extends ITameable, IColorable, IShaking {
 
     void setAngry(boolean var);
 
-    default WolfType getWolfType() {
-        return WolfType.PALE;
+    default WolfVariant getWolfType() {
+        return WolfVariant.PALE;
     }
 
-    default void setWolfType(WolfType type) {}
+    default void setWolfType(WolfVariant type) {}
 }

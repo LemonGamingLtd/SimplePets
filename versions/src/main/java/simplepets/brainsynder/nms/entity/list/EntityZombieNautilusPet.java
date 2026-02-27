@@ -11,14 +11,13 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariant;
 import net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariants;
 import org.bukkit.craftbukkit.CraftRegistry;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import simplepets.brainsynder.api.entity.passive.IEntityZombieNautilusPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.api.wrappers.ZombieNautilusPetVariant;
+import simplepets.brainsynder.api.wrappers.ZombieNautilusVariant;
 import simplepets.brainsynder.nms.entity.branch.EntityNautilusAbstractPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 import simplepets.brainsynder.nms.utils.VariantUtils;
@@ -28,8 +27,8 @@ import simplepets.brainsynder.nms.utils.VariantUtils;
  */
 @SupportedVersion(version = ServerVersion.v1_21_11)
 public class EntityZombieNautilusPet extends EntityNautilusAbstractPet implements IEntityZombieNautilusPet {
-    private static final EntityDataAccessor<Holder<ZombieNautilusVariant>> VARIANT = SynchedEntityData.defineId(EntityZombieNautilusPet.class, EntityDataSerializers.ZOMBIE_NAUTILUS_VARIANT);
-    private ZombieNautilusPetVariant variant = ZombieNautilusPetVariant.TEMPERATE;
+    private static final EntityDataAccessor<Holder<net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariant>> VARIANT = SynchedEntityData.defineId(EntityZombieNautilusPet.class, EntityDataSerializers.ZOMBIE_NAUTILUS_VARIANT);
+    private ZombieNautilusVariant variant = ZombieNautilusVariant.TEMPERATE;
 
     public EntityZombieNautilusPet(PetType type, PetUser user) {
         super(EntityType.ZOMBIE_NAUTILUS, type, user);
@@ -42,15 +41,15 @@ public class EntityZombieNautilusPet extends EntityNautilusAbstractPet implement
     }
 
     @Override
-    public ZombieNautilusPetVariant getVariant() {
+    public ZombieNautilusVariant getVariant() {
         return variant;
     }
 
     @Override
-    public void setVariant(ZombieNautilusPetVariant variant) {
+    public void setVariant(ZombieNautilusVariant variant) {
         this.variant = variant;
 
-        Registry<ZombieNautilusVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.ZOMBIE_NAUTILUS_VARIANT);
+        Registry<net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.ZOMBIE_NAUTILUS_VARIANT);
         entityData.set(VARIANT, registry.wrapAsHolder(registry.getValue(CraftNamespacedKey.toMinecraft(variant.getKey()))));
     }
 
@@ -70,7 +69,7 @@ public class EntityZombieNautilusPet extends EntityNautilusAbstractPet implement
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("variant")) setVariant(object.getEnum("variant", ZombieNautilusPetVariant.class, ZombieNautilusPetVariant.TEMPERATE));
+        if (object.hasKey("variant")) setVariant(object.getEnum("variant", ZombieNautilusVariant.class, ZombieNautilusVariant.TEMPERATE));
         super.applyCompound(object);
     }
 }

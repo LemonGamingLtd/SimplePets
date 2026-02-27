@@ -1,11 +1,11 @@
 package simplepets.brainsynder.api.wrappers;
 
-public enum FoxType {
+public enum FoxVariant {
     RED,
     WHITE;
 
-    public static FoxType getByID(int id) {
-        for (FoxType v : values()) {
+    public static FoxVariant getByID(int id) {
+        for (FoxVariant v : values()) {
             if (v.ordinal() == id) {
                 return v;
             }
@@ -13,19 +13,19 @@ public enum FoxType {
         return RED;
     }
 
-    public static FoxType getByName(String name) {
-        for (FoxType wrapper : values()) {
+    public static FoxVariant getByName(String name) {
+        for (FoxVariant wrapper : values()) {
             if (wrapper.name().equalsIgnoreCase(name)) return wrapper;
         }
         return RED;
     }
 
-    public static FoxType getPrevious(FoxType current) {
+    public static FoxVariant getPrevious(FoxVariant current) {
         if (current == RED) return WHITE;
         return values()[(current.ordinal() - 1)];
     }
 
-    public static FoxType getNext(FoxType current) {
+    public static FoxVariant getNext(FoxVariant current) {
         if (current == WHITE) return RED;
         return values()[(current.ordinal() + 1)];
     }

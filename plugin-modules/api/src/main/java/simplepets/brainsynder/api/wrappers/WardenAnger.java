@@ -1,12 +1,12 @@
 package simplepets.brainsynder.api.wrappers;
 
-public enum AngerLevel {
+public enum WardenAnger {
     CALM,
     AGITATED,
     ANGRY;
 
-    public static AngerLevel getByID(int id) {
-        for (AngerLevel v : values()) {
+    public static WardenAnger getByID(int id) {
+        for (WardenAnger v : values()) {
             if (v.ordinal() == id) {
                 return v;
             }
@@ -14,14 +14,14 @@ public enum AngerLevel {
         return CALM;
     }
 
-    public static AngerLevel getByName(String name) {
-        for (AngerLevel wrapper : values()) {
+    public static WardenAnger getByName(String name) {
+        for (WardenAnger wrapper : values()) {
             if (wrapper.name().equalsIgnoreCase(name)) return wrapper;
         }
         return CALM;
     }
 
-    public static AngerLevel getPrevious(AngerLevel current) {
+    public static WardenAnger getPrevious(WardenAnger current) {
         return switch (current) {
             case CALM -> ANGRY;
             case AGITATED -> CALM;
@@ -29,7 +29,7 @@ public enum AngerLevel {
         };
     }
 
-    public static AngerLevel getNext(AngerLevel current) {
+    public static WardenAnger getNext(WardenAnger current) {
         return switch (current) {
             case CALM -> AGITATED;
             case AGITATED -> ANGRY;

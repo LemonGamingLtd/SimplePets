@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import simplepets.brainsynder.api.entity.passive.IEntityFoxPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.api.wrappers.FoxType;
+import simplepets.brainsynder.api.wrappers.FoxVariant;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -46,7 +46,7 @@ public class EntityFoxPet extends EntityAgeablePet implements IEntityFoxPet {
         super.populateDataAccess(dataAccess);
         dataAccess.define(OWNER, Optional.empty());
         dataAccess.define(OTHER_TRUSTED, Optional.empty());
-        dataAccess.define(TYPE, FoxType.RED.ordinal());
+        dataAccess.define(TYPE, FoxVariant.RED.ordinal());
         dataAccess.define(FOX_FLAGS, (byte)0);
     }
 
@@ -63,7 +63,7 @@ public class EntityFoxPet extends EntityAgeablePet implements IEntityFoxPet {
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("type")) setFoxType(object.getEnum("type", FoxType.class, FoxType.RED));
+        if (object.hasKey("type")) setFoxType(object.getEnum("type", FoxVariant.class, FoxVariant.RED));
         if (object.hasKey("interested")) setInterested(object.getBoolean("interested"));
         if (object.hasKey("crouching")) setCrouching(object.getBoolean("crouching"));
         if (object.hasKey("sitting")) setSitting(object.getBoolean("sitting"));
@@ -72,12 +72,12 @@ public class EntityFoxPet extends EntityAgeablePet implements IEntityFoxPet {
     }
 
     @Override
-    public FoxType getFoxType() {
-        return FoxType.getByID(entityData.get(TYPE));
+    public FoxVariant getFoxType() {
+        return FoxVariant.getByID(entityData.get(TYPE));
     }
 
     @Override
-    public void setFoxType(FoxType type) {
+    public void setFoxType(FoxVariant type) {
         entityData.set(TYPE, type.ordinal());
     }
 

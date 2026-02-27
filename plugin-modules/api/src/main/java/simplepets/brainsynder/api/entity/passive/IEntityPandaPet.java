@@ -2,14 +2,14 @@ package simplepets.brainsynder.api.entity.passive;
 
 import simplepets.brainsynder.api.entity.misc.*;
 import simplepets.brainsynder.api.pet.PetType;
-import simplepets.brainsynder.api.wrappers.PandaGene;
+import simplepets.brainsynder.api.wrappers.PandaVariant;
 
 @EntityPetType(petType = PetType.PANDA)
 public interface IEntityPandaPet extends IAgeablePet, ISpecialFlag, ISleeper, ISitting {
 
-    PandaGene getGene();
+    PandaVariant getGene();
 
-    void setGene(PandaGene gene);
+    void setGene(PandaVariant gene);
 
     void setSneezeProgress(int progress);
 

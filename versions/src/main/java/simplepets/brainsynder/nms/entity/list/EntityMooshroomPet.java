@@ -9,7 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.passive.IEntityMooshroomPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.api.wrappers.MooshroomType;
+import simplepets.brainsynder.api.wrappers.MooshroomVariant;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -32,7 +32,7 @@ public class EntityMooshroomPet extends EntityAgeablePet implements IEntityMoosh
     @Override
     public void populateDataAccess(PetDataAccess dataAccess) {
         super.populateDataAccess(dataAccess);
-        dataAccess.define(TYPE, MooshroomType.RED.name());
+        dataAccess.define(TYPE, MooshroomVariant.RED.name());
     }
 
     @Override
@@ -45,24 +45,24 @@ public class EntityMooshroomPet extends EntityAgeablePet implements IEntityMoosh
     @Override
     public void applyCompound(StorageTagCompound object) {
         if (object.hasKey("type"))
-            setMooshroomType(MooshroomType.valueOf(object.getString("type")));
+            setMooshroomType(MooshroomVariant.valueOf(object.getString("type")));
         super.applyCompound(object);
     }
 
     @Override
-    public void setMooshroomType(MooshroomType type) {
+    public void setMooshroomType(MooshroomVariant type) {
         entityData.set(TYPE, type.ordinal());
     }
 
     @Override
-    public MooshroomType getMooshroomType() {
+    public MooshroomVariant getMooshroomType() {
         try {
             int ordinal = entityData.get(TYPE);
-            if (ordinal == 1) return MooshroomType.BROWN;
+            if (ordinal == 1) return MooshroomVariant.BROWN;
         } catch (Exception ignored) {
             // Randomly the entityData thinks the type is not an Integer...
             // So lets just ignore this as it mostly happens when removing the pet
         }
-        return MooshroomType.RED;
+        return MooshroomVariant.RED;
     }
 }

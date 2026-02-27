@@ -3,7 +3,7 @@ package simplepets.brainsynder.api.wrappers;
 import lib.brainsynder.item.ItemBuilder;
 import org.bukkit.Material;
 
-public enum RabbitType implements Iconable {
+public enum RabbitVariant implements Iconable {
     BROWN("7d1169b2694a6aba826360992365bcda5a10c89a3aa2b48c438531dd8685c3a7"),
     WHITE("374d8298797e712bb1f75ad6ffa7734ac4237ea69be1db92f0e41115a2c170cf"),
     BLACK("72c58116a147d1a9a26269224a8be184fe8e5f3f3df9b61751369ad87382ec9"),
@@ -14,7 +14,7 @@ public enum RabbitType implements Iconable {
 
     private final String texture;
 
-    RabbitType(String texture) {
+    RabbitVariant(String texture) {
         this.texture = "http://textures.minecraft.net/texture/" + texture;
     }
 
@@ -23,26 +23,26 @@ public enum RabbitType implements Iconable {
         return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
     }
 
-    public static RabbitType getByID(int id) {
+    public static RabbitVariant getByID(int id) {
         if (id == 99) return THE_KILLER_BUNNY;
-        for (RabbitType v : values()) {
+        for (RabbitVariant v : values()) {
             if (v.ordinal() == id) return v;
         }
         return null;
     }
 
-    public static RabbitType getByName(String name) {
-        for (RabbitType wrapper : values()) {
+    public static RabbitVariant getByName(String name) {
+        for (RabbitVariant wrapper : values()) {
             if (wrapper.name().equalsIgnoreCase(name)) return wrapper;
         }
         return BROWN;
     }
 
-    public static RabbitType getPrevious(RabbitType current) {
+    public static RabbitVariant getPrevious(RabbitVariant current) {
         return (current == BROWN) ? THE_KILLER_BUNNY : values()[current.ordinal() - 1];
     }
 
-    public static RabbitType getNext(RabbitType current) {
+    public static RabbitVariant getNext(RabbitVariant current) {
         return (current == THE_KILLER_BUNNY) ? BROWN : values()[current.ordinal() + 1];
     }
 

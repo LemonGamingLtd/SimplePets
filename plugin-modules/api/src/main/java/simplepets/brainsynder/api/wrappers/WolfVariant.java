@@ -6,7 +6,7 @@ import org.bukkit.NamespacedKey;
 
 import java.util.Locale;
 
-public enum WolfType implements Iconable {
+public enum WolfVariant implements Iconable {
     PALE("72ce161e3205d89e7e4d3ec04d25abfea6231a2277a2bd76f4693f4ce6189a2d"),
     SPOTTED("bbd23b4ceac1258132bcb7be63dee7cb0ce269a48640e72d4f9c2d4af74af670"),
     SNOWY("50b8e8a15dff16be494c687f13793ee35ac992a2cacff25f327bd240416851f2"),
@@ -20,7 +20,7 @@ public enum WolfType implements Iconable {
     private final NamespacedKey key;
     private final String texture;
 
-    WolfType(String texture) {
+    WolfVariant(String texture) {
         this.texture = "http://textures.minecraft.net/texture/" + texture;
         this.key = NamespacedKey.minecraft(name().toLowerCase(Locale.ROOT));
     }
@@ -34,22 +34,22 @@ public enum WolfType implements Iconable {
         return key;
     }
 
-    public static WolfType getByID(int id) {
-        for (WolfType wolfType : values()) if (wolfType.ordinal() == id) return wolfType;
+    public static WolfVariant getByID(int id) {
+        for (WolfVariant wolfVariant : values()) if (wolfVariant.ordinal() == id) return wolfVariant;
         return PALE;
     }
 
-    public static WolfType getByName(String name) {
-        for (WolfType wolfType : values()) if (wolfType.name().equalsIgnoreCase(name)) return wolfType;
+    public static WolfVariant getByName(String name) {
+        for (WolfVariant wolfVariant : values()) if (wolfVariant.name().equalsIgnoreCase(name)) return wolfVariant;
         return PALE;
     }
 
-    public static WolfType getPrevious(WolfType current) {
+    public static WolfVariant getPrevious(WolfVariant current) {
         if (current == PALE) return STRIPED;
         return values()[(current.ordinal() - 1)];
     }
 
-    public static WolfType getNext(WolfType current) {
+    public static WolfVariant getNext(WolfVariant current) {
         if (current == STRIPED) return PALE;
         return values()[(current.ordinal() + 1)];
     }

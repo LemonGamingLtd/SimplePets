@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import simplepets.brainsynder.api.entity.passive.IEntityPandaPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.api.wrappers.PandaGene;
+import simplepets.brainsynder.api.wrappers.PandaVariant;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -66,7 +66,7 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("type")) setGene(object.getEnum("type", PandaGene.class, PandaGene.NORMAL));
+        if (object.hasKey("type")) setGene(object.getEnum("type", PandaVariant.class, PandaVariant.NORMAL));
         if (object.hasKey("sitting")) setSitting(object.getBoolean("sitting", false));
         if (object.hasKey("sleeping")) setPetSleeping(object.getBoolean("sleeping", false));
         if (object.hasKey("sleep")) setPetSleeping(object.getBoolean("sleep", false));
@@ -75,20 +75,20 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
     }
 
     @Override
-    public PandaGene getGene() {
-        return PandaGene.byId(this.entityData.get(MAIN_GENE));
+    public PandaVariant getGene() {
+        return PandaVariant.byId(this.entityData.get(MAIN_GENE));
     }
 
     @Override
-    public void setGene(PandaGene gene) {
+    public void setGene(PandaVariant gene) {
         this.entityData.set(MAIN_GENE, (byte)gene.ordinal());
 
         // Makes sure that "brown" and "weak" pandas can be seen (not as regular pandas)
-        PandaGene hidden = PandaGene.byId(entityData.get(HIDDEN_GENE));
-        if ((gene == PandaGene.BROWN) || (gene == PandaGene.WEAK)) {
+        PandaVariant hidden = PandaVariant.byId(entityData.get(HIDDEN_GENE));
+        if ((gene == PandaVariant.BROWN) || (gene == PandaVariant.WEAK)) {
             this.entityData.set(HIDDEN_GENE, (byte)gene.ordinal());
-        }else if ((hidden != PandaGene.BROWN) && (hidden != PandaGene.WEAK)) {
-            if (hidden != PandaGene.NORMAL) entityData.set(HIDDEN_GENE, (byte)0);
+        }else if ((hidden != PandaVariant.BROWN) && (hidden != PandaVariant.WEAK)) {
+            if (hidden != PandaVariant.NORMAL) entityData.set(HIDDEN_GENE, (byte)0);
         }
     }
 

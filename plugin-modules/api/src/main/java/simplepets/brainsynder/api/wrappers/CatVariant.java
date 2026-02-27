@@ -6,7 +6,7 @@ import org.bukkit.NamespacedKey;
 
 import java.util.Locale;
 
-public enum CatType implements Iconable {
+public enum CatVariant implements Iconable {
     TABBY("16df72c34e7fdad4bea41d96678b72f29f606e2ca75e3590a278932714be98"),
     BLACK("3a12188258601bcb7f76e3e2489555a26c0d76e6efec2fd966ca372b6dde00"),
     RED("04098414ab31179e9e18bc3e7e8c9666c26ac39d5eb53a571cef3d5cfacc42"),
@@ -22,7 +22,7 @@ public enum CatType implements Iconable {
     private final NamespacedKey key;
     private final String texture;
 
-    CatType(String texture) {
+    CatVariant(String texture) {
         this.texture = "http://textures.minecraft.net/texture/" + texture;
         this.key = NamespacedKey.minecraft(name().toLowerCase(Locale.ROOT));
     }
@@ -36,22 +36,22 @@ public enum CatType implements Iconable {
         return key;
     }
 
-    public static CatType getByID(int id) {
-        for (CatType catType : values()) if (catType.ordinal() == id) return catType;
+    public static CatVariant getByID(int id) {
+        for (CatVariant catVariant : values()) if (catVariant.ordinal() == id) return catVariant;
         return TABBY;
     }
 
-    public static CatType getByName(String name) {
-        for (CatType catType : values()) if (catType.name().equalsIgnoreCase(name)) return catType;
+    public static CatVariant getByName(String name) {
+        for (CatVariant catVariant : values()) if (catVariant.name().equalsIgnoreCase(name)) return catVariant;
         return TABBY;
     }
 
-    public static CatType getPrevious(CatType current) {
+    public static CatVariant getPrevious(CatVariant current) {
         if (current == TABBY) return ALL_BLACK;
         return values()[(current.ordinal() - 1)];
     }
 
-    public static CatType getNext(CatType current) {
+    public static CatVariant getNext(CatVariant current) {
         if (current == ALL_BLACK) return TABBY;
         return values()[(current.ordinal() + 1)];
     }

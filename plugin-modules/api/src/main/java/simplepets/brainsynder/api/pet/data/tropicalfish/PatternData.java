@@ -6,13 +6,13 @@ import lib.brainsynder.utils.DyeColorWrapper;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.passive.IEntityTropicalFishPet;
 import simplepets.brainsynder.api.pet.PetData;
-import simplepets.brainsynder.api.wrappers.TropicalPattern;
+import simplepets.brainsynder.api.wrappers.TropicalFishPattern;
 
 import java.util.Optional;
 
 public class PatternData extends PetData<IEntityTropicalFishPet> {
     public PatternData() {
-        for (TropicalPattern pattern : TropicalPattern.values()) {
+        for (TropicalFishPattern pattern : TropicalFishPattern.values()) {
             addDefaultItem(pattern.name(), new ItemBuilder(Material.PLAYER_HEAD)
                 .setTexture("http://textures.minecraft.net/texture/36d149e4d499929672e2768949e6477959c21e65254613b327b538df1e4df")
                 .withName("&#c8c8c8{name}: &a" + pattern.name()));
@@ -24,7 +24,7 @@ public class PatternData extends PetData<IEntityTropicalFishPet> {
 
     @Override
     public Object defaultValue() {
-        return TropicalPattern.KOB;
+        return TropicalFishPattern.KOB;
     }
 
     @Override
@@ -57,12 +57,12 @@ public class PatternData extends PetData<IEntityTropicalFishPet> {
 
     @Override
     public void onLeftClick(IEntityTropicalFishPet entity) {
-        entity.setPattern(TropicalPattern.getNext(entity.getPattern()));
+        entity.setPattern(TropicalFishPattern.getNext(entity.getPattern()));
     }
 
     @Override
     public void onRightClick(IEntityTropicalFishPet entity) {
-        entity.setPattern(TropicalPattern.getPrevious(entity.getPattern()));
+        entity.setPattern(TropicalFishPattern.getPrevious(entity.getPattern()));
     }
 
     @Override

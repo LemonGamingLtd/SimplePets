@@ -12,14 +12,13 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.wolf.WolfSoundVariant;
 import net.minecraft.world.entity.animal.wolf.WolfSoundVariants;
-import net.minecraft.world.entity.animal.wolf.WolfVariant;
 import net.minecraft.world.entity.animal.wolf.WolfVariants;
 import org.bukkit.craftbukkit.CraftRegistry;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import simplepets.brainsynder.api.entity.passive.IEntityWolfPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.api.wrappers.WolfType;
+import simplepets.brainsynder.api.wrappers.WolfVariant;
 import simplepets.brainsynder.nms.entity.EntityTameablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 import simplepets.brainsynder.nms.utils.VariantUtils;
@@ -33,13 +32,13 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
     private static final EntityDataAccessor<Boolean> BEGGING = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> COLLAR_COLOR = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Long> ANGER_TIME = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.LONG);
-    private static final EntityDataAccessor<Holder<WolfVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.WOLF_VARIANT);
+    private static final EntityDataAccessor<Holder<net.minecraft.world.entity.animal.wolf.WolfVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.WOLF_VARIANT);
     private static final EntityDataAccessor<Holder<WolfSoundVariant>> DATA_SOUND_VARIANT_ID = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.WOLF_SOUND_VARIANT);
 
     private boolean angry = false;
     private boolean furWet = false;
     private int ticks = -1;
-    private WolfType wolfType = WolfType.PALE;
+    private WolfVariant wolfVariant = WolfVariant.PALE;
 
     public EntityWolfPet(PetType type, PetUser user) {
         super(EntityType.WOLF, type, user);
@@ -99,7 +98,7 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("type")) setWolfType(object.getEnum("type", WolfType.class));
+        if (object.hasKey("type")) setWolfType(object.getEnum("type", WolfVariant.class));
         if (object.hasKey("color")) setColor(DyeColorWrapper.getByName(object.getString("color")));
         if (object.hasKey("angry")) setAngry(object.getBoolean("angry", false));
         if (object.hasKey("tilted")) setHeadTilted(object.getBoolean("tilted", false));
@@ -129,17 +128,17 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
     }
 
     @Override
-    public WolfType getWolfType() {
-        return wolfType;
+    public WolfVariant getWolfType() {
+        return wolfVariant;
     }
 
     @Override
-    public void setWolfType(WolfType type) {
-        this.wolfType = type;
+    public void setWolfType(WolfVariant type) {
+        this.wolfVariant = type;
 
-        WolfVariant variant = CraftRegistry.getMinecraftRegistry(Registries.WOLF_VARIANT)
+        net.minecraft.world.entity.animal.wolf.WolfVariant variant = CraftRegistry.getMinecraftRegistry(Registries.WOLF_VARIANT)
                 .getOptional(CraftNamespacedKey.toMinecraft(type.getKey())).orElseThrow();
-        Registry<WolfVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.WOLF_VARIANT);
+        Registry<net.minecraft.world.entity.animal.wolf.WolfVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.WOLF_VARIANT);
         entityData.set(DATA_VARIANT_ID, registry.wrapAsHolder(variant));
     }
 

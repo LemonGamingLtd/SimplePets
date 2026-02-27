@@ -3,7 +3,7 @@ package simplepets.brainsynder.api.wrappers;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum TropicalPattern {
+public enum TropicalFishPattern {
     KOB(0, false),
     SUNSTREAK(1, false),
     SNOOPER(2, false),
@@ -19,9 +19,9 @@ public enum TropicalPattern {
 
     private final int variant;
     private final boolean large;
-    private static final Map<Integer, TropicalPattern> BY_DATA = new HashMap();
+    private static final Map<Integer, TropicalFishPattern> BY_DATA = new HashMap();
 
-    TropicalPattern(int variant, boolean large) {
+    TropicalFishPattern(int variant, boolean large) {
         this.variant = variant;
         this.large = large;
     }
@@ -30,32 +30,32 @@ public enum TropicalPattern {
         return this.variant << 8 | (this.large ? 1 : 0);
     }
 
-    public static TropicalPattern getByName(String name) {
-        for (TropicalPattern wrapper : values()) {
+    public static TropicalFishPattern getByName(String name) {
+        for (TropicalFishPattern wrapper : values()) {
             if (wrapper.name().equalsIgnoreCase(name)) return wrapper;
         }
         return KOB;
     }
 
-    public static TropicalPattern fromData(int data) {
+    public static TropicalFishPattern fromData(int data) {
         return BY_DATA.get(data);
     }
 
-    public static TropicalPattern getPrevious(TropicalPattern current) {
+    public static TropicalFishPattern getPrevious(TropicalFishPattern current) {
         int target = current.ordinal() - 1;
         if (target < 0) target = (values().length - 1);
-        return TropicalPattern.values()[target];
+        return TropicalFishPattern.values()[target];
     }
 
-    public static TropicalPattern getNext(TropicalPattern current) {
+    public static TropicalFishPattern getNext(TropicalFishPattern current) {
         int target = current.ordinal() + 1;
         if (target > (values().length - 1)) target = 0;
-        return TropicalPattern.values()[target];
+        return TropicalFishPattern.values()[target];
     }
 
     static {
-        for (TropicalPattern type : values()) {
-            BY_DATA.put(type.getDataValue(), TropicalPattern.values()[type.ordinal()]);
+        for (TropicalFishPattern type : values()) {
+            BY_DATA.put(type.getDataValue(), TropicalFishPattern.values()[type.ordinal()]);
         }
     }
 }

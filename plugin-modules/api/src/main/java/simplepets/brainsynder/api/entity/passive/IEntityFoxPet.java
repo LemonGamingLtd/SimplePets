@@ -5,13 +5,13 @@ import simplepets.brainsynder.api.entity.misc.IAgeablePet;
 import simplepets.brainsynder.api.entity.misc.ISleeper;
 import simplepets.brainsynder.api.entity.misc.ISpecialFlag;
 import simplepets.brainsynder.api.pet.PetType;
-import simplepets.brainsynder.api.wrappers.FoxType;
+import simplepets.brainsynder.api.wrappers.FoxVariant;
 
 @EntityPetType(petType = PetType.FOX)
 public interface IEntityFoxPet extends IAgeablePet, ISpecialFlag, ISleeper {
-    FoxType getFoxType();
+    FoxVariant getFoxType();
 
-    void setFoxType(FoxType type);
+    void setFoxType(FoxVariant type);
 
     /**
      * Tilts the foxes head
