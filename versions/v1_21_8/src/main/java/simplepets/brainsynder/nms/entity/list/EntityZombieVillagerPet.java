@@ -9,6 +9,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.craftbukkit.entity.CraftVillager;
 import org.bukkit.entity.Villager;
 import simplepets.brainsynder.api.entity.hostile.IEntityZombieVillagerPet;
@@ -19,6 +21,8 @@ import simplepets.brainsynder.api.wrappers.villager.VillagerInfo;
 import simplepets.brainsynder.api.wrappers.villager.VillagerLevel;
 import simplepets.brainsynder.api.wrappers.villager.VillagerType;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
+
+import java.util.Locale;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.ZombieVillager}
@@ -90,8 +94,8 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
     public VillagerInfo getVillagerData() {
         net.minecraft.world.entity.npc.VillagerData raw = getRawData();
         return  new VillagerInfo(
-                BiomeType.valueOf(CraftVillager.CraftType.minecraftHolderToBukkit(raw.type()).name()),
-                VillagerType.valueOf(CraftVillager.CraftProfession.minecraftHolderToBukkit(raw.profession()).name()),
+                BiomeType.valueOf(CraftVillager.CraftType.minecraftHolderToBukkit(raw.type()).getKey().value().toUpperCase(Locale.ROOT)),
+                VillagerType.valueOf(CraftVillager.CraftProfession.minecraftHolderToBukkit(raw.profession()).getKey().value().toUpperCase(Locale.ROOT)),
                 VillagerLevel.getById(raw.level())
         );
     }
@@ -99,8 +103,8 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
     @Override
     public void setVillagerData(VillagerInfo data) {
         entityData.set(VILLAGER_DATA, new VillagerData(
-                CraftVillager.CraftType.bukkitToMinecraftHolder(Villager.Type.valueOf(data.getBiome().name())),
-                CraftVillager.CraftProfession.bukkitToMinecraftHolder(Villager.Profession.valueOf(data.getType().name())),
+                CraftVillager.CraftType.bukkitToMinecraftHolder(Registry.VILLAGER_TYPE.get(NamespacedKey.fromString(data.getBiome().name().toLowerCase(Locale.ROOT)))),
+                CraftVillager.CraftProfession.bukkitToMinecraftHolder(Registry.VILLAGER_PROFESSION.get(NamespacedKey.fromString(data.getType().name().toLowerCase(Locale.ROOT)))),
                 data.getLevel().ordinal()+1
         ));
     }
