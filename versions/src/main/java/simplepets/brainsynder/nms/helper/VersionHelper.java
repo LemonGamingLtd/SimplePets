@@ -8,7 +8,6 @@ import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.other.NBTException;
 import lib.brainsynder.reflection.FieldAccessor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
@@ -24,10 +23,8 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.api.plugin.utils.HelperUtilities;
@@ -67,11 +64,6 @@ public class VersionHelper {
         builder.add(Attributes.SCALE, 1);
         builder.add(Attributes.STEP_HEIGHT, 1);
         return builder.add(Attributes.MOVEMENT_SPEED, 1);
-    }
-
-    // ADDED DURING 1.21.3 DEVELOPMENT
-    public static <T> T getRegistryValue (Registry<T> registry, NamespacedKey key) {
-        return registry.getValue(CraftNamespacedKey.toMinecraft(key));
     }
 
     public static void killEntity (Entity entity, ServerLevel level) {

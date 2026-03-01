@@ -1,18 +1,25 @@
 package simplepets.brainsynder.nms.helper;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import org.bukkit.NamespacedKey;
 import simplepets.brainsynder.utils.VersionFields;
 
 import java.lang.reflect.Field;
 
 public interface VersionTranslator {
     String getVersionIdentifier();
+
+    default <T> T getRegistryValue (Registry<T> registry, NamespacedKey key) {
+        return registry.getValue(Identifier.fromNamespaceAndPath(key.getNamespace(), key.getKey()));
+    }
 
     default Packet<ClientGamePacketListener> getAddEntityPacket(LivingEntity livingEntity, ServerEntity serverEntity, EntityType<?> originalEntityType, BlockPos pos) {
         Packet<ClientGamePacketListener> packet;

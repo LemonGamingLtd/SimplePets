@@ -85,7 +85,7 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
         this.type = type;
 
         Registry<net.minecraft.world.entity.animal.CatVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.CAT_VARIANT);
-        entityData.set(TYPE, registry.wrapAsHolder(VersionHelper.getRegistryValue(registry, type.getKey())));
+        entityData.set(TYPE, registry.wrapAsHolder(VersionHelper.VERSION_TRANSLATOR.getRegistryValue(registry, type.getKey())));
     }
 
     @Override

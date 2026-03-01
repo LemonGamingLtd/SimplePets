@@ -131,7 +131,7 @@ public class EntityFrogPet extends EntityAgeablePet implements IEntityFrogPet {
         this.variant = variant;
 
         Registry<FrogVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.FROG_VARIANT);
-        entityData.set(DATA_VARIANT, registry.wrapAsHolder(VersionHelper.getRegistryValue(registry, variant.getKey())));
+        entityData.set(DATA_VARIANT, registry.wrapAsHolder(VersionHelper.VERSION_TRANSLATOR.getRegistryValue(registry, variant.getKey())));
     }
 
     @Override

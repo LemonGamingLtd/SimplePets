@@ -81,7 +81,7 @@ public class EntityHorsePet extends EntityHorseAbstractPet implements IEntityHor
         }
 
         Registry<Item> registry = CraftRegistry.getMinecraftRegistry(Registries.ITEM);
-        setItemSlot(EquipmentSlot.BODY, VersionHelper.getRegistryValue(registry, armor.getKey()).getDefaultInstance());
+        setItemSlot(EquipmentSlot.BODY, VersionHelper.VERSION_TRANSLATOR.getRegistryValue(registry, armor.getKey()).getDefaultInstance());
     }
 
     @Override

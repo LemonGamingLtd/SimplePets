@@ -97,7 +97,7 @@ public class EntityLlamaPet extends EntityDonkeyAbstractPet implements IEntityLl
             return;
         }
         DyeColor dyeColor = DyeColor.byId(color.getWoolData());
-        Item item = VersionHelper.getRegistryValue(BuiltInRegistries.ITEM, NamespacedKey.minecraft(dyeColor.getName()+"_carpet"));
+        Item item = VersionHelper.VERSION_TRANSLATOR.getRegistryValue(BuiltInRegistries.ITEM, NamespacedKey.minecraft(dyeColor.getName()+"_carpet"));
 
         setItemSlot(EquipmentSlot.BODY, new ItemStack(item));
     }
