@@ -411,7 +411,7 @@ public interface PetDataRegistry {
         PetData<IEntityHorsePet> ARMOR = PetData.of("armor", IEntityHorsePet.class)
                 .defaultValue(HorseArmorType.NONE)
                 .item(HorseArmorType.NONE, new ItemBuilder(Material.BARRIER).withName("&#c8c8c8{name}: &aNONE"))
-                .items(HorseArmorType.values(), armor -> (armor == HorseArmorType.NONE) && !armor.isSupported(), armor -> new ItemBuilder(armor.itemType().asMaterial())
+                .items(HorseArmorType.values(), armor -> (armor == HorseArmorType.NONE) || !armor.isSupported(), armor -> new ItemBuilder(armor.itemType().asMaterial())
                         .withName("&#c8c8c8{name}: &a" + armor.name()))
                 .onLeftClick(entityPet -> entityPet.setArmor(PetData.cycleForward(entityPet.getArmor(), PetData.filterValues(HorseArmorType.values(), HorseArmorType::isSupported))))
                 .onRightClick(entityPet -> entityPet.setArmor(PetData.cycleBackward(entityPet.getArmor(), PetData.filterValues(HorseArmorType.values(), HorseArmorType::isSupported))))
