@@ -413,8 +413,8 @@ public interface PetDataRegistry {
                 .item(HorseArmorType.NONE, new ItemBuilder(Material.BARRIER).withName("&#c8c8c8{name}: &aNONE"))
                 .items(HorseArmorType.values(), armor -> (armor == HorseArmorType.NONE) || !armor.isSupported(), armor -> new ItemBuilder(armor.itemType().asMaterial())
                         .withName("&#c8c8c8{name}: &a" + armor.name()))
-                .onLeftClick(entityPet -> entityPet.setArmor(PetData.cycleForward(entityPet.getArmor(), PetData.filterValues(HorseArmorType.values(), HorseArmorType::isSupported))))
-                .onRightClick(entityPet -> entityPet.setArmor(PetData.cycleBackward(entityPet.getArmor(), PetData.filterValues(HorseArmorType.values(), HorseArmorType::isSupported))))
+                .onLeftClick(entityPet -> entityPet.setArmor(PetData.cycleForward(entityPet.getArmor(), PetData.filterValues(HorseArmorType.values(), horseArmorType -> !horseArmorType.isSupported()))))
+                .onRightClick(entityPet -> entityPet.setArmor(PetData.cycleBackward(entityPet.getArmor(), PetData.filterValues(HorseArmorType.values(), horseArmorType -> !horseArmorType.isSupported()))))
                 .value(IEntityHorsePet::getArmor).build();
 
         PetData<IEntityHorsePet> COLOR = PetData.of("color", IEntityHorsePet.class)
