@@ -8,6 +8,7 @@ import lib.brainsynder.json.WriterConfig;
 import lib.brainsynder.reflection.Reflection;
 import lib.brainsynder.utils.AdvString;
 import lib.brainsynder.utils.Utilities;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.DrilldownPie;
@@ -98,6 +99,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     public void onEnable() {
         instance = this;
         SimplePets.setPLUGIN(this);
+        PluginUtilities.initialize(this);
         isStarting = true;
 
         debug = new Debug(this);
