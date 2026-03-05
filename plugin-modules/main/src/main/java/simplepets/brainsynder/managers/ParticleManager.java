@@ -59,27 +59,27 @@ public class ParticleManager implements ParticleHandler {
         if (player == null) return;
         switch (reason) {
             case SPAWN:
-                if (ConfigOption.INSTANCE.PARTICLES_SUMMON_TOGGLE.getValue())
+                if (ConfigOption.PARTICLES_SUMMON_TOGGLE.get())
                     spawnParticle.sendToPlayer(player, location);
                 break;
             case FAILED:
-                if (ConfigOption.INSTANCE.PARTICLES_FAILED_TOGGLE.getValue())
+                if (ConfigOption.PARTICLES_FAILED_TOGGLE.get())
                     failSpawnParticle.sendToPlayer(player, location);
                 break;
             case RENAME:
-                if (ConfigOption.INSTANCE.PARTICLES_RENAME_TOGGLE.getValue())
+                if (ConfigOption.PARTICLES_RENAME_TOGGLE.get())
                     renameParticle.sendToPlayer(player, location);
                 break;
             case REMOVE:
-                if (ConfigOption.INSTANCE.PARTICLES_REMOVE_TOGGLE.getValue())
+                if (ConfigOption.PARTICLES_REMOVE_TOGGLE.get())
                     removeParticle.sendToPlayer(player, location);
                 break;
             case TELEPORT:
-                if (ConfigOption.INSTANCE.PARTICLES_TELEPORT_TOGGLE.getValue())
+                if (ConfigOption.PARTICLES_TELEPORT_TOGGLE.get())
                     teleportParticle.sendToPlayer(player, location);
                 break;
             case TASK_FAILED:
-                if (ConfigOption.INSTANCE.PARTICLES_FAILED_TASK_TOGGLE.getValue())
+                if (ConfigOption.PARTICLES_FAILED_TASK_TOGGLE.get())
                     taskFailParticle.sendToPlayer(player, location);
                 break;
         }

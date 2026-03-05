@@ -12,9 +12,8 @@ import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.event.user.PetRenameEvent;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.utils.AnvilGUI;
 import simplepets.brainsynder.utils.RenameType;
 
@@ -30,7 +29,7 @@ public class RenameManager {
 
     public void renameViaAnvil(PetUser user, PetType type) {
         AnvilGUI.Builder builder = new AnvilGUI.Builder().plugin(PetCore.getInstance());
-        builder.itemLeft(new ItemBuilder(Material.NAME_TAG).withName(MessageFile.getTranslation(MessageOption.RENAME_ANVIL_TAG)).build());
+        builder.itemLeft(new ItemBuilder(Material.NAME_TAG).withName(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.RENAME_ANVIL_TAG)).build());
         builder.onClick((slot, stateSnapshot) -> {
             if (slot != AnvilGUI.Slot.OUTPUT) return Collections.emptyList();
 
@@ -43,7 +42,7 @@ public class RenameManager {
             if (!renameEvent.isCancelled()) user.setPetName(renameEvent.getName(), type);
             return Arrays.asList(AnvilGUI.ResponseAction.close());
         });
-        builder.title(MessageFile.getTranslation(MessageOption.RENAME_ANVIL_TITLE));
+        builder.title(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.RENAME_ANVIL_TITLE));
         builder.open(user.getPlayer());
 
     }
@@ -56,7 +55,7 @@ public class RenameManager {
                 if (event.gracefulExit()) {
                     String name = event.getContext().getSessionData("name").toString(); // It's a string prompt for a reason
                     if (name.equalsIgnoreCase("cancel")) {
-                        user.getPlayer().sendMessage(MessageFile.getTranslation(MessageOption.RENAME_VIA_CHAT_CANCEL));
+                        user.getPlayer().sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.RENAME_VIA_CHAT_CANCEL));
                         return;
                     }
                     if (name.equalsIgnoreCase("reset")) name = null;
@@ -73,8 +72,8 @@ public class RenameManager {
     public void renameViaSign(PetUser user, PetType type) {
         Plugin protocol = plugin.getServer().getPluginManager().getPlugin("ProtocolLib");
         if ((protocol == null) || (!protocol.isEnabled())) {
-            if (RenameType.getType(ConfigOption.INSTANCE.RENAME_TYPE.getValue(), RenameType.ANVIL) == RenameType.SIGN)
-                ConfigOption.INSTANCE.RENAME_TYPE.setValue(RenameType.ANVIL.name(), true);
+            if (RenameType.getType(ConfigOption.RENAME_TYPE.get(), RenameType.ANVIL) == RenameType.SIGN)
+                ConfigOption.RENAME_TYPE.set(RenameType.ANVIL.name(), true);
             return;
         }
         simplepets.brainsynder.hooks.ProtocolHook.renameViaSign(user, type);
@@ -83,7 +82,7 @@ public class RenameManager {
     private static class PetRenamePrompt extends StringPrompt {
         @Override
         public String getPromptText(ConversationContext context) {
-            return MessageFile.getTranslation(MessageOption.RENAME_VIA_CHAT);
+            return PetCore.getInstance().getMessageFile().getTranslation(MessageOption.RENAME_VIA_CHAT);
         }
 
         @Override

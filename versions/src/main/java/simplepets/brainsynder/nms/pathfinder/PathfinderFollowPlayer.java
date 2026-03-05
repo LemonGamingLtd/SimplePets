@@ -35,9 +35,9 @@ public class PathfinderFollowPlayer extends Goal {
 
     public PathfinderFollowPlayer(EntityPet entity) {
         this.entity = entity;
-        this.maxRange = ConfigOption.INSTANCE.PATHFINDING_MAX_DISTANCE.getValue();
-        this.minRange = ConfigOption.INSTANCE.PATHFINDING_MIN_DISTANCE.getValue();
-        this.teleportDistance = ConfigOption.INSTANCE.PATHFINDING_TELEPORT_DISTANCE.getValue();
+        this.maxRange = ConfigOption.PATHFINDING_MAX_DISTANCE.get();
+        this.minRange = ConfigOption.PATHFINDING_MIN_DISTANCE.get();
+        this.teleportDistance = ConfigOption.PATHFINDING_TELEPORT_DISTANCE.get();
 
         navigation = entity.getNavigation();
 
@@ -61,7 +61,7 @@ public class PathfinderFollowPlayer extends Goal {
 
         // Failed: player is riding a mob, and config denies pet from following player
         if (user.getPlayer().isInsideVehicle()
-                && !ConfigOption.INSTANCE.PATHFINDING_FOLLOW_WHEN_RIDING.getValue()) return false;
+                && !ConfigOption.PATHFINDING_FOLLOW_WHEN_RIDING.get()) return false;
         if (!user.hasPets()) return false; // Failed: player has no pets
 
         // Failed: pet and player are in different worlds

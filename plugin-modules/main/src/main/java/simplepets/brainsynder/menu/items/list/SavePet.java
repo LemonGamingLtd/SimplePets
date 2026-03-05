@@ -12,9 +12,8 @@ import simplepets.brainsynder.api.inventory.CustomInventory;
 import simplepets.brainsynder.api.inventory.Item;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.managers.InventoryManager;
 import simplepets.brainsynder.menu.inventory.PetSelectorMenu;
 import simplepets.brainsynder.utils.Utilities;
@@ -94,11 +93,11 @@ public class SavePet extends Item {
     }
 
     private boolean canSavePet(PetUser user, IEntityPet entityPet) {
-        if (!ConfigOption.INSTANCE.PET_SAVES_ENABLED.getValue()) return false;
+        if (!ConfigOption.PET_SAVES_ENABLED.get()) return false;
         Player player = user.getPlayer();
 
         if (!user.canSaveMorePets()) {
-            player.sendMessage(MessageFile.getTranslation(MessageOption.PET_SAVES_LIMIT_REACHED));
+            player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_SAVES_LIMIT_REACHED));
             return false;
         }
 
@@ -115,7 +114,7 @@ public class SavePet extends Item {
         if (typeCount < Utilities.getPermissionAmount(player, saveLimit, "pet.saves." + entityPet.getPetType().getName() + ".")) {
             return true;
         }
-        player.sendMessage(MessageFile.getTranslation(MessageOption.PET_SAVES_LIMIT_REACHED_TYPE).replace("{type}", entityPet.getPetType().getName()));
+        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_SAVES_LIMIT_REACHED_TYPE).replace("{type}", entityPet.getPetType().getName()));
         return false;
     }
 }

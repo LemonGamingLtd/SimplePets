@@ -107,12 +107,12 @@ public class PetUtility implements IPetUtilities {
 
     @Override
     public String translatePetName(String name) {
-        boolean color = ConfigOption.INSTANCE.RENAME_COLOR_ENABLED.getValue();
-        boolean magic = ConfigOption.INSTANCE.RENAME_COLOR_MAGIC.getValue();
+        boolean color = ConfigOption.RENAME_COLOR_ENABLED.get();
+        boolean magic = ConfigOption.RENAME_COLOR_MAGIC.get();
         if (!magic) name = name.replace("&k", "");
         if (!color) return name;
 
-        if (ConfigOption.INSTANCE.RENAME_COLOR_HEX.getValue()) {
+        if (ConfigOption.RENAME_COLOR_HEX.get()) {
             name = Colorize.translateBungeeHex(name);
         } else {
             name = Colorize.translateBukkit(name);

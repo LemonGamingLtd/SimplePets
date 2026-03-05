@@ -44,11 +44,11 @@ public class ListCommand extends PetSubCommand {
                 color = ChatColor.YELLOW; // yellow
                 tooltip = color + "NOT REGISTERED";
             } else if (type.isInDevelopment()
-                && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue())) {
+                && (!ConfigOption.PET_TOGGLES_DEV_MOBS.get())) {
                 color = ChatColor.GRAY;
                 tooltip = color + "IN DEVELOPMENT";
             }
-            if (ConfigOption.INSTANCE.MISC_TOGGLES_LIST_RESTRICTIONS.getValue()) {
+            if (ConfigOption.MISC_TOGGLES_LIST_RESTRICTIONS.get()) {
                 if (color != ChatColor.GREEN) continue;
                 if (!Utilities.hasPermission(sender, type.getPermission())) continue;
             }

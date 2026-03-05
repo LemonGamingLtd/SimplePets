@@ -13,7 +13,7 @@ public class LocationChangeListener implements Listener {
 
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent event) {
-        if (!ConfigOption.INSTANCE.REMOVE_PET_ON_WORLD_CHANGE.getValue()) return;
+        if (!ConfigOption.REMOVE_PET_ON_WORLD_CHANGE.get()) return;
 
         SimplePets.getUserManager().getPetUser(event.getPlayer()).ifPresent(user -> {
             user.cacheAndRemove();

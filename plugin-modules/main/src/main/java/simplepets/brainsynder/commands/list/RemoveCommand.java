@@ -7,10 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.pet.PetType;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -41,7 +40,7 @@ public class RemoveCommand extends PetSubCommand {
                     if (user.removePet(type)) integer.incrementAndGet();
             });
 
-            sender.sendMessage(MessageFile.getTranslation(MessageOption.REMOVED_ALL_PETS).replace("{count}", String.valueOf(integer.get())));
+            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.REMOVED_ALL_PETS).replace("{count}", String.valueOf(integer.get())));
             return;
         }
         AtomicInteger index = new AtomicInteger(0);
@@ -52,7 +51,7 @@ public class RemoveCommand extends PetSubCommand {
             if (selected != null) {
                 target = selected;
                 if (!sender.hasPermission(getPermission("other"))) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.NO_PERMISSION));
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
                     return;
                 }
                 index.getAndIncrement();
@@ -76,14 +75,14 @@ public class RemoveCommand extends PetSubCommand {
                     if (user.removePet(type)) integer.incrementAndGet();
             });
 
-            sender.sendMessage(MessageFile.getTranslation(MessageOption.REMOVED_ALL_PETS).replace("{count}", String.valueOf(integer.get())));
+            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.REMOVED_ALL_PETS).replace("{count}", String.valueOf(integer.get())));
 
             return;
         }
 
         Optional<PetType> petType = PetType.getPetType(args[index.get()]);
         if (!petType.isPresent()) {
-            sender.sendMessage(MessageFile.getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[index.get()]));
+            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[index.get()]));
             return;
         }
 
@@ -91,11 +90,11 @@ public class RemoveCommand extends PetSubCommand {
 
         getPlugin().getUserManager().getPetUser(finalTarget).ifPresent(user -> {
             if (!user.removePet(type)) {
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.REMOVED_PET).replace("{type}", type.getName()));
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.REMOVED_PET).replace("{type}", type.getName()));
                 return;
             }
 
-            sender.sendMessage(MessageFile.getTranslation(MessageOption.REMOVED_PET).replace("{type}", type.getName()));
+            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.REMOVED_PET).replace("{type}", type.getName()));
         });
     }
 }

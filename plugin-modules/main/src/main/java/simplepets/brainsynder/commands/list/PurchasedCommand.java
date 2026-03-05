@@ -10,10 +10,9 @@ import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 
 import java.util.List;
 
@@ -70,7 +69,7 @@ public class PurchasedCommand extends PetSubCommand {
         }
 
         if (target == null) {
-            sender.sendMessage(MessageFile.getTranslation(MessageOption.PLAYER_NOT_ONLINE));
+            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PLAYER_NOT_ONLINE));
             return;
         }
 
@@ -78,18 +77,18 @@ public class PurchasedCommand extends PetSubCommand {
         SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
             if (args[0].equalsIgnoreCase("add")) {
                 if (!sender.hasPermission(getPermission("add"))) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.NO_PERMISSION));
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
                     return;
                 }
 
                 if (args.length == 2) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.MISSING_PET_TYPE));
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MISSING_PET_TYPE));
                     return;
                 }
 
                 PetType.getPetType(args[2]).ifPresent(type -> {
                     user.addOwnedPet(type);
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.PURCHASE_ADD)
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PURCHASE_ADD)
                         .replace("{player}", finalTarget.getName())
                         .replace("{type}", type.getName())
                     );
@@ -99,17 +98,17 @@ public class PurchasedCommand extends PetSubCommand {
 
             if (args[0].equalsIgnoreCase("remove")) {
                 if (!sender.hasPermission(getPermission("remove"))) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.NO_PERMISSION));
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
                     return;
                 }
                 if (args.length == 2) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.MISSING_PET_TYPE));
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MISSING_PET_TYPE));
                     return;
                 }
 
                 PetType.getPetType(args[2]).ifPresent(type -> {
                     user.removeOwnedPet(type);
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.PURCHASE_REMOVE)
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PURCHASE_REMOVE)
                         .replace("{player}", finalTarget.getName())
                         .replace("{type}", type.getName())
                     );
@@ -119,11 +118,11 @@ public class PurchasedCommand extends PetSubCommand {
 
             if (args[0].equalsIgnoreCase("list")) {
                 if (!sender.hasPermission(getPermission("list"))) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.NO_PERMISSION));
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
                     return;
                 }
 
-                String prefix = MessageFile.getTranslation(MessageOption.PURCHASE_LIST_PREFIX);
+                String prefix = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PURCHASE_LIST_PREFIX);
                 if (!prefix.endsWith(" ")) prefix = prefix + " ";
                 Tellraw tellraw = Tellraw.getInstance(prefix);
                 user.getOwnedPets().forEach(type -> {

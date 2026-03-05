@@ -11,9 +11,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.inventory.Item;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.managers.InventoryManager;
 import simplepets.brainsynder.menu.inventory.SavesMenu;
 import simplepets.brainsynder.menu.inventory.holders.SavesHolder;
@@ -63,7 +62,7 @@ public class SavesGUIListener implements Listener {
                     if (!user.canSpawnMorePets()) {
                         e.setCancelled(true);
                         player.closeInventory();
-                        player.sendMessage(MessageFile.getTranslation(MessageOption.CANT_SPAWN_MORE_PETS));
+                        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CANT_SPAWN_MORE_PETS));
                         return;
                     }
 

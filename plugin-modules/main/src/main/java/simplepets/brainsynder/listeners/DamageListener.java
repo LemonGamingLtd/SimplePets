@@ -10,7 +10,7 @@ import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
-import simplepets.brainsynder.files.Config;
+import simplepets.brainsynder.files.ConfigFile;
 
 public class DamageListener implements Listener {
 
@@ -27,16 +27,16 @@ public class DamageListener implements Listener {
         SimplePets.getSpawnUtil().getHandle(vehicle).ifPresent(obj -> {
             IEntityPet pet = (IEntityPet) obj;
             SimplePets.getPetConfigManager().getPetConfig(pet.getPetType()).ifPresent(config -> { // Fetch the pets config
-                Config configuration = PetCore.getInstance().getConfiguration();
+                ConfigFile configuration = PetCore.getInstance().getConfiguration();
 
                 if (config.canFly(player)) { // Checks if a pet is a flyable pet
-                    if (!ConfigOption.INSTANCE.PET_TOGGLES_FALL_DAMAGE_FLY.getValue()) return;
+                    if (!ConfigOption.PET_TOGGLES_FALL_DAMAGE_FLY.get()) return;
                     event.setCancelled(true);
                     return;
                 }
 
                 // Pet is not flyable...
-                if (!ConfigOption.INSTANCE.PET_TOGGLES_FALL_DAMAGE_NON_FLY.getValue()) return;
+                if (!ConfigOption.PET_TOGGLES_FALL_DAMAGE_NON_FLY.get()) return;
                 event.setCancelled(true);
             });
         });

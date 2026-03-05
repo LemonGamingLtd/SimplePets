@@ -33,7 +33,7 @@ public class Remove extends Item {
     @Override
     public void onClick(PetUser user, CustomInventory inventory, IEntityPet pet) {
         if (!user.hasPets()) return;
-        if (!ConfigOption.INSTANCE.MISC_TOGGLES_REMOVE_ALL_PETS.getValue()) {
+        if (!ConfigOption.MISC_TOGGLES_REMOVE_ALL_PETS.get()) {
             onShiftClick(user, inventory, pet);
             return;
         }
@@ -50,7 +50,7 @@ public class Remove extends Item {
     public void onShiftClick(PetUser masterUser, CustomInventory inventory) {
         if (!masterUser.hasPets()) return;
         if (masterUser.getPetEntities().size() == 1) {
-            if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_REMOVE.getValue())
+            if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_REMOVE.get())
                 masterUser.getPlayer().closeInventory();
             new BukkitRunnable() {
                 @Override
@@ -65,7 +65,7 @@ public class Remove extends Item {
         }
         PetSelectorMenu menu = InventoryManager.SELECTOR;
         menu.setTask(masterUser.getPlayer().getName(), (user, type) -> {
-            if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_REMOVE.getValue())
+            if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_REMOVE.get())
                 user.getPlayer().closeInventory();
             new BukkitRunnable() {
                 @Override

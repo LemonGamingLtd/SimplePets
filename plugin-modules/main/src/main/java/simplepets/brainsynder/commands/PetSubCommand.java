@@ -32,7 +32,7 @@ public class PetSubCommand extends SubCommand {
         if (!(sender instanceof Player)) return true;
         if (sender.isOp()) return true;
         if (needsPermission()) {
-            //sender.sendMessage(MessageFile.getTranslation(MessageOption.NO_PERMISSION));
+            //sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
             return sender.hasPermission(getPermission());
         }
         return super.canExecute(sender);

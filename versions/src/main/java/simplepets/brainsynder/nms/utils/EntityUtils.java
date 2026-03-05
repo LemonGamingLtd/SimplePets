@@ -1,21 +1,13 @@
 package simplepets.brainsynder.nms.utils;
 
-import lib.brainsynder.reflection.Reflection;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.npc.villager.VillagerProfession;
-import net.minecraft.world.entity.npc.villager.VillagerType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
-import simplepets.brainsynder.api.wrappers.villager.BiomeType;
 import simplepets.brainsynder.debug.DebugLevel;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class EntityUtils {
@@ -36,7 +28,7 @@ public class EntityUtils {
 
     static {
         RANDOM = new Random();
-        if (ConfigOption.INSTANCE.PET_TOGGLES_GLOW_VANISH.getValue()) {
+        if (ConfigOption.PET_TOGGLES_GLOW_VANISH.get()) {
             SimplePets.getDebugLogger().debug(DebugLevel.WARNING, "GlowingEntities class is currently unavailable in this version...");
         }
     }

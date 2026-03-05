@@ -27,7 +27,7 @@ public class Saves extends Item {
 
     @Override
     public boolean addItemToInv(PetUser user, CustomInventory inventory) {
-        return ConfigOption.INSTANCE.PET_SAVES_ENABLED.getValue();
+        return ConfigOption.PET_SAVES_ENABLED.get();
     }
 
     @Override

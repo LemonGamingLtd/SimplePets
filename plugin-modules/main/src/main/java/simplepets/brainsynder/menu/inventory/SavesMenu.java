@@ -111,11 +111,11 @@ public class SavesMenu extends CustomInventory {
         ISpawnUtil spawnUtil = SimplePets.getSpawnUtil();
 
         List<PetUser.Entry<PetType, StorageTagCompound>> savedPets = Lists.newArrayList();
-        boolean removeNoPerms = ConfigOption.INSTANCE.PERMISSIONS_PLAYER_ACCESS.getValue();
+        boolean removeNoPerms = ConfigOption.PERMISSIONS_PLAYER_ACCESS.get();
         user.getSavedPets().forEach(entry -> {
             PetType type = entry.getKey();
             if (type.isInDevelopment()
-                && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue()))
+                && (!ConfigOption.PET_TOGGLES_DEV_MOBS.get()))
                 return;
 
             SimplePets.getPetConfigManager().getPetConfig(type).ifPresent(config -> {
@@ -186,7 +186,7 @@ public class SavesMenu extends CustomInventory {
         }
         itemMap.put(player.getName(), storageMap);
 
-        if (ConfigOption.INSTANCE.MISC_TOGGLES_CLEAR_ALL_PLACEHOLDERS.getValue())
+        if (ConfigOption.MISC_TOGGLES_CLEAR_ALL_PLACEHOLDERS.get())
             inv.remove(ItemManager.PLACEHOLDER.getItemBuilder().build());
 
         player.openInventory(inv);

@@ -106,7 +106,7 @@ public class DataMenu extends CustomInventory {
         }
 
 
-        if (ConfigOption.INSTANCE.MISC_TOGGLES_CLEAR_ALL_PLACEHOLDERS.getValue())
+        if (ConfigOption.MISC_TOGGLES_CLEAR_ALL_PLACEHOLDERS.get())
             inv.remove(ItemManager.PLACEHOLDER.getItemBuilder().build());
 
         player.openInventory(inv);
@@ -148,7 +148,7 @@ public class DataMenu extends CustomInventory {
 
         user.getPetEntity(type).ifPresent(entityPet -> addPetData(inv, entityPet));
 
-        if (ConfigOption.INSTANCE.MISC_TOGGLES_CLEAR_ALL_PLACEHOLDERS.getValue())
+        if (ConfigOption.MISC_TOGGLES_CLEAR_ALL_PLACEHOLDERS.get())
             inv.remove(ItemManager.PLACEHOLDER.getItemBuilder().build());
     }
 
@@ -163,7 +163,7 @@ public class DataMenu extends CustomInventory {
         IEntityPet finalPet = pet;
         type.getPetData().forEach(petData -> {
             if (!petData.isEnabled(finalPet)) return;
-            if (ConfigOption.INSTANCE.PERMISSIONS_DATA_PERMS.getValue()
+            if (ConfigOption.PERMISSIONS_DATA_PERMS.get()
                 && (!entityPet.getPetUser().getPlayer().hasPermission(type.getPermission("data." + petData.namespace()))))
                 return;
             if (!petData.isModifiable(finalPet)) return;

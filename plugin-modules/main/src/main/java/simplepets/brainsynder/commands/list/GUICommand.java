@@ -6,10 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.menu.inventory.SelectionMenu;
 
 @ICommand(
@@ -29,7 +28,7 @@ public class GUICommand extends PetSubCommand {
             String selector = args[0];
             Player target = Bukkit.getPlayerExact(selector);
             if (target == null) {
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.PLAYER_NOT_ONLINE));
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PLAYER_NOT_ONLINE));
                 return;
             }
 

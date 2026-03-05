@@ -8,10 +8,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.sql.SQLData;
 
 import java.util.List;
@@ -53,12 +52,12 @@ public class DatabaseCommand extends PetSubCommand {
 
                 if (rawCount == 0) {
                     // No duplicates...
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " No NPC account entries found that needed to be deleted");
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " No NPC account entries found that needed to be deleted");
                     return;
                 }
 
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Number of NPC accounts found: " + rawCount);
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Number of accounts actually deleted: " + totalCount);
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Number of NPC accounts found: " + rawCount);
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Number of accounts actually deleted: " + totalCount);
             });
             return;
         }
@@ -71,22 +70,22 @@ public class DatabaseCommand extends PetSubCommand {
 
                 if (rawCount == 0) {
                     // No duplicates...
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " No duplicate entries found that needed to be deleted");
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " No duplicate entries found that needed to be deleted");
                     return;
                 }
 
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Number of duplicate accounts found: " + rawCount);
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Number of duplicate entries actually deleted: " + totalCount);
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Number of duplicate accounts found: " + rawCount);
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Number of duplicate entries actually deleted: " + totalCount);
             });
             return;
         }
 
         // Fetches a list of all duplicate players in the database
         if (args[0].equalsIgnoreCase("findduplicates")) {
-            sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Finding any duplicates in the database...");
+            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Finding any duplicates in the database...");
             PetCore.getInstance().getSqlHandler().findDuplicates().whenComplete((triples, throwable) -> {
                 if (triples.isEmpty()) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " No duplicate players were found in the database.");
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " No duplicate players were found in the database.");
                     return;
                 }
 
@@ -97,8 +96,8 @@ public class DatabaseCommand extends PetSubCommand {
                 });
 
                 WebConnector.uploadPaste(SimplePets.getPlugin(), builder.toString(), s -> {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Here is a list of duplicated players: ");
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " " + s);
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Here is a list of duplicated players: ");
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " " + s);
                 });
             });
             return;
@@ -109,7 +108,7 @@ public class DatabaseCommand extends PetSubCommand {
 
     private void sendDatabaseInfo(CommandSender sender) {
         PetCore.getInstance().getSqlHandler().getRowCount().whenComplete((playerDataCount, throwable) -> {
-            sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + Colorize.translateBungeeHex(" &#d1c9c9Player Data SQL &#b35349======&#de9790-------"));
+            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + Colorize.translateBungeeHex(" &#d1c9c9Player Data SQL &#b35349======&#de9790-------"));
             sender.sendMessage(Colorize.translateBungeeHex(" &#e1eb5b- &#d1c9c9Type: &#e3c79a" + (SQLData.USE_SQLITE ? "SQLite" : "MySQL")));
             Tellraw raw = Tellraw.fromLegacy("&#e1eb5b - &#d1c9c9Status: ");
             if (SQLData.USE_SQLITE) {

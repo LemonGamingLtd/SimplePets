@@ -23,9 +23,9 @@ public class PetEventListener implements Listener {
 
         Player player = event.getUser().getPlayer();
 
-        if (ConfigOption.INSTANCE.RENAME_TRIM.getValue()) name = name.trim();
+        if (ConfigOption.RENAME_TRIM.get()) name = name.trim();
         if (player.hasPermission("pet.name.bypass")) return;
-        String rawPattern = ConfigOption.INSTANCE.RENAME_BLOCKED_PATTERN.getValue();
+        String rawPattern = ConfigOption.RENAME_BLOCKED_PATTERN.get();
         if ((rawPattern != null) && (!rawPattern.isEmpty())) {
             if (event.getName().matches(rawPattern)) name = null;
         }
@@ -36,7 +36,7 @@ public class PetEventListener implements Listener {
             return;
         }
 
-        List<String> blockedWords = ConfigOption.INSTANCE.RENAME_BLOCKED_WORDS.getValue();
+        List<String> blockedWords = ConfigOption.RENAME_BLOCKED_WORDS.get();
         if (!blockedWords.isEmpty()) {
             for (String word : blockedWords) {
                 boolean ignoreCase = word.startsWith("^");
@@ -67,8 +67,8 @@ public class PetEventListener implements Listener {
 
         name = Colorize.translateBungeeHex(name);
 
-        if (ConfigOption.INSTANCE.RENAME_COLOR_ENABLED.getValue()) {
-            if ((!player.hasPermission("pet.name.color.hex") || !ConfigOption.INSTANCE.RENAME_COLOR_HEX.getValue())) {
+        if (ConfigOption.RENAME_COLOR_ENABLED.get()) {
+            if ((!player.hasPermission("pet.name.color.hex") || !ConfigOption.RENAME_COLOR_HEX.get())) {
                 name = removeHexColor(name).replace('&', '§');
             }
 
@@ -77,8 +77,8 @@ public class PetEventListener implements Listener {
             }
         }
 
-        if (ConfigOption.INSTANCE.RENAME_LIMIT_CHARS_ENABLED.getValue()) {
-            int limit = ConfigOption.INSTANCE.RENAME_LIMIT_CHARS_NUMBER.getValue();
+        if (ConfigOption.RENAME_LIMIT_CHARS_ENABLED.get()) {
+            int limit = ConfigOption.RENAME_LIMIT_CHARS_NUMBER.get();
             if (name.length() > limit) {
                 name = name.substring(0, limit);
             }

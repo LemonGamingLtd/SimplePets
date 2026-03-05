@@ -14,13 +14,12 @@ import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
 import simplepets.brainsynder.commands.PetsCommand;
 import simplepets.brainsynder.debug.DebugBuilder;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.utils.Premium;
 
 import java.io.File;
@@ -50,7 +49,7 @@ public class DebugCommand extends PetSubCommand {
 
     @Override
     public void run(CommandSender sender, String[] args) {
-        sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §7Fetching Debug Information...");
+        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Fetching Debug Information...");
         boolean skipJenkins = false;
 
         if (args.length >= 1) {
@@ -74,7 +73,7 @@ public class DebugCommand extends PetSubCommand {
                 json.set("pets", petArray);
 
                 log(new File(getPlugin().getDataFolder() + File.separator + "PlayerDebug"), player.getUniqueId()+".json", json.toString(WriterConfig.PRETTY_PRINT));
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §7Generated §e'plugins/SimplePets/PlayerDebug/"+player.getUniqueId()+".json'");
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Generated §e'plugins/SimplePets/PlayerDebug/"+player.getUniqueId()+".json'");
                 return;
             }
             skipJenkins = Boolean.parseBoolean(args[0]);
@@ -82,10 +81,10 @@ public class DebugCommand extends PetSubCommand {
 
         fetchDebug(json -> {
             log(getPlugin().getDataFolder(), "debug.json", json.toString(WriterConfig.PRETTY_PRINT));
-            sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §7Generated §e'plugins/SimplePets/debug.json'");
+            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Generated §e'plugins/SimplePets/debug.json'");
 
             WebConnector.uploadPaste(PetCore.getInstance(), json.toString(WriterConfig.PRETTY_PRINT), s -> {
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §7Uploaded to PasteLog:§e " + s);
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Uploaded to PasteLog:§e " + s);
             });
         }, skipJenkins);
     }
@@ -228,7 +227,7 @@ public class DebugCommand extends PetSubCommand {
         );
         info.add("simplepets", new JsonObject()
                 .add("version", PetCore.getInstance().getDescription().getVersion())
-                .add("legacy-pathfinding", ConfigOption.INSTANCE.LEGACY_PATHFINDING_ENABLED.getValue())
+                .add("legacy-pathfinding", ConfigOption.LEGACY_PATHFINDING_ENABLED.get())
         );
 
         consumer.accept(info);

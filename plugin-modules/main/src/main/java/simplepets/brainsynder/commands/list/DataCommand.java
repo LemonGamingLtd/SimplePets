@@ -8,10 +8,9 @@ import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.managers.InventoryManager;
 
 import java.util.List;
@@ -65,7 +64,7 @@ public class DataCommand extends PetSubCommand {
             if (selected != null) {
                 target = selected;
                 if (!sender.hasPermission(getPermission("other"))) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.NO_PERMISSION));
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
                     return;
                 }
                 index.getAndIncrement();
@@ -85,14 +84,14 @@ public class DataCommand extends PetSubCommand {
 
             Optional<PetType> petType = PetType.getPetType(args[index.get()]);
             if (!petType.isPresent()) {
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[index.get()]));
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[index.get()]));
                 return;
             }
 
             PetType type = petType.get();
 
             if (!SimplePets.getSpawnUtil().isRegistered(type)) {
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
                 return;
             }
 

@@ -90,9 +90,9 @@ public class PetConfiguration implements PetConfigManager {
                     for (CommandReason reason : CommandReason.values()) reasons.add(reason.name(), new JsonArray());
                     setDefault("commands", reasons);
 
-                    setDefault("ride_speed", ConfigOption.INSTANCE.PET_TOGGLES_RIDE_SPEED.getValue());
-                    setDefault("walk_speed", ConfigOption.INSTANCE.PET_TOGGLES_WALK_SPEED.getValue());
-                    setDefault("fly_speed", ConfigOption.INSTANCE.PET_TOGGLES_FLY_SPEED.getValue());
+                    setDefault("ride_speed", ConfigOption.PET_TOGGLES_RIDE_SPEED.get());
+                    setDefault("walk_speed", ConfigOption.PET_TOGGLES_WALK_SPEED.get());
+                    setDefault("fly_speed", ConfigOption.PET_TOGGLES_FLY_SPEED.get());
                     setDefault("fly", canFlyDefault(type));
                     setDefault("float_down", false);
 
@@ -157,21 +157,21 @@ public class PetConfiguration implements PetConfigManager {
 
         @Override
         public boolean canHat(Player player) {
-            if (ConfigOption.INSTANCE.PET_TOGGLES_HAT.getValue()) return true;
+            if (ConfigOption.PET_TOGGLES_HAT.get()) return true;
             if (JSON.getBoolean("hat", true)) return Utilities.hasPermission(player, type.getPermission("hat"));
             return false;
         }
 
         @Override
         public boolean canMount(Player player) {
-            if (ConfigOption.INSTANCE.PET_TOGGLES_MOUNTABLE.getValue()) return true;
+            if (ConfigOption.PET_TOGGLES_MOUNTABLE.get()) return true;
             if (JSON.getBoolean("mount", true)) return Utilities.hasPermission(player, type.getPermission("mount"));
             return false;
         }
 
         @Override
         public boolean canFly(Player player) {
-            if (ConfigOption.INSTANCE.PET_TOGGLES_FLYABLE.getValue()) return true;
+            if (ConfigOption.PET_TOGGLES_FLYABLE.get()) return true;
             if (JSON.getBoolean("fly", true)) return Utilities.hasPermission(player, type.getPermission("fly"));
             return false;
         }
@@ -188,17 +188,17 @@ public class PetConfiguration implements PetConfigManager {
 
         @Override
         public double getRideSpeed() {
-            return JSON.getDouble("ride_speed", ConfigOption.INSTANCE.PET_TOGGLES_RIDE_SPEED.getValue());
+            return JSON.getDouble("ride_speed", ConfigOption.PET_TOGGLES_RIDE_SPEED.get());
         }
 
         @Override
         public double getWalkSpeed() {
-            return JSON.getDouble("walk_speed", ConfigOption.INSTANCE.PET_TOGGLES_WALK_SPEED.getValue());
+            return JSON.getDouble("walk_speed", ConfigOption.PET_TOGGLES_WALK_SPEED.get());
         }
 
         @Override
         public double getFlySpeed() {
-            return JSON.getDouble("fly_speed", ConfigOption.INSTANCE.PET_TOGGLES_FLY_SPEED.getValue());
+            return JSON.getDouble("fly_speed", ConfigOption.PET_TOGGLES_FLY_SPEED.get());
         }
 
         @Override

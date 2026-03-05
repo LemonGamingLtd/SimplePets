@@ -33,7 +33,7 @@ public class PetsCommand extends ParentCommand<PetSubCommand> {
         registerSub(new ListCommand(plugin));
         registerSub(new GUICommand(plugin));
         registerSub(new DataCommand(plugin));
-        if (ConfigOption.INSTANCE.RENAME_ENABLED.getValue())
+        if (ConfigOption.RENAME_ENABLED.get())
             registerSub(new RenameCommand(plugin));
         registerSub(new PurchasedCommand(plugin));
         registerSub(new PermissionsCommand(this));
@@ -60,7 +60,7 @@ public class PetsCommand extends ParentCommand<PetSubCommand> {
 
     @Override
     public void run(CommandSender sender, String[] args) {
-        if (ConfigOption.INSTANCE.SIMPLER_GUI.getValue()
+        if (ConfigOption.SIMPLER_GUI.get()
             && (sender instanceof Player)
             && (args.length == 0)) {
             ((Player) sender).performCommand("pet gui");

@@ -51,7 +51,7 @@ public class PetSelectorGUIListener implements Listener {
                 String rawType = meta.getPersistentDataContainer().get(Keys.PET_TYPE_ITEM, PersistentDataType.STRING);
                 PetType.getPetType(rawType).ifPresent(type -> {
                     if (Utilities.hasPermission(player, type.getPermission())
-                            || (user.getOwnedPets().contains(type) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue()))
+                            || (user.getOwnedPets().contains(type) && ConfigOption.UTILIZE_PURCHASED_PETS.get()))
                         menu.getTask(player.getName()).run(user, type);
                 });
             });

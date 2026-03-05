@@ -35,7 +35,7 @@ public class Hat extends Item {
             if (config == null) continue;
             if (config.canHat(user.getPlayer())) return true;
         }
-        return ConfigOption.INSTANCE.PET_TOGGLES_HAT.getValue();
+        return ConfigOption.PET_TOGGLES_HAT.get();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class Hat extends Item {
         if (!masterUser.hasPets()) return;
 
         if (pet != null) {
-            if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_HAT.getValue())
+            if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_HAT.get())
                 masterUser.getPlayer().closeInventory();
             new BukkitRunnable() {
                 @Override
@@ -55,7 +55,7 @@ public class Hat extends Item {
         }
 
         if (masterUser.getPetEntities().size() == 1) {
-            if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_HAT.getValue())
+            if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_HAT.get())
                 masterUser.getPlayer().closeInventory();
             new BukkitRunnable() {
                 @Override
@@ -70,7 +70,7 @@ public class Hat extends Item {
 
         PetSelectorMenu menu = InventoryManager.SELECTOR;
         menu.setTask(masterUser.getPlayer().getName(), (user, type) -> {
-            if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_HAT.getValue())
+            if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_HAT.get())
                 user.getPlayer().closeInventory();
             new BukkitRunnable() {
                 @Override

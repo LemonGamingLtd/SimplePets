@@ -106,11 +106,11 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
         VersionHelper.overrideAttributeMap(this);
 
-        glowVanishToggle = ConfigOption.INSTANCE.PET_TOGGLES_GLOW_VANISH.getValue();
-        autoRemoveToggle = ConfigOption.INSTANCE.AUTO_REMOVE_ENABLED.getValue();
-        autoRemoveTick = ConfigOption.INSTANCE.AUTO_REMOVE_TICK.getValue();
-        hideNameShifting = ConfigOption.INSTANCE.PET_TOGGLES_SHIFT_HIDDEN_NAMES.getValue();
-        displayNameVisibility = ConfigOption.INSTANCE.PET_TOGGLES_SHOW_NAMES.getValue();
+        glowVanishToggle = ConfigOption.PET_TOGGLES_GLOW_VANISH.get();
+        autoRemoveToggle = ConfigOption.AUTO_REMOVE_ENABLED.get();
+        autoRemoveTick = ConfigOption.AUTO_REMOVE_TICK.get();
+        hideNameShifting = ConfigOption.PET_TOGGLES_SHIFT_HIDDEN_NAMES.get();
+        displayNameVisibility = ConfigOption.PET_TOGGLES_SHOW_NAMES.get();
 
         SimplePets.getPetConfigManager().getPetConfig(type).ifPresent(config -> {
             this.walkSpeed = config.getWalkSpeed();
@@ -122,7 +122,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         VersionHelper.setAttributes(this, walkSpeed, flySpeed);
         EntityUtils.fetchTeam(user.getPlayer()).addEntry(getUUID().toString());
 
-        verticalWorldConfines = ConfigOption.INSTANCE.MISC_TOGGLES_WORLD_CONFINES_PET_LIMITS.getValue();
+        verticalWorldConfines = ConfigOption.MISC_TOGGLES_WORLD_CONFINES_PET_LIMITS.get();
         maxHeight = getEntity().getWorld().getMaxHeight();
         minHeight = getEntity().getWorld().getMinHeight();
     }
@@ -154,14 +154,14 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                 )
         );
 
-        int maxRange = ConfigOption.INSTANCE.PATHFINDING_MAX_DISTANCE.getValue();
+        int maxRange = ConfigOption.PATHFINDING_MAX_DISTANCE.get();
         debugInfo.set("follow-player", new JsonObject()
                 .add("distance", distanceToSqr(player))
                 .add("max-follow-distance (config)", maxRange)
                 .add("should-follow", (distanceToSqr(player) < (double) (maxRange * maxRange)) )
         );
 
-        int teleportDistance = ConfigOption.INSTANCE.PATHFINDING_TELEPORT_DISTANCE.getValue();
+        int teleportDistance = ConfigOption.PATHFINDING_TELEPORT_DISTANCE.get();
         debugInfo.set("teleport-pet", new JsonObject()
                 .add("distance", distanceTo(player))
                 .add("teleport-distance (config)", teleportDistance)
@@ -237,7 +237,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
         if (getPetType() != PetType.SHULKER) {
-            if (ConfigOption.INSTANCE.LEGACY_PATHFINDING_ENABLED.getValue()) {
+            if (ConfigOption.LEGACY_PATHFINDING_ENABLED.get()) {
                 goalSelector.addGoal(2, new LegacyPathfinderFollowPlayer(this, 3, 10));
             } else {
                 goalSelector.addGoal(2, new PathfinderFollowPlayer(this));
@@ -285,7 +285,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         petName = Colorize.translateBungeeHex(event.getPrefix())
                 + SimplePets.getPetUtilities().translatePetName(event.getName())
                 + Colorize.translateBungeeHex(event.getSuffix());
-        this.getBukkitEntity().setCustomNameVisible(ConfigOption.INSTANCE.PET_TOGGLES_SHOW_NAMES.getValue());
+        this.getBukkitEntity().setCustomNameVisible(ConfigOption.PET_TOGGLES_SHOW_NAMES.get());
         this.getBukkitEntity().setCustomName(petName);
     }
 
@@ -552,12 +552,12 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                     || SimplePets.getPetUtilities().isVanished(player)
             );
 
-            if (ownerVanish && ConfigOption.INSTANCE.MISC_TOGGLES_REMOVED_VANISH.getValue()) {
+            if (ownerVanish && ConfigOption.MISC_TOGGLES_REMOVED_VANISH.get()) {
                 getPetUser().removePet(getPetType());
                 return;
             }
 
-            if ((!canIgnoreVanish()) && ConfigOption.INSTANCE.MISC_TOGGLES_PET_VANISHING.getValue()) {
+            if ((!canIgnoreVanish()) && ConfigOption.MISC_TOGGLES_PET_VANISHING.get()) {
                 if (isPetVisible()) {
                     if (ownerVanish != this.isInvisible()) { // If Owner is invisible & pet is not
                         if (isGlowing && (!ownerVanish))

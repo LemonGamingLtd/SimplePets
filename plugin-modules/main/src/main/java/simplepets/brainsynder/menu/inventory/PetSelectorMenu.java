@@ -149,7 +149,7 @@ public class PetSelectorMenu extends CustomInventory {
 
         }
 
-        if (ConfigOption.INSTANCE.MISC_TOGGLES_CLEAR_ALL_PLACEHOLDERS.getValue())
+        if (ConfigOption.MISC_TOGGLES_CLEAR_ALL_PLACEHOLDERS.get())
             inv.remove(ItemManager.PLACEHOLDER.getItemBuilder().build());
 
         player.openInventory(inv);

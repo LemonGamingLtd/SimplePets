@@ -28,7 +28,7 @@ public class ControllerSlime extends MoveControl {
     public void tick() {
         if (!mob.getNavigation().isInProgress()) return;
         // Store owner
-        int stoppingDistance = ConfigOption.INSTANCE.PATHFINDING_MAX_DISTANCE.getValue();
+        int stoppingDistance = ConfigOption.PATHFINDING_MAX_DISTANCE.get();
         // Rotate the slime's position, so it can look to the player
         this.mob.lookAt(player, 10, 10);
 

@@ -11,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.event.inventory.PetInventoryAddPetItemEvent;
 import simplepets.brainsynder.api.event.inventory.PetTypeStorage;
 import simplepets.brainsynder.api.inventory.CustomInventory;
@@ -20,10 +21,9 @@ import simplepets.brainsynder.api.pet.IPetConfig;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.debug.DebugLevel;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.managers.ItemManager;
 import simplepets.brainsynder.menu.inventory.holders.SelectionHolder;
 import simplepets.brainsynder.menu.items.list.Air;
@@ -86,7 +86,7 @@ public class SelectionMenu extends CustomInventory {
         for (PetType type : PetType.values()) {
             if (!type.isSupported()) continue;
             if (type.isInDevelopment()
-                && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue()))
+                && (!ConfigOption.PET_TOGGLES_DEV_MOBS.get()))
                 continue;
             Optional<IPetConfig> optional = SimplePets.getPetConfigManager().getPetConfig(type);
             if (!optional.isPresent()) continue;
@@ -144,14 +144,14 @@ public class SelectionMenu extends CustomInventory {
             placeHolder--;
         }
 
-        boolean removeNoPerms = ConfigOption.INSTANCE.PERMISSIONS_PLAYER_ACCESS.getValue();
+        boolean removeNoPerms = ConfigOption.PERMISSIONS_PLAYER_ACCESS.get();
         IStorage<PetTypeStorage> petTypes = new StorageList<>();
         for (PetType type : availableTypes) {
             PetTypeStorage storage = new PetTypeStorage(type);
             PetInventoryAddPetItemEvent event = new PetInventoryAddPetItemEvent(this, user, storage.getType(), storage.getItem());
 
             if (Utilities.hasPermission(player, type.getPermission())
-                || (user.getOwnedPets().contains(type) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
+                || (user.getOwnedPets().contains(type) && ConfigOption.UTILIZE_PURCHASED_PETS.get())) {
                 Bukkit.getPluginManager().callEvent(event);
             } else {
                 if (!removeNoPerms) {
@@ -164,8 +164,8 @@ public class SelectionMenu extends CustomInventory {
                 petTypes.add(storage.setItem(event.getItem()));
             }
         }
-        if ((petTypes.getSize() == 0) && (ConfigOption.INSTANCE.PERMISSIONS_OPEN_GUI.getValue())) {
-            player.sendMessage(MessageFile.getTranslation(MessageOption.NO_PETS_UNLOCKED));
+        if ((petTypes.getSize() == 0) && (ConfigOption.PERMISSIONS_OPEN_GUI.get())) {
+            player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PETS_UNLOCKED));
             return;
         }
 
@@ -187,7 +187,7 @@ public class SelectionMenu extends CustomInventory {
             }
         }
 
-        if (ConfigOption.INSTANCE.MISC_TOGGLES_CLEAR_ALL_PLACEHOLDERS.getValue())
+        if (ConfigOption.MISC_TOGGLES_CLEAR_ALL_PLACEHOLDERS.get())
             inv.remove(ItemManager.PLACEHOLDER.getItemBuilder().build());
 
         player.openInventory(inv);
@@ -222,14 +222,14 @@ public class SelectionMenu extends CustomInventory {
             placeHolder--;
         }
 
-        boolean removeNoPerms = ConfigOption.INSTANCE.PERMISSIONS_PLAYER_ACCESS.getValue();
+        boolean removeNoPerms = ConfigOption.PERMISSIONS_PLAYER_ACCESS.get();
         IStorage<PetTypeStorage> petTypes = new StorageList<>();
         for (PetType type : availableTypes) {
             PetTypeStorage storage = new PetTypeStorage(type);
             PetInventoryAddPetItemEvent event = new PetInventoryAddPetItemEvent(this, user, storage.getType(), storage.getItem());
 
             if (Utilities.hasPermission(player, type.getPermission())
-                || (user.getOwnedPets().contains(type) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
+                || (user.getOwnedPets().contains(type) && ConfigOption.UTILIZE_PURCHASED_PETS.get())) {
                 Bukkit.getPluginManager().callEvent(event);
             } else {
                 if (!removeNoPerms) {
@@ -242,8 +242,8 @@ public class SelectionMenu extends CustomInventory {
                 petTypes.add(storage.setItem(event.getItem()));
             }
         }
-        if ((petTypes.getSize() == 0) && (ConfigOption.INSTANCE.PERMISSIONS_OPEN_GUI.getValue())) {
-            player.sendMessage(MessageFile.getTranslation(MessageOption.NO_PETS_UNLOCKED));
+        if ((petTypes.getSize() == 0) && (ConfigOption.PERMISSIONS_OPEN_GUI.get())) {
+            player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PETS_UNLOCKED));
             return;
         }
 

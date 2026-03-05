@@ -11,10 +11,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.addon.AddonCloudData;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.managers.AddonManager;
 import simplepets.brainsynder.menu.inventory.AddonMenu;
 
@@ -75,18 +74,18 @@ public class AddonCommand extends PetSubCommand {
                     WebConnector.getInputStreamString("https://bsdevelopment.org/addons/addons.json", getPlugin(), result -> {
                         JsonObject json = (JsonObject) Json.parse(result);
                         if (!json.names().contains(name)) {
-                            sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §c" + name + " is not in the addon database: https://pluginwiki.us/addons/");
+                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + name + " is not in the addon database: https://pluginwiki.us/addons/");
                             return;
                         }
 
                         String url = ((JsonObject) json.get(name)).getString("url", null);
                         if (url == null) {
-                            sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §c" + name + " seems to be missing the download URL (Contact brainsynder)");
+                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + name + " seems to be missing the download URL (Contact brainsynder)");
                             return;
                         }
 
                         manager.update(localData, url, () -> {
-                            sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §7" + name + " has been successfully updated!");
+                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7" + name + " has been successfully updated!");
                         });
                     });
                 });
@@ -103,19 +102,19 @@ public class AddonCommand extends PetSubCommand {
                 String target = args[1];
                 Optional<AddonCloudData> cloudOptional = manager.fetchCloudData(target);
                 if (cloudOptional.isEmpty()) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §c" + target + " is not a valid addon in our database.");
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + target + " is not a valid addon in our database.");
                     return;
                 }
                 AddonCloudData cloudData = cloudOptional.get();
 
                 if (manager.fetchAddon(cloudData.getName()).isPresent()) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §c" + target + " is already installed, Looking to update it try: §7/pet addon update " + target);
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + target + " is already installed, Looking to update it try: §7/pet addon update " + target);
                     return;
                 }
 
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §7Attempting to install: '" + target + "'");
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Attempting to install: '" + target + "'");
                 manager.downloadViaName(cloudData.getName(), cloudData.getDownloadURL(), () -> {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + " §7" + target + " has been successfully installed!");
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7" + target + " has been successfully installed!");
                 });
                 return;
             }
@@ -130,7 +129,7 @@ public class AddonCommand extends PetSubCommand {
                         for (File file : folder.listFiles()) {
                             manager.loadAddon(file);
                         }
-                        sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + "All Addons have been reloaded");
+                        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + "All Addons have been reloaded");
                     }
                 }.runTaskLater(PetCore.getInstance(), 1);
                 return;

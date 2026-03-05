@@ -9,10 +9,9 @@ import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.pet.IPetConfig;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.impl.PetConfiguration;
 import simplepets.brainsynder.managers.InventoryManager;
 
@@ -84,7 +83,7 @@ public class PetConfigCommand extends PetSubCommand {
 
         Optional<PetType> petType = PetType.getPetType(args[0]);
         if (petType.isEmpty()) {
-            sender.sendMessage(MessageFile.getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[0]));
+            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[0]));
             return;
         }
         PetType type = petType.get();
@@ -112,7 +111,7 @@ public class PetConfigCommand extends PetSubCommand {
 
             JsonFile jsonFile = config.getJSON();
             if (!jsonFile.hasKey(key)) {
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_UNKNOWN_KEY)
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CONFIG_UNKNOWN_KEY)
                     .replace("{key}", key));
                 return;
             }
@@ -129,7 +128,7 @@ public class PetConfigCommand extends PetSubCommand {
                     jsonFile.set(key, Boolean.parseBoolean(newValue));
                     updated = true;
                 } else {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_INVALID_BOOLEAN)
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CONFIG_INVALID_BOOLEAN)
                         .replace("{key}", key)
                         .replace("{value}", newValue));
                     return;
@@ -142,7 +141,7 @@ public class PetConfigCommand extends PetSubCommand {
                         jsonFile.set(key, value);
                         updated = true;
                     } catch (NumberFormatException e) {
-                        sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_INVALID_DOUBLE)
+                        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CONFIG_INVALID_DOUBLE)
                             .replace("{key}", key)
                             .replace("{value}", newValue));
                         return;
@@ -153,7 +152,7 @@ public class PetConfigCommand extends PetSubCommand {
                         jsonFile.set(key, value);
                         updated = true;
                     } catch (NumberFormatException e) {
-                        sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_INVALID_INT)
+                        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CONFIG_INVALID_INT)
                             .replace("{key}", key)
                             .replace("{value}", newValue));
                         return;
@@ -175,19 +174,19 @@ public class PetConfigCommand extends PetSubCommand {
                     InventoryManager.SELECTION.reloadAvailableTypes();
 
                     if (finalReset) {
-                        sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_VALUE_RESET)
+                        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CONFIG_VALUE_RESET)
                             .replace("{key}", key)
                             .replace("{value}", jsonFile.getDefaultValue(key).toString())
                             .replace("{type}", type.getName()));
                     } else {
-                        sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_VALUE_UPDATED)
+                        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CONFIG_VALUE_UPDATED)
                             .replace("{key}", key)
                             .replace("{value}", newValue)
                             .replace("{type}", type.getName()));
                     }
                 }, 5);
             } else {
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.CONFIG_UNABLE_TO_UPDATE)
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CONFIG_UNABLE_TO_UPDATE)
                     .replace("{key}", key)
                     .replace("{value}", newValue));
             }

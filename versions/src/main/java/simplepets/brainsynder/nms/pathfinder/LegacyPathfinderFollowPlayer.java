@@ -55,10 +55,10 @@ public class LegacyPathfinderFollowPlayer extends Goal {
         this.maxDistance = modifyInt(maxDistance);
         this.minDistance = modifyInt(minDistance);
 
-        largeDistance = ConfigOption.INSTANCE.LEGACY_PATHFINDING_STOP_DISTANCE_LARGE.getValue();
-        smallDistance = ConfigOption.INSTANCE.LEGACY_PATHFINDING_STOP_DISTANCE_SMALL.getValue();
+        largeDistance = ConfigOption.LEGACY_PATHFINDING_STOP_DISTANCE_LARGE.get();
+        smallDistance = ConfigOption.LEGACY_PATHFINDING_STOP_DISTANCE_SMALL.get();
 
-        updateInterval = ConfigOption.INSTANCE.LEGACY_PATHFINDING_UPDATE_INTERVAL.getValue();
+        updateInterval = ConfigOption.LEGACY_PATHFINDING_UPDATE_INTERVAL.get();
 
         // Translation: setControls(EnumSet<Goal.Control>)
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
@@ -76,7 +76,7 @@ public class LegacyPathfinderFollowPlayer extends Goal {
 
         if (!user.getPlayer().isOnline()) return false;
         if (user.getPlayer().isInsideVehicle()
-                && !ConfigOption.INSTANCE.PATHFINDING_FOLLOW_WHEN_RIDING.getValue()) return false;
+                && !ConfigOption.PATHFINDING_FOLLOW_WHEN_RIDING.get()) return false;
         if (!user.hasPets()) return false;
 
         if (user.getUserLocation().isPresent()) {

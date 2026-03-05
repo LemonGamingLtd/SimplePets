@@ -103,7 +103,7 @@ public class PetOwner implements PetUser {
                     });
                 }
 
-                if (compound.hasKey("spawned_pets") && ConfigOption.INSTANCE.RESPAWN_LAST_PET_LOGIN.getValue()) {
+                if (compound.hasKey("spawned_pets") && ConfigOption.RESPAWN_LAST_PET_LOGIN.get()) {
                     StorageTagList list = (StorageTagList) compound.getTag("spawned_pets");
                     ISpawnUtil spawnUtil = SimplePets.getSpawnUtil();
                     list.getList().forEach(storageBase -> {
@@ -332,9 +332,9 @@ public class PetOwner implements PetUser {
 
     @Override
     public boolean canSaveMorePets() {
-        if (!ConfigOption.INSTANCE.PET_SAVES_ENABLED.getValue()) return false;
+        if (!ConfigOption.PET_SAVES_ENABLED.get()) return false;
 
-        int saveLimit = ConfigOption.INSTANCE.PET_SAVES_LIMIT.getValue();
+        int saveLimit = ConfigOption.PET_SAVES_LIMIT.get();
         if (saveLimit < 0) return true;
 
         if (getPlayer().isOp()) return true;
@@ -602,7 +602,7 @@ public class PetOwner implements PetUser {
 
     @Override
     public boolean canSpawnMorePets() {
-        int maxAmount = ConfigOption.INSTANCE.PET_TOGGLES_SPAWN_LIMIT.getValue();
+        int maxAmount = ConfigOption.PET_TOGGLES_SPAWN_LIMIT.get();
         if (!getPlayer().isOnline()) return false;
         if (getPlayer().isOp()) return true;
         if (getPlayer().hasPermission("pet.amount.bypass")) return true;

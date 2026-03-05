@@ -36,7 +36,7 @@ public class HelpCommand extends PetSubCommand {
                     return;
                 }
                 if (!permission.defaultAllow() && !sender.hasPermission(permission.permission())) return;
-                if (ConfigOption.INSTANCE.MISC_TOGGLES_IGNORE_ALLOWS_DEFAULT.getValue()) {
+                if (ConfigOption.MISC_TOGGLES_IGNORE_ALLOWS_DEFAULT.get()) {
                     if (!sender.hasPermission(permission.permission())) return;
                 }
             }

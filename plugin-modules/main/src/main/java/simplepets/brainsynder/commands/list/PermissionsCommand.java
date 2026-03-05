@@ -7,11 +7,10 @@ import org.bukkit.command.CommandSender;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.addon.AddonPermissions;
 import simplepets.brainsynder.api.pet.PetType;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
 import simplepets.brainsynder.commands.PetsCommand;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -41,7 +40,7 @@ public class PermissionsCommand extends PetSubCommand {
             generatePluginPermissions(Boolean.parseBoolean(args[0]));
         }
 
-        sender.sendMessage(MessageFile.getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + "Generated the permissions.yml file");
+        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + "Generated the permissions.yml file");
     }
 
     private void addPermission(StringBuilder builder, String permission, String comment, String defaultType) {

@@ -7,9 +7,8 @@ import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.event.user.PetRenameEvent;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.utils.SignMenuFactory;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class ProtocolHook {
 
     public static void renameViaSign(PetUser user, PetType type) {
         typeMap.put(user.getPlayer().getName(), type);
-        List<String> layout = MessageFile.getFile().getStringList(MessageOption.RENAME_SIGN_TEXT.getPath());
+        List<String> layout = MessageOption.RENAME_SIGN_TEXT.get();
         int index = 0;
         for (String line : layout) {
             if (line.trim().equalsIgnoreCase("{input}")) break;

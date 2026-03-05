@@ -82,18 +82,18 @@ public class SpawnerUtil implements ISpawnUtil {
 
     @Override
     public SpawnResult<IEntityPet> spawnEntityPet(PetType type, PetUser user, StorageTagCompound compound, Location location) {
-        if (ConfigOption.INSTANCE.WORLDS_ENABLED.getValue()) {
-            if (!ConfigOption.INSTANCE.WORLDS_ALLOWED_WORLDS.getValue().contains(location.getWorld().getName()))
-                return SpawnResult.fail(Colorize.translateBungeeHex(ConfigOption.INSTANCE.WORLDS_FAIL_MESSAGE.getValue()));
+        if (ConfigOption.WORLDS_ENABLED.get()) {
+            if (!ConfigOption.WORLDS_ALLOWED_WORLDS.get().contains(location.getWorld().getName()))
+                return SpawnResult.fail(Colorize.translateBungeeHex(ConfigOption.WORLDS_FAIL_MESSAGE.get()));
         }
 
-        if (ConfigOption.INSTANCE.MISC_TOGGLES_WORLD_CONFINES_PET_LIMITS.getValue()) {
+        if (ConfigOption.MISC_TOGGLES_WORLD_CONFINES_PET_LIMITS.get()) {
             int maxHeight = location.getWorld().getMaxHeight();
             int minHeight = location.getWorld().getMinHeight();
             int y = location.getBlockY();
 
             if ( (y > maxHeight) || (minHeight > y) )
-                return SpawnResult.fail(Colorize.translateBungeeHex(ConfigOption.INSTANCE.MISC_TOGGLES_EXCEEDS_WORLD_CONFINES.getValue()));
+                return SpawnResult.fail(Colorize.translateBungeeHex(ConfigOption.MISC_TOGGLES_EXCEEDS_WORLD_CONFINES.get()));
         }
 
         try {

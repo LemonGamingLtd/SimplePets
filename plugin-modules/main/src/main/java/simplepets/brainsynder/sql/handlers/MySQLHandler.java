@@ -20,14 +20,14 @@ public class MySQLHandler implements SQLHandler {
     public Connection implementConnection() {
         Connection connection = null;
         StringBuilder url = new StringBuilder();
-        url.append("jdbc:mysql://").append(ConfigOption.INSTANCE.MYSQL_HOST.getValue()).append(":")
-            .append(ConfigOption.INSTANCE.MYSQL_PORT.getValue()).append("/").append(SQLData.DATABASE_NAME);
-        url.append("?useSSL=").append(ConfigOption.INSTANCE.MYSQL_SSL.getValue());
+        url.append("jdbc:mysql://").append(ConfigOption.MYSQL_HOST.get()).append(":")
+            .append(ConfigOption.MYSQL_PORT.get()).append("/").append(SQLData.DATABASE_NAME);
+        url.append("?useSSL=").append(ConfigOption.MYSQL_SSL.get());
         url.append("&autoReconnect=true");
 
         try {
             connection = DriverManager.getConnection(url.toString(),
-                ConfigOption.INSTANCE.MYSQL_USERNAME.getValue(), ConfigOption.INSTANCE.MYSQL_PASSWORD.getValue());
+                ConfigOption.MYSQL_USERNAME.get(), ConfigOption.MYSQL_PASSWORD.get());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

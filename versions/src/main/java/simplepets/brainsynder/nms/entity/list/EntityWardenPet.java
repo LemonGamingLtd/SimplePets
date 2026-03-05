@@ -33,7 +33,7 @@ public class EntityWardenPet extends EntityPetOverride implements IEntityWardenP
 
     public EntityWardenPet(PetType type, PetUser user) {
         super(EntityType.WARDEN, type, user);
-        if (ConfigOption.INSTANCE.PET_TOGGLES_WARDEN_ANIMATIONS.getValue()) {
+        if (ConfigOption.PET_TOGGLES_WARDEN_ANIMATIONS.get()) {
             this.setPose(Pose.EMERGING);
             Bukkit.getScheduler().runTaskLater(PetCore.getInstance(), () -> this.setPose(Pose.STANDING), 135);
         }
@@ -119,7 +119,7 @@ public class EntityWardenPet extends EntityPetOverride implements IEntityWardenP
     }
 
     public void remove(RemovalReason entity_removalreason) {
-        if (!ConfigOption.INSTANCE.PET_TOGGLES_WARDEN_ANIMATIONS.getValue()) {
+        if (!ConfigOption.PET_TOGGLES_WARDEN_ANIMATIONS.get()) {
             super.remove(entity_removalreason);
             return;
         }

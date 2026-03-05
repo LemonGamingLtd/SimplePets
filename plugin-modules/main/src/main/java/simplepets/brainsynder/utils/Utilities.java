@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.ISpawnUtil;
 import simplepets.brainsynder.api.SpawnResult;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -25,11 +26,10 @@ import simplepets.brainsynder.api.pet.PetData;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.debug.DebugBuilder;
 import simplepets.brainsynder.debug.DebugLevel;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 import simplepets.brainsynder.managers.ParticleManager;
 
 import java.io.File;
@@ -55,13 +55,13 @@ public class Utilities {
 
     public static boolean handlePetSpawning(PetUser user, PetType type, StorageTagCompound compound, boolean checkDataPermissions) {
         Player player = user.getPlayer();
-        if (type.isInDevelopment() && (!ConfigOption.INSTANCE.PET_TOGGLES_DEV_MOBS.getValue())) {
-            player.sendMessage(MessageFile.getTranslation(MessageOption.PET_IN_DEVELOPMENT).replace("{type}", type.getName()));
+        if (type.isInDevelopment() && (!ConfigOption.PET_TOGGLES_DEV_MOBS.get())) {
+            player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_IN_DEVELOPMENT).replace("{type}", type.getName()));
             return false;
         }
 
         if (!type.isSupported()) {
-            player.sendMessage(MessageFile.getTranslation(MessageOption.PET_NOT_SUPPORTED).replace("{type}", type.getName()));
+            player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_SUPPORTED).replace("{type}", type.getName()));
             return false;
         }
 
@@ -69,12 +69,12 @@ public class Utilities {
         if (spawner == null) return false;
 
         if (!spawner.isRegistered(type)) {
-            player.sendMessage(MessageFile.getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
+            player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
             return false;
         }
 
         if (!Utilities.hasPermission(player, type.getPermission())
-                && ((!user.getOwnedPets().contains(type)) && ConfigOption.INSTANCE.UTILIZE_PURCHASED_PETS.getValue())) {
+                && ((!user.getOwnedPets().contains(type)) && ConfigOption.UTILIZE_PURCHASED_PETS.get())) {
             return false;
         }
 
@@ -84,13 +84,13 @@ public class Utilities {
 
         return switch (result.state()) {
             case SUCCESS -> {
-                player.sendMessage(MessageFile.getTranslation(MessageOption.SUMMONED_PET).replace("{type}", type.getName()));
+                player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.SUMMONED_PET).replace("{type}", type.getName()));
                 yield true;
             }
 
             case FAILURE -> {
                 SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.FAILED, player, player.getLocation());
-                Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
+                Tellraw.fromLegacy(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
                         .tooltip(result.failMessage())
                         .send(player);
 
@@ -99,7 +99,7 @@ public class Utilities {
 
             case EMPTY -> {
                 SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.FAILED, player, player.getLocation());
-                player.sendMessage(MessageFile.getTranslation(MessageOption.FAILED_SUMMON).replace("{type}", type.getName()));
+                player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON).replace("{type}", type.getName()));
                 yield false;
             }
         };
@@ -171,13 +171,13 @@ public class Utilities {
         //if (sender.isOp()) return true;
 
         int value = getPermission(sender, permission, strict);
-        if (ConfigOption.INSTANCE.PERMISSIONS_IGNORE_LIST.getValue().contains(permission))
+        if (ConfigOption.PERMISSIONS_IGNORE_LIST.get().contains(permission))
             return true;
         return value == 1;
     }
 
     public static int getPermission(CommandSender sender, String permission, boolean strict) {
-        if (ConfigOption.INSTANCE.PERMISSIONS_ENABLED.getValue()) {
+        if (ConfigOption.PERMISSIONS_ENABLED.get()) {
             if (strict) {
                 for (PermissionAttachmentInfo info : sender.getEffectivePermissions()) {
                     if (info.getPermission().equalsIgnoreCase(permission)) {
@@ -194,7 +194,7 @@ public class Utilities {
     }
 
     public static int parseTypeSaveLimit(PetType type) {
-        for (String line : ConfigOption.INSTANCE.PET_SAVES_TYPE_LIMIT.getValue()) {
+        for (String line : ConfigOption.PET_SAVES_TYPE_LIMIT.get()) {
             if (!line.contains("-")) continue;
             String[] args = line.split("-");
             if (args.length != 2) continue;

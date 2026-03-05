@@ -4,55 +4,58 @@ import lib.brainsynder.files.YamlFile;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
+import simplepets.brainsynder.api.plugin.config.internal.ConfigEntry;
 import simplepets.brainsynder.debug.DebugLevel;
 
 import java.util.function.BiConsumer;
 
-public class Config extends YamlFile {
-    public Config(PetCore core) {
+public class ConfigFile extends YamlFile {
+    public ConfigFile(PetCore core) {
         super(core.getDataFolder(), "config.yml");
     }
 
     @Override
     public void loadDefaults() {
-        ConfigOption.INSTANCE.getOptions().forEach((key, entry) -> {
+        ConfigOption.REGISTRY.byPath().forEach((key, entry) -> {
             // Load the default values just in case
-            if (entry.getDescription() == null) {
-                addDefault(key, entry.getDefaultValue());
+            if (entry.description() == null) {
+                addDefault(key, entry.defaultValue());
             } else {
-                addDefault(key, entry.getDefaultValue(), entry.getDescription()
-                    .replace("{default}", String.valueOf(entry.getDefaultValue())) // Replace the {default} placeholder with what the default value is
+                addDefault(key, entry.defaultValue(), entry.description()
+                    .replace("{default}", String.valueOf(entry.defaultValue()))
                 );
             }
 
             // Moves all the old keys to the new key
-            if (!entry.getPastPaths().isEmpty()) {
-                entry.getPastPaths().forEach(oldKey -> {
-                    move(String.valueOf(oldKey), key);
-                });
+            if (!entry.pastPaths().isEmpty()) {
+                entry.pastPaths().forEach(oldKey -> move(String.valueOf(oldKey), key));
             }
         });
-
-//        addSectionHeader("PetItemStorage", "The ability to have pets store items in another inventory is temporarily not implemented yet\nThis feature will be back as either an addon or re-implemented into the plugin");
-//        addDefault("PetItemStorage.Enable", true, "Disabling this will remove players access to a GUI that stores items\nDefault: true");
-//        addDefault("PetItemStorage.Inventory-Size", 27, "What size would you like the inventory to be?\nSizes: 9,18,27,36,45,54\nDefault: 27");
-
 
         updateSections();
     }
 
     public void initValues() {
-        ConfigOption.INSTANCE.getOptions().forEach((key, entry) -> {
+        ConfigOption.REGISTRY.byPath().forEach((key, entry) -> {
             // Fetch the configs value
             Object value = get(key);
 
             // Validate the value, make sure the types match to prevent booleans becoming numbers
-            if (!value.getClass().getSimpleName().equals(entry.getDefaultValue().getClass().getSimpleName())) {
-                SimplePets.getDebugLogger().debug(DebugLevel.CRITICAL, "Value of '" + key + "' can not be a '" + value.getClass().getSimpleName() + "' must be a '" + entry.getDefaultValue().getClass().getSimpleName() + "'" + ((entry.getExamples() != null) ? " Example(s): " + entry.getExamples() : ""));
-                value = entry.getDefaultValue();
+            if (!value.getClass().getSimpleName().equals(entry.defaultValue().getClass().getSimpleName())) {
+                SimplePets.getDebugLogger().debug(DebugLevel.CRITICAL, "Value of '" + key + "' can not be a '" + value.getClass().getSimpleName() + "' must be a '" + entry.defaultValue().getClass().getSimpleName() + "'" + ((entry.example() != null) ? " Example(s): " + entry.example() : ""));
+                value = entry.defaultValue();
             }
             // Store the configured value into the Entry
-            entry.setValue(value, false);
+            ((ConfigEntry<Object>) entry).set(value, false);
+        });
+
+        ConfigOption.REGISTRY.setSaveHandler(entry -> {
+            set(entry.path(), entry.valueToConfigValue());
+            try {
+                save();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -98,14 +101,12 @@ public class Config extends YamlFile {
         remove("WorldGuard.Pet-Riding.Always-Allowed");
         remove("WorldGuard.Pet-Riding.Blocked-Regions");
         remove("OldPetRegistering");
-        remove("MySQL.Options.Auto_Reconnect"); // Not needed as the new system needs the connection to remain
+        remove("MySQL.Options.Auto_Reconnect");
         remove("PetToggles.Weight.Enabled");
         remove("PetToggles.Weight.Weight_Stacked");
         remove("PetToggles.Weight.Max_Weight");
-        remove("Complete-Mobspawning-Deny-Bypass"); // This has not been fully used since 1.8
-
+        remove("Complete-Mobspawning-Deny-Bypass");
     }
-
 
     protected BiConsumer<String, String> logMove() {
         return (oldKey, newKey) -> {

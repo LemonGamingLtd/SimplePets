@@ -12,10 +12,9 @@ import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.commands.Permission;
 import simplepets.brainsynder.commands.PetSubCommand;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,7 +44,7 @@ public class ModifyCommand extends PetSubCommand {
             if (selected != null) {
                 target = selected;
                 if (!sender.hasPermission(getPermission("other"))) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.NO_PERMISSION));
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
                     return;
                 }
                 argStart.getAndIncrement();
@@ -64,14 +63,14 @@ public class ModifyCommand extends PetSubCommand {
 
             Optional<PetType> petType = PetType.getPetType(args[argStart.get()]);
             if (!petType.isPresent()) {
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[1]));
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[1]));
                 return;
             }
 
             PetType type = petType.get();
 
             if (!SimplePets.getSpawnUtil().isRegistered(type)) {
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
                 return;
             }
 
@@ -91,15 +90,15 @@ public class ModifyCommand extends PetSubCommand {
             try {
                 compound = JsonToNBT.getTagFromJson(json);
             } catch (NBTException e) {
-                sender.sendMessage(MessageFile.getTranslation(MessageOption.INVALID_NBT));
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT));
 
-                String message = MessageFile.getTranslation(MessageOption.INVALID_NBT_MESSAGE)
+                String message = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT_MESSAGE)
                     .replace("{message}", e.getMessage().replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
                 if (!message.isEmpty()) sender.sendMessage(message);
                 return;
             }
 
-            String message = MessageFile.getTranslation(MessageOption.MODIFY_COMPOUND).replace("{compound}", compound.toString());
+            String message = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_COMPOUND).replace("{compound}", compound.toString());
             if (!message.isEmpty())
                 sender.sendMessage(message.replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
             user.getPetEntity(type).ifPresent(entityPet -> {
@@ -107,11 +106,11 @@ public class ModifyCommand extends PetSubCommand {
                     entityPet = ((IEntityControllerPet) entityPet).getVisibleEntity();
                 try {
                     entityPet.applyCompound(compound);
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.MODIFY_APPLIED).replace("{type}", type.getName()));
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_APPLIED).replace("{type}", type.getName()));
                 } catch (Exception e) {
-                    sender.sendMessage(MessageFile.getTranslation(MessageOption.INVALID_NBT));
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT));
 
-                    String errorMessage = MessageFile.getTranslation(MessageOption.INVALID_NBT_MESSAGE)
+                    String errorMessage = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT_MESSAGE)
                         .replace("{message}", e.getMessage().replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
                     if (!errorMessage.isEmpty()) sender.sendMessage(errorMessage);
                 }

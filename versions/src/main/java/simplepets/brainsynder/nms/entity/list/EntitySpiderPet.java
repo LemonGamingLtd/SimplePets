@@ -20,7 +20,7 @@ public class EntitySpiderPet extends EntityPetOverride implements IEntitySpiderP
 
     public EntitySpiderPet(PetType type, PetUser user) {
         super(EntityType.SPIDER, type, user);
-        wallClimbing = ConfigOption.INSTANCE.PET_TOGGLES_SPIDER_CLIMB.getValue();
+        wallClimbing = ConfigOption.PET_TOGGLES_SPIDER_CLIMB.get();
     }
 
     @Override

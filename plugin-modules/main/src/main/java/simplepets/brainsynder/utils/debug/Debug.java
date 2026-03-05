@@ -12,7 +12,7 @@ import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.debug.DebugBuilder;
 import simplepets.brainsynder.debug.DebugLevel;
 import simplepets.brainsynder.debug.DebugLogger;
-import simplepets.brainsynder.files.Config;
+import simplepets.brainsynder.files.ConfigFile;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -55,16 +55,16 @@ public class Debug implements DebugLogger {
         if (builder.getLevel().isHidden()) return;
 
         if (!builder.getLevel().canBypassDisable()) {
-            Config configuration = core.getConfiguration();
+            ConfigFile configuration = core.getConfiguration();
             if (core.isEnabled() && (configuration != null)) {
                 runnable = () -> {
                     if ((configuration != null) && (builder.getLevel().getLevelName() != null)) {
-                        if (!ConfigOption.INSTANCE.DEBUG_ENABLED.getValue()) return;
-                        if ((builder.getLevel() == DebugLevel.NORMAL) && (!ConfigOption.INSTANCE.DEBUG_NORMAL_LEVEL.getValue()))
+                        if (!ConfigOption.DEBUG_ENABLED.get()) return;
+                        if ((builder.getLevel() == DebugLevel.NORMAL) && (!ConfigOption.DEBUG_NORMAL_LEVEL.get()))
                             return;
-                        if ((builder.getLevel() == DebugLevel.WARNING) && (!ConfigOption.INSTANCE.DEBUG_WARNING_LEVEL.getValue()))
+                        if ((builder.getLevel() == DebugLevel.WARNING) && (!ConfigOption.DEBUG_WARNING_LEVEL.get()))
                             return;
-                        if ((builder.getLevel() == DebugLevel.ERROR) && (!ConfigOption.INSTANCE.DEBUG_ERROR_LEVEL.getValue()))
+                        if ((builder.getLevel() == DebugLevel.ERROR) && (!ConfigOption.DEBUG_ERROR_LEVEL.get()))
                             return;
                     }
                     if (builder.broadcast())

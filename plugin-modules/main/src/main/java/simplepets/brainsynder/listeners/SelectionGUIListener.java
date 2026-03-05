@@ -16,8 +16,7 @@ import simplepets.brainsynder.api.event.inventory.PetSelectTypeEvent;
 import simplepets.brainsynder.api.event.inventory.PetTypeStorage;
 import simplepets.brainsynder.api.inventory.Item;
 import simplepets.brainsynder.api.plugin.SimplePets;
-import simplepets.brainsynder.files.MessageFile;
-import simplepets.brainsynder.files.options.MessageOption;
+import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.managers.InventoryManager;
 import simplepets.brainsynder.menu.inventory.SelectionMenu;
 import simplepets.brainsynder.menu.inventory.holders.SelectionHolder;
@@ -65,7 +64,7 @@ public class SelectionGUIListener implements Listener {
                     if (!user.canSpawnMorePets()) {
                         e.setCancelled(true);
                         player.closeInventory();
-                        player.sendMessage(MessageFile.getTranslation(MessageOption.CANT_SPAWN_MORE_PETS));
+                        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CANT_SPAWN_MORE_PETS));
                         return;
                     }
 

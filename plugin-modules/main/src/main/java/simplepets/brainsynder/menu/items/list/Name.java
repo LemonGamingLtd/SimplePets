@@ -28,7 +28,7 @@ public class Name extends Item {
 
     @Override
     public boolean addItemToInv(PetUser owner, CustomInventory inventory) {
-        return ConfigOption.INSTANCE.RENAME_ENABLED.getValue();
+        return ConfigOption.RENAME_ENABLED.get();
     }
 
     @Override

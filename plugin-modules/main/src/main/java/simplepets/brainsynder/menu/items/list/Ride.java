@@ -35,7 +35,7 @@ public class Ride extends Item {
             if (config == null) continue;
             if (config.canMount(user.getPlayer())) return true;
         }
-        return ConfigOption.INSTANCE.PET_TOGGLES_MOUNTABLE.getValue();
+        return ConfigOption.PET_TOGGLES_MOUNTABLE.get();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class Ride extends Item {
         if (!masterUser.hasPets()) return;
 
         if (pet != null) {
-            if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_RIDE.getValue())
+            if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_RIDE.get())
                 masterUser.getPlayer().closeInventory();
             new BukkitRunnable() {
                 @Override
@@ -55,7 +55,7 @@ public class Ride extends Item {
         }
 
         if (masterUser.getPetEntities().size() == 1) {
-            if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_RIDE.getValue())
+            if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_RIDE.get())
                 masterUser.getPlayer().closeInventory();
             new BukkitRunnable() {
                 @Override
@@ -69,7 +69,7 @@ public class Ride extends Item {
         }
         PetSelectorMenu menu = InventoryManager.SELECTOR;
         menu.setTask(masterUser.getPlayer().getName(), (user, type) -> {
-            if (ConfigOption.INSTANCE.MISC_TOGGLES_AUTO_CLOSE_RIDE.getValue())
+            if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_RIDE.get())
                 user.getPlayer().closeInventory();
             new BukkitRunnable() {
                 @Override
