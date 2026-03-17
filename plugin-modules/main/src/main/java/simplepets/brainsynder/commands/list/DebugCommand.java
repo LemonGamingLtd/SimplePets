@@ -237,7 +237,7 @@ public class DebugCommand implements PetCommandClass {
                         .add("paper", si.isPaper())
                         .add("mojang-mapped", si.isMojangMapped())
                 )
-                .add("bslib-server-version", new JsonObject()
+                .add("server-version", new JsonObject()
                         .add("nms", ServerVersion.getVersion().getSpigotNMS())
                         .add("name", ServerVersion.getVersion().getVersionName())
                 )

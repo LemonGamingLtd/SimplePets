@@ -309,7 +309,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     }
 
     private boolean checkJavaVersion() {
-        if (ServerVersion.getVersion().isStrictlyNewer(ServerVersion.v1_21_11)
+        if (ServerVersion.getVersion().isEqualOrNewer(ServerVersion.v26_1)
                 && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_25))) {
             debug.debug(DebugBuilder.build(getClass())
                     .setLevel(DebugLevel.CRITICAL)
@@ -322,8 +322,8 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             );
             return false;
         }
-        if (ServerVersion.getVersion().isEqualOrNewer(ServerVersion.v1_20_5)
-                && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21))) {
+        if (ServerVersion.getVersion().isEqualOrOlder(ServerVersion.v1_21_11)
+                && !JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
             debug.debug(DebugBuilder.build(getClass())
                     .setLevel(DebugLevel.CRITICAL)
                     .setBroadcast(true)
@@ -622,7 +622,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         String current = ServerVersion.getVersion().getVersionName();
         boolean supported = false;
         String packageName = "simplepets.brainsynder.versions.<VER>.SpawnerUtil";
-        for (ServerVersion version : ServerVersion.values()) {
+        for (ServerVersion version : ServerVersion.getVersions()) {
             if (version.getVersionName().equals(current) && (!supported)) supported = true;
             try {
                 Class<?> clazz = Class.forName(packageName.replace("<VER>", version.getVersionName()), false, getClassLoader());

@@ -44,7 +44,7 @@ public class SpawnerUtil implements ISpawnUtil {
 
             String name = type.getEntityClass().getSimpleName().replaceFirst("I", "");
             try {
-                Class<?> clazz = Class.forName("simplepets.brainsynder.versions."+ ServerVersion.getVersion().getSpigotNMS() +".entity.list."+name, false, classLoader);
+                Class<?> clazz = Class.forName("simplepets.brainsynder.versions."+ ServerVersion.getVersion().getVersionName() +".entity.list."+name, false, classLoader);
                 if (!VersionCompatibility.isCompatible(clazz)) {
                     SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(DebugLevel.WARNING).setMessages(
                             "The '"+type.getName()+"' pet is not supported for your server version [will NOT affect your server]"
