@@ -1,148 +1,123 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.commands.annotations.ICommand;
 import lib.brainsynder.json.Json;
 import lib.brainsynder.json.JsonObject;
-import lib.brainsynder.web.WebConnector;
+import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.addon.AddonCloudData;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.MessageOption;
-import simplepets.brainsynder.commands.Permission;
-import simplepets.brainsynder.commands.PetSubCommand;
+import simplepets.brainsynder.commands.PetCommandClass;
 import simplepets.brainsynder.managers.AddonManager;
 import simplepets.brainsynder.menu.inventory.AddonMenu;
+import simplepets.brainsynder.utils.Utilities;
 
 import java.io.File;
-import java.util.List;
 import java.util.Optional;
 
-@ICommand(
-    name = "addon",
-    usage = "[install|reload|update] [addon]",
-    description = "Opens a GUI to download/toggle addons for the plugin"
-)
-@Permission(permission = "addon", adminCommand = true, additionalPermissions = {"install", "reload", "update"})
-public class AddonCommand extends PetSubCommand {
-
-    public AddonCommand(PetCore plugin) {
-        super(plugin);
-    }
+public class AddonCommand implements PetCommandClass {
 
     @Override
-    public List<String> handleCompletions(List<String> completions, CommandSender sender, int index, String[] args) {
-        if (!canExecute(sender)) return super.handleCompletions(completions, sender, index, args);
-        if ((index == 1)) {
-            if (sender.hasPermission(getPermission("reload"))) completions.add("reload");
-            if (sender.hasPermission(getPermission("update"))) completions.add("update");
-            if (sender.hasPermission(getPermission("install"))) completions.add("install");
-        }
-
-        if (index == 2) {
-            if (args[0].equalsIgnoreCase("update")) {
-                PetCore.getInstance().getAddonManager().getLocalDataMap().keySet().forEach(localData -> {
-                    completions.add(localData.getName());
+    public CommandBuilder build() {
+        return CommandBuilder.create("addon")
+                .withPermission("pet.commands.addon")
+                .withDescription("Opens a GUI to download/toggle addons for the plugin")
+                .withRequirement(sender -> sender instanceof Player)
+                .withSubcommand(buildReloadCommand())
+                .withSubcommand(buildInstallCommand())
+                .withSubcommand(buildUpdateCommand())
+                .executesPlayer((player, args) -> {
+                    SimplePets.getUserManager().getPetUser(player).ifPresent(user -> {
+                        SimplePets.getGUIHandler().getInventory(AddonMenu.class).ifPresent(selectionMenu -> selectionMenu.open(user));
+                    });
                 });
-            }
-            if (args[0].equalsIgnoreCase("install")) {
-                PetCore.getInstance().getAddonManager().getCloudAddons().forEach(cloudData -> {
-                    completions.add(cloudData.getName());
-                });
-            }
-        }
-        return super.handleCompletions(completions, sender, index, args);
     }
 
-    @Override
-    public void run(CommandSender sender, String[] args) {
-        if (args.length > 0) {
-            if (args[0].equalsIgnoreCase("update") && sender.hasPermission(getPermission("update"))) {
-                AddonManager manager = PetCore.getInstance().getAddonManager();
 
-                if (args.length == 1) {
-                    sendUsage(sender);
-                    return;
-                }
-                String target = args[1];
-                manager.fetchAddon(target).ifPresent(localData -> {
-                    String name = localData.getName();
+    // Command: /pet addon install <addon>
+    public CommandBuilder buildInstallCommand() {
+        return CommandBuilder.create("install")
+                .withPermission("pet.commands.addon.install")
+                .withDescription("Installs an addon based on the name provided (Must be in our database and not already installed)")
+                .withArguments(CLOUD_ADDONS)
+                .executes((sender, args) -> {
+                    String targetAddon = args.get("addon");
+                    AddonManager manager = PetCore.getInstance().getAddonManager();
 
-                    WebConnector.getInputStreamString("https://bsdevelopment.org/addons/addons.json", getPlugin(), result -> {
-                        JsonObject json = (JsonObject) Json.parse(result);
-                        if (!json.names().contains(name)) {
-                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + name + " is not in the addon database: https://pluginwiki.us/addons/");
-                            return;
-                        }
+                    Optional<AddonCloudData> cloudOptional = manager.fetchCloudData(targetAddon);
+                    if (cloudOptional.isEmpty()) {
+                        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + targetAddon + " is not a valid addon in our database.");
+                        return;
+                    }
+                    AddonCloudData cloudData = cloudOptional.get();
 
-                        String url = ((JsonObject) json.get(name)).getString("url", null);
-                        if (url == null) {
-                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + name + " seems to be missing the download URL (Contact brainsynder)");
-                            return;
-                        }
+                    if (manager.fetchAddon(cloudData.getName()).isPresent()) {
+                        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + targetAddon + " is already installed, Looking to update it try: §7/pet addon update " + targetAddon);
+                        return;
+                    }
 
-                        manager.update(localData, url, () -> {
-                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7" + name + " has been successfully updated!");
+                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Attempting to install: '" + targetAddon + "'");
+                    manager.downloadViaName(cloudData.getName(), cloudData.getDownloadURL(), () -> {
+                        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7" + targetAddon + " has been successfully installed!");
+                    });
+                });
+    }
+
+
+    // Command: /pet addon update <addon>
+    public CommandBuilder buildUpdateCommand() {
+        return CommandBuilder.create("update")
+                .withPermission("pet.commands.addon.update")
+                .withDescription("Updates an addon based on the name provided (Must already be installed)")
+                .withArguments(LOCAL_ADDONS)
+                .executes((sender, args) -> {
+                    String targetAddon = args.get("addon");
+                    AddonManager manager = PetCore.getInstance().getAddonManager();
+                    manager.fetchAddon(targetAddon).ifPresent(localData -> {
+                        String name = localData.getName();
+
+                        Utilities.getInputStreamString("https://bsdevelopment.org/addons/addons.json", result -> {
+                            JsonObject json = (JsonObject) Json.parse(result);
+                            if (!json.names().contains(name)) {
+                                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + name + " is not in the addon database: https://pluginwiki.us/addons/");
+                                return;
+                            }
+
+                            String url = ((JsonObject) json.get(name)).getString("url", null);
+                            if (url == null) {
+                                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + name + " seems to be missing the download URL (Contact brainsynder)");
+                                return;
+                            }
+
+                            manager.update(localData, url, () -> {
+                                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7" + name + " has been successfully updated!");
+                            });
                         });
                     });
                 });
+    }
 
-                return;
-            }
-            if (args[0].equalsIgnoreCase("install") && sender.hasPermission(getPermission("install"))) {
-                AddonManager manager = PetCore.getInstance().getAddonManager();
 
-                if (args.length == 1) {
-                    sendUsage(sender);
-                    return;
-                }
-                String target = args[1];
-                Optional<AddonCloudData> cloudOptional = manager.fetchCloudData(target);
-                if (cloudOptional.isEmpty()) {
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + target + " is not a valid addon in our database.");
-                    return;
-                }
-                AddonCloudData cloudData = cloudOptional.get();
-
-                if (manager.fetchAddon(cloudData.getName()).isPresent()) {
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §c" + target + " is already installed, Looking to update it try: §7/pet addon update " + target);
-                    return;
-                }
-
-                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Attempting to install: '" + target + "'");
-                manager.downloadViaName(cloudData.getName(), cloudData.getDownloadURL(), () -> {
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7" + target + " has been successfully installed!");
-                });
-                return;
-            }
-            if (args[0].equalsIgnoreCase("reload") && sender.hasPermission(getPermission("reload"))) {
-                AddonManager manager = PetCore.getInstance().getAddonManager();
-                manager.cleanup();
-                File folder = manager.getFolder();
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
+    // Command: /pet addon reload
+    public CommandBuilder buildReloadCommand() {
+        return CommandBuilder.create("reload")
+                .withPermission("pet.commands.addon.reload")
+                .withDescription("Reloads all addons by unloading them, then reloading them from the addons folder")
+                .executes((sender, args) -> {
+                    AddonManager manager = PetCore.getInstance().getAddonManager();
+                    manager.cleanup();
+                    File folder = manager.getFolder();
+                    PluginUtilities.getScheduler().runTaskLater(() -> {
                         if (!folder.exists()) return;
                         for (File file : folder.listFiles()) {
                             manager.loadAddon(file);
                         }
+
                         sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + "All Addons have been reloaded");
-                    }
-                }.runTaskLater(PetCore.getInstance(), 1);
-                return;
-            }
-        }
-
-        if (!(sender instanceof Player)) {
-            sendUsage(sender);
-            return;
-        }
-
-        SimplePets.getUserManager().getPetUser((Player) sender).ifPresent(user -> {
-            SimplePets.getGUIHandler().getInventory(AddonMenu.class).ifPresent(selectionMenu -> selectionMenu.open(user));
-        });
+                    }, 1);
+                });
     }
 }

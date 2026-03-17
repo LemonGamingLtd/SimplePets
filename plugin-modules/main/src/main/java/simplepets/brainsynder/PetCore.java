@@ -3,12 +3,13 @@ package simplepets.brainsynder;
 import com.jeff_media.updatechecker.UpdateChecker;
 import io.papermc.lib.PaperLib;
 import lib.brainsynder.ServerVersion;
-import lib.brainsynder.commands.CommandRegistry;
 import lib.brainsynder.json.WriterConfig;
 import lib.brainsynder.reflection.Reflection;
 import lib.brainsynder.utils.AdvString;
 import lib.brainsynder.utils.Utilities;
 import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.command.CommandBuilder;
+import org.bsdevelopment.pluginutils.command.help.HelpCommand;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.DrilldownPie;
@@ -30,8 +31,7 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.plugin.utils.IPetUtilities;
 import simplepets.brainsynder.api.user.UserManagement;
-import simplepets.brainsynder.commands.PetsCommand;
-import simplepets.brainsynder.commands.list.DebugCommand;
+import simplepets.brainsynder.commands.list.*;
 import simplepets.brainsynder.debug.DebugBuilder;
 import simplepets.brainsynder.debug.DebugLevel;
 import simplepets.brainsynder.debug.DebugLogger;
@@ -164,11 +164,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
                     ));
         }
 
-//        debug.debug(DebugLevel.HIDDEN, "Initializing Inventory SQL");
-//        new InventorySQL();
-//        taskTimer.label("init InventorySQL");
         reloadSpawner();
-
         handleManagers();
 
         debug.debug(DebugLevel.HIDDEN, "Initializing SQL Handler");
@@ -178,10 +174,41 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             sqlHandler = new MySQLHandler();
         }
         sqlHandler.initiateDatabase();
+        addonManager = new AddonManager(PetCore.this);
+        addonManager.initialize();
 
         try {
             debug.debug(DebugLevel.HIDDEN, "Registering commands");
-            new CommandRegistry<>(this).register(new PetsCommand(this));
+            CommandBuilder coreCommand = CommandBuilder.create("pet")
+                    .withAliases("pets", "simplepets", "simplepet")
+                    .withDescription("This is the main command for the plugin")
+                    .withSubcommand(new AddonCommand().build())
+                    .withSubcommand(new DatabaseCommand().build())
+                    .withSubcommand(new DataCommand().build())
+                    .withSubcommand(new DebugCommand().build())
+                    .withSubcommand(new GUICommand().build())
+                    .withSubcommand(new ListCommand().build())
+                    .withSubcommand(new ModifyCommand().build())
+                    .withSubcommand(new PermissionsCommand().build())
+                    .withSubcommand(new PetConfigCommand().build())
+                    .withSubcommand(new PurchasedCommand().build())
+                    .withSubcommand(new RegenerateCommand().build())
+                    .withSubcommand(new ReloadCommand().build())
+                    .withSubcommand(new RemoveCommand().build())
+                    .withSubcommand(new SummonCommand().build())
+                    .executesPlayer((player, args) -> {
+                        if (ConfigOption.SIMPLER_GUI.get()) {
+                            player.performCommand("pet gui");
+                        }
+                    });
+
+            if (ConfigOption.RENAME_ENABLED.get())
+                coreCommand.withSubcommand(new RenameCommand().build());
+            if (Premium.isPremium())
+                coreCommand.withSubcommand(new PremiumCommand().build());
+
+            coreCommand.withSubcommand(HelpCommand.of(coreCommand).withPageSize(10).withFormatter(HelpCommand.tellrawFormatter()).build());
+            coreCommand.register(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -205,8 +232,6 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    addonManager = new AddonManager(PetCore.this);
-                    addonManager.initialize();
                     addonManager.checkAddons();
 
                     handleMetrics();

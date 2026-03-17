@@ -1,24 +1,26 @@
 package simplepets.brainsynder.commands.list;
 
 import lib.brainsynder.ServerVersion;
-import lib.brainsynder.commands.annotations.ICommand;
 import lib.brainsynder.json.Json;
 import lib.brainsynder.json.JsonArray;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.json.WriterConfig;
 import lib.brainsynder.web.WebConnector;
+import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.command.CommandBuilder;
+import org.bsdevelopment.pluginutils.utilities.PasteClient;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
+import simplepets.brainsynder.api.pet.IPetConfig;
+import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.plugin.config.MessageOption;
+import simplepets.brainsynder.api.plugin.config.internal.ConfigEntry;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.commands.Permission;
-import simplepets.brainsynder.commands.PetSubCommand;
-import simplepets.brainsynder.commands.PetsCommand;
+import simplepets.brainsynder.commands.PetCommandClass;
 import simplepets.brainsynder.debug.DebugBuilder;
 import simplepets.brainsynder.utils.Premium;
 
@@ -33,60 +35,71 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Consumer;
 
-@ICommand(
-    name = "debug",
-    usage = "[skip-jenkins|pet]",
-    description = "Generates debug information"
-)
-@Permission(permission = "debug", adminCommand = true)
-public class DebugCommand extends PetSubCommand {
-    private final PetsCommand parent;
+public class DebugCommand implements PetCommandClass {
 
-    public DebugCommand(PetsCommand parent) {
-        super(parent.getPlugin());
-        this.parent = parent;
-    }
+    private static final DateTimeFormatter DEBUG_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy/MM/dd | HH:mm:ss:SSS");
 
     @Override
-    public void run(CommandSender sender, String[] args) {
-        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Fetching Debug Information...");
-        boolean skipJenkins = false;
-
-        if (args.length >= 1) {
-            if (args[0].equalsIgnoreCase("pet")) {
-                if (!(sender instanceof Player player)) {
-                    sender.sendMessage(ChatColor.RED + "You must be a player to run this command for yourself.");
-                    return;
-                }
-                PetUser user = SimplePets.getUserManager().getPetUser(player).get();
-                JsonObject json = new JsonObject();
-                json.set("uuid", player.getUniqueId().toString());
-                json.set("username", player.getName());
-                json.set("number-of-pets-spawned", user.getPetEntities().size());
-
-                JsonArray petArray = new JsonArray();
-                user.getPetEntities().forEach(entityPet -> {
-                    JsonObject object = new JsonObject();
-                    entityPet.fetchPetDebugInformation(object);
-                    petArray.add(object);
+    public CommandBuilder build() {
+        return CommandBuilder.create("debug")
+                .withPermission("pet.commands.debug")
+                .withDescription("Generates debug information")
+                .withSubcommand(buildSkipCommand())
+                .withSubcommand(buildPetCommand())
+                .executes((sender, args) -> {
+                    sender.sendMessage(prefix() + " §7Fetching Debug Information...");
+                    fetchDebug(json -> uploadDebugResult(sender, json), false);
                 });
-                json.set("pets", petArray);
+    }
 
-                log(new File(getPlugin().getDataFolder() + File.separator + "PlayerDebug"), player.getUniqueId()+".json", json.toString(WriterConfig.PRETTY_PRINT));
-                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Generated §e'plugins/SimplePets/PlayerDebug/"+player.getUniqueId()+".json'");
-                return;
+    public CommandBuilder buildSkipCommand() {
+        return CommandBuilder.create("skip")
+                .withPermission("pet.commands.debug")
+                .withDescription("Generates debug information without Jenkins check")
+                .executes((sender, args) -> {
+                    sender.sendMessage(prefix() + " §7Fetching Debug Information...");
+                    fetchDebug(json -> uploadDebugResult(sender, json), true);
+                });
+    }
+
+    public CommandBuilder buildPetCommand() {
+        return CommandBuilder.create("pet")
+                .withPermission("pet.commands.debug")
+                .withDescription("Generates debug information for your spawned pets")
+                .withRequirement(sender -> sender instanceof Player)
+                .executesPlayer((player, args) -> {
+                    PetUser user = SimplePets.getUserManager().getPetUser(player).get();
+                    JsonObject json = new JsonObject();
+                    json.set("uuid", player.getUniqueId().toString());
+                    json.set("username", player.getName());
+                    json.set("number-of-pets-spawned", user.getPetEntities().size());
+
+                    JsonArray petArray = new JsonArray();
+                    user.getPetEntities().forEach(entityPet -> {
+                        JsonObject object = new JsonObject();
+                        entityPet.fetchPetDebugInformation(object);
+                        petArray.add(object);
+                    });
+                    json.set("pets", petArray);
+
+                    log(new File(PetCore.getInstance().getDataFolder() + File.separator + "PlayerDebug"),
+                            player.getUniqueId() + ".json", json.toString(WriterConfig.PRETTY_PRINT));
+                    player.sendMessage(prefix() + " §7Generated §e'plugins/SimplePets/PlayerDebug/" + player.getUniqueId() + ".json'");
+                });
+    }
+
+    private static void uploadDebugResult(CommandSender sender, JsonObject json) {
+        String content = json.toString(WriterConfig.PRETTY_PRINT);
+        log(PetCore.getInstance().getDataFolder(), "debug.json", content);
+        sender.sendMessage(prefix() + " §7Generated §e'plugins/SimplePets/debug.json'");
+        PluginUtilities.getScheduler().runTaskAsynchronously(() -> {
+            try {
+                String url = PasteClient.pasteUrl(PasteClient.upload(content, "json"));
+                PluginUtilities.getScheduler().runTask(() -> sender.sendMessage(prefix() + " §7Uploaded to PasteLog:§e " + url));
+            } catch (Exception e) {
+                PluginUtilities.getScheduler().runTask(() -> sender.sendMessage(prefix() + " §cFailed to upload debug: " + e.getMessage()));
             }
-            skipJenkins = Boolean.parseBoolean(args[0]);
-        }
-
-        fetchDebug(json -> {
-            log(getPlugin().getDataFolder(), "debug.json", json.toString(WriterConfig.PRETTY_PRINT));
-            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Generated §e'plugins/SimplePets/debug.json'");
-
-            WebConnector.uploadPaste(PetCore.getInstance(), json.toString(WriterConfig.PRETTY_PRINT), s -> {
-                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §7Uploaded to PasteLog:§e " + s);
-            });
-        }, skipJenkins);
+        });
     }
 
     public static void fetchDebug(Consumer<JsonObject> consumer, boolean skipJenkins) {
@@ -94,53 +107,144 @@ public class DebugCommand extends PetSubCommand {
         json.add("premium_purchase", Premium.isPremium());
         json.add("reloaded", PetCore.getInstance().wasReloaded());
         PetCore.getInstance().checkWorldGuard(value -> json.add("worldguard_config_check", value));
-        fetchServerInfo(object -> json.add("server", object));
-        fetchJenkinsInfo(skipJenkins, object -> {
-            if (!skipJenkins) json.add("jenkins", object);
+        json.add("server", fetchServerInfo());
+
+        fetchJenkinsInfo(skipJenkins, jenkinsResult -> {
+            if (!skipJenkins) json.add("jenkins", jenkinsResult);
             json.add("plugins", fetchPlugins());
+            json.add("loaded_addons", fetchAddons());
+            json.add("debug_log", fetchDebugMessages());
+            json.add("was_reloaded", PetCore.getInstance().wasReloaded());
+            json.add("config", fetchConfigValues());
+            json.add("pet_types", fetchPetTypeStatus());
 
-            JsonArray addons = new JsonArray();
-            PetCore.getInstance().getAddonManager().getLocalDataMap().forEach((localData, modules) -> {
-                JsonObject addonJson = new JsonObject();
-                JsonArray moduleArray = new JsonArray();
-                modules.forEach(module -> {
-                    moduleArray.add("Module: '" + module.getNamespace().namespace() + "' | Loaded: " + module.isLoaded() + " | Enabled: " + module.isEnabled());
-                });
-
-                addonJson.add("addon-name", localData.getName() + "(v" + localData.getVersion() + ") by: " + localData.getAuthors().toString()
-                    .replace("[", "").replace("]", ""));
-                addonJson.add("addon-file-name", localData.getFile().getName());
-                addonJson.add("addon-modules", moduleArray);
-                addons.add(addonJson);
-            });
-            json.set("loaded_addons", addons);
-
-            fetchDebugMessages(values -> json.add("debug_log", values));
             consumer.accept(json);
         });
     }
 
-    private static void fetchDebugMessages(Consumer<JsonArray> consumer) {
+    private static JsonObject fetchPetTypeStatus() {
+        JsonArray available = new JsonArray();
+        JsonArray disabled = new JsonArray();
+        JsonArray notSupported = new JsonArray();
+        JsonArray notRegistered = new JsonArray();
+        JsonArray inDevelopment = new JsonArray();
+
+        for (PetType type : PetType.values()) {
+            if (type == PetType.UNKNOWN) continue;
+            Optional<IPetConfig> config = SimplePets.getPetConfigManager().getPetConfig(type);
+
+            if (config.isPresent() && !config.get().isEnabled()) {
+                disabled.add(type.getName());
+            } else if (!type.isSupported()) {
+                notSupported.add(type.getName());
+            } else if (!SimplePets.getSpawnUtil().isRegistered(type)) {
+                notRegistered.add(type.getName());
+            } else if (type.isInDevelopment()) {
+                inDevelopment.add(type.getName());
+            } else {
+                available.add(type.getName());
+            }
+        }
+
+        JsonObject result = new JsonObject();
+        result.add("available", available);
+        if (!disabled.isEmpty()) result.add("disabled", disabled);
+        if (!notSupported.isEmpty()) result.add("not_supported", notSupported);
+        if (!notRegistered.isEmpty()) result.add("not_registered", notRegistered);
+        if (!inDevelopment.isEmpty()) result.add("in_development", inDevelopment);
+        return result;
+    }
+
+    private static JsonObject fetchConfigValues() {
+        JsonObject config = new JsonObject();
+        Set<String> sensitiveKeys = Set.of(
+                ConfigOption.MYSQL_PASSWORD.path(),
+                ConfigOption.MYSQL_USERNAME.path(),
+                ConfigOption.MYSQL_HOST.path()
+        );
+
+        for (ConfigEntry<?> entry : ConfigOption.REGISTRY.all()) {
+            String path = entry.path();
+            if (sensitiveKeys.contains(path)) {
+                config.add(path, "[REDACTED]");
+                continue;
+            }
+            Object value = entry.get();
+            if (value instanceof Boolean b) {
+                config.add(path, b);
+            } else if (value instanceof Integer i) {
+                config.add(path, i);
+            } else if (value instanceof Double d) {
+                config.add(path, d);
+            } else if (value instanceof List<?> list) {
+                JsonArray arr = new JsonArray();
+                list.forEach(item -> arr.add(String.valueOf(item)));
+                config.add(path, arr);
+            } else {
+                config.add(path, String.valueOf(value));
+            }
+        }
+        return config;
+    }
+
+    private static JsonArray fetchAddons() {
+        JsonArray addons = new JsonArray();
+        PetCore.getInstance().getAddonManager().getLocalDataMap().forEach((localData, modules) -> {
+            JsonObject addonJson = new JsonObject();
+            JsonArray moduleArray = new JsonArray();
+            modules.forEach(module -> moduleArray.add(
+                    "Module: '" + module.getNamespace().namespace() + "' | Loaded: " + module.isLoaded() + " | Enabled: " + module.isEnabled()
+            ));
+            addonJson.add("addon-name", localData.getName() + "(v" + localData.getVersion() + ") by: " + localData.getAuthors().toString()
+                    .replace("[", "").replace("]", ""));
+            addonJson.add("addon-file-name", localData.getFile().getName());
+            addonJson.add("addon-modules", moduleArray);
+            addons.add(addonJson);
+        });
+        return addons;
+    }
+
+    private static JsonArray fetchDebugMessages() {
         LinkedList<DebugBuilder> debugLog = SimplePets.getDebugLogger().getDebugLog();
         JsonArray array = new JsonArray();
         while (!debugLog.isEmpty()) {
-            JsonObject json = new JsonObject();
             DebugBuilder builder = debugLog.pollFirst();
-
-            Instant instant = Instant.ofEpochMilli(builder.timestamp);
-            ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd | HH:mm:ss:SSS");
-            String output = formatter.format(zdt);
-            json.add("time/date", output);
-            json.add("level", builder.getLevel().getName());
+            ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(builder.timestamp), ZoneOffset.UTC);
 
             JsonArray messages = new JsonArray();
             builder.getMessages().forEach(messages::add);
-            json.add("message", messages);
-            if (builder.getCaller() != null) json.add("caller", builder.getCaller());
-            array.add(json);
+
+            JsonObject entry = new JsonObject();
+            entry.add("time/date", DEBUG_TIME_FORMAT.format(zdt));
+            entry.add("level", builder.getLevel().getName());
+            entry.add("message", messages);
+            if (builder.getCaller() != null) entry.add("caller", builder.getCaller());
+            array.add(entry);
         }
-        consumer.accept(array);
+        return array;
+    }
+
+    private static JsonObject fetchServerInfo() {
+        PetCore.ServerInformation si = PetCore.SERVER_INFORMATION;
+        return new JsonObject()
+                .add("java", si.getJava())
+                .add("server-information", new JsonObject()
+                        .add("server-type", si.getServerType())
+                        .add("minecraft-version", si.getMinecraftVersion())
+                        .add("server-build", si.getBuildVersion())
+                        .add("bukkit-version", si.getBukkitVersion())
+                        .add("raw-version", si.getRawVersion())
+                        .add("paper", si.isPaper())
+                        .add("mojang-mapped", si.isMojangMapped())
+                )
+                .add("bslib-server-version", new JsonObject()
+                        .add("nms", ServerVersion.getVersion().getNMS())
+                        .add("name", ServerVersion.getVersion().name())
+                )
+                .add("simplepets", new JsonObject()
+                        .add("version", PetCore.getInstance().getDescription().getVersion())
+                        .add("legacy-pathfinding", ConfigOption.LEGACY_PATHFINDING_ENABLED.get())
+                );
     }
 
     private static void fetchJenkinsInfo(boolean skipJenkins, Consumer<JsonObject> consumer) {
@@ -152,87 +256,59 @@ public class DebugCommand extends PetSubCommand {
         Properties prop = new Properties();
         try {
             prop.load(PetCore.getInstance().getClass().getResourceAsStream("/plugin.properties"));
-        } catch (IOException ignored) {} // If it fails, it means there is no 'jenkins.properties' file
+        } catch (IOException ignored) {
+        }
         int build = Integer.parseInt(String.valueOf(prop.getOrDefault("build", -1)));
 
-        WebConnector.getInputStreamString("https://bsdevelopment.org/api/jenkins/build-number/SimplePets_v5", PetCore.getInstance(), string -> {
-            JsonObject jenkins = new JsonObject();
-            jenkins.add("repo", "SimplePets_v5");
-            jenkins.add("plugin_build_number", build);
+        WebConnector.getInputStreamString("https://bsdevelopment.org/api/jenkins/build-number/SimplePets_v5", PetCore.getInstance(),
+                string -> consumer.accept(parseJenkinsResponse(build, string)));
+    }
 
-            try {
-                JsonObject buildResult = (JsonObject) Json.parse(string);
+    private static JsonObject parseJenkinsResponse(int build, String string) {
+        JsonObject jenkins = new JsonObject();
+        jenkins.add("repo", "SimplePets_v5");
+        jenkins.add("plugin_build_number", build);
 
-                if (!buildResult.isEmpty()) {
-                    if (buildResult.names().contains("build-number")) {
-                        int latestBuild = buildResult.getInt("build-number", -1);
+        try {
+            JsonObject buildResult = (JsonObject) Json.parse(string);
 
-                        // New build found
-                        if (latestBuild > build) jenkins.add("number_of_builds_behind", (latestBuild - build));
-
-                        // Using a custom build that is ahead of the Jenkins builds
-                        if (build > latestBuild) jenkins.add("number_of_builds_behind", "From The Future :O");
-
-                        jenkins.add("jenkins_build_number", latestBuild);
-                    } else {
-                        jenkins.add("reason", "Missing repo: SimplePets_v5");
-                        jenkins.add("parsed_string", string);
-                    }
-                } else {
-                    jenkins.add("reason", "Empty");
-                    jenkins.add("parsed_string", string);
-                }
-            } catch (Exception e) {
+            if (buildResult.isEmpty()) {
+                jenkins.add("reason", "Empty");
                 jenkins.add("parsed_string", string);
-                jenkins.add("error_parsing_json", e.getMessage());
+                return jenkins;
             }
 
-            consumer.accept(jenkins);
-        });
+            if (!buildResult.names().contains("build-number")) {
+                jenkins.add("reason", "Missing repo: SimplePets_v5");
+                jenkins.add("parsed_string", string);
+                return jenkins;
+            }
+
+            int latestBuild = buildResult.getInt("build-number", -1);
+            if (latestBuild > build) jenkins.add("number_of_builds_behind", latestBuild - build);
+            if (build > latestBuild) jenkins.add("number_of_builds_behind", "From The Future :O");
+            jenkins.add("jenkins_build_number", latestBuild);
+        } catch (Exception e) {
+            jenkins.add("parsed_string", string);
+            jenkins.add("error_parsing_json", e.getMessage());
+        }
+
+        return jenkins;
     }
 
     private static JsonArray fetchPlugins() {
-        // Fetches the plugins the server uses (used for finding conflicts)
         JsonArray array = new JsonArray();
-        List<String> plugins = new ArrayList<>();
-        Arrays.asList(Bukkit.getPluginManager().getPlugins()).forEach(plugin -> {
-            if (plugin.isEnabled()) {
-                String name = plugin.getDescription().getName();
-                String ver = plugin.getDescription().getVersion();
-                plugins.add(name + " (" + ver + ")");
-            }
-        });
-        plugins.sort(Comparator.naturalOrder());
-        plugins.forEach(array::add);
-
+        Arrays.stream(Bukkit.getPluginManager().getPlugins())
+                .filter(plugin -> plugin.isEnabled())
+                .map(plugin -> plugin.getDescription().getName() + " (" + plugin.getDescription().getVersion() + ")")
+                .sorted()
+                .forEach(array::add);
         return array;
     }
 
-    private static void fetchServerInfo(Consumer<JsonObject> consumer) {
-        JsonObject info = new JsonObject();
-
-        PetCore.ServerInformation serverInformation = PetCore.SERVER_INFORMATION;
-        info.add("java", serverInformation.getJava());
-
-        info.add("server-information", new JsonObject()
-            .add("server-type", serverInformation.getServerType())
-            .add("minecraft-version", serverInformation.getMinecraftVersion())
-            .add("server-build", serverInformation.getBuildVersion())
-            .add("bukkit-version", serverInformation.getBukkitVersion())
-            .add("raw-version", serverInformation.getRawVersion())
-        );
-        info.add("bslib-server-version", new JsonObject()
-            .add("nms", ServerVersion.getVersion().getNMS())
-            .add("name", ServerVersion.getVersion().name())
-        );
-        info.add("simplepets", new JsonObject()
-                .add("version", PetCore.getInstance().getDescription().getVersion())
-                .add("legacy-pathfinding", ConfigOption.LEGACY_PATHFINDING_ENABLED.get())
-        );
-
-        consumer.accept(info);
+    private static String prefix() {
+        return PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX);
     }
-
 
     public static void log(File folder, String fileName, String message) {
         try {
@@ -246,14 +322,8 @@ public class DebugCommand extends PetSubCommand {
             pw.println(message);
             pw.flush();
             pw.close();
-        } catch (IOException var7) {
-            var7.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-
-    private static JsonArray toArray(List<String> list) {
-        JsonArray array = new JsonArray();
-        list.forEach(array::add);
-        return array;
     }
 }

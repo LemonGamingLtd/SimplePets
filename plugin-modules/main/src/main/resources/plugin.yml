@@ -6,10 +6,6 @@ loadbefore: [mcMMO, ProtocolSupport]
 authors: [brainsynder, Thatsmusic99]
 contributors: [traksag]
 api-version: 1.21
-commands:
-    pet:
-        description: Main SimplePets command
-        aliases: [pets, simplepets, simplepet]
 
 permissions:
     pet.amount.bypass:  # This permission bypasses the limit of how many pets can be spawned

@@ -1,12 +1,15 @@
 package simplepets.brainsynder.utils;
 
 import lib.brainsynder.ServerVersion;
+import lib.brainsynder.apache.ApacheUtils;
 import lib.brainsynder.files.YamlFile;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nms.Tellraw;
 import lib.brainsynder.reflection.FieldAccessor;
 import lib.brainsynder.reflection.Reflection;
+import lib.brainsynder.utils.ReturnValue;
 import org.apache.commons.io.FileUtils;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -34,8 +37,12 @@ import simplepets.brainsynder.managers.ParticleManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class Utilities {
     public static List<Material> getBlacklistedMaterials() {
@@ -313,5 +320,31 @@ public class Utilities {
             return null;
         }
         return config.getItemStack("i", null);
+    }
+
+    public static void getInputStreamString(String link, ReturnValue<String> stringReturn) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                System.setProperty("http.agent", "Chrome");
+                URL url = new URL(link);
+                URLConnection connection = url.openConnection();
+                connection.addRequestProperty("User-Agent", "Mozilla/5.0");
+                connection.addRequestProperty("Content-Encoding", "gzip");
+                connection.setConnectTimeout(10000);
+                connection.setReadTimeout(10000);
+                connection.setDoInput(true);
+                connection.setDoOutput(true);
+                final InputStream stream = connection.getInputStream();
+                PluginUtilities.getScheduler().runTask(() -> {
+                    try {
+                        stringReturn.run(ApacheUtils.toString(stream));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (Exception var6) {
+            }
+
+        });
     }
 }

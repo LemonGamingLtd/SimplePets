@@ -1,12 +1,14 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.commands.annotations.ICommand;
 import lib.brainsynder.nbt.JsonToNBT;
 import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nbt.other.NBTException;
 import lib.brainsynder.nms.Tellraw;
+import org.bsdevelopment.pluginutils.command.CommandBuilder;
+import org.bsdevelopment.pluginutils.command.CommandPermission;
+import org.bsdevelopment.pluginutils.command.arguments.PlayerArgument;
+import org.bsdevelopment.pluginutils.command.arguments.StorageTagArgument;
+import org.bsdevelopment.pluginutils.command.arguments.suggestions.ArgumentSuggestions;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.ISpawnUtil;
@@ -18,170 +20,157 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.plugin.config.MessageOption;
-import simplepets.brainsynder.commands.Permission;
-import simplepets.brainsynder.commands.PetSubCommand;
+import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.commands.PetCommandClass;
 import simplepets.brainsynder.utils.Utilities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@ICommand(
-    name = "summon",
-    usage = "<type> [player] [nbt]",
-    alias = {"spawn"},
-    description = "Spawns a pet for the player or selected player"
-)
-@Permission(permission = "summon", defaultAllow = true, additionalPermissions = {"all", "other", "nbt"})
-public class SummonCommand extends PetSubCommand {
-    public SummonCommand(PetCore plugin) {
-        super(plugin);
-    }
+public class SummonCommand implements PetCommandClass {
 
     @Override
-    public void run(CommandSender sender, String[] args) {
-        if (args.length == 0) {
-            sendUsage(sender);
-            return;
-        }
+    public CommandBuilder build() {
+        return CommandBuilder.create("summon")
+                .withAliases("spawn")
+                .withPermission("pet.commands.summon")
+                .withDescription("Spawns a pet for the player or selected player")
+                .withSubcommand(buildAllCommand())
+                .withArguments(ACCESSIBLE_PET_TYPES)
+                .withArguments(new PlayerArgument("player")
+                        .setOptional(true)
+                        .withPermission(CommandPermission.of("pet.commands.summon.other")))
+                .withArguments(new StorageTagArgument("nbt")
+                        .setOptional(true)
+                        .withPermission(CommandPermission.of("pet.commands.summon.nbt"))
+                        .replaceSuggestions(ArgumentSuggestions.of(info -> {
+                            List<String> suggestions = new ArrayList<>();
+                            suggestions.add("{}");
 
-        ISpawnUtil spawner = getPlugin().getSpawnUtil();
-        if (spawner == null) return;
+                            Player player = null;
+                            if (info.previousArgs() != null && info.previousArgs().has("player")) {
+                                player = info.previousArgs().get("player");
+                            } else if (info.sender() instanceof Player p) {
+                                player = p;
+                            }
+                            if (player == null) return suggestions;
 
-        if (args[0].equalsIgnoreCase("all") && sender.hasPermission(getPermission("all"))) {
-            AtomicInteger integer = new AtomicInteger(0);
-            for (PetType type : PetType.values()) {
-                SimplePets.getPetConfigManager().getPetConfig(type).ifPresent(config -> {
-                    if (!config.isEnabled()) return;
-                    if (!type.isSupported()) return;
-                    if (!SimplePets.getSpawnUtil().isRegistered(type)) return;
-                    integer.getAndIncrement();
-                    getPlugin().getUserManager().getPetUser(((Player) sender).getUniqueId()).ifPresent(user -> spawner.spawnEntityPet(type, user));
+                            PetType type = info.previousArgs() != null ? info.previousArgs().get("type") : null;
+                            if (type == null || type == PetType.UNKNOWN) return suggestions;
+
+                            Optional<PetUser> user = SimplePets.getUserManager().getPetUser(player);
+                            if (user.isEmpty()) return suggestions;
+
+                            user.get().getPetEntity(type).ifPresent(entityPet -> {
+                                String compoundStr = entityPet.asCompound().toString();
+                                if (!compoundStr.equals("{}")) suggestions.add(compoundStr);
+                            });
+
+                            return suggestions;
+                        })))
+                .executes((sender, args) -> {
+                    ISpawnUtil spawner = PetCore.getInstance().getSpawnUtil();
+                    if (spawner == null) return;
+
+                    PetType type = args.get("type");
+
+                    if (type.isInDevelopment() && !ConfigOption.PET_TOGGLES_DEV_MOBS.get()) {
+                        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_IN_DEVELOPMENT)
+                                .replace("{type}", type.getName()));
+                        return;
+                    }
+
+                    Player target;
+                    if (args.has("player")) {
+                        target = args.get("player");
+                    } else if (sender instanceof Player p) {
+                        target = p;
+                    } else {
+                        sender.sendMessage("§cYou must specify a player when running from console.");
+                        return;
+                    }
+
+                    StorageTagCompound compound = new StorageTagCompound();
+                    if (args.has("nbt") && sender.hasPermission("pet.commands.summon.nbt")) {
+                        org.bsdevelopment.nbt.StorageTagCompound nbtArg = args.get("nbt");
+                        try {
+                            compound = JsonToNBT.getTagFromJson(nbtArg.toString());
+                        } catch (Exception e) {
+                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT));
+                            return;
+                        }
+                    }
+
+                    StorageTagCompound finalCompound = compound;
+                    Utilities.applyPetDataDefaults(type, finalCompound);
+
+                    Player finalTarget = target;
+                    PetCore.getInstance().getUserManager().getPetUser(target.getUniqueId()).ifPresent(user -> {
+                        if (!user.canSpawnMorePets() && finalTarget == sender) {
+                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CANT_SPAWN_MORE_PETS));
+                            return;
+                        }
+
+                        if (!user.canSpawnMorePets()
+                                && !ConfigOption.MISC_TOGGLES_CONSOLE_BYPASS_LIMIT.get()
+                                && !(sender instanceof Player)) {
+                            finalTarget.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CANT_SPAWN_MORE_PETS));
+                            return;
+                        }
+
+                        if (finalTarget == sender) {
+                            PetSelectTypeEvent event = new PetSelectTypeEvent(type, user);
+                            Bukkit.getServer().getPluginManager().callEvent(event);
+                            if (event.isCancelled()) return;
+                        }
+
+                        SpawnResult<IEntityPet> entityPet = spawner.spawnEntityPet(type, user, finalCompound);
+                        if (!entityPet.isSuccess()) {
+                            if (entityPet.isFailure()) {
+                                Tellraw.fromLegacy(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON, false)
+                                        .replace("{type}", type.getName()))
+                                        .tooltip(entityPet.failMessage()).send(sender);
+                                return;
+                            }
+                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON)
+                                    .replace("{type}", type.getName()));
+                            return;
+                        }
+
+                        if (type == PetType.ARMOR_STAND) {
+                            ((IEntityControllerPet) entityPet.value()).getVisibleEntity().applyCompound(finalCompound);
+                        }
+                        sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.SUMMONED_PET)
+                                .replace("{type}", type.getName()));
+                    });
                 });
-            }
+    }
 
-            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.SUMMONED_ALL_PETS).replace("{count}", String.valueOf(integer.get())));
-            return;
-        }
+    public CommandBuilder buildAllCommand() {
+        return CommandBuilder.create("all")
+                .withPermission("pet.commands.summon.all")
+                .withDescription("Spawns all available pet types for yourself")
+                .withRequirement(sender -> sender instanceof Player)
+                .executesPlayer((player, args) -> {
+                    ISpawnUtil spawner = PetCore.getInstance().getSpawnUtil();
+                    if (spawner == null) return;
 
-        Optional<PetType> petType = PetType.getPetType(args[0]);
-        if (!petType.isPresent()) {
-            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[0]));
-            return;
-        }
+                    AtomicInteger count = new AtomicInteger(0);
+                    for (PetType type : PetType.values()) {
+                        SimplePets.getPetConfigManager().getPetConfig(type).ifPresent(config -> {
+                            if (!config.isEnabled()) return;
+                            if (!type.isSupported()) return;
+                            if (!SimplePets.getSpawnUtil().isRegistered(type)) return;
+                            count.getAndIncrement();
+                            PetCore.getInstance().getUserManager().getPetUser(player.getUniqueId())
+                                    .ifPresent(user -> spawner.spawnEntityPet(type, user));
+                        });
+                    }
 
-        PetType type = petType.get();
-        if (type.isInDevelopment()
-            && (!ConfigOption.PET_TOGGLES_DEV_MOBS.get())) {
-            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_IN_DEVELOPMENT).replace("{type}", type.getName()));
-            return;
-        }
-
-        if (!type.isSupported()) {
-            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_SUPPORTED).replace("{type}", type.getName()));
-            return;
-        }
-
-        if (!Utilities.hasPermission(sender, type.getPermission())) {
-            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
-            return;
-        }
-
-        if (!SimplePets.getSpawnUtil().isRegistered(type)) {
-            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
-            return;
-        }
-
-        Player target = null;
-        StorageTagCompound compound = new StorageTagCompound();
-        if (args.length > 1) {
-            int argStart = 1;
-
-            if (isUsername(args[1])) {
-                target = Bukkit.getPlayerExact(args[1]);
-                if (target == null) {
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PLAYER_NOT_ONLINE).replace("{player}", args[1]));
-                    return;
-                }
-                if ((!sender.hasPermission(getPermission("other"))) && (!target.getName().equals(sender.getName()))) {
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
-                    return;
-                }
-                argStart++;
-            }
-
-
-            if (args.length > argStart) {
-                String json = messageMaker(args, argStart);
-                json = formatJson(json);
-
-                // This should help fix the issue with booleans not working for the command.
-                if (json.toLowerCase().contains(":true")) {
-                    json = json.replaceAll("(?i):true", ":1b");
-                }
-                if (json.toLowerCase().contains(":false")) {
-                    json = json.replaceAll("(?i):false", ":0b");
-                }
-
-                try {
-                    compound = JsonToNBT.getTagFromJson(json);
-                } catch (NBTException e) {
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT));
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT_MESSAGE).replace("{message}", e.getMessage()));
-                    return;
-                }
-            }
-        }
-
-        if (!sender.hasPermission(getPermission("nbt"))) compound = new StorageTagCompound();
-
-        if (target == null) {
-            if (sender instanceof Player) {
-                target = (Player) sender;
-            } else {
-                sendUsage(sender);
-                return;
-            }
-        }
-
-        StorageTagCompound finalCompound = compound;
-        Utilities.applyPetDataDefaults(type, finalCompound);
-
-        Player finalTarget = target;
-        getPlugin().getUserManager().getPetUser(target.getUniqueId()).ifPresent(user -> {
-            if (!user.canSpawnMorePets() && finalTarget == sender) {
-                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CANT_SPAWN_MORE_PETS));
-                return;
-            }
-
-            if ((!user.canSpawnMorePets())
-                && (!ConfigOption.MISC_TOGGLES_CONSOLE_BYPASS_LIMIT.get())
-                && (!(sender instanceof Player))) {
-                finalTarget.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CANT_SPAWN_MORE_PETS));
-                return;
-            }
-
-            if (finalTarget == sender) {
-                // Will be treated like selecting a pet from the selection menu
-                PetSelectTypeEvent event = new PetSelectTypeEvent(type, user);
-                Bukkit.getServer().getPluginManager().callEvent(event);
-                if (event.isCancelled()) return;
-            }
-
-            SpawnResult<IEntityPet> entityPet = spawner.spawnEntityPet(type, user, finalCompound);
-            if (!entityPet.isSuccess()) {
-                if (entityPet.isFailure()) {
-                    Tellraw.fromLegacy(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
-                        .tooltip(entityPet.failMessage()).send(sender);
-                    return;
-                }
-
-                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON).replace("{type}", type.getName()));
-                return;
-            }
-            if (type == PetType.ARMOR_STAND) {
-                ((IEntityControllerPet) entityPet.value()).getVisibleEntity().applyCompound(finalCompound);
-            }
-            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.SUMMONED_PET).replace("{type}", type.getName()));
-        });
+                    player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.SUMMONED_ALL_PETS)
+                            .replace("{count}", String.valueOf(count.get())));
+                });
     }
 }

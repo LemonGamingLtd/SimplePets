@@ -1,122 +1,100 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.commands.annotations.ICommand;
 import lib.brainsynder.nbt.JsonToNBT;
 import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nbt.other.NBTException;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
+import org.bsdevelopment.pluginutils.command.CommandBuilder;
+import org.bsdevelopment.pluginutils.command.arguments.PlayerArgument;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.MessageOption;
-import simplepets.brainsynder.commands.Permission;
-import simplepets.brainsynder.commands.PetSubCommand;
+import simplepets.brainsynder.commands.PetCommandClass;
 
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-
-@ICommand(
-    name = "modify",
-    usage = "[player] <type> <nbt>",
-    description = "Modify the Selected Players' Pet."
-)
-@Permission(permission = "modify", additionalPermissions = {"other"})
-public class ModifyCommand extends PetSubCommand {
-    public ModifyCommand(PetCore plugin) {
-        super(plugin);
-    }
+public class ModifyCommand implements PetCommandClass {
 
     @Override
-    public void run(CommandSender sender, String[] args) {
-        if ((args.length == 0) || (args.length == 1) || (args.length == 2)) {
-            sendUsage(sender);
-            return;
-        }
-        AtomicInteger argStart = new AtomicInteger(0);
+    public CommandBuilder build() {
+        return CommandBuilder.create("modify")
+                .withPermission("pet.commands.modify")
+                .withDescription("Modifies the NBT of the player's active pet")
+                .withRequirement(sender -> sender instanceof Player)
+                .withArguments(ACCESSIBLE_PET_TYPES)
+                .withArguments(PET_NBT)
+                .withSubcommand(buildTargetCommand())
+                .executesPlayer((player, args) -> {
+                    PetType type = args.get("type");
+                    org.bsdevelopment.nbt.StorageTagCompound nbtArg = args.get("nbt");
 
-        Player target = null;
-        if (isUsername(args[argStart.get()]) && sender.hasPermission(getPermission("other"))) {
-            Player selected = Bukkit.getPlayerExact(args[argStart.get()]);
-            if (selected != null) {
-                target = selected;
-                if (!sender.hasPermission(getPermission("other"))) {
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
-                    return;
-                }
-                argStart.getAndIncrement();
-            }
-        }
+                    SimplePets.getUserManager().getPetUser(player).ifPresent(user -> {
+                        user.getPetEntity(type).ifPresent(entityPet -> {
+                            if (entityPet instanceof IEntityControllerPet)
+                                entityPet = ((IEntityControllerPet) entityPet).getVisibleEntity();
+                            try {
+                                StorageTagCompound compound = JsonToNBT.getTagFromJson(nbtArg.toString());
 
-        if (target == null) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED + "You must be a player to run this command for yourself.");
-            } else {
-                target = (Player) sender;
-            }
-        }
+                                String message = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_COMPOUND)
+                                        .replace("{compound}", compound.toString());
+                                if (!message.isEmpty())
+                                    player.sendMessage(message.replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
 
-        SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
+                                entityPet.applyCompound(compound);
+                                player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_APPLIED)
+                                        .replace("{type}", type.getName()));
+                            } catch (Exception e) {
+                                player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT));
+                                String errorMessage = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT_MESSAGE)
+                                        .replace("{message}", e.getMessage().replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
+                                if (!errorMessage.isEmpty()) player.sendMessage(errorMessage);
+                            }
+                        });
+                    });
+                });
+    }
 
-            Optional<PetType> petType = PetType.getPetType(args[argStart.get()]);
-            if (!petType.isPresent()) {
-                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[1]));
-                return;
-            }
+    public CommandBuilder buildTargetCommand() {
+        return CommandBuilder.create("target")
+                .withPermission("pet.commands.modify.other")
+                .withDescription("Modifies the NBT of another player's active pet")
+                .withRequirement(sender -> sender instanceof Player)
+                .withArguments(new PlayerArgument("player"))
+                .withArguments(ALL_PET_TYPES)
+                .withArguments(PET_NBT)
+                .executesPlayer((player, args) -> {
+                    Player target = args.get("player");
+                    PetType type = args.get("type");
+                    org.bsdevelopment.nbt.StorageTagCompound nbtArg = args.get("nbt");
 
-            PetType type = petType.get();
+                    if (!SimplePets.getSpawnUtil().isRegistered(type)) {
+                        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_REGISTERED)
+                                .replace("{type}", type.getName()));
+                        return;
+                    }
 
-            if (!SimplePets.getSpawnUtil().isRegistered(type)) {
-                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
-                return;
-            }
+                    SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
+                        user.getPetEntity(type).ifPresent(entityPet -> {
+                            if (entityPet instanceof IEntityControllerPet)
+                                entityPet = ((IEntityControllerPet) entityPet).getVisibleEntity();
+                            try {
+                                StorageTagCompound compound = JsonToNBT.getTagFromJson(nbtArg.toString());
 
-            StorageTagCompound compound;
-            String json = messageMaker(args, argStart.get() + 1).replace(" ", "~");
-            json = formatJson(json);
+                                String message = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_COMPOUND)
+                                        .replace("{compound}", compound.toString());
+                                if (!message.isEmpty())
+                                    player.sendMessage(message.replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
 
-
-            // This should help fix the issue with booleans not working for the command.
-            if (json.toLowerCase().contains(":true")) {
-                json = json.replaceAll("(?i):true", ":1b");
-            }
-            if (json.toLowerCase().contains(":false")) {
-                json = json.replaceAll("(?i):false", ":0b");
-            }
-
-            try {
-                compound = JsonToNBT.getTagFromJson(json);
-            } catch (NBTException e) {
-                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT));
-
-                String message = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT_MESSAGE)
-                    .replace("{message}", e.getMessage().replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
-                if (!message.isEmpty()) sender.sendMessage(message);
-                return;
-            }
-
-            String message = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_COMPOUND).replace("{compound}", compound.toString());
-            if (!message.isEmpty())
-                sender.sendMessage(message.replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
-            user.getPetEntity(type).ifPresent(entityPet -> {
-                if (entityPet instanceof IEntityControllerPet)
-                    entityPet = ((IEntityControllerPet) entityPet).getVisibleEntity();
-                try {
-                    entityPet.applyCompound(compound);
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_APPLIED).replace("{type}", type.getName()));
-                } catch (Exception e) {
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT));
-
-                    String errorMessage = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT_MESSAGE)
-                        .replace("{message}", e.getMessage().replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
-                    if (!errorMessage.isEmpty()) sender.sendMessage(errorMessage);
-                }
-            });
-        });
-
-
+                                entityPet.applyCompound(compound);
+                                player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_APPLIED)
+                                        .replace("{type}", type.getName()));
+                            } catch (Exception e) {
+                                player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT));
+                                String errorMessage = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT_MESSAGE)
+                                        .replace("{message}", e.getMessage().replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
+                                if (!errorMessage.isEmpty()) player.sendMessage(errorMessage);
+                            }
+                        });
+                    });
+                });
     }
 }

@@ -1,130 +1,78 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.commands.annotations.ICommand;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
+import org.bsdevelopment.pluginutils.command.CommandBuilder;
+import org.bsdevelopment.pluginutils.command.CommandPermission;
+import org.bsdevelopment.pluginutils.command.arguments.PlayerArgument;
+import org.bsdevelopment.pluginutils.command.arguments.StringArgument;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.plugin.config.MessageOption;
-import simplepets.brainsynder.commands.Permission;
-import simplepets.brainsynder.commands.PetSubCommand;
+import simplepets.brainsynder.commands.PetCommandClass;
 import simplepets.brainsynder.utils.RenameType;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-
-@ICommand(
-    name = "rename",
-    usage = "[player] <type> [name]",
-    description = "Renames the selected pet type"
-)
-@Permission(permission = "rename", defaultAllow = true, additionalPermissions = {"other"})
-public class RenameCommand extends PetSubCommand {
-    public RenameCommand(PetCore plugin) {
-        super(plugin);
-    }
+public class RenameCommand implements PetCommandClass {
 
     @Override
-    public List<String> handleCompletions(List<String> completions, CommandSender sender, int index, String[] args) {
-        if (index == 1) {
-            if (sender.hasPermission(getPermission("other"))) {
-                completions.addAll(getOnlinePlayers());
-            }
-            completions.addAll(getPetTypes(sender));
-            return completions;
-        }
+    public CommandBuilder build() {
+        return CommandBuilder.create("rename")
+                .withPermission("pet.commands.rename")
+                .withDescription("Renames the selected pet type")
+                .withRequirement(sender -> sender instanceof Player)
+                .withArguments(new PlayerArgument("player")
+                        .setOptional(true)
+                        .withPermission(CommandPermission.of("pet.commands.rename.other")))
+                .withArguments(ACCESSIBLE_PET_TYPES)
+                .withArguments(new StringArgument("name")
+                        .setOptional(true))
+                .executesPlayer((player, args) -> {
+                    Player target = args.getOrDefault("player", player);
 
-        if (index == 2) {
-            Optional<PetType> optional = PetType.getPetType(args[0]);
-            // IS not a pet but is a player... should be...
-            if (!optional.isPresent()) {
-                Player target = Bukkit.getPlayer(args[0]);
-                if ((target != null) && sender.hasPermission(getPermission("other"))) {
-                    completions.addAll(getPetTypes(sender));
-                }
-            }
-            return completions;
-        }
-        return super.handleCompletions(completions, sender, index, args);
-    }
-
-    @Override
-    public void run(CommandSender sender, String[] args) {
-        if (args.length == 0) {
-            sendUsage(sender);
-            return;
-        }
-        AtomicInteger index = new AtomicInteger(0);
-
-        Player target = null;
-        if (isUsername(args[index.get()]) && sender.hasPermission(getPermission("other"))) {
-            Player selected = Bukkit.getPlayerExact(args[index.get()]);
-            if (selected != null) {
-                target = selected;
-                if (!sender.hasPermission(getPermission("other"))) {
-                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
-                    return;
-                }
-                index.getAndIncrement();
-            }
-        }
-
-        if (target == null) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED + "You must be a player to run this command for yourself.");
-            } else {
-                target = (Player) sender;
-            }
-        }
-
-        Player finalTarget = target;
-        SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
-
-            Optional<PetType> petType = PetType.getPetType(args[index.get()]);
-            if (!petType.isPresent()) {
-                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_PET_TYPE).replace("{arg}", args[index.get()]));
-                return;
-            }
-
-            PetType type = petType.get();
-
-            if (!SimplePets.getSpawnUtil().isRegistered(type)) {
-                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
-                return;
-            }
-
-            index.getAndIncrement();
-            if ((args.length >= 2) && (!sender.getName().equals(finalTarget.getName()))) {
-                user.setPetName(messageMaker(args, index.get()), type);
-                return;
-            }
-
-            RenameType rename = RenameType.getType(ConfigOption.RENAME_TYPE.get(), RenameType.ANVIL);
-            switch (rename) {
-                case CHAT:
-                    getPlugin().getRenameManager().renameViaChat(user, type);
-                    break;
-                case COMMAND:
-                    if (args.length == 1) {
-                        sendUsage(sender);
+                    if (target != player && !player.hasPermission("pet.commands.rename.other")) {
+                        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
                         return;
                     }
-                    user.setPetName(messageMaker(args, index.get()), type);
-                    break;
-                case ANVIL:
-                    getPlugin().getRenameManager().renameViaAnvil(user, type);
-                    break;
-                case SIGN:
-                    getPlugin().getRenameManager().renameViaSign(user, type);
-                    break;
-            }
-        });
 
+                    PetType type = args.get("type");
 
+                    if (!SimplePets.getSpawnUtil().isRegistered(type)) {
+                        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_REGISTERED)
+                                .replace("{type}", type.getName()));
+                        return;
+                    }
+
+                    SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
+                        // Admin renaming for another player
+                        if (target != player) {
+                            if (args.has("name")) {
+                                user.setPetName(args.get("name"), type);
+                            }
+                            return;
+                        }
+
+                        RenameType rename = RenameType.getType(ConfigOption.RENAME_TYPE.get(), RenameType.ANVIL);
+                        switch (rename) {
+                            case CHAT:
+                                PetCore.getInstance().getRenameManager().renameViaChat(user, type);
+                                break;
+                            case COMMAND:
+                                if (!args.has("name")) {
+                                    player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX)
+                                            + " §cUsage: /pet rename [player] <type> <name>");
+                                    return;
+                                }
+                                user.setPetName(args.get("name"), type);
+                                break;
+                            case ANVIL:
+                                PetCore.getInstance().getRenameManager().renameViaAnvil(user, type);
+                                break;
+                            case SIGN:
+                                PetCore.getInstance().getRenameManager().renameViaSign(user, type);
+                                break;
+                        }
+                    });
+                });
     }
 }
