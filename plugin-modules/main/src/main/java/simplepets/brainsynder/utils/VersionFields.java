@@ -5,7 +5,7 @@
 
 package simplepets.brainsynder.utils;
 
-import lib.brainsynder.ServerVersion;
+import org.bsdevelopment.pluginutils.version.ServerVersion;
 import simplepets.brainsynder.PetCore;
 
 import java.util.HashMap;

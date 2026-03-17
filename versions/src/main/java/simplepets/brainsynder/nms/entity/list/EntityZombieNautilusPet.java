@@ -1,7 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.ServerVersion;
-import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.core.Holder;
@@ -12,6 +10,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariants;
+import org.bsdevelopment.pluginutils.version.VersionLimit;
 import org.bukkit.craftbukkit.CraftRegistry;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import simplepets.brainsynder.api.entity.passive.IEntityZombieNautilusPet;
@@ -25,7 +24,7 @@ import simplepets.brainsynder.nms.utils.VariantUtils;
 /**
  * NMS: {@link net.minecraft.world.entity.animal.nautilus.ZombieNautilus }
  */
-@SupportedVersion(version = ServerVersion.v1_21_11)
+@VersionLimit(min = {1, 21, 11})
 public class EntityZombieNautilusPet extends EntityNautilusAbstractPet implements IEntityZombieNautilusPet {
     private static final EntityDataAccessor<Holder<net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariant>> VARIANT = SynchedEntityData.defineId(EntityZombieNautilusPet.class, EntityDataSerializers.ZOMBIE_NAUTILUS_VARIANT);
     private ZombieNautilusVariant variant = ZombieNautilusVariant.TEMPERATE;

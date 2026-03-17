@@ -1,7 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.ServerVersion;
-import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,6 +8,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.coppergolem.CopperGolemState;
 import net.minecraft.world.level.block.WeatheringCopper;
+import org.bsdevelopment.pluginutils.version.VersionLimit;
 import simplepets.brainsynder.api.entity.passive.IEntityCopperGolemPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -20,7 +19,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 /**
  * NMS: {@link net.minecraft.world.entity.animal.coppergolem.CopperGolem}
  */
-@SupportedVersion(version = ServerVersion.v1_21_9)
+@VersionLimit(min = {1, 21, 9})
 public class EntityCopperGolemPet extends EntityPetOverride implements IEntityCopperGolemPet {
     private static final EntityDataAccessor<WeatheringCopper.WeatherState> OXIDATION_STATE = SynchedEntityData.defineId(EntityCopperGolemPet.class, EntityDataSerializers.WEATHERING_COPPER_STATE);
     private static final EntityDataAccessor<CopperGolemState> COPPER_GOLEM_STATE = SynchedEntityData.defineId(EntityCopperGolemPet.class, EntityDataSerializers.COPPER_GOLEM_STATE);

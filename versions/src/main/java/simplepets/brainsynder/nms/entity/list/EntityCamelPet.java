@@ -1,7 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.ServerVersion;
-import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -11,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
+import org.bsdevelopment.pluginutils.version.VersionLimit;
 import simplepets.brainsynder.api.entity.passive.IEntityCamelPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -20,7 +19,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 /**
  * NMS: {@link net.minecraft.world.entity.animal.camel.Camel}
  */
-@SupportedVersion(version = ServerVersion.v1_20)
+@VersionLimit(min = {1, 20, 0})
 public class EntityCamelPet extends EntityHorseAbstractPet implements IEntityCamelPet {
     private static final EntityDataAccessor<Boolean> DASH = SynchedEntityData.defineId(EntityCamelPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Long> LAST_POSE_CHANGE_TICK = SynchedEntityData.defineId(EntityCamelPet.class, EntityDataSerializers.LONG);

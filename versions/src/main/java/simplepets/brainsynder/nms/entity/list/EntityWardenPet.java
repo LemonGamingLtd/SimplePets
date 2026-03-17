@@ -1,7 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.ServerVersion;
-import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.math.MathUtils;
 import lib.brainsynder.nbt.StorageTagCompound;
@@ -13,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
 import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.version.VersionLimit;
 import simplepets.brainsynder.api.entity.hostile.IEntityWardenPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
@@ -24,7 +23,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 /**
  * NMS: {@link net.minecraft.world.entity.monster.warden.Warden}
  */
-@SupportedVersion(version = ServerVersion.v1_19)
+@VersionLimit(min = {1, 19, 0})
 public class EntityWardenPet extends EntityPetOverride implements IEntityWardenPet {
     protected static final EntityDataAccessor<Integer> ANGER_LEVEL = SynchedEntityData.defineId(EntityWardenPet.class, EntityDataSerializers.INT);
     private boolean vibrationEffect = false;

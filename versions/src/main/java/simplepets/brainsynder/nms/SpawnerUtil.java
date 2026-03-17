@@ -1,10 +1,10 @@
 package simplepets.brainsynder.nms;
 
-import lib.brainsynder.ServerVersion;
-import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.storage.RandomCollection;
 import lib.brainsynder.utils.Colorize;
+import org.bsdevelopment.pluginutils.version.ServerVersion;
+import org.bsdevelopment.pluginutils.version.VersionCompatibility;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -44,15 +44,12 @@ public class SpawnerUtil implements ISpawnUtil {
 
             String name = type.getEntityClass().getSimpleName().replaceFirst("I", "");
             try {
-                Class<?> clazz = Class.forName("simplepets.brainsynder.versions."+ ServerVersion.getVersion().name() +".entity.list."+name, false, classLoader);
-                if (clazz.isAnnotationPresent(SupportedVersion.class)) {
-                    SupportedVersion version = clazz.getAnnotation(SupportedVersion.class);
-                    if (!ServerVersion.isEqualNew(version.version())) {
-                        SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(DebugLevel.WARNING).setMessages(
-                                "The '"+type.getName()+"' pet is not supported for your server version [will NOT affect your server]"
-                        ));
-                        continue;
-                    }
+                Class<?> clazz = Class.forName("simplepets.brainsynder.versions."+ ServerVersion.getVersion().getSpigotNMS() +".entity.list."+name, false, classLoader);
+                if (!VersionCompatibility.isCompatible(clazz)) {
+                    SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(DebugLevel.WARNING).setMessages(
+                            "The '"+type.getName()+"' pet is not supported for your server version [will NOT affect your server]"
+                    ));
+                    continue;
                 }
                 petMap.put(type, clazz);
             }catch (Exception ignored) {

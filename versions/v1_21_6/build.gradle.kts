@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":versions"))
 
     compileOnly(libs.bslib)
+    compileOnly(libs.pluginutils)
     paperweight.paperDevBundle(latestMinecraft)
 }
 

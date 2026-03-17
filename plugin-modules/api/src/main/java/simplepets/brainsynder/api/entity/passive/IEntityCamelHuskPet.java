@@ -1,11 +1,13 @@
 package simplepets.brainsynder.api.entity.passive;
 
-import lib.brainsynder.ServerVersion;
-import lib.brainsynder.SupportedVersion;
+import org.bsdevelopment.pluginutils.version.VersionLimit;
+
+
+
 import simplepets.brainsynder.api.entity.misc.EntityPetType;
 import simplepets.brainsynder.api.pet.PetType;
 
-@SupportedVersion(version = ServerVersion.v1_21_11)
+@VersionLimit(min = {1, 21, 11})
 @EntityPetType(petType = PetType.CAMEL_HUSK)
 public interface IEntityCamelHuskPet extends IEntityCamelPet {
 }

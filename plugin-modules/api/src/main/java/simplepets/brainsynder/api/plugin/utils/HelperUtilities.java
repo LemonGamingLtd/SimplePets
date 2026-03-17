@@ -1,6 +1,6 @@
 package simplepets.brainsynder.api.plugin.utils;
 
-import lib.brainsynder.ServerVersion;
+import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.jetbrains.annotations.NotNull;
 import simplepets.brainsynder.api.plugin.SimplePets;
 
@@ -12,7 +12,7 @@ public final class HelperUtilities {
     });
 
     public static <T> @NotNull T getVersionedClass(@NotNull String className, @NotNull Class<T> expectedType, @NotNull Class<? extends T> fallbackType) {
-        String mcVersion = ServerVersion.getVersion().name();
+        String mcVersion = ServerVersion.getVersion().getVersionName();
         String path = NMS_PATH + "." + mcVersion + "." + className;
 
         // Try version-specific

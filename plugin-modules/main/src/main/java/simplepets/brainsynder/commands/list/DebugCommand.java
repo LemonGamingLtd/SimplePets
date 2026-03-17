@@ -1,6 +1,5 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.ServerVersion;
 import lib.brainsynder.json.Json;
 import lib.brainsynder.json.JsonArray;
 import lib.brainsynder.json.JsonObject;
@@ -9,6 +8,7 @@ import lib.brainsynder.web.WebConnector;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.utilities.PasteClient;
+import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -238,8 +238,8 @@ public class DebugCommand implements PetCommandClass {
                         .add("mojang-mapped", si.isMojangMapped())
                 )
                 .add("bslib-server-version", new JsonObject()
-                        .add("nms", ServerVersion.getVersion().getNMS())
-                        .add("name", ServerVersion.getVersion().name())
+                        .add("nms", ServerVersion.getVersion().getSpigotNMS())
+                        .add("name", ServerVersion.getVersion().getVersionName())
                 )
                 .add("simplepets", new JsonObject()
                         .add("version", PetCore.getInstance().getDescription().getVersion())

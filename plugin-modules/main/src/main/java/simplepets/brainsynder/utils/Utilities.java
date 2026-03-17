@@ -1,6 +1,5 @@
 package simplepets.brainsynder.utils;
 
-import lib.brainsynder.ServerVersion;
 import lib.brainsynder.apache.ApacheUtils;
 import lib.brainsynder.files.YamlFile;
 import lib.brainsynder.nbt.StorageTagCompound;
@@ -10,6 +9,7 @@ import lib.brainsynder.reflection.Reflection;
 import lib.brainsynder.utils.ReturnValue;
 import org.apache.commons.io.FileUtils;
 import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;

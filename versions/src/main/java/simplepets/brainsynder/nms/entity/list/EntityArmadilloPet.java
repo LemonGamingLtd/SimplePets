@@ -1,7 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.ServerVersion;
-import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -11,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.bsdevelopment.pluginutils.version.VersionLimit;
 import simplepets.brainsynder.api.entity.passive.IEntityArmadilloPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -21,7 +20,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 /**
  * NMS: {@link Armadillo}
  */
-@SupportedVersion(version = ServerVersion.v1_20_5)
+@VersionLimit(min = {1, 20, 5})
 public class EntityArmadilloPet extends EntityAgeablePet implements IEntityArmadilloPet {
     private static final EntityDataAccessor<Armadillo.ArmadilloState> ARMADILLO_STATE = SynchedEntityData.defineId(EntityArmadilloPet.class, EntityDataSerializers.ARMADILLO_STATE);
 

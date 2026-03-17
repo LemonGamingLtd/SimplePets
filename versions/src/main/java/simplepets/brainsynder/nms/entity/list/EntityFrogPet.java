@@ -1,7 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.ServerVersion;
-import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.math.MathUtils;
 import lib.brainsynder.nbt.StorageTagCompound;
@@ -18,6 +16,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.frog.FrogVariant;
 import net.minecraft.world.entity.animal.frog.FrogVariants;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.pluginutils.version.VersionLimit;
 import org.bukkit.craftbukkit.CraftRegistry;
 import simplepets.brainsynder.api.entity.passive.IEntityFrogPet;
 import simplepets.brainsynder.api.pet.PetType;
@@ -33,7 +32,7 @@ import java.util.OptionalInt;
 /**
  * NMS: {@link net.minecraft.world.entity.animal.frog.Frog}
  */
-@SupportedVersion(version = ServerVersion.v1_19)
+@VersionLimit(min = {1, 19, 0})
 public class EntityFrogPet extends EntityAgeablePet implements IEntityFrogPet {
     private static final EntityDataAccessor<Holder<FrogVariant>> DATA_VARIANT = SynchedEntityData.defineId(EntityFrogPet.class, EntityDataSerializers.FROG_VARIANT);
     private static final EntityDataAccessor<OptionalInt> TONGUE_TARGET_ID = SynchedEntityData.defineId(EntityFrogPet.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);

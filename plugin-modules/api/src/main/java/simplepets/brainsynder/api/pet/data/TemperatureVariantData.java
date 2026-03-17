@@ -1,8 +1,7 @@
 package simplepets.brainsynder.api.pet.data;
 
-import lib.brainsynder.ServerVersion;
-import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.version.VersionLimit;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.entity.misc.ITemperaturePet;
@@ -45,14 +44,14 @@ public class TemperatureVariantData extends PetData<ITemperaturePet> {
         return entity.getVariant();
     }
 
-    @SupportedVersion(version = ServerVersion.v1_21_5)
+    @VersionLimit(min = {1, 21, 5})
         public static class ChickenTemperature extends TemperatureVariantData {
         public ChickenTemperature() {
             super(IEntityChickenPet.class);
         }
     }
 
-    @SupportedVersion(version = ServerVersion.v1_21_5)
+    @VersionLimit(min = {1, 21, 5})
     public static class CowTemperature extends TemperatureVariantData {
         public CowTemperature() {
             super(IEntityCowPet.class);
@@ -71,7 +70,7 @@ public class TemperatureVariantData extends PetData<ITemperaturePet> {
         public String namespace() { return "variant"; }
     }
 
-    @SupportedVersion(version = ServerVersion.v1_21_5)
+    @VersionLimit(min = {1, 21, 5})
     public static class PigTemperature extends TemperatureVariantData {
         public PigTemperature() {
             super(IEntityPigPet.class);

@@ -1,9 +1,9 @@
 package simplepets.brainsynder.api.pet;
 
-import lib.brainsynder.ServerVersion;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.json.JsonValue;
+import org.bsdevelopment.pluginutils.version.ServerVersion;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.debug.DebugLevel;
@@ -70,8 +70,8 @@ import java.util.function.Predicate;
  */
 public abstract class PetData<E extends IEntityPet> {
     private final Map<String, ItemBuilder> defaultItems = new LinkedHashMap<>();
-    private ServerVersion minVersion = ServerVersion.UNKNOWN;
-    private ServerVersion maxVersion = ServerVersion.UNKNOWN;
+    private ServerVersion minVersion = null;
+    private ServerVersion maxVersion = null;
 
     /**
      * Returns a filtered list from {@code values}, excluding any entry for which
@@ -220,13 +220,12 @@ public abstract class PetData<E extends IEntityPet> {
      * <ol>
      *   <li>Instance version fields set via {@link Builder#minVersion}/{@link Builder#maxVersion}
      *       or {@link #setMinVersion}/{@link #setMaxVersion} in a subclass constructor.</li>
-     *   <li>{@link SupportedVersion} annotation present on the concrete class.</li>
      *   <li>If neither is set, the data is always considered supported.</li>
      * </ol>
      */
     public boolean isVersionSupported() {
-        if (minVersion != ServerVersion.UNKNOWN)
-            return ServerVersion.isEqualNew(minVersion) && (maxVersion == ServerVersion.UNKNOWN || ServerVersion.isEqualOld(maxVersion));
+        if (minVersion != null)
+            return ServerVersion.getVersion().isEqualOrNewer(minVersion) && (maxVersion == null || ServerVersion.getVersion().isEqualOrOlder(maxVersion));
         return true;
     }
 
@@ -240,7 +239,7 @@ public abstract class PetData<E extends IEntityPet> {
 
     /**
      * Sets the maximum server version on which this data is active (inclusive).
-     * Use {@link ServerVersion#UNKNOWN} to indicate no upper bound (the default).
+     * Use {@code null} to indicate no upper bound (the default).
      */
     protected void setMaxVersion(ServerVersion version) {
         this.maxVersion = version;
@@ -307,8 +306,8 @@ public abstract class PetData<E extends IEntityPet> {
         private final Map<String, ItemBuilder> items = new LinkedHashMap<>();
         private Object defaultValue = null;
         private boolean enabledByDefault = true;
-        private ServerVersion minVersion = ServerVersion.UNKNOWN;
-        private ServerVersion maxVersion = ServerVersion.UNKNOWN;
+        private ServerVersion minVersion = null;
+        private ServerVersion maxVersion = null;
         private Function<E, Object> valueFunction;
         private Consumer<E> leftClick;
         private Consumer<E> rightClick;
@@ -349,7 +348,7 @@ public abstract class PetData<E extends IEntityPet> {
         /**
          * Sets the maximum server version on which this data is registered (inclusive).
          * The data will be silently skipped on newer servers.
-         * Omit this call (or pass {@link ServerVersion#UNKNOWN}) to impose no upper bound.
+         * Omit this call (or pass {@code null}) to impose no upper bound.
          *
          * <pre>{@code .maxVersion(ServerVersion.v1_21_4) }</pre>
          */

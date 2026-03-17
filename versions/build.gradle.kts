@@ -8,6 +8,7 @@ dependencies {
     compileOnly(project(":api"))
     compileOnly(project(":main"))
     compileOnly(libs.bslib)
+    compileOnly(libs.pluginutils)
     paperweight.paperDevBundle(latestMinecraft)
 }
 

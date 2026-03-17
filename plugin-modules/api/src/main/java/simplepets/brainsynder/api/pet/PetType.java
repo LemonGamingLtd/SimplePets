@@ -1,13 +1,11 @@
 package simplepets.brainsynder.api.pet;
 
 import com.google.common.collect.Lists;
-import lib.brainsynder.EnumVersion;
-import lib.brainsynder.ServerVersion;
-import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.sounds.SoundMaker;
 import lib.brainsynder.utils.Capitalise;
 import lib.brainsynder.utils.Colorize;
+import org.bsdevelopment.pluginutils.version.VersionCompatibility;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -410,40 +408,16 @@ public enum PetType {
             case POLARBEAR:
                 return EntityType.POLAR_BEAR;
             case SNOWMAN:
-                return (ServerVersion.isOlder(ServerVersion.v1_20_5)) ? EntityType.valueOf("SNOW_GOLEM") : EntityType.valueOf("SNOWMAN");
-            case MOOSHROOM:
-                return (ServerVersion.isOlder(ServerVersion.v1_20_5)) ? EntityType.valueOf("MUSHROOM_COW") : EntityType.valueOf("MOOSHROOM");
+                return EntityType.SNOW_GOLEM;
             default:
                 return EntityType.valueOf(name());
         }
     }
 
     public boolean isSupported() {
-        try {
-            if (entityClass != null) {
-                if (entityClass.isAnnotationPresent(SupportedVersion.class)) {
-                    SupportedVersion support = entityClass.getAnnotation(SupportedVersion.class);
-                    if (support.maxVersion() == ServerVersion.UNKNOWN) {
-                        return ServerVersion.isEqualNew(support.version());
-                    }
-
-                    return ServerVersion.isEqualOld(support.maxVersion()) && ServerVersion.isEqualNew(support.version());
-                }
-            }
-
-            for (Annotation annotation : getClass().getField(this.name()).getAnnotations()) {
-                if (annotation instanceof EnumVersion support) {
-                    if (support.maxVersion() == ServerVersion.UNKNOWN) {
-                        return ServerVersion.isEqualNew(support.version());
-                    }
-
-                    return ServerVersion.isEqualOld(support.maxVersion()) && ServerVersion.isEqualNew(support.version());
-                }
-            }
-        } catch (NoSuchFieldException var7) {
-            var7.printStackTrace();
+        if (entityClass != null) {
+            return VersionCompatibility.isCompatible(entityClass);
         }
-
         return true;
     }
 

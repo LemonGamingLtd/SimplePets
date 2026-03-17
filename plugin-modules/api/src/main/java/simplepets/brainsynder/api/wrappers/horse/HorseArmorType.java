@@ -1,21 +1,19 @@
 package simplepets.brainsynder.api.wrappers.horse;
 
-import lib.brainsynder.EnumVersion;
-import lib.brainsynder.ServerVersion;
+import org.bsdevelopment.pluginutils.version.VersionCompatibility;
+import org.bsdevelopment.pluginutils.version.VersionLimit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.inventory.ItemType;
 
-import java.lang.annotation.Annotation;
-
 public enum HorseArmorType {
     NONE(0, "barrier"),
     LEATHER(1, "leather_horse_armor"),
-    @EnumVersion(version = ServerVersion.v1_21_9) COPPER(2, "copper_horse_armor"),
+    @VersionLimit(min = {1, 21, 9}) COPPER(2, "copper_horse_armor"),
     IRON(3, "iron_horse_armor"),
     GOLD(4, "golden_horse_armor"),
     DIAMOND(5, "diamond_horse_armor"),
-    @EnumVersion(version = ServerVersion.v1_21_11) NETHERITE(6, "netherite_horse_armor");
+    @VersionLimit(min = {1, 21, 11}) NETHERITE(6, "netherite_horse_armor");
 
     private final int id;
     private final String rawMaterial;
@@ -27,12 +25,7 @@ public enum HorseArmorType {
 
     public boolean isSupported() {
         try {
-            for (Annotation annotation : getClass().getField(this.name()).getAnnotations()) {
-                if (!(annotation instanceof EnumVersion support)) continue;
-                if (support.maxVersion() == ServerVersion.UNKNOWN) return ServerVersion.isEqualNew(support.version());
-
-                return ServerVersion.isEqualOld(support.maxVersion()) && ServerVersion.isEqualNew(support.version());
-            }
+            return VersionCompatibility.isCompatible(getClass().getField(this.name()));
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }

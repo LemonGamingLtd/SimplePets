@@ -1,8 +1,8 @@
 package simplepets.brainsynder.api.pet;
 
-import lib.brainsynder.ServerVersion;
 import lib.brainsynder.apache.WordUtils;
 import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;

@@ -2,7 +2,6 @@ package simplepets.brainsynder;
 
 import com.jeff_media.updatechecker.UpdateChecker;
 import io.papermc.lib.PaperLib;
-import lib.brainsynder.ServerVersion;
 import lib.brainsynder.json.WriterConfig;
 import lib.brainsynder.reflection.Reflection;
 import lib.brainsynder.utils.AdvString;
@@ -10,6 +9,7 @@ import lib.brainsynder.utils.Utilities;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.help.HelpCommand;
+import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.DrilldownPie;
@@ -106,7 +106,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         debug = new Debug(this);
         SERVER_INFORMATION = new ServerInformation();
 
-        if (ServerVersion.isEqualNew(ServerVersion.v1_21_11)) {
+        if (ServerVersion.getVersion().isEqualOrNewer(ServerVersion.v1_21_11)) {
             SimplePets.getDebugLogger().debug(DebugBuilder.build()
                 .setLevel(DebugLevel.WARNING).setBroadcast(true)
                 .setMessages(
@@ -127,9 +127,9 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
                 .setLevel(DebugLevel.CRITICAL)
                 .setBroadcast(true)
                 .setMessages(
-                    "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().name().replace("v", "").replace("_", "."),
+                    "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().getVersionName().replace("v", "").replace("_", "."),
                     "Please check the Jenkins for an updated build: https://ci.bsdevelopment.org/job/SimplePets_v5/",
-                    "Check if there is a SimplePets-" + ServerVersion.getVersion().name().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
+                    "Check if there is a SimplePets-" + ServerVersion.getVersion().getVersionName().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
                     "Current SimplePets jar name: " + getJarName()
                 )
             );
@@ -309,7 +309,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     }
 
     private boolean checkJavaVersion() {
-        if (ServerVersion.isNewer(ServerVersion.v1_21_11)
+        if (ServerVersion.getVersion().isStrictlyNewer(ServerVersion.v1_21_11)
                 && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_25))) {
             debug.debug(DebugBuilder.build(getClass())
                     .setLevel(DebugLevel.CRITICAL)
@@ -322,7 +322,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             );
             return false;
         }
-        if (ServerVersion.isEqualNew(ServerVersion.v1_20_5)
+        if (ServerVersion.getVersion().isEqualOrNewer(ServerVersion.v1_20_5)
                 && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21))) {
             debug.debug(DebugBuilder.build(getClass())
                     .setLevel(DebugLevel.CRITICAL)
@@ -577,16 +577,16 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             if (spawnutilClass == null) return;
             if (ISpawnUtil.class.isAssignableFrom(spawnutilClass)) {
                 SPAWN_UTIL = (ISpawnUtil) spawnutilClass.getConstructor(ClassLoader.class).newInstance(getClassLoader());
-                debug.debug(DebugLevel.HIDDEN, "Successfully Linked to " + version.name() + " SpawnUtil Class");
+                debug.debug(DebugLevel.HIDDEN, "Successfully Linked to " + version.getVersionName() + " SpawnUtil Class");
             }
         } catch (Exception e) {
             debug.debug(DebugBuilder.build(getClass())
                 .setLevel(DebugLevel.CRITICAL)
                 .setBroadcast(true)
                 .setMessages(
-                    "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().name().replace("v", "").replace("_", "."),
+                    "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().getVersionName().replace("v", "").replace("_", "."),
                     "Please check the Jenkins for an updated build: https://ci.bsdevelopment.org/job/SimplePets_v5/",
-                    "Check if there is a SimplePets-" + ServerVersion.getVersion().name().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
+                    "Check if there is a SimplePets-" + ServerVersion.getVersion().getVersionName().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
                     " ",
                     "Error: " + e.getMessage()
                 )
@@ -617,18 +617,18 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     }
 
     private boolean fetchSupportedVersions() {
-        if (!supportedVersions.isEmpty()) return supportedVersions.contains(ServerVersion.getVersion().name());
+        if (!supportedVersions.isEmpty()) return supportedVersions.contains(ServerVersion.getVersion().getVersionName());
         supportedVersions.clear();
-        String current = ServerVersion.getVersion().name();
+        String current = ServerVersion.getVersion().getVersionName();
         boolean supported = false;
         String packageName = "simplepets.brainsynder.versions.<VER>.SpawnerUtil";
         for (ServerVersion version : ServerVersion.values()) {
-            if (version.name().equals(current) && (!supported)) supported = true;
+            if (version.getVersionName().equals(current) && (!supported)) supported = true;
             try {
-                Class<?> clazz = Class.forName(packageName.replace("<VER>", version.name()), false, getClassLoader());
+                Class<?> clazz = Class.forName(packageName.replace("<VER>", version.getVersionName()), false, getClassLoader());
                 if (clazz != null) {
-                    if (version.name().equals(current)) spawnutilClass = clazz;
-                    supportedVersions.add(version.name());
+                    if (version.getVersionName().equals(current)) spawnutilClass = clazz;
+                    supportedVersions.add(version.getVersionName());
                 }
             } catch (Exception ignored) {
             }
@@ -648,7 +648,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
         if (!supportedVersions.isEmpty()) {
             debug.debug("Found support for version(s): " + supportedVersions.toString().replace("v", "").replace("_", "."));
-            debug.debug("Targeting version: " + ServerVersion.getVersion().name().replace("v", "").replace("_", "."));
+            debug.debug("Targeting version: " + ServerVersion.getVersion().getVersionName().replace("v", "").replace("_", "."));
         }
         return supported;
     }

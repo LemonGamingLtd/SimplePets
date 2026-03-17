@@ -5,13 +5,13 @@
 
 package simplepets.brainsynder.nms;
 
-import lib.brainsynder.ServerVersion;
 import lib.brainsynder.reflection.Reflection;
 import net.minecraft.core.DefaultedMappedRegistry;
 import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
+import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bukkit.Bukkit;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.debug.DebugLevel;
