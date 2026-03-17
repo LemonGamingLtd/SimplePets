@@ -7,7 +7,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import lib.brainsynder.utils.Colorize;
-import org.bukkit.Bukkit;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -56,9 +56,9 @@ public final class SignMenuFactory {
                 boolean success = menu.response.test(player, event.getPacket().getStringArrays().read(0));
 
                 if (!success && menu.reopenIfFail && !menu.forceClose) {
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> menu.open(player), 2L);
+                    PluginUtilities.getScheduler().runTaskLater(() -> menu.open(player), 2L);
                 }
-                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                PluginUtilities.getScheduler().runTaskLater(() -> {
                     if (player.isOnline()) {
                         player.sendBlockChange(menu.location, menu.location.getBlock().getBlockData());
                     }

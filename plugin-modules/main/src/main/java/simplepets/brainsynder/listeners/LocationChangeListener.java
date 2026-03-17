@@ -1,11 +1,10 @@
 package simplepets.brainsynder.listeners;
 
-import org.bukkit.Bukkit;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 
@@ -17,7 +16,7 @@ public class LocationChangeListener implements Listener {
 
         SimplePets.getUserManager().getPetUser(event.getPlayer()).ifPresent(user -> {
             user.cacheAndRemove();
-            Bukkit.getScheduler().runTaskLater(PetCore.getInstance(), user::summonCachedPets, 40);
+            PluginUtilities.getScheduler().runTaskLater(user::summonCachedPets, 40);
         });
     }
 
@@ -27,7 +26,7 @@ public class LocationChangeListener implements Listener {
 
         SimplePets.getUserManager().getPetUser(event.getPlayer()).ifPresent(user -> {
             user.cacheAndRemove();
-            Bukkit.getScheduler().runTaskLater(PetCore.getInstance(), user::summonCachedPets, 40);
+            PluginUtilities.getScheduler().runTaskLater(user::summonCachedPets, 40);
         });
     }
 

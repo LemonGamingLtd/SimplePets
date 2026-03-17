@@ -1,6 +1,6 @@
 package simplepets.brainsynder.listeners;
 
-import org.bukkit.Bukkit;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -80,7 +80,7 @@ public class SavesGUIListener implements Listener {
         if (e.getInventory().getHolder() == null) return;
         if (!(e.getInventory().getHolder() instanceof SavesHolder)) return;
         SavesMenu menu = InventoryManager.PET_SAVES;
-        Bukkit.getScheduler().runTaskLater(PetCore.getInstance(), () -> {
+        PluginUtilities.getScheduler().runTaskLater(() -> {
             if (!(e.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof SavesHolder)) {
                 SimplePets.getUserManager().getPetUser((Player) e.getPlayer()).ifPresent(menu::reset);
             }

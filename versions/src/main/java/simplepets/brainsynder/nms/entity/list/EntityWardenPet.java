@@ -12,8 +12,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.Bukkit;
-import simplepets.brainsynder.PetCore;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import simplepets.brainsynder.api.entity.hostile.IEntityWardenPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
@@ -35,7 +34,7 @@ public class EntityWardenPet extends EntityPetOverride implements IEntityWardenP
         super(EntityType.WARDEN, type, user);
         if (ConfigOption.PET_TOGGLES_WARDEN_ANIMATIONS.get()) {
             this.setPose(Pose.EMERGING);
-            Bukkit.getScheduler().runTaskLater(PetCore.getInstance(), () -> this.setPose(Pose.STANDING), 135);
+            PluginUtilities.getScheduler().runTaskLater(() -> this.setPose(Pose.STANDING), 135);
         }
     }
 
@@ -125,6 +124,6 @@ public class EntityWardenPet extends EntityPetOverride implements IEntityWardenP
         }
 
         this.setPose(Pose.DIGGING);
-        Bukkit.getScheduler().runTaskLater(PetCore.getInstance(), () -> super.remove(entity_removalreason), 100);
+        PluginUtilities.getScheduler().runTaskLater(() -> super.remove(entity_removalreason), 100);
     }
 }

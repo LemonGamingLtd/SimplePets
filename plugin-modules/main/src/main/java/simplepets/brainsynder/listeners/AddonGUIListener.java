@@ -1,6 +1,6 @@
 package simplepets.brainsynder.listeners;
 
-import org.bukkit.Bukkit;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -101,7 +101,7 @@ public class AddonGUIListener implements Listener {
         if (e.getInventory().getHolder() == null) return;
         if (!(e.getInventory().getHolder() instanceof AddonHolder)) return;
         AddonMenu menu = InventoryManager.ADDONS;
-        Bukkit.getScheduler().runTaskLater(PetCore.getInstance(), () -> {
+        PluginUtilities.getScheduler().runTaskLater(() -> {
             if (!(e.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof AddonHolder)) {
                 SimplePets.getUserManager().getPetUser((Player) e.getPlayer()).ifPresent(menu::reset);
             }

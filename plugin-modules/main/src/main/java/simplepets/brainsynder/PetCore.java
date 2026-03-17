@@ -93,8 +93,8 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     private IPetUtilities petUtilities;
     private SQLHandler sqlHandler;
 
-    public final Executor sync = task -> Bukkit.getScheduler().runTask(this, task);
-    public final Executor async = task -> Bukkit.getScheduler().runTaskAsynchronously(this, task);
+    public final Executor sync = task -> PluginUtilities.getScheduler().runTask(task);
+    public final Executor async = task -> PluginUtilities.getScheduler().runTaskAsynchronously(task);
 
     @Override
     public void onEnable() {

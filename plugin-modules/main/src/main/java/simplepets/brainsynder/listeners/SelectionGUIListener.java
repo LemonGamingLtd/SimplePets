@@ -3,6 +3,7 @@ package simplepets.brainsynder.listeners;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.storage.IStorage;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -86,7 +87,7 @@ public class SelectionGUIListener implements Listener {
         if (e.getInventory().getHolder() == null) return;
         if (!(e.getInventory().getHolder() instanceof SelectionHolder)) return;
         SelectionMenu menu = InventoryManager.SELECTION;
-        Bukkit.getScheduler().runTaskLater(PetCore.getInstance(), () -> {
+        PluginUtilities.getScheduler().runTaskLater(() -> {
             if (!(e.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof SelectionHolder)) {
                 SimplePets.getUserManager().getPetUser((Player) e.getPlayer()).ifPresent(menu::reset);
             }

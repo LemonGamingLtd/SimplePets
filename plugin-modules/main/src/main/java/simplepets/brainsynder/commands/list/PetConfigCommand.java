@@ -2,12 +2,12 @@ package simplepets.brainsynder.commands.list;
 
 import lib.brainsynder.files.JsonFile;
 import lib.brainsynder.json.JsonValue;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.arguments.CustomArgument;
 import org.bsdevelopment.pluginutils.command.arguments.StringArgument;
 import org.bsdevelopment.pluginutils.command.arguments.suggestions.ArgumentSuggestions;
 import org.bsdevelopment.pluginutils.command.exception.ArgumentParseException;
-import org.bukkit.Bukkit;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.pet.IPetConfig;
 import simplepets.brainsynder.api.pet.PetType;
@@ -146,7 +146,7 @@ public class PetConfigCommand implements PetCommandClass {
                         if (updated) {
                             jsonFile.save();
                             boolean finalReset = reset;
-                            Bukkit.getScheduler().runTaskLater(SimplePets.getPlugin(), () -> {
+                            PluginUtilities.getScheduler().runTaskLater(() -> {
                                 ((PetConfiguration) PetCore.getInstance().getPetConfigManager()).reset();
                                 InventoryManager.SELECTION.reloadAvailableTypes();
 
