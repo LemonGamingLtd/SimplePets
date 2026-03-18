@@ -4,10 +4,10 @@ import lib.brainsynder.json.Json;
 import lib.brainsynder.json.JsonArray;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.json.WriterConfig;
-import lib.brainsynder.web.WebConnector;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.utilities.PasteClient;
+import org.bsdevelopment.pluginutils.utilities.WebConnector;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -260,39 +260,22 @@ public class DebugCommand implements PetCommandClass {
         }
         int build = Integer.parseInt(String.valueOf(prop.getOrDefault("build", -1)));
 
-        WebConnector.getInputStreamString("https://bsdevelopment.org/api/jenkins/build-number/SimplePets_v5", PetCore.getInstance(),
+        WebConnector.getInputStreamString("https://jenkins.bsdevelopment.org/job/SimplePets/api/json?tree=lastBuild[number]",
                 string -> consumer.accept(parseJenkinsResponse(build, string)));
     }
 
     private static JsonObject parseJenkinsResponse(int build, String string) {
         JsonObject jenkins = new JsonObject();
-        jenkins.add("repo", "SimplePets_v5");
         jenkins.add("plugin_build_number", build);
-
         try {
-            JsonObject buildResult = (JsonObject) Json.parse(string);
-
-            if (buildResult.isEmpty()) {
-                jenkins.add("reason", "Empty");
-                jenkins.add("parsed_string", string);
-                return jenkins;
-            }
-
-            if (!buildResult.names().contains("build-number")) {
-                jenkins.add("reason", "Missing repo: SimplePets_v5");
-                jenkins.add("parsed_string", string);
-                return jenkins;
-            }
-
-            int latestBuild = buildResult.getInt("build-number", -1);
+            int latestBuild = ((JsonObject) Json.parse(string)).get("lastBuild").asObject().getInt("number", -1);
+            jenkins.add("jenkins_build_number", latestBuild);
             if (latestBuild > build) jenkins.add("number_of_builds_behind", latestBuild - build);
             if (build > latestBuild) jenkins.add("number_of_builds_behind", "From The Future :O");
-            jenkins.add("jenkins_build_number", latestBuild);
         } catch (Exception e) {
-            jenkins.add("parsed_string", string);
             jenkins.add("error_parsing_json", e.getMessage());
+            jenkins.add("raw_response", string);
         }
-
         return jenkins;
     }
 

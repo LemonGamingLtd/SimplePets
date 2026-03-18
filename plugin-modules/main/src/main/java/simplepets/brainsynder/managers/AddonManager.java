@@ -7,8 +7,8 @@ import lib.brainsynder.json.Json;
 import lib.brainsynder.json.JsonArray;
 import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.utils.AdvString;
-import lib.brainsynder.web.WebConnector;
 import org.apache.commons.io.FileUtils;
+import org.bsdevelopment.pluginutils.utilities.WebConnector;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
@@ -409,7 +409,7 @@ public class AddonManager {
     }
 
     public void fetchAddons(Consumer<List<AddonCloudData>> consumer) {
-        WebConnector.getInputStreamString("https://bsdevelopment.org/api/addons/list/SimplePets", plugin, result -> {
+        WebConnector.getInputStreamString("https://bsdevelopment.org/api/addons/list/SimplePets", result -> {
             List<AddonCloudData> addons = Lists.newArrayList();
 
             JsonArray array = Json.parse(result).asArray();

@@ -2,11 +2,11 @@ package simplepets.brainsynder.commands.list;
 
 import lib.brainsynder.nms.Tellraw;
 import lib.brainsynder.utils.Colorize;
-import lib.brainsynder.web.WebConnector;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
+import org.bsdevelopment.pluginutils.utilities.PasteClient;
 import org.bukkit.ChatColor;
 import simplepets.brainsynder.PetCore;
-import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.commands.PetCommandClass;
 import simplepets.brainsynder.sql.SQLData;
@@ -102,9 +102,16 @@ public class DatabaseCommand implements PetCommandClass {
                             builder.append("[Count: ").append(triple.right).append("]   '").append(triple.middle).append("'    (").append(triple.left.toString()).append(")").append("\n");
                         });
 
-                        WebConnector.uploadPaste(SimplePets.getPlugin(), builder.toString(), s -> {
-                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Here is a list of duplicated players: ");
-                            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " " + s);
+                        PluginUtilities.getScheduler().runTaskAsynchronously(() -> {
+                            try {
+                                String pasteUrl = PasteClient.pasteUrl(PasteClient.upload(builder.toString(), "plain"));
+                                PluginUtilities.getScheduler().runTask(() -> {
+                                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " Here is a list of duplicated players: ");
+                                    sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.GRAY + " " + pasteUrl);
+                                });
+                            } catch (Exception e) {
+                                PluginUtilities.getScheduler().runTask(() -> sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + ChatColor.RED + " Failed to upload paste: " + e.getMessage()));
+                            }
                         });
                     });
                 });
