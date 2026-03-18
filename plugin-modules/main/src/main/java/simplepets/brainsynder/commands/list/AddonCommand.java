@@ -1,9 +1,9 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.json.Json;
-import lib.brainsynder.json.JsonObject;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
+import org.bsdevelopment.pluginutils.libs.json.Json;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;

@@ -1,8 +1,8 @@
 package simplepets.brainsynder.api.inventory;
 
 import lib.brainsynder.files.JsonFile;
-import lib.brainsynder.json.JsonArray;
-import lib.brainsynder.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.json.JsonArray;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

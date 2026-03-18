@@ -1,10 +1,10 @@
 package simplepets.brainsynder.managers;
 
 import lib.brainsynder.files.JsonFile;
-import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagTools;
 import lib.brainsynder.particle.Particle;
 import lib.brainsynder.particle.ParticleMaker;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;

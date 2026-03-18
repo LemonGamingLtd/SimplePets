@@ -2,7 +2,7 @@ package simplepets.brainsynder.api.pet.data;
 
 import com.google.common.collect.Lists;
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.misc.ISizable;
 import simplepets.brainsynder.api.pet.IPetConfig;

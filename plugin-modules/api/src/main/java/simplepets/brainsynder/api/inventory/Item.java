@@ -2,9 +2,9 @@ package simplepets.brainsynder.api.inventory;
 
 import lib.brainsynder.files.JsonFile;
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagTools;
 import lib.brainsynder.utils.DyeColorWrapper;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.plugin.SimplePets;

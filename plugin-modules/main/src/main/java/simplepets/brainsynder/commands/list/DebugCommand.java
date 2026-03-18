@@ -1,11 +1,11 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.json.Json;
-import lib.brainsynder.json.JsonArray;
-import lib.brainsynder.json.JsonObject;
-import lib.brainsynder.json.WriterConfig;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
+import org.bsdevelopment.pluginutils.libs.json.Json;
+import org.bsdevelopment.pluginutils.libs.json.JsonArray;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.json.WriterConfig;
 import org.bsdevelopment.pluginutils.utilities.PasteClient;
 import org.bsdevelopment.pluginutils.utilities.WebConnector;
 import org.bsdevelopment.pluginutils.version.ServerVersion;

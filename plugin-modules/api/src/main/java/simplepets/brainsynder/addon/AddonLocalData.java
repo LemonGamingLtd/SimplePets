@@ -1,9 +1,9 @@
 package simplepets.brainsynder.addon;
 
 import com.google.common.collect.Lists;
-import lib.brainsynder.json.JsonArray;
-import lib.brainsynder.json.JsonObject;
-import lib.brainsynder.json.JsonValue;
+import org.bsdevelopment.pluginutils.libs.json.JsonArray;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.json.JsonValue;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -90,21 +90,6 @@ public class AddonLocalData {
         return pluginSupport;
     }
 
-    public static final class SupportData {
-        private final String name;
-        private final String url;
-
-        public SupportData(String name, String url) {
-            this.name = name;
-            this.url = url;
-        }
-
-        public String name() {
-            return name;
-        }
-
-        public String url() {
-            return url;
-        }
+    public record SupportData(String name, String url) {
     }
 }

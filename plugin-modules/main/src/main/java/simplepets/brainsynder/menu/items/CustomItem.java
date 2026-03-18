@@ -1,6 +1,6 @@
 package simplepets.brainsynder.menu.items;
 
-import lib.brainsynder.json.JsonArray;
+import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

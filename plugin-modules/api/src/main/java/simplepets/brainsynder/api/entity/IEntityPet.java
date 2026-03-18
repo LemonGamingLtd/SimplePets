@@ -1,7 +1,7 @@
 package simplepets.brainsynder.api.entity;
 
-import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import simplepets.brainsynder.api.entity.misc.IBurnablePet;

@@ -2,8 +2,8 @@ package simplepets.brainsynder.utils.debug;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import lib.brainsynder.json.JsonArray;
-import lib.brainsynder.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.json.JsonArray;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.ServerOperator;
 import org.bukkit.scheduler.BukkitRunnable;

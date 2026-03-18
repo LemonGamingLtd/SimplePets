@@ -1,8 +1,8 @@
 package simplepets.brainsynder.api.pet;
 
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.json.JsonObject;
-import lib.brainsynder.json.JsonValue;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.json.JsonValue;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.plugin.SimplePets;

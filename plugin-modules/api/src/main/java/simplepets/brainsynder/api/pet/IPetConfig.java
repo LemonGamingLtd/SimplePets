@@ -1,8 +1,8 @@
 package simplepets.brainsynder.api.pet;
 
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.json.JsonObject;
 import lib.brainsynder.sounds.SoundMaker;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
