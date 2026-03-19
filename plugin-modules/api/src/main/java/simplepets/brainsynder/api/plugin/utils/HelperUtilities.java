@@ -59,7 +59,12 @@ public final class HelperUtilities {
             if (compound.isBoolean(key)) {
                 json.add(key, compound.getBoolean(key));
             } else if (base.getId() >= 1 && base.getId() <= 6) {
-                json.add(key, compound.getInteger(key));
+                switch (base.getId()) {
+                    case 1, 2, 3 -> json.add(key, compound.getInteger(key));
+                    case 4 -> json.add(key, compound.getLong(key) + "l");
+                    case 5 -> json.add(key, compound.getFloat(key) + "f");
+                    case 6 -> json.add(key, compound.getDouble(key) + "d");
+                }
             } else if (base instanceof IStorageList storageList) {
                 JsonArray array = new JsonArray();
                 Object list = storageList.getList();
@@ -91,7 +96,19 @@ public final class HelperUtilities {
             } else if (value.isBoolean()) {
                 compound.setBoolean(key, value.asBoolean());
             } else if (value.isString()) {
-                compound.setString(key, value.asString());
+                String s = value.asString();
+                if (s.endsWith("f")) {
+                    try { compound.setFloat(key, Float.parseFloat(s.substring(0, s.length() - 1))); }
+                    catch (NumberFormatException e) { compound.setString(key, s); }
+                } else if (s.endsWith("d")) {
+                    try { compound.setDouble(key, Double.parseDouble(s.substring(0, s.length() - 1))); }
+                    catch (NumberFormatException e) { compound.setString(key, s); }
+                } else if (s.endsWith("l")) {
+                    try { compound.setLong(key, Long.parseLong(s.substring(0, s.length() - 1))); }
+                    catch (NumberFormatException e) { compound.setString(key, s); }
+                } else {
+                    compound.setString(key, s);
+                }
             } else if (value.isArray()) {
                 JsonArray array = value.asArray();
                 List<Byte> bytes = new ArrayList<>();
