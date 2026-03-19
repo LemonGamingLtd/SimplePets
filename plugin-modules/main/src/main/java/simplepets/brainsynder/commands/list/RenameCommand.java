@@ -71,6 +71,9 @@ public class RenameCommand implements PetCommandClass {
                             case SIGN:
                                 PetCore.getInstance().getRenameManager().renameViaSign(user, type);
                                 break;
+                            case DIALOG:
+                                PetCore.getInstance().getRenameManager().renameViaDialog(user, type);
+                                break;
                         }
                     });
                 });

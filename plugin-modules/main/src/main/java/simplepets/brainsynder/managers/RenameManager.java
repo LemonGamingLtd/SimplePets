@@ -15,6 +15,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.dialog.RenameDialog;
 import simplepets.brainsynder.utils.RenameType;
 
 import java.util.Arrays;
@@ -25,6 +26,7 @@ public class RenameManager {
 
     public RenameManager(PetCore plugin) {
         this.plugin = plugin;
+        RenameDialog.register();
     }
 
     public void renameViaAnvil(PetUser user, PetType type) {
@@ -67,6 +69,10 @@ public class RenameManager {
                 }
             });
         factory.buildConversation(user.getPlayer()).begin();
+    }
+
+    public void renameViaDialog(PetUser user, PetType type) {
+        RenameDialog.open(user, type);
     }
 
     public void renameViaSign(PetUser user, PetType type) {

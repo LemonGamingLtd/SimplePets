@@ -72,6 +72,14 @@ public interface MessageOption {
             "The title for the pet rename Anvil GUI");
     ConfigEntry<String> RENAME_ANVIL_TAG = REGISTRY.register("rename.anvil.tag_name", "&#de9790NEW NAME",
             "The name for the NAME_TAG in the Anvil GUI");
+    ConfigEntry<String> RENAME_DIALOG_TITLE = REGISTRY.register("rename.dialog.title", "Rename Pet",
+            "The title shown in the rename Dialog GUI");
+    ConfigEntry<String> RENAME_DIALOG_BODY = REGISTRY.register("rename.dialog.body", "Enter a new name for your {type} pet.\nType 'reset' to clear the name.",
+            "The body text shown in the rename Dialog GUI\n  - {type} will be replaced with the pet type name");
+    ConfigEntry<String> RENAME_DIALOG_INPUT_LABEL = REGISTRY.register("rename.dialog.input_label", "Pet Name",
+            "The label shown above the text input in the rename Dialog GUI");
+    ConfigEntry<String> RENAME_DIALOG_SUBMIT = REGISTRY.register("rename.dialog.submit_button", "Rename",
+            "The label for the submit button in the rename Dialog GUI");
     ConfigEntry<List<String>> RENAME_SIGN_TEXT = REGISTRY.register("rename.sign.lines",
             Lists.newArrayList("{input}", "&l^^^^^^^^", "&9&lPlease Enter", "&9&lPet Name"),
             """

@@ -531,6 +531,7 @@ public interface ConfigOption {
                     - CHAT (They have to type the name in chat)
                     - ANVIL (The Anvil GUI will open and they can change the name there)
                     - SIGN [REQUIRES ProtocolLib] (Will open a Sign GUI they input the name on the configured line)
+                    - DIALOG (Will open a dialog for them to enter their pets new name)
 
                     Default: {default}""");
     ConfigEntry<Boolean> RENAME_TRIM = REGISTRY.register("RenamePet.Trim-Name", false,

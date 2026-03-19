@@ -4,7 +4,8 @@ public enum RenameType {
     COMMAND,
     CHAT,
     ANVIL,
-    SIGN;
+    SIGN,
+    DIALOG;
 
     public static RenameType getType(String name, RenameType fallback) {
         try {
