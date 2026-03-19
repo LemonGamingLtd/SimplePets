@@ -1,6 +1,6 @@
 package simplepets.brainsynder.addon;
 
-import lib.brainsynder.files.YamlFile;
+import org.bsdevelopment.pluginutils.files.YamlFile;
 
 import java.io.File;
 

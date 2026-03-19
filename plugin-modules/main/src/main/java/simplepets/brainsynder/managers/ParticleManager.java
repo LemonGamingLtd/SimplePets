@@ -1,15 +1,15 @@
 package simplepets.brainsynder.managers;
 
-import lib.brainsynder.files.JsonFile;
-import lib.brainsynder.nbt.StorageTagTools;
 import lib.brainsynder.particle.Particle;
 import lib.brainsynder.particle.ParticleMaker;
+import org.bsdevelopment.pluginutils.files.JsonFile;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.other.ParticleHandler;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
+import simplepets.brainsynder.api.plugin.utils.HelperUtilities;
 
 import java.io.File;
 
@@ -43,12 +43,12 @@ public class ParticleManager implements ParticleHandler {
             JsonFile file = new JsonFile(new File(folder, name + ".json")) {
                 @Override
                 public void loadDefaults() {
-                    setDefault("particle", StorageTagTools.toJsonObject(defaultParticle.toCompound()));
+                    setDefault("particle", HelperUtilities.toJsonObject(defaultParticle.toCompound()));
                 }
             };
             if (!file.hasKey("particle")) return defaultParticle;
 
-            return new ParticleMaker(StorageTagTools.fromJsonObject((JsonObject) file.getValue("particle")));
+            return new ParticleMaker(HelperUtilities.fromJsonObject((JsonObject) file.getValue("particle")));
         } catch (Exception e) {
             return defaultParticle;
         }

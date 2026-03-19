@@ -1,13 +1,11 @@
 package simplepets.brainsynder.files;
 
-import lib.brainsynder.files.YamlFile;
+import org.bsdevelopment.pluginutils.files.YamlFile;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.plugin.config.internal.ConfigEntry;
 import simplepets.brainsynder.debug.DebugLevel;
-
-import java.util.function.BiConsumer;
 
 public class ConfigFile extends YamlFile {
     public ConfigFile(PetCore core) {
@@ -90,10 +88,10 @@ public class ConfigFile extends YamlFile {
         remove("WorldBorder.Block-If-Denied.Move");
         remove("WorldBorder.Block-If-Denied.Spawn");
         remove("WorldBorder.Block-If-Denied.Riding");
-        move("Needs-Pet-Permission-To-Open-GUI", "Permissions.Needs-Pet-Permission-for-GUI", logMove());
-        move("Needs-Data-Permissions", "Permissions.Data-Permissions", logMove());
-        move("Needs-Permission", "Permissions.Enabled", logMove());
-        move("Remove-Item-If-No-Permission", "Permissions.Only-Show-Pets-Player-Can-Access", logMove());
+        move("Needs-Pet-Permission-To-Open-GUI", "Permissions.Needs-Pet-Permission-for-GUI");
+        move("Needs-Data-Permissions", "Permissions.Data-Permissions");
+        move("Needs-Permission", "Permissions.Enabled");
+        move("Remove-Item-If-No-Permission", "Permissions.Only-Show-Pets-Player-Can-Access");
         remove("WorldGuard.Spawning.Always-Allowed");
         remove("WorldGuard.Spawning.Blocked-Regions");
         remove("WorldGuard.Pet-Entering.Always-Allowed");
@@ -106,12 +104,5 @@ public class ConfigFile extends YamlFile {
         remove("PetToggles.Weight.Weight_Stacked");
         remove("PetToggles.Weight.Max_Weight");
         remove("Complete-Mobspawning-Deny-Bypass");
-    }
-
-    protected BiConsumer<String, String> logMove() {
-        return (oldKey, newKey) -> {
-            String name = getClass().getSimpleName().replace("File", "");
-            SimplePets.getDebugLogger().debug("[" + name + "] Moving '" + oldKey + "' to '" + newKey + "'");
-        };
     }
 }

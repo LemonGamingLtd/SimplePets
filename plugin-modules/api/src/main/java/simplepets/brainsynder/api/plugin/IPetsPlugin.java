@@ -1,6 +1,6 @@
 package simplepets.brainsynder.api.plugin;
 
-import lib.brainsynder.files.YamlFile;
+import org.bsdevelopment.pluginutils.files.YamlFile;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import simplepets.brainsynder.api.ISpawnUtil;

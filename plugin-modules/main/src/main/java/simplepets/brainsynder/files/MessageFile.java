@@ -1,7 +1,7 @@
 package simplepets.brainsynder.files;
 
-import lib.brainsynder.files.YamlFile;
 import lib.brainsynder.utils.Colorize;
+import org.bsdevelopment.pluginutils.files.YamlFile;
 import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.api.plugin.config.internal.ConfigEntry;
 
