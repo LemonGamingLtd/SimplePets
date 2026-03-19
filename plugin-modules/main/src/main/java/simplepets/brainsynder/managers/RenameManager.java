@@ -1,6 +1,7 @@
 package simplepets.brainsynder.managers;
 
 import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.conversations.ConversationContext;
@@ -14,7 +15,6 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.plugin.config.MessageOption;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.utils.AnvilGUI;
 import simplepets.brainsynder.utils.RenameType;
 
 import java.util.Arrays;
