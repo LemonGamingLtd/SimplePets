@@ -10,7 +10,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.CatVariants;
-import org.bsdevelopment.pluginutils.libs.json.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.craftbukkit.CraftRegistry;
 import simplepets.brainsynder.api.entity.passive.IEntityCatPet;
 import simplepets.brainsynder.api.pet.PetType;
