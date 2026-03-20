@@ -99,3 +99,8 @@ val jenkinsVersioning = file("gradle/jenkins-versioning.gradle.kts")
 if (jenkinsVersioning.exists()) {
     apply(from = jenkinsVersioning)
 }
+
+val minecraftVersions = file("gradle/add-minecraft-version.gradle.kts")
+if (minecraftVersions.exists()) {
+    apply(from = minecraftVersions)
+}
