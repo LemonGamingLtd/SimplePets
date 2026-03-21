@@ -21,6 +21,17 @@ public class MessageFile extends YamlFile {
             } else {
                 addDefault(key, entry.defaultValue(), entry.description());
             }
+
+            // Moves all the old keys to the new key
+            if (!entry.pastPaths().isEmpty()) {
+                entry.pastPaths().forEach(oldKey -> {
+                    String old = String.valueOf(oldKey);
+                    if (contains(old)) {
+                        set(key, get(old), false);
+                        set(old, null, false);
+                    }
+                });
+            }
         });
     }
 
@@ -32,12 +43,8 @@ public class MessageFile extends YamlFile {
         });
 
         MessageOption.REGISTRY.setSaveHandler(entry -> {
-            set(entry.path(), entry.valueToConfigValue());
-            try {
-                save();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            set(entry.path(), entry.valueToConfigValue(), false);
+            save();
         });
     }
 

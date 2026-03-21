@@ -26,7 +26,13 @@ public class ConfigFile extends YamlFile {
 
             // Moves all the old keys to the new key
             if (!entry.pastPaths().isEmpty()) {
-                entry.pastPaths().forEach(oldKey -> move(String.valueOf(oldKey), key));
+                entry.pastPaths().forEach(oldKey -> {
+                    String old = String.valueOf(oldKey);
+                    if (contains(old)) {
+                        set(key, get(old), false);
+                        set(old, null, false);
+                    }
+                });
             }
         });
 
@@ -39,7 +45,9 @@ public class ConfigFile extends YamlFile {
             Object value = get(key);
 
             // Validate the value, make sure the types match to prevent booleans becoming numbers
-            if (!value.getClass().getSimpleName().equals(entry.defaultValue().getClass().getSimpleName())) {
+            if (value == null) {
+                value = entry.defaultValue();
+            } else if (!value.getClass().getSimpleName().equals(entry.defaultValue().getClass().getSimpleName())) {
                 SimplePets.getDebugLogger().debug(DebugLevel.CRITICAL, "Value of '" + key + "' can not be a '" + value.getClass().getSimpleName() + "' must be a '" + entry.defaultValue().getClass().getSimpleName() + "'" + ((entry.example() != null) ? " Example(s): " + entry.example() : ""));
                 value = entry.defaultValue();
             }
@@ -48,12 +56,8 @@ public class ConfigFile extends YamlFile {
         });
 
         ConfigOption.REGISTRY.setSaveHandler(entry -> {
-            set(entry.path(), entry.valueToConfigValue());
-            try {
-                save();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            set(entry.path(), entry.valueToConfigValue(), false);
+            save();
         });
     }
 
