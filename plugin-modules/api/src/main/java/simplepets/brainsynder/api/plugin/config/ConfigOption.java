@@ -29,29 +29,6 @@ public interface ConfigOption {
                     Would you like to check for when there is a new update?
 
                     Default: {default}""");
-    ConfigEntry<Boolean> UPDATE_CHECK_ON_JOIN = REGISTRY.register("Update-Checking.Message-On-Join", true,
-            """
-                    Would you like to be alerted when there is a new update when you log in?
-                    (MUST HAVE 'pet.update' permission or OP)
-
-                    Default: {default}""");
-    ConfigEntry<Boolean> UPDATE_CHECK_DEV_BUILDS = REGISTRY.register("Update-Checking.Check-Dev-Builds", true,
-            """
-                    This will enable checking for dev builds released on jenkins
-                    (This will only be used when you have downloaded the jar from either Polymart or Spigot)
-
-                    Default: {default}""");
-    ConfigEntry<String> UPDATE_CHECK_UNIT = REGISTRY.register("Update-Checking.unit", TimeUnit.HOURS.name(),
-            """
-                    The unit of time for update checking
-                    Time Units:
-                    - SECONDS
-                    - MINUTES
-                    - HOURS
-                    - DAYS
-
-                    Default: {default}""");
-    ConfigEntry<Integer> UPDATE_CHECK_TIME = REGISTRY.register("Update-Checking.time", 12);
 
     // Permissions
     ConfigEntry<List<String>> PERMISSIONS_IGNORE_LIST = REGISTRY.register("Permissions.Ignored-List", new ArrayList<>(),

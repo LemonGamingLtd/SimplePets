@@ -333,17 +333,6 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
     private void handleUpdateUtils() {
         if (!ConfigOption.UPDATE_CHECK_ENABLED.get()) return;
-        int time = ConfigOption.UPDATE_CHECK_TIME.get();
-        TimeUnit unit;
-
-        String timeunit = ConfigOption.UPDATE_CHECK_UNIT.get();
-        try {
-            unit = TimeUnit.valueOf(timeunit);
-        } catch (Exception e) {
-            unit = TimeUnit.HOURS;
-            debug.debug(DebugLevel.ERROR, "Could not find unit for '" + timeunit + "'");
-        }
-
         debug.debug(DebugLevel.HIDDEN, "Initializing update checker");
         if (Premium.getDownloadType().fromDownloadSite()) {
             try {
