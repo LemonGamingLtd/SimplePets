@@ -2,9 +2,9 @@ package simplepets.brainsynder.menu.items.list;
 
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.nbt.StorageTagCompound;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -48,12 +48,7 @@ public class SavePet extends Item {
                 if (pet.getPetType() == PetType.ARMOR_STAND) compound.setBoolean("restricted", true);
                 masterUser.addPetSave(compound);
             }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    inventory.open(masterUser);
-                }
-            }.runTaskLater(PetCore.getInstance(), 1);
+            PluginUtilities.getScheduler().runTaskLater(() -> inventory.open(masterUser), 1);
             return;
         }
 
@@ -65,12 +60,7 @@ public class SavePet extends Item {
                     masterUser.addPetSave(compound);
                 }
             });
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    inventory.open(masterUser);
-                }
-            }.runTaskLater(PetCore.getInstance(), 1);
+            PluginUtilities.getScheduler().runTaskLater(() -> inventory.open(masterUser), 1);
             return;
         }
         PetSelectorMenu menu = InventoryManager.SELECTOR;
@@ -82,12 +72,7 @@ public class SavePet extends Item {
                     user.addPetSave(compound);
                 }
             });
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    inventory.open(user);
-                }
-            }.runTaskLater(PetCore.getInstance(), 1);
+            PluginUtilities.getScheduler().runTaskLater(() -> inventory.open(user), 1);
         });
         menu.open(masterUser, 1, inventory.getTitle());
     }

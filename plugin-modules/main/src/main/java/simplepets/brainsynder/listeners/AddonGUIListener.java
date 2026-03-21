@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.inventory.Item;
 import simplepets.brainsynder.api.plugin.SimplePets;
@@ -54,14 +53,9 @@ public class AddonGUIListener implements Listener {
                     stack.setItemMeta(meta);
                     e.getInventory().setItem(e.getRawSlot(), stack);
 
-                    PetCore.getInstance().getAddonManager().downloadViaName(name, container.get(Keys.ADDON_URL, PersistentDataType.STRING), () -> {
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                menu.open(user, menu.getCurrentPage(user), menu.isInstallerGUI(user));
-                            }
-                        }.runTaskLater(PetCore.getInstance(), 10);
-                    });
+                    PetCore.getInstance().getAddonManager().downloadViaName(name, container.get(Keys.ADDON_URL, PersistentDataType.STRING), () ->
+                        PluginUtilities.getScheduler().runTaskLater(() ->
+                            menu.open(user, menu.getCurrentPage(user), menu.isInstallerGUI(user)), 10));
                     return;
                 }
                 PetCore.getInstance().getAddonManager().fetchAddonModule(name).ifPresent(module -> {
@@ -70,26 +64,17 @@ public class AddonGUIListener implements Listener {
                         stack.setItemMeta(meta);
                         e.getInventory().setItem(e.getRawSlot(), stack);
 
-                        PetCore.getInstance().getAddonManager().update(module.getLocalData(), container.get(Keys.ADDON_UPDATE, PersistentDataType.STRING), () -> {
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    menu.open(user, menu.getCurrentPage(user), menu.isInstallerGUI(user));
-                                }
-                            }.runTaskLater(PetCore.getInstance(), 2);
-                        });
+                        PetCore.getInstance().getAddonManager().update(module.getLocalData(), container.get(Keys.ADDON_UPDATE, PersistentDataType.STRING), () ->
+                            PluginUtilities.getScheduler().runTaskLater(() ->
+                                menu.open(user, menu.getCurrentPage(user), menu.isInstallerGUI(user)), 2));
                         return;
                     }
 
                     boolean enabled = !module.isEnabled();
                     PetCore.getInstance().getAddonManager().toggleAddonModule(module, enabled);
 
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            menu.open(user, menu.getCurrentPage(user), menu.isInstallerGUI(user));
-                        }
-                    }.runTaskLater(PetCore.getInstance(), 2);
+                    PluginUtilities.getScheduler().runTaskLater(() ->
+                        menu.open(user, menu.getCurrentPage(user), menu.isInstallerGUI(user)), 2);
                 });
 
             });

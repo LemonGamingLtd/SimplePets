@@ -6,11 +6,11 @@ import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.StorageTagList;
 import lib.brainsynder.nbt.StorageTagString;
 import lib.brainsynder.optional.BiOptional;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.ISpawnUtil;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -71,9 +71,7 @@ public class PetOwner implements PetUser {
         petMap.clear();
         nameMap.clear();
         ownedPets.clear();
-        new BukkitRunnable() {
-            @Override
-            public void run() {
+        PluginUtilities.getScheduler().runTask(() -> {
                 if (compound.hasKey("pet_names")) {
                     StorageTagList names = (StorageTagList) compound.getTag("pet_names");
                     names.getList().forEach(storageBase -> {
@@ -125,8 +123,7 @@ public class PetOwner implements PetUser {
                 }
 
                 isLoaded = true;
-            }
-        }.runTask(PetCore.getInstance());
+        });
     }
 
     public StorageTagCompound toCompound() {
@@ -535,14 +532,11 @@ public class PetOwner implements PetUser {
                 Bukkit.getPluginManager().callEvent(hatEvent);
                 // Set the pet as a hat
                 Entity finalEnt = ent;
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        Utilities.runPetCommands(CommandReason.HAT, PetOwner.this, type);
-                        Utilities.setPassenger(getPlayer(), getTopEntity(getPlayer()), finalEnt);
-                        entityPet.togglePetHatTask(hat);
-                    }
-                }.runTaskLater(PetCore.getInstance(), delay);
+                PluginUtilities.getScheduler().runTaskLater(() -> {
+                    Utilities.runPetCommands(CommandReason.HAT, PetOwner.this, type);
+                    Utilities.setPassenger(getPlayer(), getTopEntity(getPlayer()), finalEnt);
+                    entityPet.togglePetHatTask(hat);
+                }, delay);
             } else {
                 // If pet is a hat, remove the hat from the player
                 if (!isPetHat(type)) return;
@@ -688,13 +682,7 @@ public class PetOwner implements PetUser {
             }
 
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    entityPet.attachOwner();
-
-                }
-            }.runTaskLater(PetCore.getInstance(), 2L);
+            PluginUtilities.getScheduler().runTaskLater(entityPet::attachOwner, 2L);
         });
         return false;
     }

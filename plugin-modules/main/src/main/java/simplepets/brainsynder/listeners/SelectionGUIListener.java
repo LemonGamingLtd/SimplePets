@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.event.inventory.PetSelectTypeEvent;
 import simplepets.brainsynder.api.event.inventory.PetTypeStorage;
@@ -69,12 +68,8 @@ public class SelectionGUIListener implements Listener {
                         return;
                     }
 
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            Utilities.handlePetSpawning(user, type.getType(), new StorageTagCompound(), false);
-                        }
-                    }.runTask(PetCore.getInstance());
+                    PluginUtilities.getScheduler().runTask(() ->
+                        Utilities.handlePetSpawning(user, type.getType(), new StorageTagCompound(), false));
                     break;
 
                 }

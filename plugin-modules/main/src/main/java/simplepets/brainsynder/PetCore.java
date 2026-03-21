@@ -19,7 +19,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.addon.AddonLocalData;
 import simplepets.brainsynder.api.ISpawnUtil;
 import simplepets.brainsynder.api.inventory.handler.GUIHandler;
@@ -229,14 +228,11 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
             debug.debug(SimplePets.ADDON, "Loading addons in '" + ConfigOption.ADDON_LOAD_TIME.get() + " " + timeunit + "'");
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    addonManager.checkAddons();
+            PluginUtilities.getScheduler().runTaskLater(() -> {
+                addonManager.checkAddons();
 
-                    handleMetrics();
-                }
-            }.runTaskLater(this, Utilities.toUnit(ConfigOption.ADDON_LOAD_TIME.get(), unit));
+                handleMetrics();
+            }, Utilities.toUnit(ConfigOption.ADDON_LOAD_TIME.get(), unit));
         }
 
         checkWorldGuard(value -> {
@@ -254,14 +250,11 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
         if (Bukkit.getOnlinePlayers().isEmpty()) return;
         // Delay it for a second to actually have the database load
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                debug.debug(DebugLevel.HIDDEN, "Respawning pets for players (if there are any)");
-                UserManagement userManager = SimplePets.getUserManager();
-                Bukkit.getOnlinePlayers().forEach(userManager::getPetUser);
-            }
-        }.runTaskLater(this, 20);
+        PluginUtilities.getScheduler().runTaskLater(() -> {
+            debug.debug(DebugLevel.HIDDEN, "Respawning pets for players (if there are any)");
+            UserManagement userManager = SimplePets.getUserManager();
+            Bukkit.getOnlinePlayers().forEach(userManager::getPetUser);
+        }, 20);
 
     }
 

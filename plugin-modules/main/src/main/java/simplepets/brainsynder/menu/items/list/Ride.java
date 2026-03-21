@@ -1,9 +1,8 @@
 package simplepets.brainsynder.menu.items.list;
 
 import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.Material;
-import org.bukkit.scheduler.BukkitRunnable;
-import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.inventory.CustomInventory;
@@ -45,38 +44,25 @@ public class Ride extends Item {
         if (pet != null) {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_RIDE.get())
                 masterUser.getPlayer().closeInventory();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    masterUser.setPetVehicle(pet.getPetType(), !masterUser.isPetVehicle(pet.getPetType()));
-                }
-            }.runTaskLater(PetCore.getInstance(), 2);
+            PluginUtilities.getScheduler().runTaskLater(() ->
+                masterUser.setPetVehicle(pet.getPetType(), !masterUser.isPetVehicle(pet.getPetType())), 2);
             return;
         }
 
         if (masterUser.getPetEntities().size() == 1) {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_RIDE.get())
                 masterUser.getPlayer().closeInventory();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
-                        masterUser.setPetVehicle(iEntityPet.getPetType(), !masterUser.isPetVehicle(iEntityPet.getPetType()));
-                    });
-                }
-            }.runTaskLater(PetCore.getInstance(), 2);
+            PluginUtilities.getScheduler().runTaskLater(() ->
+                masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet ->
+                    masterUser.setPetVehicle(iEntityPet.getPetType(), !masterUser.isPetVehicle(iEntityPet.getPetType()))), 2);
             return;
         }
         PetSelectorMenu menu = InventoryManager.SELECTOR;
         menu.setTask(masterUser.getPlayer().getName(), (user, type) -> {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_RIDE.get())
                 user.getPlayer().closeInventory();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    user.setPetVehicle(type, !user.isPetVehicle(type));
-                }
-            }.runTaskLater(PetCore.getInstance(), 2);
+            PluginUtilities.getScheduler().runTaskLater(() ->
+                user.setPetVehicle(type, !user.isPetVehicle(type)), 2);
         });
         menu.open(masterUser, 1, inventory.getTitle());
     }

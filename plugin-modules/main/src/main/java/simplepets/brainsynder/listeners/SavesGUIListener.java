@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.inventory.Item;
 import simplepets.brainsynder.api.plugin.SimplePets;
@@ -50,12 +49,7 @@ public class SavesGUIListener implements Listener {
                 if (Utilities.isSimilar(entry.getValue(), e.getCurrentItem())) {
                     if (e.getClick().isRightClick()) {
                         user.removePetSave(compound);
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                menu.open(user);
-                            }
-                        }.runTaskLater(PetCore.getInstance(), 2);
+                        PluginUtilities.getScheduler().runTaskLater(() -> menu.open(user), 2);
                         return;
                     }
 

@@ -1,9 +1,8 @@
 package simplepets.brainsynder.menu.items.list;
 
 import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.Material;
-import org.bukkit.scheduler.BukkitRunnable;
-import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.inventory.CustomInventory;
@@ -52,28 +51,21 @@ public class Remove extends Item {
         if (masterUser.getPetEntities().size() == 1) {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_REMOVE.get())
                 masterUser.getPlayer().closeInventory();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
-                        masterUser.removePet(iEntityPet.getPetType());
-                        if (inventory instanceof DataMenu) masterUser.updateDataMenu();
-                    });
-                }
-            }.runTaskLater(PetCore.getInstance(), 2);
+            PluginUtilities.getScheduler().runTaskLater(() ->
+                masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
+                    masterUser.removePet(iEntityPet.getPetType());
+                    if (inventory instanceof DataMenu) masterUser.updateDataMenu();
+                }), 2);
             return;
         }
         PetSelectorMenu menu = InventoryManager.SELECTOR;
         menu.setTask(masterUser.getPlayer().getName(), (user, type) -> {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_REMOVE.get())
                 user.getPlayer().closeInventory();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    user.removePet(type);
-                    if (inventory instanceof DataMenu) user.updateDataMenu();
-                }
-            }.runTaskLater(PetCore.getInstance(), 2);
+            PluginUtilities.getScheduler().runTaskLater(() -> {
+                user.removePet(type);
+                if (inventory instanceof DataMenu) user.updateDataMenu();
+            }, 2);
         });
         menu.open(masterUser, 1, inventory.getTitle());
     }

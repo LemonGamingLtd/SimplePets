@@ -19,6 +19,7 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -33,9 +34,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
-import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.entity.ambient.IEntityArmorStandPet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.other.ParticleHandler;
@@ -104,12 +103,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         stand.setInvisible(false);
         VersionHelper.addEntity(((CraftWorld) location.getWorld()).getHandle(), stand, CreatureSpawnEvent.SpawnReason.CUSTOM);
         pet.setIgnoreVanish(true);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                stand.getBukkitEntity().setGravity(true);
-            }
-        }.runTaskLater(PetCore.getInstance(), 60);
+        PluginUtilities.getScheduler().runTaskLater(() -> stand.getBukkitEntity().setGravity(true), 60);
         return stand;
     }
 

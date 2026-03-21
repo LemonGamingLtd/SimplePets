@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lib.brainsynder.utils.AdvString;
 import org.apache.commons.io.FileUtils;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.files.YamlFile;
 import org.bsdevelopment.pluginutils.libs.json.Json;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
@@ -12,7 +13,6 @@ import org.bsdevelopment.pluginutils.utilities.WebConnector;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.addon.AddonCloudData;
 import simplepets.brainsynder.addon.AddonConfig;
@@ -253,16 +253,11 @@ public class AddonManager {
     public void downloadViaName(String name, String url, Runnable runnable) {
         CompletableFuture.runAsync(() -> {
             try {
-                download(url, name, file -> {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            loadAddon(file);
-                            initialize();
-                            runnable.run();
-                        }
-                    }.runTask(plugin);
-                });
+                download(url, name, file -> PluginUtilities.getScheduler().runTask(() -> {
+                    loadAddon(file);
+                    initialize();
+                    runnable.run();
+                }));
             } catch (Exception e) {
                 try {
                     final File file = new File(folder.getAbsolutePath() + "/" + name);
@@ -279,29 +274,21 @@ public class AddonManager {
     public void downloadAddon(File original, String url, Runnable runnable) {
         CompletableFuture.runAsync(() -> {
             try {
-                download(url, original.getName(), file -> {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            loadAddon(file);
-                            initialize();
-                            runnable.run();
-                        }
-                    }.runTask(plugin);
-                });
+                download(url, original.getName(), file -> PluginUtilities.getScheduler().runTask(() -> {
+                    loadAddon(file);
+                    initialize();
+                    runnable.run();
+                }));
             } catch (Exception e) {
                 try {
                     final File file = new File(folder.getAbsolutePath() + "/" + original.getName());
                     original.delete();
                     FileUtils.copyURLToFile(new URL(url), file);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            loadAddon(file);
-                            initialize();
-                            runnable.run();
-                        }
-                    }.runTask(plugin);
+                    PluginUtilities.getScheduler().runTask(() -> {
+                        loadAddon(file);
+                        initialize();
+                        runnable.run();
+                    });
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

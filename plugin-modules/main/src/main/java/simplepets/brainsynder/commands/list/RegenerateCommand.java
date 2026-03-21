@@ -1,11 +1,11 @@
 package simplepets.brainsynder.commands.list;
 
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.arguments.CustomArgument;
 import org.bsdevelopment.pluginutils.command.arguments.StringArgument;
 import org.bsdevelopment.pluginutils.command.arguments.suggestions.ArgumentSuggestions;
 import org.bsdevelopment.pluginutils.command.exception.ArgumentParseException;
-import org.bukkit.scheduler.BukkitRunnable;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
@@ -46,13 +46,10 @@ public class RegenerateCommand implements PetCommandClass {
                     PetCore plugin = PetCore.getInstance();
                     File petsFolder = new File(plugin.getDataFolder() + File.separator + "Pets");
                     deleteFiles(petsFolder);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            ((PetConfiguration) SimplePets.getPetConfigManager()).reset();
-                            sender.sendMessage(plugin.getMessageFile().getTranslation(MessageOption.PET_FILES_REGEN));
-                        }
-                    }.runTaskLater(plugin, 2);
+                    PluginUtilities.getScheduler().runTaskLater(() -> {
+                        ((PetConfiguration) SimplePets.getPetConfigManager()).reset();
+                        sender.sendMessage(plugin.getMessageFile().getTranslation(MessageOption.PET_FILES_REGEN));
+                    }, 2);
                 });
     }
 
@@ -64,13 +61,10 @@ public class RegenerateCommand implements PetCommandClass {
                     PetCore plugin = PetCore.getInstance();
                     File inventoryFolder = new File(plugin.getDataFolder() + File.separator + "Inventories");
                     deleteFiles(inventoryFolder);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            ((InventoryManager) plugin.getGUIHandler()).initiate();
-                            sender.sendMessage(plugin.getMessageFile().getTranslation(MessageOption.INV_FILES_REGEN));
-                        }
-                    }.runTaskLater(plugin, 2);
+                    PluginUtilities.getScheduler().runTaskLater(() -> {
+                        ((InventoryManager) plugin.getGUIHandler()).initiate();
+                        sender.sendMessage(plugin.getMessageFile().getTranslation(MessageOption.INV_FILES_REGEN));
+                    }, 2);
                 });
     }
 
@@ -82,13 +76,10 @@ public class RegenerateCommand implements PetCommandClass {
                     PetCore plugin = PetCore.getInstance();
                     File itemFolder = new File(plugin.getDataFolder() + File.separator + "Items");
                     deleteFiles(itemFolder);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            ((ItemManager) plugin.getItemHandler()).initiate();
-                            sender.sendMessage(plugin.getMessageFile().getTranslation(MessageOption.ITEM_FILES_REGEN));
-                        }
-                    }.runTaskLater(plugin, 2);
+                    PluginUtilities.getScheduler().runTaskLater(() -> {
+                        ((ItemManager) plugin.getItemHandler()).initiate();
+                        sender.sendMessage(plugin.getMessageFile().getTranslation(MessageOption.ITEM_FILES_REGEN));
+                    }, 2);
                 });
     }
 
@@ -100,13 +91,10 @@ public class RegenerateCommand implements PetCommandClass {
                     PetCore plugin = PetCore.getInstance();
                     File particleFolder = new File(plugin.getDataFolder() + File.separator + "Particles");
                     deleteFiles(particleFolder);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            plugin.getParticleHandler().reload(plugin);
-                            sender.sendMessage(plugin.getMessageFile().getTranslation(MessageOption.PARTICLE_FILES_REGEN));
-                        }
-                    }.runTaskLater(plugin, 2);
+                    PluginUtilities.getScheduler().runTaskLater(() -> {
+                        plugin.getParticleHandler().reload(plugin);
+                        sender.sendMessage(plugin.getMessageFile().getTranslation(MessageOption.PARTICLE_FILES_REGEN));
+                    }, 2);
                 });
     }
 
@@ -133,14 +121,11 @@ public class RegenerateCommand implements PetCommandClass {
                     File petsFolder = new File(plugin.getDataFolder() + File.separator + "Pets");
                     File petFile = new File(petsFolder, type.getName() + ".json");
                     petFile.delete();
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            ((PetConfiguration) SimplePets.getPetConfigManager()).reset(type);
-                            sender.sendMessage(plugin.getMessageFile().getTranslation(MessageOption.PET_TYPE_FILE_REGEN)
-                                    .replace("{type}", type.getName()));
-                        }
-                    }.runTaskLater(plugin, 1);
+                    PluginUtilities.getScheduler().runTaskLater(() -> {
+                        ((PetConfiguration) SimplePets.getPetConfigManager()).reset(type);
+                        sender.sendMessage(plugin.getMessageFile().getTranslation(MessageOption.PET_TYPE_FILE_REGEN)
+                                .replace("{type}", type.getName()));
+                    }, 1);
                 });
     }
 

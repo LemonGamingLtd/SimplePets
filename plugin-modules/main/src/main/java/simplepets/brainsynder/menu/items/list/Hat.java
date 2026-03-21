@@ -1,9 +1,8 @@
 package simplepets.brainsynder.menu.items.list;
 
 import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bukkit.Material;
-import org.bukkit.scheduler.BukkitRunnable;
-import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.inventory.CustomInventory;
@@ -45,26 +44,17 @@ public class Hat extends Item {
         if (pet != null) {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_HAT.get())
                 masterUser.getPlayer().closeInventory();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    masterUser.setPetHat(pet.getPetType(), !masterUser.isPetHat(pet.getPetType()));
-                }
-            }.runTaskLater(PetCore.getInstance(), 2);
+            PluginUtilities.getScheduler().runTaskLater(() ->
+                masterUser.setPetHat(pet.getPetType(), !masterUser.isPetHat(pet.getPetType())), 2);
             return;
         }
 
         if (masterUser.getPetEntities().size() == 1) {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_HAT.get())
                 masterUser.getPlayer().closeInventory();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
-                        masterUser.setPetHat(iEntityPet.getPetType(), !masterUser.isPetHat(iEntityPet.getPetType()));
-                    });
-                }
-            }.runTaskLater(PetCore.getInstance(), 2);
+            PluginUtilities.getScheduler().runTaskLater(() ->
+                masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet ->
+                    masterUser.setPetHat(iEntityPet.getPetType(), !masterUser.isPetHat(iEntityPet.getPetType()))), 2);
             return;
         }
 
@@ -72,12 +62,8 @@ public class Hat extends Item {
         menu.setTask(masterUser.getPlayer().getName(), (user, type) -> {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_HAT.get())
                 user.getPlayer().closeInventory();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    user.setPetHat(type, !user.isPetHat(type));
-                }
-            }.runTaskLater(PetCore.getInstance(), 2);
+            PluginUtilities.getScheduler().runTaskLater(() ->
+                user.setPetHat(type, !user.isPetHat(type)), 2);
         });
         menu.open(masterUser, 1, inventory.getTitle());
     }
