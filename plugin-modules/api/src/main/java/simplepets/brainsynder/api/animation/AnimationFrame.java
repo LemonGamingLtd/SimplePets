@@ -1,6 +1,6 @@
 package simplepets.brainsynder.api.animation;
 
-import lib.brainsynder.utils.AdvString;
+import org.bsdevelopment.pluginutils.text.AdvString;
 import org.bukkit.util.EulerAngle;
 import simplepets.brainsynder.api.entity.ambient.IEntityArmorStandPet;
 

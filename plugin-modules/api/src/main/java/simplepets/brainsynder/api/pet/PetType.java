@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.sounds.SoundMaker;
 import lib.brainsynder.utils.Capitalise;
-import lib.brainsynder.utils.Colorize;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bsdevelopment.pluginutils.version.VersionCompatibility;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;

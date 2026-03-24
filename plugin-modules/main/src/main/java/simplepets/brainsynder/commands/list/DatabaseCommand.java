@@ -1,9 +1,9 @@
 package simplepets.brainsynder.commands.list;
 
 import lib.brainsynder.nms.Tellraw;
-import lib.brainsynder.utils.Colorize;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bsdevelopment.pluginutils.utilities.PasteClient;
 import org.bukkit.ChatColor;
 import simplepets.brainsynder.PetCore;

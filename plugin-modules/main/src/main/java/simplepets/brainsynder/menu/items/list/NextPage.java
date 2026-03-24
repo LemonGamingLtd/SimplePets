@@ -1,7 +1,7 @@
 package simplepets.brainsynder.menu.items.list;
 
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.utils.ListPager;
+import org.bsdevelopment.pluginutils.storage.ListPager;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;

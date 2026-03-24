@@ -2,10 +2,10 @@ package simplepets.brainsynder.menu.inventory;
 
 import com.google.common.collect.Lists;
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.utils.Colorize;
-import lib.brainsynder.utils.ListPager;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.storage.ListPager;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

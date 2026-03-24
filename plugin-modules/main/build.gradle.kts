@@ -55,5 +55,6 @@ tasks {
         relocate("io.papermc.lib", "$groupID.libs.paperlib")
         relocate("lib.brainsynder", "$groupID.libs.bslib")
         relocate("org.bstats", "$groupID.libs.bstats")
+        relocate("org.bsdevelopment", "$groupID.libs.bsdev")
     }
 }

@@ -1,8 +1,8 @@
 package simplepets.brainsynder.addon;
 
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.utils.AdvString;
-import lib.brainsynder.utils.Colorize;
+import org.bsdevelopment.pluginutils.text.AdvString;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;

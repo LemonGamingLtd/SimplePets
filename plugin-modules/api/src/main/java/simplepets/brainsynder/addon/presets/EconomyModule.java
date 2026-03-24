@@ -3,7 +3,7 @@ package simplepets.brainsynder.addon.presets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.utils.Colorize;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import simplepets.brainsynder.addon.AddonConfig;
