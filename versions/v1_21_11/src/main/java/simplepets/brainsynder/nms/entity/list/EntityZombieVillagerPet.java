@@ -29,7 +29,6 @@ import java.util.Locale;
 public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZombieVillagerPet {
     private static final EntityDataAccessor<Boolean> CONVERTING = SynchedEntityData.defineId(EntityZombieVillagerPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<VillagerData> VILLAGER_DATA = SynchedEntityData.defineId(EntityZombieVillagerPet.class, EntityDataSerializers.VILLAGER_DATA);
-    private static final EntityDataAccessor<Boolean> DATA_VILLAGER_DATA_FINALIZED = SynchedEntityData.defineId(EntityZombieVillagerPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityZombieVillagerPet(PetType type, PetUser user) {
         super(EntityType.ZOMBIE_VILLAGER, type, user);
@@ -54,7 +53,6 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
                 BuiltInRegistries.VILLAGER_PROFESSION.getOrThrow(VillagerProfession.NONE),
                 1
         ));
-        dataAccess.define(DATA_VILLAGER_DATA_FINALIZED, false);
     }
 
     @Override
@@ -93,7 +91,7 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
 
     @Override
     public VillagerInfo getVillagerData() {
-        net.minecraft.world.entity.npc.villager.VillagerData raw = getRawData();
+        VillagerData raw = getRawData();
         return  new VillagerInfo(
                 BiomeType.valueOf(CraftVillager.CraftType.minecraftHolderToBukkit(raw.type()).getKey().value().toUpperCase(Locale.ROOT)),
                 VillagerType.valueOf(CraftVillager.CraftProfession.minecraftHolderToBukkit(raw.profession()).getKey().value().toUpperCase(Locale.ROOT)),
