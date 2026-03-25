@@ -30,7 +30,6 @@ import simplepets.brainsynder.nms.utils.VariantUtils;
 public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
     private static final EntityDataAccessor<Integer> DATA_BOOST_TIME = SynchedEntityData.defineId(EntityPigPet.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Holder<PigVariant>> VARIANT = SynchedEntityData.defineId(EntityPigPet.class, EntityDataSerializers.PIG_VARIANT);
-    private static final EntityDataAccessor<Holder<PigSoundVariant>> DATA_SOUND_VARIANT_ID = SynchedEntityData.defineId(EntityPigPet.class, EntityDataSerializers.PIG_SOUND_VARIANT);
     private TemperatureVariant variant = TemperatureVariant.TEMPERATE;
 
     public EntityPigPet(PetType type, PetUser user) {
@@ -43,9 +42,6 @@ public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
         super.populateDataAccess(dataAccess);
         dataAccess.define(DATA_BOOST_TIME, 0);
         dataAccess.define(VARIANT, VariantUtils.getDefaultOrAny(registryAccess(), PigVariants.TEMPERATE));
-
-        Registry<PigSoundVariant> pigSoundVariants = this.registryAccess().lookupOrThrow(Registries.PIG_SOUND_VARIANT);
-        dataAccess.define(DATA_SOUND_VARIANT_ID, pigSoundVariants.get(PigSoundVariants.CLASSIC).or(pigSoundVariants::getAny).orElseThrow());
     }
 
     @Override
