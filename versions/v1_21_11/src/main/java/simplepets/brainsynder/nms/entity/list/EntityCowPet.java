@@ -26,7 +26,6 @@ import simplepets.brainsynder.nms.utils.VariantUtils;
  */
 public class EntityCowPet extends EntityAgeablePet implements IEntityCowPet {
     private static final EntityDataAccessor<Holder<CowVariant>> VARIANT = SynchedEntityData.defineId(EntityCowPet.class, EntityDataSerializers.COW_VARIANT);
-    private static final EntityDataAccessor<Holder<CowSoundVariant>> DATA_SOUND_VARIANT_ID = SynchedEntityData.defineId(EntityCowPet.class, EntityDataSerializers.COW_SOUND_VARIANT);
     private TemperatureVariant variant = TemperatureVariant.TEMPERATE;
 
     public EntityCowPet(PetType type, PetUser user) {
@@ -37,14 +36,6 @@ public class EntityCowPet extends EntityAgeablePet implements IEntityCowPet {
     public void populateDataAccess(PetDataAccess dataAccess) {
         super.populateDataAccess(dataAccess);
         dataAccess.define(VARIANT, VariantUtils.getDefaultOrAny(registryAccess(), CowVariants.TEMPERATE));
-
-        Registry<CowSoundVariant> cowSoundVariants = this.registryAccess().lookupOrThrow(Registries.COW_SOUND_VARIANT);
-        dataAccess.define(DATA_SOUND_VARIANT_ID, cowSoundVariants.get(CowSoundVariants.CLASSIC).or(cowSoundVariants::getAny).orElseThrow());
-    }
-
-    @Override
-    public TemperatureVariant getVariant() {
-        return variant;
     }
 
     @Override
@@ -53,6 +44,11 @@ public class EntityCowPet extends EntityAgeablePet implements IEntityCowPet {
 
         Registry<CowVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.COW_VARIANT);
         entityData.set(VARIANT, registry.wrapAsHolder(registry.getValue(CraftNamespacedKey.toMinecraft(variant.getKey()))));
+    }
+
+    @Override
+    public TemperatureVariant getVariant() {
+        return variant;
     }
 
     @Override
@@ -70,8 +66,7 @@ public class EntityCowPet extends EntityAgeablePet implements IEntityCowPet {
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("variant"))
-            setVariant(object.getEnum("variant", TemperatureVariant.class, TemperatureVariant.TEMPERATE));
+        if (object.hasKey("variant")) setVariant(object.getEnum("variant", TemperatureVariant.class, TemperatureVariant.TEMPERATE));
         super.applyCompound(object);
     }
 }
