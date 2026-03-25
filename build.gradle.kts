@@ -12,7 +12,7 @@ allprojects {
     version = (findProperty("version") ?: "0.0.0-SNAPSHOT").toString()
 
     java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+        toolchain.languageVersion.set(JavaLanguageVersion.of(25))
     }
 }
 
