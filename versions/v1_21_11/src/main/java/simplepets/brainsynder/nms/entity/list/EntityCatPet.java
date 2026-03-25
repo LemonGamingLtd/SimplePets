@@ -29,7 +29,6 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
     private static final EntityDataAccessor<Boolean> SLEEPING_WITH_OWNER = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HEAD_UP = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> COLLAR_COLOR = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Holder<CatSoundVariant>> DATA_SOUND_VARIANT_ID = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.CAT_SOUND_VARIANT);
     private CatVariant type = CatVariant.TABBY;
 
     public EntityCatPet(PetType type, PetUser user) {
@@ -54,9 +53,6 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
         dataAccess.define(SLEEPING_WITH_OWNER, false);
         dataAccess.define(HEAD_UP, false);
         dataAccess.define(COLLAR_COLOR, DyeColorWrapper.WHITE.getWoolData());
-
-        Registry<CatSoundVariant> catSoundVariants = this.registryAccess().lookupOrThrow(Registries.CAT_SOUND_VARIANT);
-        dataAccess.define(DATA_SOUND_VARIANT_ID, catSoundVariants.get(CatSoundVariants.CLASSIC).or(catSoundVariants::getAny).orElseThrow())
     }
 
     @Override
