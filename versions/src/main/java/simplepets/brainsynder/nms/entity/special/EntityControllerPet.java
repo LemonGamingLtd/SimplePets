@@ -149,8 +149,12 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
         }
     }
 
-    @Override
+    // Method was removed in version 26.1
     public InteractionResult interactAt(net.minecraft.world.entity.player.Player entityhuman, Vec3 vec3d, InteractionHand enumhand) {
+        return InteractionResult.FAIL;
+    }
+    // Replacement for interactAt
+    public InteractionResult interact(net.minecraft.world.entity.player.Player entityhuman, InteractionHand hand, final Vec3 location) {
         return InteractionResult.FAIL;
     }
 

@@ -9,6 +9,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.feline.CatSoundVariant;
+import net.minecraft.world.entity.animal.feline.CatSoundVariants;
 import net.minecraft.world.entity.animal.feline.CatVariants;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.craftbukkit.CraftRegistry;
@@ -56,7 +58,7 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
         dataAccess.define(COLLAR_COLOR, DyeColorWrapper.WHITE.getWoolData());
 
         Registry<CatSoundVariant> catSoundVariants = this.registryAccess().lookupOrThrow(Registries.CAT_SOUND_VARIANT);
-        dataAccess.define(DATA_SOUND_VARIANT_ID, catSoundVariants.get(CatSoundVariants.CLASSIC).or(catSoundVariants::getAny).orElseThrow())
+        dataAccess.define(DATA_SOUND_VARIANT_ID, catSoundVariants.get(CatSoundVariants.CLASSIC).or(catSoundVariants::getAny).orElseThrow());
     }
 
     @Override
