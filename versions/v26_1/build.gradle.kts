@@ -1,6 +1,8 @@
+import org.bsdevelopment.spigotweight.extension.UserdevExtension
+
 plugins {
     id("org.bsdevelopment.java-conventions")
-    alias(libs.plugins.paperweight)
+    id("org.bsdevelopment.spigotweight.userdev") version "1.0.8-SNAPSHOT"
     alias(libs.plugins.shadow)
 }
 
@@ -16,7 +18,17 @@ dependencies {
 
     compileOnly(libs.bslib)
     compileOnly(libs.pluginutils)
-    paperweight.paperDevBundle(latestMinecraft)
+}
+
+spigotweight {
+    minecraftVersion = mcVersion
+    target = UserdevExtension.SpigotAPITarget.SPIGOT   // SPIGOT or PAPER
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 tasks {
