@@ -28,6 +28,10 @@ dependencies {
     implementation(libs.bstats)
 }
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
 tasks {
     assemble {
         dependsOn(shadowJar)

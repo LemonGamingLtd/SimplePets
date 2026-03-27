@@ -20,10 +20,6 @@ dependencies {
     paperweight.paperDevBundle(latestMinecraft)
 }
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
-}
-
 // TODO: This needs to be removed once 26.1 comes out
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.REOBF_PRODUCTION
 
