@@ -3,7 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     id("org.bsdevelopment.java-conventions")
     id("maven-publish")
-    alias(libs.plugins.shadow)
+    id("com.gradleup.shadow")
 }
 
 group = "org.bsdevelopment.simplepets"
@@ -31,9 +31,6 @@ tasks {
         archiveBaseName.set("SimplePets-API")
         archiveClassifier.set("")
         archiveVersion.set("")
-
-        val groupID = "simplepets.brainsynder"
-        relocate("lib.brainsynder", "$groupID.libs.bslib")
     }
 
     publish {

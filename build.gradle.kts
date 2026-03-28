@@ -1,7 +1,7 @@
 plugins {
     id("java")
     id("maven-publish")
-    alias(libs.plugins.shadow) apply false
+    id("com.gradleup.shadow") apply false
 }
 
 group = "org.bsdevelopment.simplepets"

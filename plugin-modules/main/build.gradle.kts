@@ -2,7 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id("org.bsdevelopment.java-conventions")
-    alias(libs.plugins.shadow)
+    id("com.gradleup.shadow")
 }
 
 group = "org.bsdevelopment.simplepets"
@@ -52,13 +52,5 @@ tasks {
         archiveBaseName.set("SimplePets")
         archiveClassifier.set("")
         archiveVersion.set("")
-
-        var groupID = "simplepets.brainsynder"
-
-        relocate("com.jeff_media.updatechecker", "$groupID.libs.updatechecker")
-        relocate("io.papermc.lib", "$groupID.libs.paperlib")
-        relocate("lib.brainsynder", "$groupID.libs.bslib")
-        relocate("org.bstats", "$groupID.libs.bstats")
-        relocate("org.bsdevelopment", "$groupID.libs.bsdev")
     }
 }

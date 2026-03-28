@@ -3,7 +3,7 @@ import org.bsdevelopment.spigotweight.extension.UserdevExtension
 plugins {
     id("org.bsdevelopment.java-conventions")
     id("org.bsdevelopment.spigotweight.userdev") version "1.0.8-SNAPSHOT"
-    alias(libs.plugins.shadow)
+    id("com.gradleup.shadow")
 }
 
 var mcVersion = "26.1"
@@ -38,7 +38,6 @@ tasks {
         archiveClassifier.set("")
 
         var groupID = "simplepets.brainsynder"
-        relocate("lib.brainsynder", "$groupID.libs.bslib")
         relocate("$groupID.nms", "$groupID.versions.$nmsVersion")
     }
 }
