@@ -12,6 +12,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum VersionFields implements FieldValues {
+    // Minecraft 26.1+ — always Mojang-mapped, no obfuscated names needed
+    V26_1(
+            "itemsById",                    // net.minecraft.network.syncher.SynchedEntityData$itemsById
+            "factory",                      // net.minecraft.world.entity.EntityType$factory
+            "frozen",                       // net.minecraft.core.MappedRegistry$frozen
+            "unregisteredIntrusiveHolders", // net.minecraft.core.MappedRegistry$unregisteredIntrusiveHolders
+            "ENTITY_TYPE",                  // net.minecraft.core.registries.BuiltInRegistries#ENTITY_TYPE
+            "jumping",                      // net.minecraft.world.entity.LivingEntity$jumping
+            "boardingCooldown",             // net.minecraft.world.entity.Entity$boardingCooldown
+            "running",                      // net.minecraft.server.MinecraftServer$running
+            "attributes",                   // net.minecraft.world.entity.LivingEntity$attributes
+            "type"                          // net.minecraft.network.protocol.game.ClientboundAddEntityPacket$type
+    ),
+
     // Minecraft 1.21.11
     V1_21_11(
             "e", // net.minecraft.network.syncher.SynchedEntityData$itemsById
@@ -71,6 +85,9 @@ public enum VersionFields implements FieldValues {
 
 
     public static VersionFields fromServerVersion(ServerVersion version) {
+        // 26.1+ is always Mojang-mapped; all future versions share the same unobfuscated names
+        if (version.isEqualOrNewer(ServerVersion.v26_1)) return V26_1;
+
         VersionFields fields = VERSION_MAP.get(version);
         if (fields == null) throw new IllegalArgumentException("Unsupported server version: " + version);
 
