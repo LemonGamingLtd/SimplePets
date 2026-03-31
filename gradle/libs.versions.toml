@@ -16,6 +16,7 @@ pluginutils-version = "0.1.25"
 hangar-version = "0.0.5" # hangar plugin is not used yet...
 shadow-version = "9.0.0-beta8"
 paperweight-version = "2.0.0-beta.19"
+spigotweight-version = "1.0.9-SNAPSHOT"
 
 [libraries]
 spigotapi = { module = "org.spigotmc:spigot-api", version.ref = "latestspigot" }
@@ -34,3 +35,4 @@ pluginutils = { module = "org.bsdevelopment.pluginutils:BSPluginUtils", version.
 hangar = { id = "io.papermc.hangar-publish-plugin", version.ref = "hangar-version" } # hangar plugin is not used yet...
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow-version" }
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight-version" }
+spigotweight = { id = "org.bsdevelopment.spigotweight.userdev", version.ref = "spigotweight-version" }

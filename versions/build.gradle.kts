@@ -2,7 +2,7 @@ import org.bsdevelopment.spigotweight.extension.UserdevExtension
 
 plugins {
     id("org.bsdevelopment.java-conventions")
-    id("org.bsdevelopment.spigotweight.userdev") version "1.0.8-SNAPSHOT"
+    alias(libs.plugins.spigotweight)
 }
 var latestMinecraft = "26.1"
 
