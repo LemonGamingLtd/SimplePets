@@ -78,26 +78,26 @@ public class ParticleManager implements ParticleHandler {
         }
     }
 
+    private void archiveOldJson(File jsonFile) {
+        File backupFolder = new File(folder, "old_files");
+        if (!backupFolder.exists()) backupFolder.mkdirs();
+        jsonFile.renameTo(new File(backupFolder, jsonFile.getName()));
+    }
+
     private ParticleConfig loadOrDefault(ParticleConfig defaultConfig, String name) {
-        File xmlFile = new File(folder, name + ".xml");
+        File xmlFile  = new File(folder, name + ".xml");
         File jsonFile = new File(folder, name + ".json");
 
         if (jsonFile.exists()) {
             if (!xmlFile.exists()) {
                 writeReadme();
                 try {
-                    jsonFile.delete();
                     ParticleUtils.saveConfig(defaultConfig, xmlFile.toPath());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return defaultConfig;
             }
-            try {
-                jsonFile.delete();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            archiveOldJson(jsonFile);
         }
 
         try {
