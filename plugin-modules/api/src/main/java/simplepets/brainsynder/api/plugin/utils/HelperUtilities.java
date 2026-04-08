@@ -13,32 +13,34 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public final class HelperUtilities {
     public static final String NMS_PATH = new String(new byte[]{
             115, 105, 109, 112, 108, 101, 112, 101, 116, 115, 46, 98, 114, 97, 105, 110, 115, 121, 110, 100, 101, 114, 46, 118, 101, 114, 115, 105, 111, 110, 115
     });
 
-    public static @Nullable String resolveTargetVersion(@NotNull String className, @NotNull Map<ServerVersion, ServerVersion> versionLinks) {
+    public static @Nullable String resolveTargetVersion(@NotNull String className) {
         ServerVersion current = ServerVersion.getVersion();
         ClassLoader loader = HelperUtilities.class.getClassLoader();
-
         if (classExists(NMS_PATH + "." + current.getVersionName() + "." + className, loader)) return current.getVersionName();
 
-        if (versionLinks.containsKey(current)) {
-            String linked = versionLinks.get(current).getVersionName();
-            if (classExists(NMS_PATH + "." + linked + "." + className, loader)) return linked;
-        }
+        // Only supports for 26.1+ for version linking
+        if (current.getVersionNumbers().getLeft() < 26) return null;
 
-        ServerVersion currentVer = ServerVersion.getVersion();
         ServerVersion bestFallback = null;
         for (ServerVersion version : ServerVersion.getVersions()) {
+            if (!sameMajorMinor(current, version)) continue;
             if (!classExists(NMS_PATH + "." + version.getVersionName() + "." + className, loader)) continue;
-            if (!currentVer.isEqualOrNewer(version)) continue;
+            if (!current.isEqualOrNewer(version)) continue;
             if (bestFallback == null || version.isStrictlyNewer(bestFallback)) bestFallback = version;
         }
         return bestFallback != null ? bestFallback.getVersionName() : null;
+    }
+
+    private static boolean sameMajorMinor(@NotNull ServerVersion current, @NotNull ServerVersion target) {
+        var currentVersionNumbers = current.getVersionNumbers();
+        var targetVersionNumbers = target.getVersionNumbers();
+        return currentVersionNumbers.getLeft().equals(targetVersionNumbers.getLeft()) && currentVersionNumbers.getMiddle().equals(targetVersionNumbers.getMiddle());
     }
 
     private static boolean classExists(@NotNull String className, @NotNull ClassLoader loader) {

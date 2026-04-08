@@ -7,7 +7,6 @@ import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.help.HelpCommand;
 import org.bsdevelopment.pluginutils.libs.json.WriterConfig;
-import org.bsdevelopment.pluginutils.utilities.Triple;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
@@ -61,11 +60,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class PetCore extends JavaPlugin implements IPetsPlugin {
-    private static final Map<ServerVersion, ServerVersion> VERSION_LINKED = Map.of(
-            ServerVersion.of(Triple.of(26, 1, 1)), ServerVersion.v26_1,
-            ServerVersion.of(Triple.of(26, 1, 2)), ServerVersion.v26_1
-    );
-
     private boolean versionDetectionDone = false;
     private static PetCore instance;
 
@@ -107,10 +101,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
         SimplePets.getDebugLogger().debug(DebugBuilder.build()
                 .setLevel(DebugLevel.WARNING).setBroadcast(true)
-                .setMessages(
-                        " *** As of version R5-B296 includes some major changes, If any issues are found please create a bug report",
-                        " *** On the Github: https://tiny.bsdevelopment.org/pet-issues"
-                ));
+                .setMessages(" *** As of version R5-B296 includes some major changes, If any issues are found please create a bug report"));
 
         if (ServerVersion.getVersion().isEqualOrNewer(ServerVersion.v1_21_11)) {
             SimplePets.getDebugLogger().debug(DebugBuilder.build()
@@ -612,7 +603,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         versionDetectionDone = true;
 
         String current = ServerVersion.getVersion().getVersionName();
-        String resolvedVersion = HelperUtilities.resolveTargetVersion("SpawnerUtil", VERSION_LINKED);
+        String resolvedVersion = HelperUtilities.resolveTargetVersion("SpawnerUtil");
         if (resolvedVersion == null) return false;
 
         try {
@@ -623,9 +614,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         }
 
         if (!resolvedVersion.equals(current)) {
-            debug.debug("Version " + current.replace("v", "").replace("_", ".")
-                    + " has no dedicated module, targeting "
-                    + resolvedVersion.replace("v", "").replace("_", "."));
+            debug.debug("Version " + current.replace("v", "").replace("_", ".") + " has no dedicated version module, linking to version " + resolvedVersion.replace("v", "").replace("_", "."));
         }
 
         debug.debug("Targeting version: " + resolvedVersion.replace("v", "").replace("_", "."));
