@@ -30,7 +30,9 @@ fun Project.outputJarProducer(): Pair<TaskProvider<*>, Provider<RegularFile>> {
         tasks.names.contains("shadowJar") -> {
             val task = tasks.named("shadowJar", Jar::class.java)
             task to task.flatMap { it.archiveFile }
-        } else -> {
+        }
+
+        else -> {
             val task = tasks.named("jar", Jar::class.java)
             task to task.flatMap { it.archiveFile }
         }
@@ -85,22 +87,4 @@ artifacts {
     add("archives", tasks.named("multiprojectJar"))
 }
 
-val downloadVariantsScript = file("gradle/download-variants.gradle.kts")
-if (downloadVariantsScript.exists()) {
-    apply(from = downloadVariantsScript)
-}
-
-val readmeVersioning = file("gradle/readme-versioning.gradle.kts")
-if (readmeVersioning.exists()) {
-    apply(from = readmeVersioning)
-}
-
-val jenkinsVersioning = file("gradle/jenkins-versioning.gradle.kts")
-if (jenkinsVersioning.exists()) {
-    apply(from = jenkinsVersioning)
-}
-
-val minecraftVersions = file("gradle/add-minecraft-version.gradle.kts")
-if (minecraftVersions.exists()) {
-    apply(from = minecraftVersions)
-}
+fileTree("gradle") { include("*.gradle.kts") }.forEach { apply(from = it) }
