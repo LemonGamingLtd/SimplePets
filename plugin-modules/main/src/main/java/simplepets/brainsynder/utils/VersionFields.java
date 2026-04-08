@@ -14,7 +14,7 @@ import java.util.Map;
 public enum VersionFields implements FieldValues {
     // Minecraft 26.1+ — always Mojang-mapped, no obfuscated names needed
     V26_1(
-            "itemsById",                    // net.minecraft.network.syncher.SynchedEntityData$itemsById
+            "itemsById",       // net.minecraft.network.syncher.SynchedEntityData$itemsById
             "factory",                      // net.minecraft.world.entity.EntityType$factory
             "frozen",                       // net.minecraft.core.MappedRegistry$frozen
             "unregisteredIntrusiveHolders", // net.minecraft.core.MappedRegistry$unregisteredIntrusiveHolders

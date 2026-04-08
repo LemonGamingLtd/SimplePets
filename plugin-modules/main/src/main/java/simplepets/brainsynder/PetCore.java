@@ -28,6 +28,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.IPetsPlugin;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
+import simplepets.brainsynder.api.plugin.utils.HelperUtilities;
 import simplepets.brainsynder.api.plugin.utils.IPetUtilities;
 import simplepets.brainsynder.api.user.UserManagement;
 import simplepets.brainsynder.commands.list.*;
@@ -66,7 +67,12 @@ import java.util.regex.Pattern;
 
 public class PetCore extends JavaPlugin implements IPetsPlugin {
     public static ServerInformation SERVER_INFORMATION;
-    private final List<String> supportedVersions = new ArrayList<>();
+    private static final Map<ServerVersion, ServerVersion> VERSION_LINKED = Map.of(
+            ServerVersion.of(Triple.of(26, 1, 1)), ServerVersion.v26_1,
+            ServerVersion.of(Triple.of(26, 1, 2)), ServerVersion.v26_1
+    );
+
+    private boolean versionDetectionDone = false;
     private static PetCore instance;
 
     private File itemFolder;
@@ -87,6 +93,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     private AddonManager addonManager;
 
     private Class<?> spawnutilClass = null;
+    private String targetVersion = null;
 
     private Debug debug;
     private IPetUtilities petUtilities;
@@ -268,7 +275,9 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     @Override
     public void onDisable() {
         isStarting = false;
-        supportedVersions.clear();
+        versionDetectionDone = false;
+        spawnutilClass = null;
+        targetVersion = null;
         if (petUtilities == null) return; // Failed to load this field due to unsupported version
         SimplePets.getDebugLogger().debug(DebugLevel.NORMAL, "Saving player pets (if there are any)", false);
         if (USER_MANAGER != null)
@@ -565,7 +574,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         try {
             if (spawnutilClass == null) return;
             if (ISpawnUtil.class.isAssignableFrom(spawnutilClass)) {
-                SPAWN_UTIL = (ISpawnUtil) spawnutilClass.getConstructor(ClassLoader.class).newInstance(getClassLoader());
+                SPAWN_UTIL = (ISpawnUtil) spawnutilClass.getConstructor(ClassLoader.class, String.class).newInstance(getClassLoader(), targetVersion);
                 debug.debug(DebugLevel.HIDDEN, "Successfully Linked to " + version.getVersionName() + " SpawnUtil Class");
             }
         } catch (Exception e) {
@@ -606,40 +615,28 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     }
 
     private boolean fetchSupportedVersions() {
-        if (!supportedVersions.isEmpty()) return supportedVersions.contains(ServerVersion.getVersion().getVersionName());
-        supportedVersions.clear();
+        if (versionDetectionDone) return spawnutilClass != null;
+        versionDetectionDone = true;
+
         String current = ServerVersion.getVersion().getVersionName();
-        boolean supported = false;
-        String packageName = "simplepets.brainsynder.versions.<VER>.SpawnerUtil";
-        for (ServerVersion version : ServerVersion.getVersions()) {
-            if (version.getVersionName().equals(current) && (!supported)) supported = true;
-            try {
-                Class<?> clazz = Class.forName(packageName.replace("<VER>", version.getVersionName()), false, getClassLoader());
-                if (clazz != null) {
-                    if (version.getVersionName().equals(current)) spawnutilClass = clazz;
-                    supportedVersions.add(version.getVersionName());
-                }
-            } catch (Exception ignored) {
-            }
-        }
-        if (!supported) {
-            try {
-                Class<?> clazz = Class.forName(packageName.replace("<VER>", current), false, getClassLoader());
-                if (clazz != null) {
-                    spawnutilClass = clazz;
-                    supportedVersions.add(current);
-                }
-            } catch (Exception ignored) {
-            }
+        String resolvedVersion = HelperUtilities.resolveTargetVersion("SpawnerUtil", VERSION_LINKED);
+        if (resolvedVersion == null) return false;
+
+        try {
+            spawnutilClass = Class.forName(HelperUtilities.NMS_PATH + "." + resolvedVersion + ".SpawnerUtil", false, getClassLoader());
+            targetVersion = resolvedVersion;
+        } catch (ClassNotFoundException e) {
+            return false;
         }
 
-        if (!supportedVersions.contains(current)) return false;
-
-        if (!supportedVersions.isEmpty()) {
-            debug.debug("Found support for version(s): " + supportedVersions.toString().replace("v", "").replace("_", "."));
-            debug.debug("Targeting version: " + ServerVersion.getVersion().getVersionName().replace("v", "").replace("_", "."));
+        if (!resolvedVersion.equals(current)) {
+            debug.debug("Version " + current.replace("v", "").replace("_", ".")
+                    + " has no dedicated module, targeting "
+                    + resolvedVersion.replace("v", "").replace("_", "."));
         }
-        return supported;
+
+        debug.debug("Targeting version: " + resolvedVersion.replace("v", "").replace("_", "."));
+        return true;
     }
 
     public boolean hasFullyStarted() {
