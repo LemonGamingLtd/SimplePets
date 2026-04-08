@@ -1,14 +1,13 @@
 package simplepets.brainsynder;
 
 import com.jeff_media.updatechecker.UpdateChecker;
-import io.papermc.lib.PaperLib;
 import lib.brainsynder.reflection.Reflection;
 import lib.brainsynder.utils.Utilities;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.help.HelpCommand;
 import org.bsdevelopment.pluginutils.libs.json.WriterConfig;
-import org.bsdevelopment.pluginutils.text.AdvString;
+import org.bsdevelopment.pluginutils.utilities.Triple;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
@@ -55,18 +54,13 @@ import simplepets.brainsynder.utils.debug.Debug;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PetCore extends JavaPlugin implements IPetsPlugin {
-    public static ServerInformation SERVER_INFORMATION;
     private static final Map<ServerVersion, ServerVersion> VERSION_LINKED = Map.of(
             ServerVersion.of(Triple.of(26, 1, 1)), ServerVersion.v26_1,
             ServerVersion.of(Triple.of(26, 1, 2)), ServerVersion.v26_1
@@ -110,7 +104,6 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         isStarting = true;
 
         debug = new Debug(this);
-        SERVER_INFORMATION = new ServerInformation();
 
         SimplePets.getDebugLogger().debug(DebugBuilder.build()
                 .setLevel(DebugLevel.WARNING).setBroadcast(true)
@@ -528,7 +521,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     private void handleMetrics() {
         SimplePets.getDebugLogger().debug(DebugLevel.HIDDEN, "Loading Metrics");
         Metrics metrics = new Metrics(this, 244);
-        metrics.addCustomChart(new SimplePie("server_type", () -> String.valueOf(SERVER_INFORMATION.serverType)));
+        metrics.addCustomChart(new SimplePie("server_type", () -> String.valueOf(PluginUtilities.getServerInformation().getServerType())));
         metrics.addCustomChart(new SimplePie("stupid_config_option_for_gui_command", () -> String.valueOf(ConfigOption.SIMPLER_GUI.get())));
         metrics.addCustomChart(new AdvancedPie("spawned_pet_counter", this::getSpawnedPetCounts));
         metrics.addCustomChart(new AdvancedPie("active_pets", this::getActivePets));
@@ -659,102 +652,4 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         }
     }
 
-    public static class ServerInformation {
-        private final String java;
-        private final String rawVersion;
-        private final String bukkitVersion;
-        private final String minecraftVersion;
-        private final boolean paper;
-
-        private String serverType = "Unknown";
-        private String buildVersion = "Unknown";
-        private boolean mojangMapped = false;
-
-        public ServerInformation() {
-            paper = PaperLib.isPaper();
-
-            // Fetches JavaVersion
-            String java = System.getProperty("java.version");
-            int pos = java.indexOf('.');
-            pos = java.indexOf('.', pos + 1);
-            if (pos != -1) {
-                this.java = java.substring(0, pos).replace(".0", "");
-            } else {
-                this.java = java;
-            }
-
-            rawVersion = Bukkit.getVersion();
-            bukkitVersion = Bukkit.getBukkitVersion();
-
-            if (paper) {
-                try {
-                    Class<?> buildInfoClass = Class.forName("io.papermc.paper.ServerBuildInfo");
-                    Method buildInfoMethod = Reflection.getMethod(buildInfoClass, "buildInfo");
-                    Object instance = Reflection.invoke(buildInfoMethod, null);
-
-                    serverType = (String) Reflection.invoke(Reflection.getMethod(buildInfoClass, "brandName"), instance);
-                    buildVersion = AdvString.between("-", "-", rawVersion);
-                } catch (Exception e) {
-
-                    Pattern pattern = Pattern.compile("git-(\\w+)-(\\w+) \\(MC: (\\w.+)\\)");
-                    Matcher matcher = pattern.matcher(rawVersion);
-                    if (matcher.find()) {
-                        serverType = matcher.group(1);
-                        buildVersion = matcher.group(2);
-                    } else {
-                        serverType = rawVersion;
-                        buildVersion = "Unknown";
-                    }
-                }
-            } else {
-                serverType = "Spigot";
-                buildVersion = AdvString.before("-", rawVersion);
-            }
-
-            minecraftVersion = AdvString.between("(MC: ", ")", rawVersion);
-
-            try {
-                Class<?> livingClass = Class.forName("net,minecraft,core,registries,BuiltInRegistries".replace(",", "."), false, getInstance().getClassLoader());
-                Field field = livingClass.getDeclaredField("ENTITY_TYPE");
-                if (field != null) {
-                    mojangMapped = true;
-                    SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, "Plugin is on a server that is using Mojang Mappings");
-                }
-            } catch (Exception e) {
-                SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, "Plugin is on a server that is using Obfuscated Mappings");
-            }
-        }
-
-        public String getJava() {
-            return java;
-        }
-
-        public String getBuildVersion() {
-            return buildVersion;
-        }
-
-        public String getBukkitVersion() {
-            return bukkitVersion;
-        }
-
-        public String getMinecraftVersion() {
-            return minecraftVersion;
-        }
-
-        public String getRawVersion() {
-            return rawVersion;
-        }
-
-        public String getServerType() {
-            return serverType;
-        }
-
-        public boolean isMojangMapped() {
-            return mojangMapped;
-        }
-
-        public boolean isPaper() {
-            return paper;
-        }
-    }
 }

@@ -5,8 +5,8 @@
 
 package simplepets.brainsynder.utils;
 
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
-import simplepets.brainsynder.PetCore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -111,7 +111,7 @@ public enum VersionFields implements FieldValues {
 
     private static final Map<ServerVersion, VersionFields> VERSION_MAP = buildVersionMap();
     private static final VersionFields CURRENT = fromServerVersion(ServerVersion.getVersion());
-    private static final boolean MOJANG_MAPPED = PetCore.SERVER_INFORMATION.isMojangMapped();
+    private static final boolean MOJANG_MAPPED = PluginUtilities.getServerInformation().isMojangMapped();
 
     private final FieldName entityDataMap, entityFactory, registryFrozen, registryIntrusive, entityRegistry, entityJump, resetCooldown, isRunning, attributes, type;
 
