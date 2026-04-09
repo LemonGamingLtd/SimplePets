@@ -1,7 +1,7 @@
 name: SimplePets
 main: simplepets.brainsynder.PetCore
 version: @VERSION@
-softdepend: [ProtocolLib]
+softdepend: [ProtocolLib, PlaceholderAPI]
 loadbefore: [mcMMO, ProtocolSupport]
 authors: [brainsynder, Thatsmusic99]
 contributors: [traksag]

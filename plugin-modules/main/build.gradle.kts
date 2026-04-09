@@ -13,6 +13,7 @@ dependencies {
     compileOnly(project(":api"))
 
     compileOnly(libs.protocollib)
+    compileOnly(libs.placeholderapi)
     compileOnly(libs.commonsio)
 
     implementation(libs.bslib) {

@@ -213,6 +213,12 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         handleListeners();
         handleUpdateUtils();
 
+        Plugin papi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+        if (papi != null && papi.isEnabled()) {
+            new simplepets.brainsynder.hooks.PlaceholderAPIHook().register();
+            debug.debug(DebugLevel.HIDDEN, "Hooked into PlaceholderAPI");
+        }
+
         {
             TimeUnit unit;
 
