@@ -1,7 +1,7 @@
 package simplepets.brainsynder.api.entity.misc;
 
-import lib.brainsynder.utils.DyeColorWrapper;
 import simplepets.brainsynder.api.entity.IEntityPet;
+import simplepets.brainsynder.api.wrappers.DyeColorWrapper;
 
 public interface IColorable extends IEntityPet {
     DyeColorWrapper getColor();

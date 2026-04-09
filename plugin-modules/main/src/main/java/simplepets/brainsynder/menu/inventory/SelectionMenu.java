@@ -1,7 +1,5 @@
 package simplepets.brainsynder.menu.inventory;
 
-import lib.brainsynder.storage.IStorage;
-import lib.brainsynder.storage.StorageList;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.storage.ListPager;
@@ -35,7 +33,7 @@ import java.util.*;
 public class SelectionMenu extends CustomInventory {
     private List<PetType> availableTypes;
     private Map<String, ListPager<PetTypeStorage>> pagerMap;
-    private Map<String, IStorage<PetTypeStorage>> petMap;
+    private Map<String, List<PetTypeStorage>> petMap;
 
     public SelectionMenu(File file) {
         super(file);
@@ -145,7 +143,7 @@ public class SelectionMenu extends CustomInventory {
         }
 
         boolean removeNoPerms = ConfigOption.PERMISSIONS_PLAYER_ACCESS.get();
-        IStorage<PetTypeStorage> petTypes = new StorageList<>();
+        List<PetTypeStorage> petTypes = new ArrayList<>();
         for (PetType type : availableTypes) {
             PetTypeStorage storage = new PetTypeStorage(type);
             PetInventoryAddPetItemEvent event = new PetInventoryAddPetItemEvent(this, user, storage.getType(), storage.getItem());
@@ -164,12 +162,12 @@ public class SelectionMenu extends CustomInventory {
                 petTypes.add(storage.setItem(event.getItem()));
             }
         }
-        if ((petTypes.getSize() == 0) && (ConfigOption.PERMISSIONS_OPEN_GUI.get())) {
+        if (petTypes.isEmpty() && ConfigOption.PERMISSIONS_OPEN_GUI.get()) {
             player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PETS_UNLOCKED));
             return;
         }
 
-        ListPager<PetTypeStorage> pages = new ListPager<>(maxPets, petTypes.toArrayList());
+        ListPager<PetTypeStorage> pages = new ListPager<>(maxPets, petTypes);
         pagerMap.put(player.getName(), pages);
 
         getSlots().forEach((slot, item) -> {
@@ -181,7 +179,7 @@ public class SelectionMenu extends CustomInventory {
             if (pages.exists(page)) {
                 for (PetTypeStorage storage : pages.getPage(page))
                     inv.addItem(storage.getItem());
-                petMap.put(player.getName(), new StorageList<>(pages.getPage(page)));
+                petMap.put(player.getName(), new ArrayList<>(pages.getPage(page)));
             } else {
                 SimplePets.getDebugLogger().debug(DebugLevel.WARNING, "Page does not exist (Page " + page + " / " + pages.totalPages() + ")");
             }
@@ -223,7 +221,7 @@ public class SelectionMenu extends CustomInventory {
         }
 
         boolean removeNoPerms = ConfigOption.PERMISSIONS_PLAYER_ACCESS.get();
-        IStorage<PetTypeStorage> petTypes = new StorageList<>();
+        List<PetTypeStorage> petTypes = new ArrayList<>();
         for (PetType type : availableTypes) {
             PetTypeStorage storage = new PetTypeStorage(type);
             PetInventoryAddPetItemEvent event = new PetInventoryAddPetItemEvent(this, user, storage.getType(), storage.getItem());
@@ -242,12 +240,12 @@ public class SelectionMenu extends CustomInventory {
                 petTypes.add(storage.setItem(event.getItem()));
             }
         }
-        if ((petTypes.getSize() == 0) && (ConfigOption.PERMISSIONS_OPEN_GUI.get())) {
+        if (petTypes.isEmpty() && ConfigOption.PERMISSIONS_OPEN_GUI.get()) {
             player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PETS_UNLOCKED));
             return;
         }
 
-        ListPager<PetTypeStorage> pages = new ListPager<>(maxPets, petTypes.toArrayList());
+        ListPager<PetTypeStorage> pages = new ListPager<>(maxPets, petTypes);
         pagerMap.put(player.getName(), pages);
 
         getSlots().forEach((slot, item) -> {
@@ -259,14 +257,14 @@ public class SelectionMenu extends CustomInventory {
             if (pages.exists(page)) {
                 for (PetTypeStorage storage : pages.getPage(page))
                     inv.addItem(storage.getItem());
-                petMap.put(player.getName(), new StorageList<>(pages.getPage(page)));
+                petMap.put(player.getName(), new ArrayList<>(pages.getPage(page)));
             } else {
                 SimplePets.getDebugLogger().debug(DebugLevel.WARNING, "Page does not exist (Page " + page + " / " + pages.totalPages() + ")");
             }
         }
     }
 
-    public Map<String, IStorage<PetTypeStorage>> getPetMap() {
+    public Map<String, List<PetTypeStorage>> getPetMap() {
         return petMap;
     }
 

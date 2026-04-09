@@ -3,7 +3,6 @@ package simplepets.brainsynder.impl;
 import com.google.common.collect.Lists;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.sounds.SoundMaker;
-import lib.brainsynder.utils.Capitalise;
 import org.bsdevelopment.pluginutils.files.JsonFile;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
@@ -96,7 +95,7 @@ public class PetConfiguration implements PetConfigManager {
                     setDefault("fly", canFlyDefault(type));
                     setDefault("float_down", false);
 
-                    setDefault("display_name", "&a&l%player%'s " + Capitalise.capitalize(type.getName().replace("_", " ")) + " Pet");
+                    setDefault("display_name", "&a&l%player%'s " + WordUtils.capitalize(type.getName().replace("_", " ")) + " Pet");
                     setDefault("item", HelperUtilities.toJsonObject(type.getBuilder().toCompound()));
 
                     JsonObject dataObject = new JsonObject();

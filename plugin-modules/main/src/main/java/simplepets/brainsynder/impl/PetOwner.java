@@ -1,7 +1,6 @@
 package simplepets.brainsynder.impl;
 
 import com.google.common.collect.Lists;
-import lib.brainsynder.apache.Validate;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.StorageTagList;
 import lib.brainsynder.nbt.StorageTagString;
@@ -48,7 +47,7 @@ public class PetOwner implements PetUser {
     private final Map<PetType, String> nameMap;
 
     public PetOwner(Player player) {
-        Validate.notNull(player, "Player can not be null (They Offline?)");
+        Objects.requireNonNull(player, "Player can not be null (They Offline?)");
         this.uuid = player.getUniqueId();
         this.name = player.getName();
 
@@ -498,7 +497,7 @@ public class PetOwner implements PetUser {
 
     @Override
     public void setPetHat(PetType type, boolean hat) {
-        Validate.notNull(type, "PetType can not be null");
+        Objects.requireNonNull(type, "PetType can not be null");
         if (!hasPet(type)) return;
 
         int d = 1;

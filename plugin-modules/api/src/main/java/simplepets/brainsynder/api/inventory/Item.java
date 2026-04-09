@@ -1,9 +1,9 @@
 package simplepets.brainsynder.api.inventory;
 
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.utils.DyeColorWrapper;
 import org.bsdevelopment.pluginutils.files.JsonFile;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bukkit.Material;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.plugin.SimplePets;
@@ -88,7 +88,7 @@ public abstract class Item extends JsonFile {
 
         if (getDefaultItem() != null) return getDefaultItem();
 
-        return lib.brainsynder.nms.DataConverter.getColoredMaterial(lib.brainsynder.nms.DataConverter.MaterialType.STAINED_GLASS_PANE, DyeColorWrapper.RED);
+        return new ItemBuilder(Material.RED_STAINED_GLASS_PANE);
     }
 
     /**

@@ -1,18 +1,18 @@
 package simplepets.brainsynder.api.pet.data.tropicalfish;
 
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.nms.DataConverter;
-import lib.brainsynder.utils.DyeColorWrapper;
 import org.bsdevelopment.pluginutils.text.WordUtils;
+import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.passive.IEntityTropicalFishPet;
 import simplepets.brainsynder.api.pet.PetData;
+import simplepets.brainsynder.api.wrappers.DyeColorWrapper;
 
 import java.util.Optional;
 
 public class PatternColorData extends PetData<IEntityTropicalFishPet> {
     public PatternColorData() {
         for (DyeColorWrapper color : DyeColorWrapper.values()) {
-            addDefaultItem(color.name(), DataConverter.getColoredMaterial(DataConverter.MaterialType.STAINED_CLAY, color)
+            addDefaultItem(color.name(), new ItemBuilder(Material.valueOf(color.name() + "_TERRACOTTA"))
                 .withName(" ")
                 .addLore(
                     "&#c8c8c8Previous: {previousColor}{previousName}",

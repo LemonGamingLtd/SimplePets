@@ -1,7 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.utils.DyeColorWrapper;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -10,6 +9,7 @@ import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.passive.IEntityTropicalFishPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.api.wrappers.DyeColorWrapper;
 import simplepets.brainsynder.api.wrappers.TropicalFishPattern;
 import simplepets.brainsynder.nms.entity.EntityFishPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;

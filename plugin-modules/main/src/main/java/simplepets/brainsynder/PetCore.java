@@ -1,12 +1,11 @@
 package simplepets.brainsynder;
 
 import com.jeff_media.updatechecker.UpdateChecker;
-import lib.brainsynder.reflection.Reflection;
-import lib.brainsynder.utils.Utilities;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.help.HelpCommand;
 import org.bsdevelopment.pluginutils.libs.json.WriterConfig;
+import org.bsdevelopment.pluginutils.reflection.Reflection;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
@@ -47,6 +46,7 @@ import simplepets.brainsynder.sql.handlers.MySQLHandler;
 import simplepets.brainsynder.sql.handlers.SQLiteHandler;
 import simplepets.brainsynder.utils.JavaVersion;
 import simplepets.brainsynder.utils.Premium;
+import simplepets.brainsynder.utils.Utilities;
 import simplepets.brainsynder.utils.VersionFields;
 import simplepets.brainsynder.utils.debug.Debug;
 
@@ -236,7 +236,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
                 addonManager.checkAddons();
 
                 handleMetrics();
-            }, Utilities.toUnit(ConfigOption.ADDON_LOAD_TIME.get(), unit));
+            }, Utilities.toTicks(ConfigOption.ADDON_LOAD_TIME.get(), unit));
         }
 
         checkWorldGuard(value -> {
@@ -362,16 +362,16 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     private boolean wasPluginReloaded() {
         try {
             Method isStopping = Bukkit.class.getDeclaredMethod("isStopping");
-            return !((boolean) Reflection.invoke(isStopping, null));
+            return !((boolean) Reflection.executeMethod(isStopping, null));
         } catch (Exception e) {
             String fieldName = VersionFields.fromServerVersion(ServerVersion.getVersion()).getServerRunningField();
 
-            Class<?> nmsClass = Reflection.getNmsClass("MinecraftServer", "server");
+            Class<?> nmsClass = Reflection.resolveMinecraftClass("MinecraftServer", "server");
 
             try {
-                Object server = Reflection.getMethod(nmsClass, "getServer").invoke(null);
+                Object server = Reflection.resolveMethod(nmsClass, "getServer").invoke(null);
                 Field field = nmsClass.getDeclaredField(fieldName);
-                Reflection.setFieldAccessible(field);
+                Reflection.makeFieldAccessible(field);
                 return (boolean) field.get(server);
             } catch (Exception exception) {
                 exception.printStackTrace();

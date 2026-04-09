@@ -2,7 +2,7 @@ package simplepets.brainsynder.commands.list;
 
 import lib.brainsynder.nbt.JsonToNBT;
 import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nms.Tellraw;
+import org.bsdevelopment.pluginutils.chat.TellrawMessage;
 import org.bsdevelopment.pluginutils.command.CommandArguments;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.CommandPermission;
@@ -184,7 +184,7 @@ public class SummonCommand implements PetCommandClass {
     private void handleSpawnResult(org.bukkit.command.CommandSender sender, SpawnResult<IEntityPet> result, PetType type, StorageTagCompound compound) {
         if (!result.isSuccess()) {
             if (result.isFailure()) {
-                Tellraw.fromLegacy(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName())).tooltip(result.failMessage()).send(sender);
+                TellrawMessage.of(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName())).tooltip(result.failMessage()).send(sender);
                 return;
             }
             sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON).replace("{type}", type.getName()));

@@ -1,8 +1,6 @@
 package simplepets.brainsynder.menu.inventory;
 
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.storage.IStorage;
-import lib.brainsynder.storage.StorageList;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.storage.ListPager;
@@ -116,7 +114,7 @@ public class PetSelectorMenu extends CustomInventory {
             placeHolder--;
         }
 
-        IStorage<PetTypeStorage> petTypes = new StorageList<>();
+        List<PetTypeStorage> petTypes = new ArrayList<>();
         for (IEntityPet entity : user.getPetEntities()) {
             IPetConfig petConfig = SimplePets.getPetConfigManager().getPetConfig(entity.getPetType()).orElse(null);
             ItemBuilder builder = entity.getPetType().getBuilder();
@@ -128,9 +126,9 @@ public class PetSelectorMenu extends CustomInventory {
             }).build()));
         }
 
-        if (petTypes.getSize() == 0) return;
+        if (petTypes.isEmpty()) return;
 
-        ListPager<PetTypeStorage> pages = new ListPager<>(maxPets, petTypes.toArrayList());
+        ListPager<PetTypeStorage> pages = new ListPager<>(maxPets, petTypes);
         pagerMap.put(player.getName(), pages);
 
         getSlots().forEach((slot, item) -> {

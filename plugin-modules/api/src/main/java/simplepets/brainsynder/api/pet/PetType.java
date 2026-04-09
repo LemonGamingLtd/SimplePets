@@ -3,8 +3,8 @@ package simplepets.brainsynder.api.pet;
 import com.google.common.collect.Lists;
 import lib.brainsynder.item.ItemBuilder;
 import lib.brainsynder.sounds.SoundMaker;
-import lib.brainsynder.utils.Capitalise;
 import org.bsdevelopment.pluginutils.text.Colorize;
+import org.bsdevelopment.pluginutils.text.WordUtils;
 import org.bsdevelopment.pluginutils.version.VersionCompatibility;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -374,7 +374,7 @@ public enum PetType {
         Arrays.asList(petData).forEach(data -> {
             if (data.isVersionSupported()) list.add(data);
         });
-        this.builder = builder.withName(Colorize.translateBungeeHex("&#c8f792" + Capitalise.capitalize(name().toLowerCase().replace("_", " "))));
+        this.builder = builder.withName(Colorize.translateBungeeHex("&#c8f792" + WordUtils.capitalize(name().toLowerCase().replace("_", " "))));
 
         this.petData.addAll(list);
     }

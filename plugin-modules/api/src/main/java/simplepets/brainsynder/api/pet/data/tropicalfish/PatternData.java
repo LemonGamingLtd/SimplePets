@@ -1,11 +1,11 @@
 package simplepets.brainsynder.api.pet.data.tropicalfish;
 
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.utils.DyeColorWrapper;
 import org.bsdevelopment.pluginutils.text.WordUtils;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.passive.IEntityTropicalFishPet;
 import simplepets.brainsynder.api.pet.PetData;
+import simplepets.brainsynder.api.wrappers.DyeColorWrapper;
 import simplepets.brainsynder.api.wrappers.TropicalFishPattern;
 
 import java.util.Optional;

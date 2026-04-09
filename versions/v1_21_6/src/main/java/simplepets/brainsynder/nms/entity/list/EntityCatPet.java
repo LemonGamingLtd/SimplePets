@@ -2,7 +2,7 @@ package simplepets.brainsynder.nms.entity.list;
 
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.utils.DyeColorWrapper;
+import simplepets.brainsynder.api.wrappers.DyeColorWrapper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;

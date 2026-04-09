@@ -1,7 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.utils.DyeColorWrapper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -18,6 +17,7 @@ import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import simplepets.brainsynder.api.entity.passive.IEntityWolfPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.api.wrappers.DyeColorWrapper;
 import simplepets.brainsynder.api.wrappers.WolfVariant;
 import simplepets.brainsynder.nms.entity.EntityTameablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
