@@ -42,7 +42,7 @@ public class PetConfigCommand implements PetCommandClass {
                     return list;
                 })))
                 .withArguments(new CustomArgument<>(new StringArgument("key"), info -> {
-                    // Validate the key exists in the pet's config
+                    if (info.previousArgs() == null || !info.previousArgs().has("type")) return info.input();
                     PetType type = info.previousArgs().get("type");
                     Optional<IPetConfig> config = SimplePets.getPetConfigManager().getPetConfig(type);
                     if (config.isEmpty())
