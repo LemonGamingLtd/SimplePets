@@ -1,8 +1,8 @@
 package simplepets.brainsynder.commands.list;
 
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
-import org.bsdevelopment.pluginutils.command.CommandPermission;
 import org.bsdevelopment.pluginutils.command.arguments.PlayerArgument;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.pet.PetType;
@@ -18,36 +18,43 @@ public class RemoveCommand implements PetCommandClass {
     public CommandBuilder build() {
         return CommandBuilder.create("remove")
                 .withPermission("pet.commands.remove")
-                .withDescription("Remove your pet or another players")
+                .withDescription("Remove your pet")
                 .withRequirement(sender -> sender instanceof Player)
-                .withArguments(new PlayerArgument("player")
-                        .setOptional(true)
-                        .withPermission(CommandPermission.of("pet.commands.remove.other")))
+                .withSubcommand(buildTargetCommand())
                 .withArguments(ALL_PET_TYPES.setOptional(true))
                 .executesPlayer((player, args) -> {
-                    Player target = args.getOrDefault("player", player);
-
-                    if (target != player && !player.hasPermission("pet.commands.remove.other")) {
-                        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.NO_PERMISSION));
-                        return;
-                    }
-
-                    if (args.has("type")) {
-                        PetType type = args.get("type");
-                        SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
-                            user.removePet(type);
-                            player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.REMOVED_PET)
-                                    .replace("{type}", type.getName()));
-                        });
-                    } else {
-                        AtomicInteger count = new AtomicInteger(0);
-                        SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
-                            for (PetType type : PetType.values())
-                                if (user.removePet(type)) count.incrementAndGet();
-                        });
-                        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.REMOVED_ALL_PETS)
-                                .replace("{count}", String.valueOf(count.get())));
-                    }
+                    PetType type = args.has("type") ? args.get("type") : null;
+                    removePets(player, player, type);
                 });
+    }
+
+    private CommandBuilder buildTargetCommand() {
+        return CommandBuilder.create("target")
+                .withPermission("pet.commands.remove.other")
+                .withDescription("Remove a pet from another player")
+                .withArguments(new PlayerArgument("player"))
+                .withArguments(ALL_PET_TYPES.setOptional(true))
+                .executes((sender, args) -> {
+                    Player target = args.get("player");
+                    PetType type = args.has("type") ? args.get("type") : null;
+                    removePets(sender, target, type);
+                });
+    }
+
+    private void removePets(CommandSender sender, Player target, PetType type) {
+        if (type != null) {
+            SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
+                user.removePet(type);
+                sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.REMOVED_PET).replace("{type}", type.getName()));
+            });
+        } else {
+            AtomicInteger count = new AtomicInteger(0);
+            SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
+                for (PetType petType : PetType.values()) {
+                    if (user.removePet(petType)) count.incrementAndGet();
+                }
+            });
+            sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.REMOVED_ALL_PETS).replace("{count}", String.valueOf(count.get())));
+        }
     }
 }
