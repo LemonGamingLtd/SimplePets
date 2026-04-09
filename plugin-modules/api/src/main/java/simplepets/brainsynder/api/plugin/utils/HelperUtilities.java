@@ -53,30 +53,36 @@ public final class HelperUtilities {
     }
 
     public static <T> @NotNull T getVersionedClass(@NotNull String className, @NotNull Class<T> expectedType, @NotNull Class<? extends T> fallbackType) {
-        String mcVersion = ServerVersion.getVersion().getVersionName();
-        String path = NMS_PATH + "." + mcVersion + "." + className;
+        String currentVersion = ServerVersion.getVersion().getVersionName();
+        String resolvedVersion = resolveTargetVersion(className);
 
-        // Try version-specific
-        try {
-            Class<?> rawType = Class.forName(path);
-
-            if (!expectedType.isAssignableFrom(rawType)) {
-                throw new IllegalStateException("Class " + path + " does not implement/extend " + expectedType.getName());
-            }
-
-            T instance = (T) newInstanceNoArgs(rawType);
-            SimplePets.getPlugin().getLogger().info("Found support for version: " + mcVersion + " (" + path + ")");
-            return instance;
-        } catch (Throwable ex) {
-            // Fallback
+        if (resolvedVersion != null) {
+            String path = NMS_PATH + "." + resolvedVersion + "." + className;
             try {
-                T instance = newInstanceNoArgs(fallbackType);
-                SimplePets.getPlugin().getLogger().warning("Missing version support for: " + mcVersion + " (" + path + "). Using fallback: " + fallbackType.getSimpleName());
+                Class<?> rawType = Class.forName(path);
+
+                if (!expectedType.isAssignableFrom(rawType)) {
+                    throw new IllegalStateException("Class " + path + " does not implement/extend " + expectedType.getName());
+                }
+
+                T instance = (T) newInstanceNoArgs(rawType);
+                if (resolvedVersion.equals(currentVersion)) {
+                    SimplePets.getPlugin().getLogger().info("Found support for version: " + currentVersion);
+                } else {
+                    SimplePets.getPlugin().getLogger().info("Version " + currentVersion + " linked to " + resolvedVersion);
+                }
                 return instance;
-            } catch (Throwable fallbackEx) {
-                fallbackEx.addSuppressed(ex);
-                throw new RuntimeException("Failed to create fallback for " + path, fallbackEx);
+            } catch (Throwable ex) {
+                // Fall through to fallback
             }
+        }
+
+        try {
+            T instance = newInstanceNoArgs(fallbackType);
+            SimplePets.getPlugin().getLogger().warning("Missing version support for: " + currentVersion + ". Using fallback: " + fallbackType.getSimpleName());
+            return instance;
+        } catch (Throwable fallbackEx) {
+            throw new RuntimeException("Failed to create fallback for " + className + " (" + currentVersion + ")", fallbackEx);
         }
     }
 
