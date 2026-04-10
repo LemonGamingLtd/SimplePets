@@ -2,7 +2,7 @@ package simplepets.brainsynder.addon.presets;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -170,7 +170,7 @@ public abstract class EconomyModule extends PetModule {
         List<PetType> petArray = user.getOwnedPets();
 
         PetType type = event.getType();
-        ItemBuilder maker = ItemBuilder.fromItem(event.getItem());
+        ItemBuilder maker = ItemBuilder.of(event.getItem());
         String price = String.valueOf(priceMap.getOrDefault(type, 2000.0));
         if (isPetFree(type)) price = freePrice;
 

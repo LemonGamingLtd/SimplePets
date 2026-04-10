@@ -1,7 +1,7 @@
 package simplepets.brainsynder.nms;
 
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.storage.RandomCollection;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.pluginutils.storage.RandomCollection;
 import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bsdevelopment.pluginutils.version.VersionCompatibility;
 import org.bukkit.Bukkit;

@@ -1,7 +1,6 @@
 package simplepets.brainsynder.api.wrappers;
 
-import lib.brainsynder.item.ItemBuilder;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 
 public enum ParrotVariant implements Iconable {
     RED("a4ba8d66fecb1992e94b8687d6ab4a5320ab7594ac194a2615ed4df818edbc3"),
@@ -18,7 +17,7 @@ public enum ParrotVariant implements Iconable {
 
     @Override
     public ItemBuilder getIcon() {
-        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
+        return ItemBuilder.playerSkull(texture);
     }
 
     public static ParrotVariant getById(int id) {

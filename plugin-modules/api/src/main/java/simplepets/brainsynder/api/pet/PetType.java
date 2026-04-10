@@ -1,7 +1,7 @@
 package simplepets.brainsynder.api.pet;
 
 import com.google.common.collect.Lists;
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 
 import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bsdevelopment.pluginutils.text.WordUtils;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 public enum PetType {
-    UNKNOWN(new ItemBuilder(Material.STONE)),
+    UNKNOWN(ItemBuilder.of(Material.STONE)),
 
     @PetCustomization(ambient = "ENTITY_ALLAY_AMBIENT_WITHOUT_ITEM", weight = PetWeight.LIGHT)
     ALLAY(IEntityAllayPet.class, "40e1c7064af7dee68677efaa95f6e6e01430b006dd91638ea2a61849254488ec", PetDataRegistry.Allay.DANCING),
@@ -344,21 +344,21 @@ public enum PetType {
     }
 
     PetType(Class<? extends IEntityPet> entityClass, Material material) {
-        this(entityClass, new ItemBuilder(material));
+        this(entityClass, ItemBuilder.of(material));
     }
 
     PetType(Class<? extends IEntityPet> entityClass, String textureID) {
-        this(entityClass, new ItemBuilder(Material.PLAYER_HEAD).setTexture("http://textures.minecraft.net/texture/" + textureID));
+        this(entityClass, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/" + textureID));
     }
 
     @SafeVarargs
     PetType(Class<? extends IEntityPet> entityClass, Material material, PetData<?>... petData) {
-        this(entityClass, new ItemBuilder(material), petData);
+        this(entityClass, ItemBuilder.of(material), petData);
     }
 
     @SafeVarargs
     PetType(Class<? extends IEntityPet> entityClass, String textureID, PetData<?>... petData) {
-        this(entityClass, new ItemBuilder(Material.PLAYER_HEAD).setTexture("http://textures.minecraft.net/texture/" + textureID), petData);
+        this(entityClass, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/" + textureID), petData);
     }
 
     @SafeVarargs

@@ -1,7 +1,6 @@
 package simplepets.brainsynder.api.wrappers;
 
-import lib.brainsynder.item.ItemBuilder;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 
 public enum AxolotlVariant implements Iconable {
     LUCY("3b83a38a458c3cca0761e2c8210c6f5d2f3380e860d50d2f4756516a2642617d"),
@@ -18,7 +17,7 @@ public enum AxolotlVariant implements Iconable {
 
     @Override
     public ItemBuilder getIcon() {
-        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
+        return ItemBuilder.playerSkull(texture);
     }
 
     public static AxolotlVariant getPrevious(AxolotlVariant current) {

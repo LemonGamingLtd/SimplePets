@@ -1,7 +1,6 @@
 package simplepets.brainsynder.api.wrappers;
 
-import lib.brainsynder.item.ItemBuilder;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 
 public enum PandaVariant implements Iconable {
     NORMAL("dca096eea506301bea6d4b17ee1605625a6f5082c71f74a639cc940439f47166"),
@@ -20,8 +19,7 @@ public enum PandaVariant implements Iconable {
 
     @Override
     public ItemBuilder getIcon() {
-        ItemBuilder builder = new ItemBuilder(Material.PLAYER_HEAD);
-        builder.setTexture(texture);
+        ItemBuilder builder = ItemBuilder.playerSkull(texture);
         return builder;
     }
 

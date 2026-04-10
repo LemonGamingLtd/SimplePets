@@ -1,14 +1,13 @@
 package simplepets.brainsynder.menu.inventory;
 
 import com.google.common.collect.Lists;
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.storage.ListPager;
 import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -125,8 +124,7 @@ public class AddonMenu extends CustomInventory {
             if (item.isEnabled() && item.addItemToInv(user, this))
                 inv.setItem(slot, item.getItemBuilder().build());
         });
-        ItemBuilder master = new ItemBuilder(Material.PLAYER_HEAD)
-            .setTexture("http://textures.minecraft.net/texture/ce1f3cc63c73a6a1dde72fe09c6ac5569376d7b61231bb740764368788cbf1fa");
+        ItemBuilder master = ItemBuilder.playerSkull("http://textures.minecraft.net/texture/ce1f3cc63c73a6a1dde72fe09c6ac5569376d7b61231bb740764368788cbf1fa");
 
         int finalMaxPets = maxPets;
 
@@ -137,7 +135,7 @@ public class AddonMenu extends CustomInventory {
 
             for (PetModule module : manager.getLoadedAddons()) {
                 String name = module.getNamespace().namespace();
-                ItemBuilder builder = ItemBuilder.fromItem(module.getAddonIcon());
+                ItemBuilder builder = ItemBuilder.of(module.getAddonIcon());
                 builder.addLore("&r ", "&7Enabled: " + (module.isEnabled() ? "&atrue" : "&cfalse"));
                 builder.handleMeta(ItemMeta.class, itemMeta -> {
                     PersistentDataContainer container = itemMeta.getPersistentDataContainer();
@@ -174,7 +172,7 @@ public class AddonMenu extends CustomInventory {
             for (AddonCloudData data : addons) {
                 String name = data.getName();
                 if (!manager.fetchAddon(name).isPresent()) {
-                    ItemBuilder builder = master.clone();
+                    ItemBuilder builder = ItemBuilder.of(master.build());
                     builder.withName(Colorize.fetchColor("e1eb5b") + name);
                     List<String> description = Lists.newArrayList();
                     if (!data.getDescription().isEmpty())

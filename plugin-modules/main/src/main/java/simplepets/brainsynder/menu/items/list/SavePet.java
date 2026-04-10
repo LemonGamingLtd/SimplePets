@@ -1,8 +1,8 @@
 package simplepets.brainsynder.menu.items.list;
 
-import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.PetCore;
@@ -28,7 +28,7 @@ public class SavePet extends Item {
 
     @Override
     public ItemBuilder getDefaultItem() {
-        return new ItemBuilder(Material.CHAIN_COMMAND_BLOCK)
+        return ItemBuilder.of(Material.CHAIN_COMMAND_BLOCK)
             .withName("&#e3c79a&lSave Pet")
             .addLore("&7Click here to save your current", "&7pet for you to spawn later");
     }

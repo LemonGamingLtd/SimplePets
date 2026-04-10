@@ -1,6 +1,6 @@
 package simplepets.brainsynder.api.wrappers.villager;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 
 /**
@@ -17,18 +17,18 @@ public enum VillagerType implements Iconable {
     FARMER("d01e035a3d8d6126072bcbe52a97913ace93552a99995b5d4070d6783a31e909"),
     FISHERMAN("79a9ebdd2c1bf2d0a61c3b98c0bc4277444a1b8fedbb16cca4faaca9f7ec0592"),
     FLETCHER("5d1c1bc63a2d59c93d07ed1ab6dae7bdd4c2e9f1a77b16dc7fb106c3545b6e47"),
-    LEATHERWORKER(new ItemBuilder(Material.LEATHER)),
+    LEATHERWORKER(ItemBuilder.of(Material.LEATHER)),
     LIBRARIAN("e698477d7d532748af4e09115ef16bb95994f0e58b090e6d3064458bb9ae1687"),
     MASON("2c02c3ffd5705ab488b305d57ff0168e26de70fd3f739e839661ab947dff37b1"),
     NITWIT("4541e8ebc881c8a02fe4af44f2928ea9188b539fd561b5b3fd731896c33bb524"),
     SHEPHERD("11955168ef53f7120c089dafe3e6e437e95240555d8c3accf944d6c56b740475"),
     TOOLSMITH("16ec61097e11bfe6f10aaa12e5c0a54c829bdbd9d9d7a32fc627e6b5a931e77"),
-    WEAPONSMITH(new ItemBuilder(Material.IRON_SWORD));
+    WEAPONSMITH(ItemBuilder.of(Material.IRON_SWORD));
 
     private final ItemBuilder icon;
 
     VillagerType(String texture) {
-        this.icon = new ItemBuilder(Material.PLAYER_HEAD).setTexture("http://textures.minecraft.net/texture/" + texture);
+        this.icon = ItemBuilder.playerSkull("http://textures.minecraft.net/texture/" + texture);
     }
 
     VillagerType(ItemBuilder icon) {

@@ -1,10 +1,10 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import com.mojang.authlib.GameProfile;
-import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.nbt.StorageBase;
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nbt.StorageTagString;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
+import org.bsdevelopment.nbt.StorageBase;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagString;
 import lib.brainsynder.utils.Base64Wrapper;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -602,7 +602,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         }
 
         if (chest.getType() == Material.AIR) {
-            chest = new ItemBuilder(Material.DIAMOND_CHESTPLATE).build();
+            chest = ItemBuilder.of(Material.DIAMOND_CHESTPLATE).build();
         }
 
         if (!getItems(EquipmentSlot.CHEST).isSimilar(chest)) {
@@ -611,7 +611,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
 
         // hey this one doesn't have brackets
         if (legs.getType() == Material.AIR) {
-            legs = new ItemBuilder(Material.IRON_LEGGINGS).build();
+            legs = ItemBuilder.of(Material.IRON_LEGGINGS).build();
         }
 
         if (!getItems(EquipmentSlot.LEGS).isSimilar(legs)) {
@@ -619,7 +619,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         }
 
         if (boots.getType() == Material.AIR) {
-            boots = new ItemBuilder(Material.GOLDEN_BOOTS).build();
+            boots = ItemBuilder.of(Material.GOLDEN_BOOTS).build();
         }
 
         if (!getItems(EquipmentSlot.FEET).isSimilar(boots)) {
@@ -648,7 +648,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
     public ItemStack getSkull() {
         // Allows textures to be instantly set; they aren't usually set with the UUID
         GameProfile profile = new GameProfile(getOwnerUUID(), getPetUser().getOwnerName());
-        ItemStack item = new ItemBuilder(Material.PLAYER_HEAD).build();
+        ItemStack item = ItemBuilder.of(Material.PLAYER_HEAD).build();
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         try {
             Method profileF = meta.getClass().getDeclaredMethod("setProfile", GameProfile.class);

@@ -1,7 +1,7 @@
 package simplepets.brainsynder.utils;
 
-import lib.brainsynder.nbt.StorageTagCompound;
 import org.apache.commons.io.FileUtils;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.chat.TellrawMessage;
 import org.bsdevelopment.pluginutils.files.YamlFile;

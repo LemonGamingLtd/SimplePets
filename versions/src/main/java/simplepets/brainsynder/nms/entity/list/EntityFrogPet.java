@@ -1,7 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.math.MathUtils;
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -15,7 +13,9 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.frog.FrogVariant;
 import net.minecraft.world.entity.animal.frog.FrogVariants;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.utilities.MathUtil;
 import org.bsdevelopment.pluginutils.version.VersionLimit;
 import org.bukkit.craftbukkit.CraftRegistry;
 import simplepets.brainsynder.api.entity.passive.IEntityFrogPet;
@@ -72,7 +72,7 @@ public class EntityFrogPet extends EntityAgeablePet implements IEntityFrogPet {
             if (croakingTick <= 0) {
                 setPose(Pose.STANDING);
                 setPose(Pose.CROAKING);
-                croakingTick = MathUtils.random(120, 150);
+                croakingTick = MathUtil.randomInt(120, 150);
             }
             croakingTick--;
         }
@@ -81,7 +81,7 @@ public class EntityFrogPet extends EntityAgeablePet implements IEntityFrogPet {
             if (tongueTick <= 0) {
                 setPose(Pose.STANDING);
                 setPose(Pose.USING_TONGUE);
-                tongueTick = MathUtils.random(100, 150);
+                tongueTick = MathUtil.randomInt(100, 150);
             }
             tongueTick--;
         }

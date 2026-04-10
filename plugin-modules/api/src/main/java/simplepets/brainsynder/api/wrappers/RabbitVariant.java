@@ -1,7 +1,6 @@
 package simplepets.brainsynder.api.wrappers;
 
-import lib.brainsynder.item.ItemBuilder;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 
 public enum RabbitVariant implements Iconable {
     BROWN("7d1169b2694a6aba826360992365bcda5a10c89a3aa2b48c438531dd8685c3a7"),
@@ -20,7 +19,7 @@ public enum RabbitVariant implements Iconable {
 
     @Override
     public ItemBuilder getIcon() {
-        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
+        return ItemBuilder.playerSkull(texture);
     }
 
     public static RabbitVariant getByID(int id) {

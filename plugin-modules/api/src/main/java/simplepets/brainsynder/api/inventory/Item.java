@@ -1,7 +1,7 @@
 package simplepets.brainsynder.api.inventory;
 
-import lib.brainsynder.item.ItemBuilder;
 import org.bsdevelopment.pluginutils.files.JsonFile;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.Namespace;
@@ -60,7 +60,7 @@ public abstract class Item extends JsonFile {
     public void loadDefaults() { // Generates the default files for the item
         setDefault("enabled", true);
         if (getDefaultItem() != null)
-            setDefault("item", HelperUtilities.toJsonObject(getDefaultItem().toCompound()));
+            setDefault("item", HelperUtilities.toJsonObject(getDefaultItem().toTag()));
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class Item extends JsonFile {
     public ItemBuilder getItemBuilder() {
         if (hasKey("item")) {
             try {
-                return ItemBuilder.fromCompound(HelperUtilities.fromJsonObject((JsonObject) getValue("item")));
+                return ItemBuilder.of(HelperUtilities.fromJsonObject((JsonObject) getValue("item")));
             } catch (IllegalArgumentException ex) {
                 SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Error thrown when creating item for " + getClass().getSimpleName() + ".");
                 // new RuntimeException(ex).printStackTrace();
@@ -88,7 +88,7 @@ public abstract class Item extends JsonFile {
 
         if (getDefaultItem() != null) return getDefaultItem();
 
-        return new ItemBuilder(Material.RED_STAINED_GLASS_PANE);
+        return ItemBuilder.of(Material.RED_STAINED_GLASS_PANE);
     }
 
     /**

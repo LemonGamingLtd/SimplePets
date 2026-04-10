@@ -1,11 +1,11 @@
 package simplepets.brainsynder.nms.pathfinder;
 
-import lib.brainsynder.math.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import org.bsdevelopment.pluginutils.utilities.MathUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import simplepets.brainsynder.api.entity.misc.EntityPetType;
@@ -188,6 +188,6 @@ public class LegacyPathfinderFollowPlayer extends Goal {
     }
 
     private int getRandomInt(int min, int max) {
-        return MathUtils.random(max - min) + min;
+        return MathUtil.randomInt(min, max);
     }
 }

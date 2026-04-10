@@ -1,6 +1,6 @@
 package simplepets.brainsynder.api.pet;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.sound.SafeSound;
 import org.bukkit.entity.EntityType;

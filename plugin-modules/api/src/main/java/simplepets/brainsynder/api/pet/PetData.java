@@ -1,6 +1,6 @@
 package simplepets.brainsynder.api.pet;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.libs.json.JsonValue;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
@@ -21,8 +21,8 @@ import java.util.function.Predicate;
  * <pre>{@code
  * PetData.of("sitting", ISitting.class)
  *     .defaultValue(false)
- *     .item(true,  new ItemBuilder(Material.OAK_STAIRS).withName("Sitting: on"))
- *     .item(false, new ItemBuilder(Material.OAK_STAIRS).withName("Sitting: off"))
+ *     .item(true,  ItemBuilder.of(Material.OAK_STAIRS).withName("Sitting: on"))
+ *     .item(false, ItemBuilder.of(Material.OAK_STAIRS).withName("Sitting: off"))
  *     .onToggle(e -> e.setSitting(!e.isSitting()))
  *     .value(e -> e.isSitting())
  *     .build();
@@ -32,7 +32,7 @@ import java.util.function.Predicate;
  * <pre>{@code
  * PetData.of("cat_type", IEntityCatPet.class)
  *     .defaultValue(Cat.Type.TABBY)
- *     .items(Cat.Type.values(), t -> new ItemBuilder(Material.CAT_SPAWN_EGG).withName(t.name()))
+ *     .items(Cat.Type.values(), t -> ItemBuilder.of(Material.CAT_SPAWN_EGG).withName(t.name()))
  *     .onLeftClick(e  -> e.setCatType(PetData.cycleForward(e.getCatType(),  Cat.Type.values())))
  *     .onRightClick(e -> e.setCatType(PetData.cycleBackward(e.getCatType(), Cat.Type.values())))
  *     .value(e -> e.getCatType())
@@ -43,7 +43,7 @@ import java.util.function.Predicate;
  * <pre>{@code
  * PetData.of("size", ISizable.class)
  *     .defaultValue(1)
- *     .items(List.of(1, 2, 3, 4), v -> new ItemBuilder(Material.PLAYER_HEAD).withName("Size: " + v))
+ *     .items(List.of(1, 2, 3, 4), v -> ItemBuilder.of(Material.PLAYER_HEAD).withName("Size: " + v))
  *     .onLeftClick(e  -> e.setSize(PetData.cycleForward(e.getSize(),  List.of(1, 2, 3, 4))))
  *     .onRightClick(e -> e.setSize(PetData.cycleBackward(e.getSize(), List.of(1, 2, 3, 4))))
  *     .value(e -> e.getSize())
@@ -372,7 +372,7 @@ public abstract class PetData<E extends IEntityPet> {
          * Works directly with {@code SomeEnum.values()} arrays.
          *
          * <pre>{@code
-         * .items(Cat.Type.values(), t -> new ItemBuilder(Material.CAT_SPAWN_EGG).withName(t.name()))
+         * .items(Cat.Type.values(), t -> ItemBuilder.of(Material.CAT_SPAWN_EGG).withName(t.name()))
          * }</pre>
          */
         public <V> Builder<E> items(V[] values, Function<V, ItemBuilder> itemFactory) {
@@ -385,7 +385,7 @@ public abstract class PetData<E extends IEntityPet> {
          * match {@code exclude}, using {@code itemFactory} to build each one.
          *
          * <pre>{@code
-         * .items(HorseArmorType.values(), a -> a == HorseArmorType.NONE, a -> new ItemBuilder(...))
+         * .items(HorseArmorType.values(), a -> a == HorseArmorType.NONE, a -> ItemBuilder.of(...))
          * }</pre>
          */
         public <V> Builder<E> items(V[] values, Predicate<V> exclude, Function<V, ItemBuilder> itemFactory) {
@@ -400,7 +400,7 @@ public abstract class PetData<E extends IEntityPet> {
          * {@code itemFactory} to build each one.
          *
          * <pre>{@code
-         * .items(List.of(1, 2, 3, 4), v -> new ItemBuilder(Material.PLAYER_HEAD).withName("Size: " + v))
+         * .items(List.of(1, 2, 3, 4), v -> ItemBuilder.of(Material.PLAYER_HEAD).withName("Size: " + v))
          * }</pre>
          */
         public <V> Builder<E> items(List<V> values, Function<V, ItemBuilder> itemFactory) {

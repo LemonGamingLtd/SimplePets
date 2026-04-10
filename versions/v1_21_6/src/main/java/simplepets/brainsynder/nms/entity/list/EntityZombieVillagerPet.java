@@ -1,7 +1,7 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
-import lib.brainsynder.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -61,7 +61,7 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
         StorageTagCompound object = super.asCompound();
         object.setBoolean("raised_arms", isArmsRaised());
         object.setBoolean("shaking", isShaking());
-        object.setTag("data", getVillagerData().toCompound());
+        object.setTag("data", getVillagerData().toTag());
         return object;
     }
 

@@ -1,6 +1,6 @@
 package simplepets.brainsynder.api.pet.data.tropicalfish;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.text.WordUtils;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.passive.IEntityTropicalFishPet;
@@ -12,7 +12,7 @@ import java.util.Optional;
 public class PatternColorData extends PetData<IEntityTropicalFishPet> {
     public PatternColorData() {
         for (DyeColorWrapper color : DyeColorWrapper.values()) {
-            addDefaultItem(color.name(), new ItemBuilder(Material.valueOf(color.name() + "_TERRACOTTA"))
+            addDefaultItem(color.name(), ItemBuilder.of(Material.valueOf(color.name() + "_TERRACOTTA"))
                 .withName(" ")
                 .addLore(
                     "&#c8c8c8Previous: {previousColor}{previousName}",

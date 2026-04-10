@@ -1,8 +1,7 @@
 package simplepets.brainsynder.api.pet.data.tropicalfish;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.text.WordUtils;
-import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.passive.IEntityTropicalFishPet;
 import simplepets.brainsynder.api.pet.PetData;
 import simplepets.brainsynder.api.wrappers.DyeColorWrapper;
@@ -13,8 +12,7 @@ import java.util.Optional;
 public class PatternData extends PetData<IEntityTropicalFishPet> {
     public PatternData() {
         for (TropicalFishPattern pattern : TropicalFishPattern.values()) {
-            addDefaultItem(pattern.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                .setTexture("http://textures.minecraft.net/texture/36d149e4d499929672e2768949e6477959c21e65254613b327b538df1e4df")
+            addDefaultItem(pattern.name(), ItemBuilder.playerSkull("http://textures.minecraft.net/texture/36d149e4d499929672e2768949e6477959c21e65254613b327b538df1e4df")
                 .withName("&#c8c8c8{name}: &a" + pattern.name()));
         }
     }

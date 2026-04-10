@@ -1,6 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -13,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WoolCarpetBlock;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.NamespacedKey;
 import simplepets.brainsynder.api.entity.passive.IEntityLlamaPet;

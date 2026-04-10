@@ -1,7 +1,7 @@
 package simplepets.brainsynder.sql.handlers;
 
-import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.utils.Base64Wrapper;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.storage.optional.BiOptional;
 import org.bsdevelopment.pluginutils.utilities.Triple;
 import simplepets.brainsynder.PetCore;

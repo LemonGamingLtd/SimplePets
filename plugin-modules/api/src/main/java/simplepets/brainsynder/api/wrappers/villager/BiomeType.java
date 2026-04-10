@@ -1,6 +1,6 @@
 package simplepets.brainsynder.api.wrappers.villager;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 
 /**
@@ -9,13 +9,13 @@ import org.bukkit.Material;
 import simplepets.brainsynder.api.wrappers.Iconable;
 
 public enum BiomeType implements Iconable {
-    DESERT(new ItemBuilder(Material.SAND)),
-    JUNGLE(new ItemBuilder(Material.VINE)),
-    PLAINS(new ItemBuilder(Material.GRASS_BLOCK)),
-    SAVANNA(new ItemBuilder(Material.ACACIA_LOG)),
-    SNOW(new ItemBuilder(Material.SNOW_BLOCK)),
-    SWAMP(new ItemBuilder(Material.SLIME_BLOCK)),
-    TAIGA(new ItemBuilder(Material.PODZOL));
+    DESERT(ItemBuilder.of(Material.SAND)),
+    JUNGLE(ItemBuilder.of(Material.VINE)),
+    PLAINS(ItemBuilder.of(Material.GRASS_BLOCK)),
+    SAVANNA(ItemBuilder.of(Material.ACACIA_LOG)),
+    SNOW(ItemBuilder.of(Material.SNOW_BLOCK)),
+    SWAMP(ItemBuilder.of(Material.SLIME_BLOCK)),
+    TAIGA(ItemBuilder.of(Material.PODZOL));
 
     private final ItemBuilder icon;
 

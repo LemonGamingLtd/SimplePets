@@ -1,7 +1,6 @@
 package simplepets.brainsynder.api.plugin.utils;
 
-import lib.brainsynder.nbt.*;
-import lib.brainsynder.nbt.other.IStorageList;
+import org.bsdevelopment.nbt.*;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.libs.json.JsonValue;
@@ -105,17 +104,22 @@ public final class HelperUtilities {
                     case 5 -> json.add(key, compound.getFloat(key) + "f");
                     case 6 -> json.add(key, compound.getDouble(key) + "d");
                 }
-            } else if (base instanceof IStorageList storageList) {
+            } else if (base instanceof StorageTagByteArray byteArray) {
                 JsonArray array = new JsonArray();
-                Object list = storageList.getList();
-                if (list instanceof byte[]) {
-                    for (byte v : (byte[]) list) array.add(v + "b");
-                } else if (list instanceof int[]) {
-                    for (int v : (int[]) list) array.add(v);
-                } else if (list instanceof long[]) {
-                    for (long v : (long[]) list) array.add(v + "l");
-                } else if (list instanceof List<?> l) {
-                    l.forEach(item -> array.add(String.valueOf(item).replace("\"", "")));
+                for (byte v : byteArray.getByteArray()) array.add(v + "b");
+                json.add(key, array);
+            } else if (base instanceof StorageTagIntArray intArray) {
+                JsonArray array = new JsonArray();
+                for (int v : intArray.getIntArray()) array.add(v);
+                json.add(key, array);
+            } else if (base instanceof StorageTagLongArray longArray) {
+                JsonArray array = new JsonArray();
+                for (long v : longArray.getLongArray()) array.add(v + "l");
+                json.add(key, array);
+            } else if (base instanceof StorageTagList tagList) {
+                JsonArray array = new JsonArray();
+                for (int i = 0; i < tagList.tagCount(); i++) {
+                    array.add(tagList.getStringTagAt(i));
                 }
                 json.add(key, array);
             } else if (base instanceof StorageTagCompound nested) {

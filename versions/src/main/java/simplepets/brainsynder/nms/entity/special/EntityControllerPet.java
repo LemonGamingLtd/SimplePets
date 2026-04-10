@@ -1,6 +1,5 @@
 package simplepets.brainsynder.nms.entity.special;
 
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.sound.SafeSound;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

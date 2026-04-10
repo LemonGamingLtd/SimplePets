@@ -1,6 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -13,6 +12,7 @@ import net.minecraft.world.entity.animal.pig.PigVariant;
 import net.minecraft.world.entity.animal.pig.PigVariants;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.craftbukkit.CraftRegistry;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;

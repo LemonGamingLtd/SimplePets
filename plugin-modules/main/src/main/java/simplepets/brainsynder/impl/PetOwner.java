@@ -1,9 +1,9 @@
 package simplepets.brainsynder.impl;
 
 import com.google.common.collect.Lists;
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nbt.StorageTagList;
-import lib.brainsynder.nbt.StorageTagString;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagList;
+import org.bsdevelopment.nbt.StorageTagString;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.storage.optional.BiOptional;
 import org.bukkit.Bukkit;

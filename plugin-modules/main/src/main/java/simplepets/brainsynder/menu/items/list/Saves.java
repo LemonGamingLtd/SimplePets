@@ -1,6 +1,6 @@
 package simplepets.brainsynder.menu.items.list;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -20,7 +20,7 @@ public class Saves extends Item {
 
     @Override
     public ItemBuilder getDefaultItem() {
-        return new ItemBuilder(Material.COMMAND_BLOCK)
+        return ItemBuilder.of(Material.COMMAND_BLOCK)
             .withName("&#e3c79a&lPet Saves")
             .addLore("&7", "&7View the pets you have saved");
     }

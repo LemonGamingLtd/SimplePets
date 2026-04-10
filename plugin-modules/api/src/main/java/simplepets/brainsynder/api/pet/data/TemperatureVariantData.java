@@ -1,8 +1,7 @@
 package simplepets.brainsynder.api.pet.data;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.version.VersionLimit;
-import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.entity.misc.ITemperaturePet;
 import simplepets.brainsynder.api.entity.passive.IEntityChickenPet;
@@ -15,9 +14,8 @@ import simplepets.brainsynder.api.wrappers.TemperatureVariant;
 public class TemperatureVariantData extends PetData<ITemperaturePet> {
     public TemperatureVariantData(Class<? extends IEntityPet> entityClass) {
         for (TemperatureVariant type : TemperatureVariant.values()) {
-            addDefaultItem(type.name(), new ItemBuilder(Material.PLAYER_HEAD)
-                .withName("&#c8c8c8{name}: &a" + type.name())
-                .setTexture("http://textures.minecraft.net/texture/" + type.getTextureByEntity(entityClass)));
+            addDefaultItem(type.name(), ItemBuilder.playerSkull("http://textures.minecraft.net/texture/" + type.getTextureByEntity(entityClass))
+                .withName("&#c8c8c8{name}: &a" + type.name()));
         }
     }
 

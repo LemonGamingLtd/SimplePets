@@ -1,8 +1,7 @@
 package simplepets.brainsynder.api.wrappers;
 
-import lib.brainsynder.item.ItemBuilder;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 
 public enum ColorWrapper implements Iconable {
     NONE(-1, -1, ChatColor.WHITE, "366a5c98928fa5d4b5d5b8efb490155b4dda3956bcaa9371177814532cfc"),
@@ -81,6 +80,6 @@ public enum ColorWrapper implements Iconable {
 
     @Override
     public ItemBuilder getIcon() {
-        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
+        return ItemBuilder.playerSkull(texture);
     }
 }

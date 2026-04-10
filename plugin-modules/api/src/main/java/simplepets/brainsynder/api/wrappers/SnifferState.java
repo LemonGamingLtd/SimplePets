@@ -1,7 +1,6 @@
 package simplepets.brainsynder.api.wrappers;
 
-import lib.brainsynder.item.ItemBuilder;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 
 public enum SnifferState implements Iconable {
     IDLING("87ad920a66e38cc3426a5bff084667e8772116915e298098567c139f222e2c42"),
@@ -18,7 +17,7 @@ public enum SnifferState implements Iconable {
 
     @Override
     public ItemBuilder getIcon() {
-        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
+        return ItemBuilder.playerSkull(texture);
     }
 
     public static SnifferState getByID(int id) {

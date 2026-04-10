@@ -3,9 +3,6 @@ package simplepets.brainsynder.nms.helper;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lib.brainsynder.internal.nbtapi.nbtapi.NBTContainer;
 import lib.brainsynder.internal.nbtapi.nbtapi.NBTReflectionUtil;
-import lib.brainsynder.nbt.JsonToNBT;
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nbt.other.NBTException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
@@ -21,6 +18,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.io.StorageStringParser;
+import org.bsdevelopment.nbt.other.NBTException;
 import org.bsdevelopment.pluginutils.reflection.FieldAccessor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftEntity;
@@ -118,7 +118,7 @@ public class VersionHelper {
         // compoundTag = nmsItem.save(((CraftServer) Bukkit.getServer()).getServer().registryAccess(), compoundTag);
 
         try {
-            return JsonToNBT.getTagFromJson(compoundTag.toString());
+            return StorageStringParser.getTagFromJson(compoundTag.toString());
         } catch (NBTException exception) {
             throw new InvalidInputException("Failed to convert item to NBT", exception);
         }

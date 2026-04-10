@@ -1,6 +1,5 @@
 package simplepets.brainsynder.nms.entity;
 
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -15,6 +14,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.sound.SafeSound;
 import org.bsdevelopment.pluginutils.text.Colorize;

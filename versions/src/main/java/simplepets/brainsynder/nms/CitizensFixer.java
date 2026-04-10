@@ -5,12 +5,12 @@
 
 package simplepets.brainsynder.nms;
 
-import lib.brainsynder.reflection.Reflection;
 import net.minecraft.core.DefaultedMappedRegistry;
 import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
+import org.bsdevelopment.pluginutils.reflection.Reflection;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bukkit.Bukkit;
 import simplepets.brainsynder.api.plugin.SimplePets;
@@ -38,10 +38,10 @@ public class CitizensFixer {
 
         SERVER_VERSION = ServerVersion.getVersion();
 
-        MODIFIERS = Reflection.getField(Field.class, "modifiers");
+        MODIFIERS = Reflection.retrieveField(Field.class, "modifiers");
 
         try {
-            Object UNSAFE = Reflection.getField(Class.forName("sun.misc.Unsafe"), "theUnsafe").get(null);
+            Object UNSAFE = Reflection.retrieveField(Class.forName("sun.misc.Unsafe"), "theUnsafe").get(null);
 
             STATIC_FIELD_OFFSET = getMethodHandle(UNSAFE.getClass(), "staticFieldOffset", Field.class).bindTo(UNSAFE);
             PUT_OBJECT = getMethodHandle(UNSAFE.getClass(), "putObject",  Object.class, long.class, Object.class).bindTo(UNSAFE);
@@ -76,7 +76,7 @@ public class CitizensFixer {
 
             for (Field field : mappedRegistry.getClass().getDeclaredFields()) {
                 if ((field.getType() == DefaultedMappedRegistry.class) || (field.getType() == MappedRegistry.class)) {
-                    Reflection.setFieldAccessible(field);
+                    Reflection.makeFieldAccessible(field);
 
                     try {
                         // Find and fetch an instance of the vanilla entity registry
@@ -94,7 +94,7 @@ public class CitizensFixer {
     }
 
     public static MethodHandle createStaticFinalSetter(Class<?> className, String fieldName) {
-        Field field = Reflection.getField(className, fieldName);
+        Field field = Reflection.retrieveField(className, fieldName);
         if (field == null) {
             SimplePets.getDebugLogger().debug(DebugLevel.HIDDEN, "Failed to find field: "+className.getName()+"$"+fieldName);
             return null;
@@ -124,7 +124,7 @@ public class CitizensFixer {
     public static MethodHandle getMethodHandle(Class<?> className, String method, Class<?>... parameters) {
         if (className != null) {
             try {
-                return METHOD_LOOKUP.unreflect(Reflection.getMethod(className, method, parameters));
+                return METHOD_LOOKUP.unreflect(Reflection.resolveMethod(className, method, parameters));
             } catch (Exception exception) {
                 throw new RuntimeException("Failed to lookup the method handler for the "+className.getName()+"."+method+" method", exception);
             }

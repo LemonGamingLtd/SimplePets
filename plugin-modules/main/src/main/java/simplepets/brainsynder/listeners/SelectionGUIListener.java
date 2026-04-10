@@ -1,8 +1,8 @@
 package simplepets.brainsynder.listeners;
 
-import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -55,7 +55,7 @@ public class SelectionGUIListener implements Listener {
 
                 List<PetTypeStorage> storage = new ArrayList<>(menu.getPetMap().get(player.getName()));
                 for (PetTypeStorage type : storage) {
-                    if (!ItemBuilder.fromItem(type.getItem()).isSimilar(e.getCurrentItem())) continue;
+                    if (!ItemBuilder.of(type.getItem()).build().isSimilar(e.getCurrentItem())) continue;
                     PetSelectTypeEvent event = new PetSelectTypeEvent(type.getType(), user);
                     Bukkit.getServer().getPluginManager().callEvent(event);
 

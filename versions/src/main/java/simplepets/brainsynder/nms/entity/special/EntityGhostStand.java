@@ -5,7 +5,6 @@
 
 package simplepets.brainsynder.nms.entity.special;
 
-import lib.brainsynder.reflection.Reflection;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.pluginutils.reflection.Reflection;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -41,7 +41,7 @@ public class EntityGhostStand extends ArmorStand {
     }
 
     public static EntityGhostStand spawn(Location location, EntityControllerPet pet) {
-        EntityGhostStand stand = new EntityGhostStand(EntityType.ARMOR_STAND, Reflection.getWorldHandle(location.getWorld()), pet);
+        EntityGhostStand stand = new EntityGhostStand(EntityType.ARMOR_STAND, Reflection.fetchWorldHandle(location.getWorld()), pet);
         stand.setPos(location.getX(), location.getY(), location.getZ());
         stand.setNoBasePlate(true);
         stand.setInvulnerable(true);

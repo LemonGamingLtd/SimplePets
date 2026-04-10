@@ -1,7 +1,7 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.nbt.JsonToNBT;
-import lib.brainsynder.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.io.StorageStringParser;
 import org.bsdevelopment.pluginutils.chat.TellrawMessage;
 import org.bsdevelopment.pluginutils.command.CommandArguments;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
@@ -172,9 +172,9 @@ public class SummonCommand implements PetCommandClass {
      */
     private StorageTagCompound buildCompound(CommandSender sender, CommandArguments args) {
         if (!args.has("nbt") || !sender.hasPermission("pet.commands.summon.nbt")) return new StorageTagCompound();
-        org.bsdevelopment.nbt.StorageTagCompound nbtArg = args.get("nbt");
+        StorageTagCompound nbtArg = args.get("nbt");
         try {
-            return JsonToNBT.getTagFromJson(nbtArg.toString());
+            return StorageStringParser.getTagFromJson(nbtArg.toString());
         } catch (Exception e) {
             sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.INVALID_NBT));
             return null;

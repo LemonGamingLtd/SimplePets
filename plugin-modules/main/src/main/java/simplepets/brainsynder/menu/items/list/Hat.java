@@ -1,7 +1,7 @@
 package simplepets.brainsynder.menu.items.list;
 
-import lib.brainsynder.item.ItemBuilder;
 import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -24,7 +24,7 @@ public class Hat extends Item {
 
     @Override
     public ItemBuilder getDefaultItem() {
-        return new ItemBuilder(Material.DIAMOND_HELMET).withName("&#e3c79a&lToggle Pet as Hat");
+        return ItemBuilder.of(Material.DIAMOND_HELMET).withName("&#e3c79a&lToggle Pet as Hat");
     }
 
     @Override

@@ -1,7 +1,7 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.nbt.JsonToNBT;
-import lib.brainsynder.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.io.StorageStringParser;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.arguments.PlayerArgument;
 import org.bukkit.entity.Player;
@@ -32,7 +32,7 @@ public class ModifyCommand implements PetCommandClass {
                             if (entityPet instanceof IEntityControllerPet)
                                 entityPet = ((IEntityControllerPet) entityPet).getVisibleEntity();
                             try {
-                                StorageTagCompound compound = JsonToNBT.getTagFromJson(nbtArg.toString());
+                                StorageTagCompound compound = StorageStringParser.getTagFromJson(nbtArg.toString());
 
                                 String message = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_COMPOUND)
                                         .replace("{compound}", compound.toString());
@@ -64,11 +64,10 @@ public class ModifyCommand implements PetCommandClass {
                 .executesPlayer((player, args) -> {
                     Player target = args.get("player");
                     PetType type = args.get("type");
-                    org.bsdevelopment.nbt.StorageTagCompound nbtArg = args.get("nbt");
+                    StorageTagCompound nbtArg = args.get("nbt");
 
                     if (!SimplePets.getSpawnUtil().isRegistered(type)) {
-                        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_REGISTERED)
-                                .replace("{type}", type.getName()));
+                        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_NOT_REGISTERED).replace("{type}", type.getName()));
                         return;
                     }
 
@@ -77,12 +76,9 @@ public class ModifyCommand implements PetCommandClass {
                             if (entityPet instanceof IEntityControllerPet)
                                 entityPet = ((IEntityControllerPet) entityPet).getVisibleEntity();
                             try {
-                                StorageTagCompound compound = JsonToNBT.getTagFromJson(nbtArg.toString());
-
-                                String message = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_COMPOUND)
-                                        .replace("{compound}", compound.toString());
-                                if (!message.isEmpty())
-                                    player.sendMessage(message.replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
+                                StorageTagCompound compound = StorageStringParser.getTagFromJson(nbtArg.toString());
+                                String message = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_COMPOUND).replace("{compound}", compound.toString());
+                                if (!message.isEmpty()) player.sendMessage(message.replaceAll("(?i):0b", ":false").replaceAll("(?i):1b", ":true"));
 
                                 entityPet.applyCompound(compound);
                                 player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.MODIFY_APPLIED)

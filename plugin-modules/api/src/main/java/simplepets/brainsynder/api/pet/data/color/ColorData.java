@@ -1,6 +1,6 @@
 package simplepets.brainsynder.api.pet.data.color;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.text.WordUtils;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.misc.IColorable;
@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ColorData extends PetData<IColorable> {
     public ColorData() {
         for (DyeColorWrapper color : DyeColorWrapper.values()) {
-            addDefaultItem(color.name(), new ItemBuilder(Material.valueOf(color.name() + "_CONCRETE"))
+            addDefaultItem(color.name(), ItemBuilder.of(Material.valueOf(color.name() + "_CONCRETE"))
                 .withName(" ")
                 .addLore(
                     "&#c8c8c8Previous: {previousColor}{previousName}",

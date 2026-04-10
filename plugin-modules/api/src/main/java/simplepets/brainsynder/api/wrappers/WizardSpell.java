@@ -1,15 +1,15 @@
 package simplepets.brainsynder.api.wrappers;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 
 public enum WizardSpell implements Iconable {
-    NONE(0, 0.0D, 0.0D, 0.0D, new ItemBuilder(Material.BARRIER)),
-    SUMMON_VEX(1, 0.7D, 0.7D, 0.8D, new ItemBuilder(Material.GRAY_DYE)),
-    FANGS(2, 0.4D, 0.3D, 0.35D, new ItemBuilder(Material.BROWN_DYE)),
-    WOLOLO(3, 0.7D, 0.5D, 0.2D, new ItemBuilder(Material.ORANGE_DYE)),
-    DISAPPEAR(4, 0.3D, 0.3D, 0.8D, new ItemBuilder(Material.LIGHT_BLUE_DYE)),
-    BLINDNESS(5, 0.1D, 0.1D, 0.2D, new ItemBuilder(Material.BLACK_DYE));
+    NONE(0, 0.0D, 0.0D, 0.0D, ItemBuilder.of(Material.BARRIER)),
+    SUMMON_VEX(1, 0.7D, 0.7D, 0.8D, ItemBuilder.of(Material.GRAY_DYE)),
+    FANGS(2, 0.4D, 0.3D, 0.35D, ItemBuilder.of(Material.BROWN_DYE)),
+    WOLOLO(3, 0.7D, 0.5D, 0.2D, ItemBuilder.of(Material.ORANGE_DYE)),
+    DISAPPEAR(4, 0.3D, 0.3D, 0.8D, ItemBuilder.of(Material.LIGHT_BLUE_DYE)),
+    BLINDNESS(5, 0.1D, 0.1D, 0.2D, ItemBuilder.of(Material.BLACK_DYE));
 
     private final int id;
     private final double[] array;

@@ -1,7 +1,7 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
-import lib.brainsynder.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;

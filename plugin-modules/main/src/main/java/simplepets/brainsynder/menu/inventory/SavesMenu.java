@@ -1,8 +1,8 @@
 package simplepets.brainsynder.menu.inventory;
 
 import com.google.common.collect.Lists;
-import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.nbt.*;
+import org.bsdevelopment.nbt.*;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.storage.ListPager;
@@ -151,7 +151,7 @@ public class SavesMenu extends CustomInventory {
                     if (storageMap.containsKey(compound)) {
                         stack = storageMap.get(compound).getValue();
                     } else {
-                        ItemBuilder builder = type.getBuilder().clone();
+                        ItemBuilder builder = ItemBuilder.of(type.getBuilder().build());
                         if (petConfig != null) builder = petConfig.getBuilder();
                         builder.clearLore();
                         if (compound.hasKey("name") && (!compound.getString("name").equals("null")))

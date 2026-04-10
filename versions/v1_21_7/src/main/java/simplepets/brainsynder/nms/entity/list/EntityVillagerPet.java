@@ -1,6 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -8,6 +7,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -60,7 +60,7 @@ public class EntityVillagerPet extends EntityAgeablePet implements IEntityVillag
     public StorageTagCompound asCompound() {
         StorageTagCompound object = super.asCompound();
         object.setBoolean("shaking", isShaking());
-        object.setTag("data", getVillagerData().toCompound());
+        object.setTag("data", getVillagerData().toTag());
         return object;
     }
 

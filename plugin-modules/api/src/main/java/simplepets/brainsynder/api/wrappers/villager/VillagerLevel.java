@@ -1,12 +1,11 @@
 package simplepets.brainsynder.api.wrappers.villager;
 
-import lib.brainsynder.item.ItemBuilder;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
+import simplepets.brainsynder.api.wrappers.Iconable;
 
 /**
  * This is used to handle the 1.14 Villager Types/Professions
  */
-import simplepets.brainsynder.api.wrappers.Iconable;
 
 public enum VillagerLevel implements Iconable {
     NOVICE("8e140dc30e7bd57d0c5ff71a6818500434692f492479a5426aa231d7ad994d8a"),
@@ -18,7 +17,7 @@ public enum VillagerLevel implements Iconable {
     private final ItemBuilder icon;
 
     VillagerLevel(String texture) {
-        this.icon = new ItemBuilder(Material.PLAYER_HEAD).setTexture("http://textures.minecraft.net/texture/" + texture);
+        this.icon = ItemBuilder.playerSkull("http://textures.minecraft.net/texture/" + texture);
     }
 
     VillagerLevel(ItemBuilder icon) {

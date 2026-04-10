@@ -1,6 +1,6 @@
 package simplepets.brainsynder.managers;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import simplepets.brainsynder.PetCore;
@@ -68,7 +68,7 @@ public class ItemManager implements ItemHandler {
                 Item item = new CustomItem(file) {
                     @Override
                     public ItemBuilder getDefaultItem() {
-                        return new ItemBuilder(Material.STONE);
+                        return ItemBuilder.of(Material.STONE);
                     }
                 };
                 if (item.hasKey("namespace") && item.isEnabled()) {
@@ -151,7 +151,7 @@ public class ItemManager implements ItemHandler {
         if (items.isEmpty()) initiate();
         if (item.getType() == Material.AIR) return Optional.of(AIR);
         for (Item loader : items.values()) {
-            if (loader.getItemBuilder().isSimilar(item)) {
+            if (loader.getItemBuilder().build().isSimilar(item)) {
                 return Optional.of(loader);
             }
         }
