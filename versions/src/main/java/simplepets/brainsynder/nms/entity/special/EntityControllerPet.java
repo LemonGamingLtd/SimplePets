@@ -1,7 +1,6 @@
 package simplepets.brainsynder.nms.entity.special;
 
 import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.sounds.SoundMaker;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.pluginutils.sound.SafeSound;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -72,8 +72,8 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
     public void playAmbientSound() {
         if (isPetSilent()) return;
         SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
-            SoundMaker sound = config.getSound();
-            if (sound != null) sound.playSound(getEntity());
+            SafeSound sound = config.getSound();
+            if (sound != null) sound.playAt(getEntity().getLocation(), 1f, 1f);
         });
     }
 

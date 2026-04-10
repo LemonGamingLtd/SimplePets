@@ -2,11 +2,12 @@ package simplepets.brainsynder.impl;
 
 import com.google.common.collect.Lists;
 import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.sounds.SoundMaker;
 import org.bsdevelopment.pluginutils.files.JsonFile;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.sound.SafeSound;
 import org.bsdevelopment.pluginutils.text.WordUtils;
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -83,7 +84,7 @@ public class PetConfiguration implements PetConfigManager {
                     setDefault("enabled", true);
                     setDefault("hat", true);
                     setDefault("mount", true);
-                    type.getCustomization().ifPresent(customization -> setDefault("ambient-sound", customization.ambient().name()));
+                    type.getCustomization().ifPresent(customization -> setDefault("ambient-sound", customization.ambient()));
 
                     JsonObject reasons = new JsonObject();
                     for (CommandReason reason : CommandReason.values()) reasons.add(reason.name(), new JsonArray());
@@ -206,11 +207,16 @@ public class PetConfiguration implements PetConfigManager {
         }
 
         @Override
-        public SoundMaker getSound() {
+        public SafeSound getSound() {
             if (!JSON.containsKey("ambient-sound")) return null;
             String sound = JSON.getString("ambient-sound", null);
-            if (sound == null) return null;
-            return SoundMaker.fromString(sound);
+            if (sound == null || sound.isEmpty()) return null;
+            try {
+                return SafeSound.of(Sound.valueOf(sound));
+            } catch (IllegalArgumentException e) {
+                // Version-specific or custom pet sound — not in the Bukkit Sound enum
+                return SafeSound.of(sound);
+            }
         }
 
         @Override

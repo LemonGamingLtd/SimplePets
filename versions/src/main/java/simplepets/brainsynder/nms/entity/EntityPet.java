@@ -1,7 +1,6 @@
 package simplepets.brainsynder.nms.entity;
 
 import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.sounds.SoundMaker;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -17,6 +16,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.sound.SafeSound;
 import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -597,8 +597,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     public void playAmbientSound() {
         if (silent || isInvisible()) return;
         SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
-            SoundMaker sound = config.getSound();
-            if (sound != null) sound.playSound(getEntity());
+            SafeSound sound = config.getSound();
+            if (sound != null) sound.playAt(getEntity().getLocation(), 1f, 1f);
         });
     }
 
@@ -606,8 +606,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     public void playSound(SoundEvent soundeffect, float f, float f1) {
         if (silent || isInvisible()) return;
         SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
-            SoundMaker sound = config.getSound();
-            if (sound != null) sound.playSound(getEntity());
+            SafeSound sound = config.getSound();
+            if (sound != null) sound.playAt(getEntity().getLocation(), 1f, 1f);
         });
     }
 
