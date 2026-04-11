@@ -114,7 +114,7 @@ public final class HelperUtilities {
                 json.add(key, array);
             } else if (base instanceof StorageTagLongArray longArray) {
                 JsonArray array = new JsonArray();
-                for (long v : longArray.getLongArray()) array.add(v + "l");
+                for (long v : longArray.getList()) array.add(v + "l");
                 json.add(key, array);
             } else if (base instanceof StorageTagList tagList) {
                 JsonArray array = new JsonArray();

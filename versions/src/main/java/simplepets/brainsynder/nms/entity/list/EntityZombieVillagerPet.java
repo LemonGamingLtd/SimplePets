@@ -62,7 +62,7 @@ public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZ
         StorageTagCompound object = super.asCompound();
         object.setBoolean("raised_arms", isArmsRaised());
         object.setBoolean("shaking", isShaking());
-        object.setTag("data", getVillagerData().toTag());
+        object.setTag("data", getVillagerData().toCompound());
         return object;
     }
 

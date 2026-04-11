@@ -39,19 +39,19 @@ public class PatternColorData extends PetData<IEntityTropicalFishPet> {
             DyeColorWrapper next = DyeColorWrapper.getNext(entity.getPatternColor());
 
             ItemBuilder builder = optional.get();
-            builder.replaceInLore("{previousColor}", previous.getChatColor())
-                .replaceInLore("{currentColor}", entity.getPatternColor().getChatColor())
-                .replaceInLore("{nextColor}", next.getChatColor())
-                .replaceInLore("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
-                .replaceInLore("{currentName}", WordUtils.capitalize(entity.getPatternColor().name().toLowerCase().replace("_", " ")))
-                .replaceInLore("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
+            builder.replaceString("{previousColor}", previous.getChatColor())
+                .replaceString("{currentColor}", entity.getPatternColor().getChatColor())
+                .replaceString("{nextColor}", next.getChatColor())
+                .replaceString("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
+                .replaceString("{currentName}", WordUtils.capitalize(entity.getPatternColor().name().toLowerCase().replace("_", " ")))
+                .replaceString("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
 
-            builder.replaceInName("{previousColor}", previous.getChatColor())
-                .replaceInName("{currentColor}", entity.getPatternColor().getChatColor())
-                .replaceInName("{nextColor}", next.getChatColor())
-                .replaceInName("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
-                .replaceInName("{currentName}", WordUtils.capitalize(entity.getPatternColor().name().toLowerCase().replace("_", " ")))
-                .replaceInName("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
+            builder.replaceString("{previousColor}", previous.getChatColor())
+                .replaceString("{currentColor}", entity.getPatternColor().getChatColor())
+                .replaceString("{nextColor}", next.getChatColor())
+                .replaceString("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
+                .replaceString("{currentName}", WordUtils.capitalize(entity.getPatternColor().name().toLowerCase().replace("_", " ")))
+                .replaceString("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
             return Optional.of(builder);
         }
         return optional;

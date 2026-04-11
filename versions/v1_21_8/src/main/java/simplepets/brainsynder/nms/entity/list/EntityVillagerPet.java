@@ -60,7 +60,7 @@ public class EntityVillagerPet extends EntityAgeablePet implements IEntityVillag
     public StorageTagCompound asCompound() {
         StorageTagCompound object = super.asCompound();
         object.setBoolean("shaking", isShaking());
-        object.setTag("data", getVillagerData().toTag());
+        object.setTag("data", getVillagerData().toCompound());
         return object;
     }
 

@@ -73,7 +73,7 @@ public class PetOwner implements PetUser {
         PluginUtilities.getScheduler().runTask(() -> {
                 if (compound.hasKey("pet_names")) {
                     StorageTagList names = (StorageTagList) compound.getTag("pet_names");
-                    names.getList().forEach(storageBase -> {
+                    names.getTagList().forEach(storageBase -> {
                         StorageTagCompound data = (StorageTagCompound) storageBase;
                         PetType.getPetType(data.getString("type", "unknown")).ifPresent(type -> {
 
@@ -84,7 +84,7 @@ public class PetOwner implements PetUser {
 
                 if (compound.hasKey("owned_pets")) {
                     StorageTagList list = (StorageTagList) compound.getTag("owned_pets");
-                    list.getList().forEach(storageBase -> {
+                    list.getTagList().forEach(storageBase -> {
                         StorageTagString string = (StorageTagString) storageBase;
                         PetType.getPetType(string.getString()).ifPresent(ownedPets::add);
                     });
@@ -92,7 +92,7 @@ public class PetOwner implements PetUser {
 
                 if (compound.hasKey("saved_pets")) {
                     StorageTagList list = (StorageTagList) compound.getTag("saved_pets");
-                    list.getList().forEach(base -> {
+                    list.getTagList().forEach(base -> {
                         StorageTagCompound tag = (StorageTagCompound) base;
                         PetType.getPetType(tag.getString("type", "unknown")).ifPresent(type -> {
                             savedPetData.add(tag.getCompoundTag("data"));
@@ -103,7 +103,7 @@ public class PetOwner implements PetUser {
                 if (compound.hasKey("spawned_pets") && ConfigOption.RESPAWN_LAST_PET_LOGIN.get()) {
                     StorageTagList list = (StorageTagList) compound.getTag("spawned_pets");
                     ISpawnUtil spawnUtil = SimplePets.getSpawnUtil();
-                    list.getList().forEach(storageBase -> {
+                    list.getTagList().forEach(storageBase -> {
                         StorageTagCompound tag = (StorageTagCompound) storageBase;
                         respawnPets.remove(tag.getCompoundTag("data"));
                         PetType.getPetType(tag.getString("type", "unknown")).ifPresent(type -> {
