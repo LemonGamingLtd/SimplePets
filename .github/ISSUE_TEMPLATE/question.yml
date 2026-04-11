@@ -42,7 +42,7 @@ body:
       options:
         - label: I have searched on [GITHUB](https://github.com/brainsynder-Dev/SimplePets/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) for similar answers
           required: false
-        - label: I have searched on [DISCORD](https://discord.gg/TzhnW8xtsR) for answers
+        - label: I have searched on [DISCORD](https://discord.bsdevelopment.org/) for answers
           required: false
-        - label: I have searched the [WIKI](https://brainsynder.gitbook.io/simplepets/faq) for answers
+        - label: I have searched the [WIKI](https://wiki.bsdevelopment.org/faq) for answers
           required: false

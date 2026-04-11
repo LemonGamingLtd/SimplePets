@@ -9,7 +9,7 @@
   comment: |-
     :wave: @{issue-author},
 
-    This issue has been fixed in the [latest build](https://ci.bsdevelopment.org/job/SimplePets_v5/) or in a future build that will be released soon!
+    This issue has been fixed in the [latest build](https://jenkins.bsdevelopment.org/job/SimplePets/) or in a future build that will be released soon!
   issues:
     close: true
 
@@ -29,7 +29,7 @@
     @{issue-author},
 
     You seem to be missing the debug log, this is required to help us find any plugin conflicts, addon issues, and outdated versions.
-    You can comment or edit your post with the link generated from `/pet debug` (It will generate a `pastelog.us` link)
+    You can comment or edit your post with the link generated from `/pet debug` (It will generate a link to [paste.bsdevelopment.org](https://paste.bsdevelopment.org/))
 
     Note: If the link does not generate then you can upload the `plugins/SimplePets/debug.json` file to an alternate site (like pastebin)
 
@@ -66,10 +66,10 @@
 
     Unfortunately we were unable to reproduce your issue.
     Please provided more information regarding this issue such as:
-    - Your `/pet debug` link (Link generated after you run the command)
+    - Your `/pet debug` (Will give you a link to [paste.bsdevelopment.org](https://paste.bsdevelopment.org/))
     - Your `latest.log` (Or the log file that was around the time of the issue)
-    - Minecraft Version
-    - Spigot/Paper Version
+    - Minecraft Version (If no debug file was supplied)
+    - Spigot/Paper Version (If no debug file was supplied)
     - Video Evidence?
     - Images?
 
