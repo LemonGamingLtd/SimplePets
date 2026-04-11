@@ -1,6 +1,5 @@
 package simplepets.brainsynder.sql.handlers;
 
-import lib.brainsynder.utils.Base64Wrapper;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.storage.optional.BiOptional;
 import org.bsdevelopment.pluginutils.utilities.Triple;
@@ -8,6 +7,7 @@ import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.sql.SQLData;
 import simplepets.brainsynder.sql.SQLHandler;
+import simplepets.brainsynder.utils.Utilities;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -71,10 +71,10 @@ public class MySQLHandler implements SQLHandler {
                     "name=?, UnlockedPets=?, PetName=?, NeedsRespawn=?, SavedPets=? WHERE uuid = ?");
                 statement.setString(1, name);
 
-                statement.setString(2, Base64Wrapper.encodeString(compound.getTag("owned_pets").toString()));
-                statement.setString(3, Base64Wrapper.encodeString(compound.getTag("pet_names").toString()));
-                statement.setString(4, Base64Wrapper.encodeString(compound.getTag("spawned_pets").toString()));
-                statement.setString(5, Base64Wrapper.encodeString(compound.getTag("saved_pets").toString()));
+                statement.setString(2, Utilities.encodeBase64(compound.getTag("owned_pets").toString()));
+                statement.setString(3, Utilities.encodeBase64(compound.getTag("pet_names").toString()));
+                statement.setString(4, Utilities.encodeBase64(compound.getTag("spawned_pets").toString()));
+                statement.setString(5, Utilities.encodeBase64(compound.getTag("saved_pets").toString()));
                 statement.setString(6, uuid.toString());
             } else {
                 statement = connection.prepareStatement("INSERT INTO `" + SQLData.TABLE_PREFIX + "_players` " +
@@ -82,10 +82,10 @@ public class MySQLHandler implements SQLHandler {
                 statement.setString(1, uuid.toString());
                 statement.setString(2, name);
 
-                statement.setString(3, Base64Wrapper.encodeString(compound.getTag("owned_pets").toString()));
-                statement.setString(4, Base64Wrapper.encodeString(compound.getTag("pet_names").toString()));
-                statement.setString(5, Base64Wrapper.encodeString(compound.getTag("spawned_pets").toString()));
-                statement.setString(6, Base64Wrapper.encodeString(compound.getTag("saved_pets").toString()));
+                statement.setString(3, Utilities.encodeBase64(compound.getTag("owned_pets").toString()));
+                statement.setString(4, Utilities.encodeBase64(compound.getTag("pet_names").toString()));
+                statement.setString(5, Utilities.encodeBase64(compound.getTag("spawned_pets").toString()));
+                statement.setString(6, Utilities.encodeBase64(compound.getTag("saved_pets").toString()));
             }
             statement.executeUpdate();
             return true;

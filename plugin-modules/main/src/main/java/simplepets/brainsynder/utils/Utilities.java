@@ -40,6 +40,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -346,6 +347,14 @@ public class Utilities {
             } catch (Exception ignored) {
             }
         });
+    }
+
+    public static String encodeBase64(String s) {
+        return Base64.getEncoder().encodeToString(s.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String decodeBase64(String s) {
+        return new String(Base64.getDecoder().decode(s), StandardCharsets.UTF_8);
     }
 
     public static long toTicks(long time, TimeUnit unit) {

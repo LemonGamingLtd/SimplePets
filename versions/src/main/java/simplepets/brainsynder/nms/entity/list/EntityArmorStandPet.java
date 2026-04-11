@@ -1,11 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import com.mojang.authlib.GameProfile;
-import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
-import org.bsdevelopment.nbt.StorageBase;
-import org.bsdevelopment.nbt.StorageTagCompound;
-import org.bsdevelopment.nbt.StorageTagString;
-import lib.brainsynder.utils.Base64Wrapper;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerEntity;
@@ -19,7 +14,11 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageBase;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagString;
 import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -44,6 +43,7 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.special.EntityControllerPet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
+import simplepets.brainsynder.utils.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -570,12 +570,11 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
             return VersionHelper.toItemStack((StorageTagCompound) base);
         }else if (base instanceof StorageTagString){
             String string = ((StorageTagString) base).getString();
-            if (!Base64Wrapper.isEncoded(string)) {
-                throw new UnsupportedOperationException (String.format("'%s' is not a valid item format", string));
-            }
             YamlConfiguration config = new YamlConfiguration();
             try {
-                config.loadFromString(Base64Wrapper.decodeString(string));
+                config.loadFromString(Utilities.decodeBase64(string));
+            } catch (IllegalArgumentException e1) {
+                throw new UnsupportedOperationException(String.format("'%s' is not a valid item format", string));
             } catch (InvalidConfigurationException e1) {
                 e1.printStackTrace();
             }
