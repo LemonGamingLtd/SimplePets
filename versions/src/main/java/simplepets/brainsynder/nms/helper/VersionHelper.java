@@ -1,8 +1,6 @@
 package simplepets.brainsynder.nms.helper;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import lib.brainsynder.internal.nbtapi.nbtapi.NBTContainer;
-import lib.brainsynder.internal.nbtapi.nbtapi.NBTReflectionUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
@@ -21,6 +19,8 @@ import net.minecraft.world.phys.Vec3;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.nbt.io.StorageStringParser;
 import org.bsdevelopment.nbt.other.NBTException;
+import org.bsdevelopment.pluginutils.libs.nbtapi.NBTContainer;
+import org.bsdevelopment.pluginutils.libs.nbtapi.NBTReflectionUtil;
 import org.bsdevelopment.pluginutils.reflection.FieldAccessor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftEntity;
