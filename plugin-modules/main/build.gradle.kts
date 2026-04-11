@@ -16,11 +16,6 @@ dependencies {
     compileOnly(libs.placeholderapi)
     compileOnly(libs.commonsio)
 
-    implementation(libs.bslib) {
-        exclude(group = "io.papermc", module = "paperlib")
-        exclude(group = "de.tr7zw", module = "item-nbt-api-plugin")
-    }
-
     implementation(libs.pluginutils) {
         exclude(group = "io.papermc", module = "paperlib")
         exclude(group = "de.tr7zw", module = "item-nbt-api-plugin")

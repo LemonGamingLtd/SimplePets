@@ -11,7 +11,6 @@ description = "api"
 
 dependencies {
     compileOnly(libs.spigotapi)
-    compileOnly(libs.bslib)
     compileOnly(libs.pluginutils)
 
     compileOnly("org.jetbrains:annotations:26.0.2")

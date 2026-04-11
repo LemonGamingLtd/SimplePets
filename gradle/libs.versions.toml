@@ -2,7 +2,6 @@
 latestspigot = "1.21.11-R0.1-SNAPSHOT"
 
 # Libraries
-bslib-version = "B145"
 bstats-version = "3.1.0"
 updatechecker-version = "3.0.5-CUSTOM"
 protocollib-version = "5.3.0"
@@ -22,7 +21,6 @@ spigotweight-version = "1.0.9-SNAPSHOT"
 [libraries]
 spigotapi = { module = "org.spigotmc:spigot-api", version.ref = "latestspigot" }
 
-bslib = { module = "lib.brainsynder:API", version.ref = "bslib-version" }
 bstats = { module = "org.bstats:bstats-bukkit", version.ref = "bstats-version" }
 updatechecker = { module = "com.jeff_media:SpigotUpdateChecker", version.ref = "updatechecker-version" }
 protocollib = { module = "com.comphenix.protocol:ProtocolLib", version.ref = "protocollib-version" }
