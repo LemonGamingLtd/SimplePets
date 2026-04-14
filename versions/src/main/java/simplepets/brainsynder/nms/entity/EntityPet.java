@@ -2,7 +2,6 @@ package simplepets.brainsynder.nms.entity;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -595,15 +594,6 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
      */
     @Override
     public void playAmbientSound() {
-        if (silent || isInvisible()) return;
-        SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
-            SafeSound sound = config.getSound();
-            if (sound != null) sound.playAt(getEntity().getLocation(), 1f, 1f);
-        });
-    }
-
-    @Override
-    public void playSound(SoundEvent soundeffect, float f, float f1) {
         if (silent || isInvisible()) return;
         SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
             SafeSound sound = config.getSound();
