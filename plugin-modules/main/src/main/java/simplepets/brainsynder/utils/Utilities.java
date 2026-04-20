@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -305,23 +304,6 @@ public class Utilities {
             e.printStackTrace();
         }
 
-    }
-
-    public static String itemToString(ItemStack itemStack) {
-        YamlConfiguration config = new YamlConfiguration();
-        config.set("i", itemStack);
-        return config.saveToString();
-    }
-
-    public static ItemStack stringToItem(String stringBlob) {
-        YamlConfiguration config = new YamlConfiguration();
-        try {
-            config.loadFromString(stringBlob);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return config.getItemStack("i", null);
     }
 
     public static void getInputStreamString(String link, Consumer<String> stringReturn) {
