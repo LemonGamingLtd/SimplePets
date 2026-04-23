@@ -35,8 +35,8 @@ public interface PetDataRegistry {
 
     PetData<IEntityPet> BURNING = PetData.of("burning", IEntityPet.class)
             .defaultValue(false)
-            .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/4080bbefca87dc0f36536b6508425cfc4b95ba6e8f5e6a46ff9e9cb488a9ed").withName("&#c8c8c8{name}: &atrue"))
-            .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/f946443fa0039354edd31a70c749c4f963464744dc20b79137bd9910356ee90").withName("&#c8c8c8{name}: &cfalse"))
+            .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/4080bbefca87dc0f36536b6508425cfc4b95ba6e8f5e6a46ff9e9cb488a9ed").withName("&#c8c8c8{name}: &atrue"))
+            .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/f946443fa0039354edd31a70c749c4f963464744dc20b79137bd9910356ee90").withName("&#c8c8c8{name}: &cfalse"))
             .onToggle(entityPet -> {
                 if (entityPet instanceof IEntityControllerPet controller) {
                     controller.getVisibleEntity().setBurning(!controller.getVisibleEntity().isBurning());
@@ -51,8 +51,8 @@ public interface PetDataRegistry {
 
     PetData<IEntityPet> FROZEN = PetData.of("frozen", IEntityPet.class)
             .defaultValue(false)
-            .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/43c52eae747cad5b4fd19b1a23b39a336b62ed422797a622d045f43e5d38").withName("&#c8c8c8{name}: &atrue"))
-            .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/8449b9318e33158e64a46ab0de121c3d40000e3332c1574932b3c849d8fa0dc2").withName("&#c8c8c8{name}: &cfalse"))
+            .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/43c52eae747cad5b4fd19b1a23b39a336b62ed422797a622d045f43e5d38").withName("&#c8c8c8{name}: &atrue"))
+            .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/8449b9318e33158e64a46ab0de121c3d40000e3332c1574932b3c849d8fa0dc2").withName("&#c8c8c8{name}: &cfalse"))
             .onToggle(entityPet -> {
                 if (entityPet instanceof IEntityControllerPet controller) {
                     controller.getVisibleEntity().setFrozen(!controller.getVisibleEntity().isFrozen());
@@ -67,8 +67,8 @@ public interface PetDataRegistry {
 
     PetData<IEntityPet> SILENT = PetData.of("silent", IEntityPet.class)
             .defaultValue(false)
-            .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/b1f327c3f349158d209b4867d68ffb1890bc57a01ba9483e3fffe4ec7fdea0b0").withName("&#c8c8c8{name}: &atrue"))
-            .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/5461518b74d5f7016f72294756fc68c5471110cc97f3bb093e0c6ed94a9e3").withName("&#c8c8c8{name}: &cfalse"))
+            .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/b1f327c3f349158d209b4867d68ffb1890bc57a01ba9483e3fffe4ec7fdea0b0").withName("&#c8c8c8{name}: &atrue"))
+            .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/5461518b74d5f7016f72294756fc68c5471110cc97f3bb093e0c6ed94a9e3").withName("&#c8c8c8{name}: &cfalse"))
             .onToggle(entityPet -> {
                 if (entityPet instanceof IEntityControllerPet controller) {
                     controller.getVisibleEntity().setPetSilent(!controller.getVisibleEntity().isPetSilent());
@@ -102,8 +102,8 @@ public interface PetDataRegistry {
 
     PetData<IEntityPet> HALF_SCALE = PetData.of("half_scale", IEntityPet.class)
             .defaultValue(false).enabledByDefault(false)
-            .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/5aa7ebadfd28e58d8b8c1c595b09ff0101989f79ad6cdeb16aaed2a809874").withName("&#c8c8c8{name}: &atrue"))
-            .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/76fdd4b13d54f6c91dd5fa765ec93dd9458b19f8aa34eeb5c80f455b119f278").withName("&#c8c8c8{name}: &cfalse"))
+            .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/5aa7ebadfd28e58d8b8c1c595b09ff0101989f79ad6cdeb16aaed2a809874").withName("&#c8c8c8{name}: &atrue"))
+            .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/76fdd4b13d54f6c91dd5fa765ec93dd9458b19f8aa34eeb5c80f455b119f278").withName("&#c8c8c8{name}: &cfalse"))
             .onToggle(entityPet -> entityPet.setPetScale(entityPet.isFullSize() ? 0.5 : 1.0))
             .value(entityPet -> !entityPet.isFullSize()).build();
 
@@ -116,15 +116,15 @@ public interface PetDataRegistry {
 
     PetData<ITameable> TAMED = PetData.of("tamed", ITameable.class)
             .defaultValue(false)
-            .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/82d16e0f17cb1ca2ebefa4d3126b04b0312444f30b77b2366d7e544e573e334a").withName("&#c8c8c8{name}: &atrue"))
-            .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/28d408842e76a5a454dc1c7e9ac5c1a8ac3f4ad34d6973b5275491dff8c5c251").withName("&#c8c8c8{name}: &cfalse"))
+            .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/82d16e0f17cb1ca2ebefa4d3126b04b0312444f30b77b2366d7e544e573e334a").withName("&#c8c8c8{name}: &atrue"))
+            .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/28d408842e76a5a454dc1c7e9ac5c1a8ac3f4ad34d6973b5275491dff8c5c251").withName("&#c8c8c8{name}: &cfalse"))
             .onToggle(entityPet -> entityPet.setTamed(!entityPet.isTamed()))
             .value(ITameable::isTamed).build();
 
     PetData<ISaddle> SADDLE = PetData.of("saddled", ISaddle.class)
             .defaultValue(false)
-            .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/26b92a05b40a5cdae904b393930ab064c4a8d4c590392668352270bb472df70").withName("&#c8c8c8{name}: &atrue"))
-            .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/d09bb9264b0709310bcd083ca682a081181687766623e8c2a016e3cc0c6ff4a6").withName("&#c8c8c8{name}: &cfalse"))
+            .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/26b92a05b40a5cdae904b393930ab064c4a8d4c590392668352270bb472df70").withName("&#c8c8c8{name}: &atrue"))
+            .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/d09bb9264b0709310bcd083ca682a081181687766623e8c2a016e3cc0c6ff4a6").withName("&#c8c8c8{name}: &cfalse"))
             .onToggle(entityPet -> entityPet.setPetSaddled(!entityPet.isPetSaddled()))
             .value(ISaddle::isPetSaddled).build();
 
@@ -137,8 +137,8 @@ public interface PetDataRegistry {
 
     PetData<ISleeper> SLEEP = PetData.of("sleep", ISleeper.class)
             .defaultValue(false)
-            .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/5c819a42c0b1c25b9e2e0bc1ebb574b4d6690777d3e831d82d3c932116c02bdc").withName("&#c8c8c8{name}: &atrue"))
-            .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/cb80600254ae8a6b65e2c26dca71d1fea5cf01679232d26ae658e64d6c3a0212").withName("&#c8c8c8{name}: &cfalse"))
+            .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/5c819a42c0b1c25b9e2e0bc1ebb574b4d6690777d3e831d82d3c932116c02bdc").withName("&#c8c8c8{name}: &atrue"))
+            .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/cb80600254ae8a6b65e2c26dca71d1fea5cf01679232d26ae658e64d6c3a0212").withName("&#c8c8c8{name}: &cfalse"))
             .onToggle(entityPet -> entityPet.setPetSleeping(!entityPet.isPetSleeping()))
             .value(ISleeper::isPetSleeping).build();
 
@@ -146,8 +146,8 @@ public interface PetDataRegistry {
     PetData<IResetColor> RESET_COLOR = new ResetColorData();
     PetData<IRainbow> RAINBOW = PetData.of("rainbow", IRainbow.class)
             .defaultValue(false)
-            .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/33577dac43f4bd8bf40be87342e2f1576bebbdbf86d7cbf3c6be65d4927095c5").withName("&#c8c8c8{name}: &atrue"))
-            .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/72b6732199faf1b2447725e56829090fbceb6c2b514953862ff03c16b53f3599").withName("&#c8c8c8{name}: &cfalse"))
+            .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/33577dac43f4bd8bf40be87342e2f1576bebbdbf86d7cbf3c6be65d4927095c5").withName("&#c8c8c8{name}: &atrue"))
+            .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/72b6732199faf1b2447725e56829090fbceb6c2b514953862ff03c16b53f3599").withName("&#c8c8c8{name}: &cfalse"))
             .onToggle(entityPet -> entityPet.setRainbow(!entityPet.isRainbow()))
             .value(IRainbow::isRainbow).build();
 
@@ -199,8 +199,8 @@ public interface PetDataRegistry {
     interface Allay {
         PetData<IEntityAllayPet> DANCING = PetData.of("dancing", IEntityAllayPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/98896605e41a1f4e2c3c92a964f391f4e61390cb10af2c0fab615a5d34e61074").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/b3e7bba47b64f458579db865daeea4d6f8a4034153a543aedd8bf7ce0aeab7c8").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/98896605e41a1f4e2c3c92a964f391f4e61390cb10af2c0fab615a5d34e61074").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/b3e7bba47b64f458579db865daeea4d6f8a4034153a543aedd8bf7ce0aeab7c8").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setDancing(!entityPet.isDancing()))
                 .value(IEntityAllayPet::isDancing).build();
     }
@@ -224,7 +224,7 @@ public interface PetDataRegistry {
 
         PetData<IEntityAxolotlPet> PLAY_DEAD = PetData.of("playing_dead", IEntityAxolotlPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/88fd654d856bde8b69f0c3567d28fafe94e71eae10d32ea59ee23e9bd64b41b0").withName("&#c8c8c8{name}: &atrue"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/88fd654d856bde8b69f0c3567d28fafe94e71eae10d32ea59ee23e9bd64b41b0").withName("&#c8c8c8{name}: &atrue"))
                 .item(false, AxolotlVariant.LUCY.getIcon().withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setPlayingDead(!entityPet.isPlayingDead()))
                 .value(IEntityAxolotlPet::isPlayingDead).build();
@@ -242,29 +242,29 @@ public interface PetDataRegistry {
     interface Bee {
         PetData<IEntityBeePet> ANGRY = PetData.of("angry", IEntityBeePet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/e400223f1fa54741d421d7e8046409d5f3e15c7f4364b1b739940208f3b686d4").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/e400223f1fa54741d421d7e8046409d5f3e15c7f4364b1b739940208f3b686d4").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setAngry(!entityPet.isAngry()))
                 .value(IEntityBeePet::isAngry).build();
 
         PetData<IEntityBeePet> NECTAR = PetData.of("nectar", IEntityBeePet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/b727d0ab03f5cd022f8705d3f7f133ca4920eae8e1e47b5074433a137e691e4e").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/b727d0ab03f5cd022f8705d3f7f133ca4920eae8e1e47b5074433a137e691e4e").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setHasNectar(!entityPet.hasNectar()))
                 .value(IEntityBeePet::hasNectar).build();
 
         PetData<IEntityBeePet> STINGER = PetData.of("stinger", IEntityBeePet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setHasStung(!entityPet.hasStung()))
                 .value(IEntityBeePet::hasStung).build();
 
         PetData<IEntityBeePet> FLIPPED = PetData.of("flipped", IEntityBeePet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/fa2cb74c13245d3ce9bacc8b1600af02fd7c91f501feaf97364e1f8b6f04f47f").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setFlipped(!entityPet.isFlipped()))
                 .value(IEntityBeePet::isFlipped).build();
     }
@@ -305,8 +305,8 @@ public interface PetDataRegistry {
     interface Enderman {
         PetData<IEntityEndermanPet> SCREAM = PetData.of("screaming", IEntityEndermanPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/120baf2ed7f2326803165ad801fc056d002243be8ccf2d87ea26b9c76dc3fa6e").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/96c0b36d53fff69a49c7d6f3932f2b0fe948e032226d5e8045ec58408a36e951").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/120baf2ed7f2326803165ad801fc056d002243be8ccf2d87ea26b9c76dc3fa6e").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/96c0b36d53fff69a49c7d6f3932f2b0fe948e032226d5e8045ec58408a36e951").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setScreaming(!entityPet.isScreaming()))
                 .value(IEntityEndermanPet::isScreaming).build();
     }
@@ -314,22 +314,22 @@ public interface PetDataRegistry {
     interface Fox {
         PetData<IEntityFoxPet> INTEREST = PetData.of("interested", IEntityFoxPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/d8954a42e69e0881ae6d24d4281459c144a0d5a968aed35d6d3d73a3c65d26a").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/d8954a42e69e0881ae6d24d4281459c144a0d5a968aed35d6d3d73a3c65d26a").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/d8954a42e69e0881ae6d24d4281459c144a0d5a968aed35d6d3d73a3c65d26a").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/d8954a42e69e0881ae6d24d4281459c144a0d5a968aed35d6d3d73a3c65d26a").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setInterested(!entityPet.isInterested()))
                 .value(IEntityFoxPet::isInterested).build();
 
         PetData<IEntityFoxPet> CROUCHING = PetData.of("crouching", IEntityFoxPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/364371509aa11d648457665e44b089438a8a81f2b6710ad58eaaa036709297a1").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/d8954a42e69e0881ae6d24d4281459c144a0d5a968aed35d6d3d73a3c65d26a").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/364371509aa11d648457665e44b089438a8a81f2b6710ad58eaaa036709297a1").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/d8954a42e69e0881ae6d24d4281459c144a0d5a968aed35d6d3d73a3c65d26a").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setCrouching(!entityPet.isCrouching()))
                 .value(IEntityFoxPet::isCrouching).build();
 
         PetData<IEntityFoxPet> TYPE = PetData.of("type", IEntityFoxPet.class)
                 .defaultValue(FoxVariant.RED)
-                .item(FoxVariant.RED, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/d8954a42e69e0881ae6d24d4281459c144a0d5a968aed35d6d3d73a3c65d26a").withName("&#c8c8c8{name}: &atrue"))
-                .item(FoxVariant.WHITE, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/ddcd0db8cbe8f1e0ab1ec0a9385fb9288da84d3202c1c397da76ee1035e608b0").withName("&#c8c8c8{name}: &cfalse"))
+                .item(FoxVariant.RED, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/d8954a42e69e0881ae6d24d4281459c144a0d5a968aed35d6d3d73a3c65d26a").withName("&#c8c8c8{name}: &atrue"))
+                .item(FoxVariant.WHITE, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/ddcd0db8cbe8f1e0ab1ec0a9385fb9288da84d3202c1c397da76ee1035e608b0").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setFoxType(PetData.cycleForward(entityPet.getFoxType(), FoxVariant.values())))
                 .value(IEntityFoxPet::getFoxType).build();
 
@@ -346,15 +346,15 @@ public interface PetDataRegistry {
 
         PetData<IEntityFrogPet> CROAKING = PetData.of("croaking", IEntityFrogPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/1b20e0c01e2a241fb6fbf45045b9c9dbfecf745c62a8fda6eb6522fc2d53e2cf").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/1b20e0c01e2a241fb6fbf45045b9c9dbfecf745c62a8fda6eb6522fc2d53e2cf").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/1b20e0c01e2a241fb6fbf45045b9c9dbfecf745c62a8fda6eb6522fc2d53e2cf").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/1b20e0c01e2a241fb6fbf45045b9c9dbfecf745c62a8fda6eb6522fc2d53e2cf").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setCroaking(!entityPet.isCroaking()))
                 .value(IEntityFrogPet::isCroaking).build();
 
         PetData<IEntityFrogPet> TONGUE = PetData.of("tongue", IEntityFrogPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/23ce6f9998ed2da757d1e6372f04efa20e57dfc17c3a06478657bbdf51c2f2a2").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/23ce6f9998ed2da757d1e6372f04efa20e57dfc17c3a06478657bbdf51c2f2a2").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/23ce6f9998ed2da757d1e6372f04efa20e57dfc17c3a06478657bbdf51c2f2a2").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/23ce6f9998ed2da757d1e6372f04efa20e57dfc17c3a06478657bbdf51c2f2a2").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setUsingTongue(!entityPet.isUsingTongue()))
                 .value(IEntityFrogPet::isUsingTongue).build();
     }
@@ -362,8 +362,8 @@ public interface PetDataRegistry {
     interface Ghast {
         PetData<IEntityGhastPet> SCREAM = PetData.of("screaming", IEntityGhastPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/78f77eeeef6ffb2f6818e57698794ae0351ab32ba234d621c22fe4ce8e1599d2").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/7a8b714d32d7f6cf8b37e221b758b9c599ff76667c7cd45bbc49c5ef19858646").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/78f77eeeef6ffb2f6818e57698794ae0351ab32ba234d621c22fe4ce8e1599d2").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/7a8b714d32d7f6cf8b37e221b758b9c599ff76667c7cd45bbc49c5ef19858646").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setScreaming(!entityPet.isScreaming()))
                 .value(IEntityGhastPet::isScreaming).build();
     }
@@ -371,8 +371,8 @@ public interface PetDataRegistry {
     interface GlowSquid {
         PetData<IEntityGlowSquidPet> GLOWING = PetData.of("glowing", IEntityGlowSquidPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/3e94a1bb1cb00aaa153a74daf4b0eea20b8974522fe9901eb55aef478ebeff0d").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/b4f546cd512da37c0282fe531e7cdb3c5dc35baa32696099e68d3b894c16d2c").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/3e94a1bb1cb00aaa153a74daf4b0eea20b8974522fe9901eb55aef478ebeff0d").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/b4f546cd512da37c0282fe531e7cdb3c5dc35baa32696099e68d3b894c16d2c").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setSquidGlowing(!entityPet.isSquidGlowing()))
                 .value(IEntityGlowSquidPet::isSquidGlowing).build();
     }
@@ -380,15 +380,15 @@ public interface PetDataRegistry {
     interface Goat {
         PetData<IEntityGoatPet> LEFT_HORN = PetData.of("left-horn", IEntityGoatPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setLeftHorn(!entityPet.hasLeftHorn()))
                 .value(IEntityGoatPet::hasLeftHorn).build();
 
         PetData<IEntityGoatPet> RIGHT_HORN = PetData.of("right-horn", IEntityGoatPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/957607099d06b7a8b1327093cd0a488be7c9f50b6121b22151271b59170f3c21").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setRightHorn(!entityPet.hasRightHorn()))
                 .value(IEntityGoatPet::hasRightHorn).build();
     }
@@ -471,8 +471,8 @@ public interface PetDataRegistry {
 
         PetData<IEntityPandaPet> SNEEZE = PetData.of("sneeze", IEntityPandaPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/5c2d25e956337d82791fa0e6617a40086f02d6ebfbfd5a6459889cf206fca787").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/dca096eea506301bea6d4b17ee1605625a6f5082c71f74a639cc940439f47166").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/5c2d25e956337d82791fa0e6617a40086f02d6ebfbfd5a6459889cf206fca787").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/dca096eea506301bea6d4b17ee1605625a6f5082c71f74a639cc940439f47166").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setSneezing(!entityPet.isSneezing()))
                 .value(IEntityPandaPet::isSneezing).build();
     }
@@ -500,8 +500,8 @@ public interface PetDataRegistry {
 
         PetData<IEntityPiglinPet> DANCING = PetData.of("dancing", IEntityPiglinPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/9f18107d275f1cb3a9f973e5928d5879fa40328ff3258054db6dd3e7c0ca6330").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/9f18107d275f1cb3a9f973e5928d5879fa40328ff3258054db6dd3e7c0ca6330").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/9f18107d275f1cb3a9f973e5928d5879fa40328ff3258054db6dd3e7c0ca6330").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/9f18107d275f1cb3a9f973e5928d5879fa40328ff3258054db6dd3e7c0ca6330").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setDancing(!entityPet.isDancing()))
                 .value(IEntityPiglinPet::isDancing).build();
     }
@@ -518,7 +518,7 @@ public interface PetDataRegistry {
     interface Pufferfish {
         PetData<IEntityPufferFishPet> SIZE = PetData.of("size", IEntityPufferFishPet.class)
                 .defaultValue(PufferState.SMALL)
-                .items(PufferState.values(), value -> ItemBuilder.playerSkull("https://textures.minecraft.net/texture/17152876bc3a96dd2a2299245edb3beef647c8a56ac8853a687c3e7b5d8bb")
+                .items(PufferState.values(), value -> ItemBuilder.playerSkull("http://textures.minecraft.net/texture/17152876bc3a96dd2a2299245edb3beef647c8a56ac8853a687c3e7b5d8bb")
                         .withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setPuffState(PetData.cycleForward(entityPet.getPuffState(), PufferState.values())))
                 .onRightClick(entityPet -> entityPet.setPuffState(PetData.cycleBackward(entityPet.getPuffState(), PufferState.values())))
@@ -528,7 +528,7 @@ public interface PetDataRegistry {
     interface Rabbit {
         PetData<IEntityRabbitPet> VARIANT = PetData.of("variant", IEntityRabbitPet.class)
                 .defaultValue(RabbitVariant.BROWN)
-                .items(RabbitVariant.values(), value -> ItemBuilder.playerSkull("https://textures.minecraft.net/texture/17152876bc3a96dd2a2299245edb3beef647c8a56ac8853a687c3e7b5d8bb")
+                .items(RabbitVariant.values(), value -> ItemBuilder.playerSkull("http://textures.minecraft.net/texture/17152876bc3a96dd2a2299245edb3beef647c8a56ac8853a687c3e7b5d8bb")
                         .withName("&#c8c8c8{name}: &a" + value.name()))
                 .onLeftClick(entityPet -> entityPet.setRabbitType(PetData.cycleForward(entityPet.getRabbitType(), RabbitVariant.values())))
                 .onRightClick(entityPet -> entityPet.setRabbitType(PetData.cycleBackward(entityPet.getRabbitType(), RabbitVariant.values())))
@@ -538,8 +538,8 @@ public interface PetDataRegistry {
     interface Ravager {
         PetData<IEntityRavagerPet> CHOMP = PetData.of("chomping", IEntityRavagerPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/cd20bf52ec390a0799299184fc678bf84cf732bb1bd78fd1c4b441858f0235a8").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/cd20bf52ec390a0799299184fc678bf84cf732bb1bd78fd1c4b441858f0235a8").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/cd20bf52ec390a0799299184fc678bf84cf732bb1bd78fd1c4b441858f0235a8").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/cd20bf52ec390a0799299184fc678bf84cf732bb1bd78fd1c4b441858f0235a8").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setChomping(!entityPet.isChomping()))
                 .value(IEntityRavagerPet::isChomping).build();
     }
@@ -547,8 +547,8 @@ public interface PetDataRegistry {
     interface Shulker {
         PetData<IEntityShulkerPet> CLOSE = PetData.of("closed", IEntityShulkerPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/25c4d24affdd48102620361527d2156e18c223bae5189ac439815643f3cff9d").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/1433a4b73273a64c8ab2830b0fff777a61a488c92f60f83bfb3e421f428a44").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/25c4d24affdd48102620361527d2156e18c223bae5189ac439815643f3cff9d").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/1433a4b73273a64c8ab2830b0fff777a61a488c92f60f83bfb3e421f428a44").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setShulkerClosed(!entityPet.isShulkerClosed()))
                 .value(IEntityShulkerPet::isShulkerClosed).build();
     }
@@ -565,8 +565,8 @@ public interface PetDataRegistry {
     interface Snowman {
         PetData<IEntitySnowmanPet> PUMPKIN = PetData.of("pumpkin", IEntitySnowmanPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/4224b25796529ef58a36da6f227dd3ef40a842172d91f396aabeed7e04dbd5b1").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/11136616d8c4a87a54ce78a97b551610c2b2c8f6d410bc38b858f974b113b208").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/4224b25796529ef58a36da6f227dd3ef40a842172d91f396aabeed7e04dbd5b1").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/11136616d8c4a87a54ce78a97b551610c2b2c8f6d410bc38b858f974b113b208").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setHasPumpkin(!entityPet.hasPumpkin()))
                 .value(IEntitySnowmanPet::hasPumpkin).build();
     }
@@ -620,8 +620,8 @@ public interface PetDataRegistry {
 
         PetData<IEntityWardenPet> VIBRATION = PetData.of("vibration", IEntityWardenPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/c6f74361fb00490a0a98eeb814544ecdd775cb55633dbb114e60d27004cb1020").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/1dfd13ca08bf973bfef0293d770704a11ef5a9fe20d40671fb066724d3e18d8").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/c6f74361fb00490a0a98eeb814544ecdd775cb55633dbb114e60d27004cb1020").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/1dfd13ca08bf973bfef0293d770704a11ef5a9fe20d40671fb066724d3e18d8").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setVibrationEffect(!entityPet.getVibrationEffect()))
                 .value(IEntityWardenPet::getVibrationEffect).build();
     }
@@ -638,8 +638,8 @@ public interface PetDataRegistry {
     interface Wither {
         PetData<IEntityWitherPet> SHIELD = PetData.of("shielded", IEntityWitherPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/a435164c05cea299a3f016bbbed05706ebb720dac912ce4351c2296626aecd9a").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/ee280cefe946911ea90e87ded1b3e18330c63a23af5129dfcfe9a8e166588041").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/a435164c05cea299a3f016bbbed05706ebb720dac912ce4351c2296626aecd9a").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/ee280cefe946911ea90e87ded1b3e18330c63a23af5129dfcfe9a8e166588041").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setShielded(!entityPet.isShielded()))
                 .value(IEntityWitherPet::isShielded).build();
 
@@ -654,8 +654,8 @@ public interface PetDataRegistry {
     interface Wolf {
         PetData<IEntityWolfPet> ANGRY = PetData.of("angry", IEntityWolfPet.class)
                 .defaultValue(false)
-                .item(true, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/8d1aa7e3b9564b3846f1dea14f1b1ccbf399bbb23b952dbd7eec41802a289c96").withName("&#c8c8c8{name}: &atrue"))
-                .item(false, ItemBuilder.playerSkull("https://textures.minecraft.net/texture/69d1d3113ec43ac2961dd59f28175fb4718873c6c448dfca8722317d67").withName("&#c8c8c8{name}: &cfalse"))
+                .item(true, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/8d1aa7e3b9564b3846f1dea14f1b1ccbf399bbb23b952dbd7eec41802a289c96").withName("&#c8c8c8{name}: &atrue"))
+                .item(false, ItemBuilder.playerSkull("http://textures.minecraft.net/texture/69d1d3113ec43ac2961dd59f28175fb4718873c6c448dfca8722317d67").withName("&#c8c8c8{name}: &cfalse"))
                 .onToggle(entityPet -> entityPet.setAngry(!entityPet.isAngry()))
                 .value(IEntityWolfPet::isAngry).build();
 
