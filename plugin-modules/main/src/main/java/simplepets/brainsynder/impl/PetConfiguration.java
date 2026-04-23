@@ -1,8 +1,10 @@
 package simplepets.brainsynder.impl;
 
 import com.google.common.collect.Lists;
+import org.bsdevelopment.nbt.StorageBase;
 import org.bsdevelopment.pluginutils.files.JsonFile;
 import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
+import org.bsdevelopment.pluginutils.libs.json.Json;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.sound.SafeSound;
@@ -16,7 +18,6 @@ import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.pet.*;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
-import simplepets.brainsynder.api.plugin.utils.HelperUtilities;
 import simplepets.brainsynder.debug.DebugLevel;
 import simplepets.brainsynder.utils.Keys;
 import simplepets.brainsynder.utils.Utilities;
@@ -97,7 +98,7 @@ public class PetConfiguration implements PetConfigManager {
                     setDefault("float_down", false);
 
                     setDefault("display_name", "&a&l%player%'s " + WordUtils.capitalize(type.getName().replace("_", " ")) + " Pet");
-                    setDefault("item", HelperUtilities.toJsonObject(type.getBuilder().toTag()));
+                    setDefault("item", Json.parse(type.getBuilder().toTag().toJson()));
 
                     JsonObject dataObject = new JsonObject();
                     type.getPetData().forEach(petData -> {
@@ -117,7 +118,7 @@ public class PetConfiguration implements PetConfigManager {
                             raw = raw.replace("{name}", name);
                             builder.withName(raw);
 
-                            values.add(String.valueOf(value), HelperUtilities.toJsonObject(builder.toTag()));
+                            values.add(String.valueOf(value), Json.parse(builder.toTag().toJson()));
                         });
                         data.set("values", values);
 
@@ -222,7 +223,7 @@ public class PetConfiguration implements PetConfigManager {
         @Override
         public ItemBuilder getBuilder() {
             try {
-                return ItemBuilder.of(HelperUtilities.fromJsonObject((JsonObject) JSON.getValue("item"))).handleMeta(ItemMeta.class, itemMeta -> {
+                return ItemBuilder.of(StorageBase.fromJson(JSON.getValue("item").toString())).handleMeta(ItemMeta.class, itemMeta -> {
                     itemMeta.getPersistentDataContainer().set(Keys.GUI_ITEM, PersistentDataType.INTEGER, 1);
                     itemMeta.getPersistentDataContainer().set(Keys.PET_TYPE_ITEM, PersistentDataType.STRING, type.getName());
                     return itemMeta;
@@ -256,13 +257,13 @@ public class PetConfiguration implements PetConfigManager {
             String key = String.valueOf(value);
 
             if (values.names().contains(key)) {
-                return Optional.of(ItemBuilder.of(HelperUtilities.fromJsonObject((JsonObject) values.get(key))));
+                return Optional.of(ItemBuilder.of(StorageBase.fromJson(values.get(key).toString())));
             }
 
             if (fallback == null) return Optional.empty();
 
             if (allowInsertFallback) {
-                values.add(key, HelperUtilities.toJsonObject(fallback.toTag()));
+                values.add(key, Json.parse(fallback.toTag().toJson()));
                 dataSection.set("values", values);
                 dataRoot.add(namespace, dataSection);
                 JSON.set("data", dataRoot);
@@ -309,13 +310,13 @@ public class PetConfiguration implements PetConfigManager {
 
             JsonObject values = section.names().contains("values") ? (JsonObject) section.get("values") : new JsonObject();
             if (values.names().isEmpty()) {
-                petData.getDefaultItems().forEach((val, item) -> values.add(String.valueOf(val), HelperUtilities.toJsonObject(item.toTag())));
+                petData.getDefaultItems().forEach((val, item) -> values.add(String.valueOf(val), Json.parse(item.toTag().toJson())));
                 changed = true;
             } else {
                 for (Map.Entry<String, ItemBuilder> entry : petData.getDefaultItems().entrySet()) {
                     String key = entry.getKey();
                     if (!values.names().contains(key)) {
-                        values.add(key, HelperUtilities.toJsonObject(entry.getValue().toTag()));
+                        values.add(key, Json.parse(entry.getValue().toTag().toJson()));
                         changed = true;
                     }
                 }
@@ -349,7 +350,7 @@ public class PetConfiguration implements PetConfigManager {
                 for (PetData<?> petData : type.getPetData()) {
                     if (!petData.namespace().equals(namespace)) continue;
 
-                    petData.getDefaultItems().forEach((val, item) -> values.add(String.valueOf(val), HelperUtilities.toJsonObject(item.toTag())));
+                    petData.getDefaultItems().forEach((val, item) -> values.add(String.valueOf(val), Json.parse(item.toTag().toJson())));
 
                     if (!section.names().contains("default")) {
                         setJsonDefaultValue(section, "default", petData.defaultValue());

@@ -1,13 +1,13 @@
 package simplepets.brainsynder.api.inventory;
 
+import org.bsdevelopment.nbt.StorageBase;
 import org.bsdevelopment.pluginutils.files.JsonFile;
 import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
-import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.json.Json;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.plugin.SimplePets;
-import simplepets.brainsynder.api.plugin.utils.HelperUtilities;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.debug.DebugLevel;
 
@@ -60,7 +60,7 @@ public abstract class Item extends JsonFile {
     public void loadDefaults() { // Generates the default files for the item
         setDefault("enabled", true);
         if (getDefaultItem() != null)
-            setDefault("item", HelperUtilities.toJsonObject(getDefaultItem().toTag()));
+            setDefault("item", Json.parse(getDefaultItem().toTag().toJson()));
     }
 
     /**
@@ -72,10 +72,9 @@ public abstract class Item extends JsonFile {
     public ItemBuilder getItemBuilder() {
         if (hasKey("item")) {
             try {
-                return ItemBuilder.of(HelperUtilities.fromJsonObject((JsonObject) getValue("item")));
+                return ItemBuilder.of(StorageBase.fromJson(getValue("item").toString()));
             } catch (IllegalArgumentException ex) {
                 SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Error thrown when creating item for " + getClass().getSimpleName() + ".");
-                // new RuntimeException(ex).printStackTrace();
                 return getDefaultItem();
             }
         }

@@ -1,9 +1,5 @@
 package simplepets.brainsynder.api.plugin.utils;
 
-import org.bsdevelopment.nbt.StorageBase;
-import org.bsdevelopment.nbt.StorageTagCompound;
-import org.bsdevelopment.pluginutils.libs.json.Json;
-import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -89,11 +85,4 @@ public final class HelperUtilities {
         return constructor.newInstance();
     }
 
-    public static JsonObject toJsonObject(StorageTagCompound compound) {
-        return Json.parse(compound.toJson()).asObject();
-    }
-
-    public static StorageTagCompound fromJsonObject(JsonObject json) {
-        return StorageBase.fromJson(json.toString());
-    }
 }
