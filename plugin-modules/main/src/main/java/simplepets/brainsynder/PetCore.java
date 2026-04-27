@@ -4,6 +4,9 @@ import com.jeff_media.updatechecker.UpdateChecker;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.help.HelpCommand;
+import org.bsdevelopment.pluginutils.libs.json.Json;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.json.JsonValue;
 import org.bsdevelopment.pluginutils.libs.json.WriterConfig;
 import org.bsdevelopment.pluginutils.reflection.Reflection;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
@@ -51,8 +54,10 @@ import simplepets.brainsynder.utils.VersionFields;
 import simplepets.brainsynder.utils.debug.Debug;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -382,6 +387,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
     private void handleManagers() {
         debug.debug(DebugLevel.HIDDEN, "Initializing plugin managers");
+        migrateLegacyFiles();
         particleManager = new ParticleManager(this);
         renameManager = new RenameManager(this);
         PET_CONFIG = new PetConfiguration(this);
@@ -647,4 +653,49 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         }
     }
 
+    private void migrateLegacyFiles() {
+        File petsFolder = new File(getDataFolder(), "Pets");
+        File itemsFolder = new File(getDataFolder(), "Items");
+
+        if (petsFolder.exists() && hasLegacyFiles(petsFolder)) {
+            debug.debug(DebugBuilder.build().setLevel(DebugLevel.WARNING).setMessages("Legacy pet config files detected — moving to Pets/legacy/ and regenerating"));
+            moveFolderContentsToLegacy(petsFolder);
+        }
+
+        if (itemsFolder.exists() && hasLegacyFiles(itemsFolder)) {
+            debug.debug(DebugBuilder.build().setLevel(DebugLevel.WARNING).setMessages("Legacy item files detected — moving to Items/legacy/ and regenerating"));
+            moveFolderContentsToLegacy(itemsFolder);
+        }
+    }
+
+    private boolean hasLegacyFiles(File folder) {
+        File[] files = folder.listFiles(file -> file.isFile() && file.getName().endsWith(".json"));
+        if (files == null) return false;
+
+        for (File file : files) {
+            try {
+                String content = Files.readString(file.toPath());
+                JsonValue root = Json.parse(content);
+                if (!root.isObject()) continue;
+
+                JsonValue itemValue = root.asObject().get("item");
+                if (itemValue == null || !itemValue.isObject()) continue;
+
+                JsonObject item = itemValue.asObject();
+                if (item.names().contains("material") && !item.names().contains("id")) return true;
+            } catch (IOException ignored) {}
+        }
+        return false;
+    }
+
+    private void moveFolderContentsToLegacy(File folder) {
+        File legacyDir = new File(folder, "legacy");
+        legacyDir.mkdirs();
+        File[] files = folder.listFiles(file -> file.isFile() && file.getName().endsWith(".json"));
+        if (files == null) return;
+
+        for (File file : files) {
+            file.renameTo(new File(legacyDir, file.getName()));
+        }
+    }
 }
