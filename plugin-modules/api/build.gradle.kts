@@ -59,8 +59,8 @@ publishing {
             name = "bs-repo"
             url = uri("https://repo.bsdevelopment.org/releases")
             credentials {
-                username = findProperty("BS_REPO_USER") as String?
-                password = findProperty("BS_REPO_PASS") as String?
+                username = (System.getenv("BS_REPO_USER") ?: findProperty("BS_REPO_USER")) as String?
+                password = (System.getenv("BS_REPO_PASS") ?: findProperty("BS_REPO_PASS")) as String?
             }
         }
     }
