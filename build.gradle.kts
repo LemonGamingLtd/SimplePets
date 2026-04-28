@@ -14,6 +14,10 @@ allprojects {
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(21))
     }
+
+    repositories {
+        mavenLocal()
+    }
 }
 
 fun Project.outputJarProducer(): Pair<TaskProvider<*>, Provider<RegularFile>> {
@@ -81,6 +85,16 @@ tasks.register<Jar>("multiprojectJar") {
 
 tasks.named("build") {
     dependsOn(tasks.named("multiprojectJar"))
+    mustRunAfter("clean")
+}
+
+tasks.register("release") {
+    group = "build"
+    description = "Cleans, builds the full jar, and publishes the API module"
+    dependsOn("clean", "build", ":api:publish")
+    project(":api").tasks.named("publish") {
+        mustRunAfter(tasks.named("build"))
+    }
 }
 
 artifacts {
