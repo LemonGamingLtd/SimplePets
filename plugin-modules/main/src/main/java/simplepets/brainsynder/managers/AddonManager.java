@@ -2,12 +2,12 @@ package simplepets.brainsynder.managers;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import lib.brainsynder.utils.AdvString;
 import org.apache.commons.io.FileUtils;
 import org.bsdevelopment.pluginutils.files.YamlFile;
 import org.bsdevelopment.pluginutils.libs.json.Json;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.text.AdvString;
 import org.bsdevelopment.pluginutils.utilities.WebConnector;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;

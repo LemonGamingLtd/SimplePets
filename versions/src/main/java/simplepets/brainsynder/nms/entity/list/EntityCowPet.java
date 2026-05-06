@@ -1,6 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -8,8 +7,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.cow.CowSoundVariant;
+import net.minecraft.world.entity.animal.cow.CowSoundVariants;
 import net.minecraft.world.entity.animal.cow.CowVariant;
 import net.minecraft.world.entity.animal.cow.CowVariants;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.craftbukkit.CraftRegistry;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
@@ -26,6 +28,7 @@ import simplepets.brainsynder.nms.utils.VariantUtils;
  */
 public class EntityCowPet extends EntityAgeablePet implements IEntityCowPet {
     private static final EntityDataAccessor<Holder<CowVariant>> VARIANT = SynchedEntityData.defineId(EntityCowPet.class, EntityDataSerializers.COW_VARIANT);
+    private static final EntityDataAccessor<Holder<CowSoundVariant>> DATA_SOUND_VARIANT_ID = SynchedEntityData.defineId(EntityCowPet.class, EntityDataSerializers.COW_SOUND_VARIANT);
     private TemperatureVariant variant = TemperatureVariant.TEMPERATE;
 
     public EntityCowPet(PetType type, PetUser user) {
@@ -36,6 +39,14 @@ public class EntityCowPet extends EntityAgeablePet implements IEntityCowPet {
     public void populateDataAccess(PetDataAccess dataAccess) {
         super.populateDataAccess(dataAccess);
         dataAccess.define(VARIANT, VariantUtils.getDefaultOrAny(registryAccess(), CowVariants.TEMPERATE));
+
+        Registry<CowSoundVariant> cowSoundVariants = this.registryAccess().lookupOrThrow(Registries.COW_SOUND_VARIANT);
+        dataAccess.define(DATA_SOUND_VARIANT_ID, cowSoundVariants.get(CowSoundVariants.CLASSIC).or(cowSoundVariants::getAny).orElseThrow());
+    }
+
+    @Override
+    public TemperatureVariant getVariant() {
+        return variant;
     }
 
     @Override
@@ -44,11 +55,6 @@ public class EntityCowPet extends EntityAgeablePet implements IEntityCowPet {
 
         Registry<CowVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.COW_VARIANT);
         entityData.set(VARIANT, registry.wrapAsHolder(registry.getValue(CraftNamespacedKey.toMinecraft(variant.getKey()))));
-    }
-
-    @Override
-    public TemperatureVariant getVariant() {
-        return variant;
     }
 
     @Override
@@ -66,7 +72,8 @@ public class EntityCowPet extends EntityAgeablePet implements IEntityCowPet {
 
     @Override
     public void applyCompound(StorageTagCompound object) {
-        if (object.hasKey("variant")) setVariant(object.getEnum("variant", TemperatureVariant.class, TemperatureVariant.TEMPERATE));
+        if (object.hasKey("variant"))
+            setVariant(object.getEnum("variant", TemperatureVariant.class, TemperatureVariant.TEMPERATE));
         super.applyCompound(object);
     }
 }

@@ -1,9 +1,8 @@
 package simplepets.brainsynder.nms;
 
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.storage.RandomCollection;
-import lib.brainsynder.utils.Colorize;
-import org.bsdevelopment.pluginutils.version.ServerVersion;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.pluginutils.storage.RandomCollection;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bsdevelopment.pluginutils.version.VersionCompatibility;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -34,7 +33,7 @@ public class SpawnerUtil implements ISpawnUtil {
     private final Map<PetType, Class<?>> petMap;
     private final Map<PetType, Integer> spawnCount;
 
-    public SpawnerUtil (ClassLoader classLoader) {
+    public SpawnerUtil (ClassLoader classLoader, String targetVersionName) {
         petMap = new HashMap<>();
         spawnCount = new HashMap<>();
 
@@ -45,7 +44,7 @@ public class SpawnerUtil implements ISpawnUtil {
 
             String name = type.getEntityClass().getSimpleName().replaceFirst("I", "");
             try {
-                Class<?> clazz = Class.forName("simplepets.brainsynder.versions."+ ServerVersion.getVersion().getVersionName() +".entity.list."+name, false, classLoader);
+                Class<?> clazz = Class.forName("simplepets.brainsynder.versions."+ targetVersionName +".entity.list."+name, false, classLoader);
                 if (!VersionCompatibility.isCompatible(clazz)) {
                     SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(DebugLevel.WARNING).setMessages(
                             "The '"+type.getName()+"' pet is not supported for your server version [will NOT affect your server]"

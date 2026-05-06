@@ -1,6 +1,5 @@
 package simplepets.brainsynder.nms.pathfinder;
 
-import lib.brainsynder.math.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -8,6 +7,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.Path;
+import org.bsdevelopment.pluginutils.utilities.MathUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
@@ -140,10 +140,10 @@ public class PathfinderFollowPlayer extends Goal {
     }
 
     private int randomize (double value) {
-        return (int) (value + ( MathUtils.random((int) -this.minRange, (int) this.minRange) ));
+        return (int) (value + ( MathUtil.randomInt((int) -this.minRange, (int) this.minRange) ));
     }
 
     private double getRandomInt(double min, double max) {
-        return MathUtils.random((float) (max - min)) + min;
+        return MathUtil.randomFloat((float) min, (float) max);
     }
 }

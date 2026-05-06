@@ -1,14 +1,15 @@
 package simplepets.brainsynder.nms.entity.branch;
 
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.sounds.SoundMaker;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.sound.SafeSound;
+import org.bukkit.Sound;
 import simplepets.brainsynder.api.entity.misc.IEntityWizard;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -56,9 +57,9 @@ public class EntityIllagerWizardPet extends EntityIllagerAbstractPet implements 
     public void setSpell(WizardSpell spell) {
         this.entityData.set(SPELL, (byte) spell.getId());
         if (spell == WizardSpell.WOLOLO) {
-            SoundMaker.ENTITY_EVOCATION_ILLAGER_PREPARE_WOLOLO.playSound(getEntity());
+            SafeSound.of(Sound.ENTITY_EVOKER_PREPARE_WOLOLO).playAt(getEntity().getLocation(), 1f, 1f);
         } else {
-            SoundMaker.ENTITY_EVOCATION_ILLAGER_CAST_SPELL.playSound(getEntity());
+            SafeSound.of(Sound.ENTITY_EVOKER_CAST_SPELL).playAt(getEntity().getLocation(), 1f, 1f);
         }
     }
 

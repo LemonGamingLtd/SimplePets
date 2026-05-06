@@ -1,7 +1,6 @@
 package simplepets.brainsynder.api.wrappers.horse;
 
-import lib.brainsynder.item.ItemBuilder;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import simplepets.brainsynder.api.wrappers.Iconable;
 
 public enum HorseColorType implements Iconable {
@@ -21,7 +20,7 @@ public enum HorseColorType implements Iconable {
 
     @Override
     public ItemBuilder getIcon() {
-        return new ItemBuilder(Material.PLAYER_HEAD).setTexture(texture);
+        return ItemBuilder.playerSkull(texture);
     }
 
     public static HorseColorType getByName(String name) {

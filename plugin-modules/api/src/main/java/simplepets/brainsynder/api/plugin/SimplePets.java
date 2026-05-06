@@ -1,8 +1,8 @@
 package simplepets.brainsynder.api.plugin;
 
-import lib.brainsynder.utils.AdvString;
 import net.md_5.bungee.api.ChatColor;
 import org.bsdevelopment.pluginutils.files.YamlFile;
+import org.bsdevelopment.pluginutils.text.AdvString;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;

@@ -1,7 +1,7 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.nms.Tellraw;
-import net.md_5.bungee.api.ChatColor;
+import org.bsdevelopment.pluginutils.chat.TellrawMessage;
+import org.bsdevelopment.pluginutils.chat.decoration.NamedTextColor;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.CommandPermission;
 import org.bsdevelopment.pluginutils.command.arguments.PlayerArgument;
@@ -83,9 +83,9 @@ public class PurchasedCommand implements PetCommandClass {
                     SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
                         String prefix = PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PURCHASE_LIST_PREFIX);
                         if (!prefix.endsWith(" ")) prefix = prefix + " ";
-                        Tellraw tellraw = Tellraw.getInstance(prefix);
+                        TellrawMessage tellraw = TellrawMessage.of(prefix);
                         user.getOwnedPets().forEach(type -> {
-                            tellraw.then(type.getName()).color(ChatColor.GREEN).then(", ").color(ChatColor.of("#d1c9c9"));
+                            tellraw.then(type.getName()).color(NamedTextColor.GREEN).then(", ").color("#d1c9c9");
                         });
                         tellraw.removeLastPart();
                         tellraw.send(sender);

@@ -1,6 +1,6 @@
 package simplepets.brainsynder.nms.entity;
 
-import lib.brainsynder.reflection.Reflection;
+import org.bsdevelopment.pluginutils.reflection.Reflection;
 import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -116,11 +116,11 @@ public class EntityBase extends Mob {
             CitizensFixer.overrideRegistry(registry);
 
             // Melts the frozen status, so we can register the mob...
-            Field frozen = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.current().getRegistryFrozenField());
+            Field frozen = Reflection.retrieveField(registry.getClass().getSuperclass(), VersionFields.current().getRegistryFrozenField());
             if (frozen != null) frozen.set(registry, false);
 
             // Clears the intrusive holder field to an empty map
-            Field intrusiveField = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.current().getRegistryIntrusiveField());
+            Field intrusiveField = Reflection.retrieveField(registry.getClass().getSuperclass(), VersionFields.current().getRegistryIntrusiveField());
             if (intrusiveField != null) intrusiveField.set(registry, new IdentityHashMap<>());
 
             // Fetch the entity type instance before we resume
@@ -140,7 +140,7 @@ public class EntityBase extends Mob {
     }
 
     private EntityType<? extends Mob> handleMobBuilder(EntityType<? extends Mob> originalType) throws NoSuchFieldException, IllegalAccessException {
-        Field field = Reflection.getField(EntityType.class, VersionFields.current().getEntityFactoryField());
+        Field field = Reflection.retrieveField(EntityType.class, VersionFields.current().getEntityFactoryField());
 
         EntityType.Builder<? extends Mob> builder = EntityType.Builder.of(
                 (EntityType.EntityFactory<? extends Mob>) field.get(originalType),

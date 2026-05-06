@@ -1,11 +1,11 @@
 package simplepets.brainsynder.impl;
 
 import com.google.common.collect.Lists;
-import lib.brainsynder.apache.Validate;
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nbt.StorageTagList;
-import lib.brainsynder.nbt.StorageTagString;
-import lib.brainsynder.optional.BiOptional;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagList;
+import org.bsdevelopment.nbt.StorageTagString;
+import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.storage.optional.BiOptional;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -54,7 +54,7 @@ public class PetOwner implements PetUser {
     private final Set<UUID> pendingRemovalEntityUUIDs;
 
     public PetOwner(Player player) {
-        Validate.notNull(player, "Player can not be null (They Offline?)");
+        Objects.requireNonNull(player, "Player can not be null (They Offline?)");
         this.uuid = player.getUniqueId();
         this.name = player.getName();
 
@@ -83,7 +83,7 @@ public class PetOwner implements PetUser {
         PetCore.getInstance().getScheduler().getImpl().runNextTick(() -> {
             if (compound.hasKey("pet_names")) {
                 StorageTagList names = (StorageTagList) compound.getTag("pet_names");
-                names.getList().forEach(storageBase -> {
+                names.getTagList().forEach(storageBase -> {
                     StorageTagCompound data = (StorageTagCompound) storageBase;
                     PetType.getPetType(data.getString("type", "unknown")).ifPresent(type -> {
 
@@ -94,7 +94,7 @@ public class PetOwner implements PetUser {
 
             if (compound.hasKey("owned_pets")) {
                 StorageTagList list = (StorageTagList) compound.getTag("owned_pets");
-                list.getList().forEach(storageBase -> {
+                list.getTagList().forEach(storageBase -> {
                     StorageTagString string = (StorageTagString) storageBase;
                     PetType.getPetType(string.getString()).ifPresent(ownedPets::add);
                 });
@@ -102,7 +102,7 @@ public class PetOwner implements PetUser {
 
             if (compound.hasKey("saved_pets")) {
                 StorageTagList list = (StorageTagList) compound.getTag("saved_pets");
-                list.getList().forEach(base -> {
+                list.getTagList().forEach(base -> {
                     StorageTagCompound tag = (StorageTagCompound) base;
                     PetType.getPetType(tag.getString("type", "unknown")).ifPresent(type -> {
                         savedPetData.add(tag.getCompoundTag("data"));
@@ -113,7 +113,7 @@ public class PetOwner implements PetUser {
             if (compound.hasKey("spawned_pets") && ConfigOption.RESPAWN_LAST_PET_LOGIN.get()) {
                 StorageTagList list = (StorageTagList) compound.getTag("spawned_pets");
                 ISpawnUtil spawnUtil = SimplePets.getSpawnUtil();
-                list.getList().forEach(storageBase -> {
+                list.getTagList().forEach(storageBase -> {
                     StorageTagCompound tag = (StorageTagCompound) storageBase;
                     respawnPets.remove(tag.getCompoundTag("data"));
                     PetType.getPetType(tag.getString("type", "unknown")).ifPresent(type -> {
@@ -551,7 +551,7 @@ public class PetOwner implements PetUser {
 
     @Override
     public void setPetHat(PetType type, boolean hat) {
-        Validate.notNull(type, "PetType can not be null");
+        Objects.requireNonNull(type, "PetType can not be null");
         if (!hasPet(type)) return;
 
         int d = 1;

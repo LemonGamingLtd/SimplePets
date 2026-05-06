@@ -1,15 +1,6 @@
 package simplepets.brainsynder.nms.helper;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import lib.brainsynder.internal.nbtapi.nbtapi.NBTContainer;
-import lib.brainsynder.internal.nbtapi.nbtapi.NBTReflectionUtil;
-import lib.brainsynder.nbt.JsonToNBT;
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nbt.other.NBTException;
-import lib.brainsynder.reflection.FieldAccessor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.TagParser;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
@@ -22,9 +13,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.pluginutils.reflection.FieldAccessor;
+import org.bsdevelopment.pluginutils.utilities.NBTCodec;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftEntity;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.api.plugin.utils.HelperUtilities;
@@ -95,32 +88,20 @@ public class VersionHelper {
     }
 
     public static org.bukkit.inventory.ItemStack toItemStack(StorageTagCompound compound) {
-        if (!compound.hasKey("id")) { // The ID MUST be set, otherwise it will be considered invalid and AIR
-            return new org.bukkit.inventory.ItemStack(Material.AIR);
-        } else {
-            // Item has to be AT LEAST 1 otherwise it will be AIR
-            if (!compound.hasKey("Count")) compound.setByte("Count", (byte) 1);
-
-            try {
-                CompoundTag compoundTag = TagParser.parseCompoundFully(compound.toString());
-                ItemStack nmsItem = (ItemStack) NBTReflectionUtil.convertNBTCompoundtoNMSItem(new NBTContainer(compoundTag));
-                return CraftItemStack.asBukkitCopy(nmsItem);
-            } catch (CommandSyntaxException e) {
-                throw new InvalidInputException("Failed to parse Item NBT", e);
-            }
+        if (!compound.hasKey("id")) return new org.bukkit.inventory.ItemStack(Material.AIR);
+        if (!compound.hasKey("Count")) compound.setByte("Count", (byte) 1);
+        try {
+            return NBTCodec.nbtStringToBukkit(compound.toString());
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            throw new InvalidInputException("Failed to parse Item NBT", e);
         }
     }
 
     public static StorageTagCompound fromItemStack(org.bukkit.inventory.ItemStack item) {
-        CompoundTag compoundTag = new CompoundTag();
-        ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-        compoundTag = (CompoundTag) NBTReflectionUtil.convertNMSItemtoNBTCompound(nmsItem).getCompound();
-        // compoundTag = nmsItem.save(((CraftServer) Bukkit.getServer()).getServer().registryAccess(), compoundTag);
-
         try {
-            return JsonToNBT.getTagFromJson(compoundTag.toString());
-        } catch (NBTException exception) {
-            throw new InvalidInputException("Failed to convert item to NBT", exception);
+            return NBTCodec.bukkitToStorageTag(item);
+        } catch (IllegalStateException e) {
+            throw new InvalidInputException("Failed to convert item to NBT", e);
         }
     }
 

@@ -1,8 +1,7 @@
 package simplepets.brainsynder.menu.items.list;
 
-import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.utils.ListPager;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
+import org.bsdevelopment.pluginutils.storage.ListPager;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.event.inventory.PetTypeStorage;
@@ -22,10 +21,9 @@ public class NextPage extends Item {
 
     @Override
     public ItemBuilder getDefaultItem() {
-        return new ItemBuilder(Material.PLAYER_HEAD)
+        return ItemBuilder.playerSkull("http://textures.minecraft.net/texture/956a3618459e43b287b22b7e235ec699594546c6fcd6dc84bfca4cf30ab9311")
             .withName("&#e3c79a&l----&#e3aa4f&l>")
-            .addLore("&#d1c9c9Click Here to go", "&#d1c9c9the next page")
-            .setTexture("http://textures.minecraft.net/texture/956a3618459e43b287b22b7e235ec699594546c6fcd6dc84bfca4cf30ab9311");
+            .addLore("&#d1c9c9Click Here to go", "&#d1c9c9the next page");
     }
 
     @Override

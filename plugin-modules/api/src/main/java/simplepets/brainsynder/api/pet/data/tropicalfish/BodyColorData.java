@@ -1,18 +1,18 @@
 package simplepets.brainsynder.api.pet.data.tropicalfish;
 
-import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.nms.DataConverter;
-import lib.brainsynder.utils.DyeColorWrapper;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.text.WordUtils;
+import org.bukkit.Material;
 import simplepets.brainsynder.api.entity.passive.IEntityTropicalFishPet;
 import simplepets.brainsynder.api.pet.PetData;
+import simplepets.brainsynder.api.wrappers.DyeColorWrapper;
 
 import java.util.Optional;
 
 public class BodyColorData extends PetData<IEntityTropicalFishPet> {
     public BodyColorData() {
         for (DyeColorWrapper color : DyeColorWrapper.values()) {
-            addDefaultItem(color.name(), DataConverter.getColoredMaterial(DataConverter.MaterialType.WOOL, color)
+            addDefaultItem(color.name(), ItemBuilder.of(Material.valueOf(color.name() + "_WOOL"))
                 .withName(" ")
                 .addLore(
                     "&#c8c8c8Previous: {previousColor}{previousName}",
@@ -39,19 +39,19 @@ public class BodyColorData extends PetData<IEntityTropicalFishPet> {
             DyeColorWrapper next = DyeColorWrapper.getNext(entity.getBodyColor());
 
             ItemBuilder builder = optional.get();
-            builder.replaceInLore("{previousColor}", previous.getChatColor())
-                .replaceInLore("{currentColor}", entity.getBodyColor().getChatColor())
-                .replaceInLore("{nextColor}", next.getChatColor())
-                .replaceInLore("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
-                .replaceInLore("{currentName}", WordUtils.capitalize(entity.getBodyColor().name().toLowerCase().replace("_", " ")))
-                .replaceInLore("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
+            builder.replaceString("{previousColor}", previous.getChatColor())
+                .replaceString("{currentColor}", entity.getBodyColor().getChatColor())
+                .replaceString("{nextColor}", next.getChatColor())
+                .replaceString("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
+                .replaceString("{currentName}", WordUtils.capitalize(entity.getBodyColor().name().toLowerCase().replace("_", " ")))
+                .replaceString("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
 
-            builder.replaceInName("{previousColor}", previous.getChatColor())
-                .replaceInName("{currentColor}", entity.getBodyColor().getChatColor())
-                .replaceInName("{nextColor}", next.getChatColor())
-                .replaceInName("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
-                .replaceInName("{currentName}", WordUtils.capitalize(entity.getBodyColor().name().toLowerCase().replace("_", " ")))
-                .replaceInName("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
+            builder.replaceString("{previousColor}", previous.getChatColor())
+                .replaceString("{currentColor}", entity.getBodyColor().getChatColor())
+                .replaceString("{nextColor}", next.getChatColor())
+                .replaceString("{previousName}", WordUtils.capitalize(previous.name().toLowerCase().replace("_", " ")))
+                .replaceString("{currentName}", WordUtils.capitalize(entity.getBodyColor().name().toLowerCase().replace("_", " ")))
+                .replaceString("{nextName}", WordUtils.capitalize(next.name().toLowerCase().replace("_", " ")));
             return Optional.of(builder);
         }
         return optional;

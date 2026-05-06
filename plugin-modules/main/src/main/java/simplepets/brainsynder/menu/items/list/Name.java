@@ -1,6 +1,7 @@
 package simplepets.brainsynder.menu.items.list;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.Namespace;
@@ -23,7 +24,7 @@ public class Name extends Item {
 
     @Override
     public ItemBuilder getDefaultItem() {
-        return new ItemBuilder(Material.NAME_TAG).withName("&#99ffac&lName Pet");
+        return ItemBuilder.of(Material.NAME_TAG).withName("&#99ffac&lName Pet");
     }
 
     @Override

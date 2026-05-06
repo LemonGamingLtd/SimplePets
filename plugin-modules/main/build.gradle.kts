@@ -2,7 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id("org.bsdevelopment.java-conventions")
-    alias(libs.plugins.shadow)
+    id("com.gradleup.shadow")
 }
 
 group = "org.bsdevelopment.simplepets"
@@ -13,12 +13,8 @@ dependencies {
     compileOnly(project(":api"))
 
     compileOnly(libs.protocollib)
+    compileOnly(libs.placeholderapi)
     compileOnly(libs.commonsio)
-
-    implementation(libs.bslib) {
-        exclude(group = "io.papermc", module = "paperlib")
-        exclude(group = "de.tr7zw", module = "item-nbt-api-plugin")
-    }
 
     implementation(libs.pluginutils) {
         exclude(group = "io.papermc", module = "paperlib")
@@ -26,6 +22,10 @@ dependencies {
     }
     implementation(libs.updatechecker)
     implementation(libs.bstats)
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 tasks {
@@ -48,12 +48,5 @@ tasks {
         archiveBaseName.set("SimplePets")
         archiveClassifier.set("")
         archiveVersion.set("")
-
-        var groupID = "simplepets.brainsynder"
-
-        relocate("com.jeff_media.updatechecker", "$groupID.libs.updatechecker")
-        relocate("io.papermc.lib", "$groupID.libs.paperlib")
-        relocate("lib.brainsynder", "$groupID.libs.bslib")
-        relocate("org.bstats", "$groupID.libs.bstats")
     }
 }

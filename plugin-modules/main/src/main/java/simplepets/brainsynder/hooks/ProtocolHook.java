@@ -41,7 +41,7 @@ public class ProtocolHook {
                 if ((line[0] == null) || line[0].isEmpty()) return false;
                 PetType petType = typeMap.getOrDefault(player.getName(), PetType.UNKNOWN);
                 if (petType == PetType.UNKNOWN)
-                    return false;  // failure. becaues reopenIfFail was called, menu will reopen when closed.
+                    return false;  // failure. because reopenIfFail was called, menu will reopen when closed.
                 PetCore.getInstance().getScheduler().getImpl().runNextTick(() -> {
                     SimplePets.getUserManager().getPetUser(player).ifPresent(user1 -> {
                         if (line[0].equalsIgnoreCase("reset")) line[0] = null;

@@ -20,7 +20,11 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageBase;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagString;
 import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -45,6 +49,7 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.special.EntityControllerPet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
+import simplepets.brainsynder.utils.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -571,12 +576,11 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
             return VersionHelper.toItemStack((StorageTagCompound) base);
         }else if (base instanceof StorageTagString){
             String string = ((StorageTagString) base).getString();
-            if (!Base64Wrapper.isEncoded(string)) {
-                throw new UnsupportedOperationException (String.format("'%s' is not a valid item format", string));
-            }
             YamlConfiguration config = new YamlConfiguration();
             try {
-                config.loadFromString(Base64Wrapper.decodeString(string));
+                config.loadFromString(Utilities.decodeBase64(string));
+            } catch (IllegalArgumentException e1) {
+                throw new UnsupportedOperationException(String.format("'%s' is not a valid item format", string));
             } catch (InvalidConfigurationException e1) {
                 e1.printStackTrace();
             }
@@ -603,7 +607,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         }
 
         if (chest.getType() == Material.AIR) {
-            chest = new ItemBuilder(Material.DIAMOND_CHESTPLATE).build();
+            chest = ItemBuilder.of(Material.DIAMOND_CHESTPLATE).build();
         }
 
         if (!getItems(EquipmentSlot.CHEST).isSimilar(chest)) {
@@ -612,7 +616,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
 
         // hey this one doesn't have brackets
         if (legs.getType() == Material.AIR) {
-            legs = new ItemBuilder(Material.IRON_LEGGINGS).build();
+            legs = ItemBuilder.of(Material.IRON_LEGGINGS).build();
         }
 
         if (!getItems(EquipmentSlot.LEGS).isSimilar(legs)) {
@@ -620,7 +624,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         }
 
         if (boots.getType() == Material.AIR) {
-            boots = new ItemBuilder(Material.GOLDEN_BOOTS).build();
+            boots = ItemBuilder.of(Material.GOLDEN_BOOTS).build();
         }
 
         if (!getItems(EquipmentSlot.FEET).isSimilar(boots)) {
@@ -649,7 +653,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
     public ItemStack getSkull() {
         // Allows textures to be instantly set; they aren't usually set with the UUID
         GameProfile profile = new GameProfile(getOwnerUUID(), getPetUser().getOwnerName());
-        ItemStack item = new ItemBuilder(Material.PLAYER_HEAD).build();
+        ItemStack item = ItemBuilder.of(Material.PLAYER_HEAD).build();
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         try {
             Method profileF = meta.getClass().getDeclaredMethod("setProfile", GameProfile.class);

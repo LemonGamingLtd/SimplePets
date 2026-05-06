@@ -1,20 +1,17 @@
 package simplepets.brainsynder.utils;
 
-import lib.brainsynder.apache.ApacheUtils;
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nms.Tellraw;
-import lib.brainsynder.reflection.FieldAccessor;
-import lib.brainsynder.reflection.Reflection;
-import lib.brainsynder.utils.ReturnValue;
 import org.apache.commons.io.FileUtils;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.chat.TellrawMessage;
 import org.bsdevelopment.pluginutils.files.YamlFile;
+import org.bsdevelopment.pluginutils.reflection.FieldAccessor;
+import org.bsdevelopment.pluginutils.reflection.Reflection;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -40,9 +37,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class Utilities {
     public static List<Material> getBlacklistedMaterials() {
@@ -97,7 +98,7 @@ public class Utilities {
 
             case FAILURE -> {
                 SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.FAILED, player, player.getLocation());
-                Tellraw.fromLegacy(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
+                TellrawMessage.of(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
                         .tooltip(result.failMessage())
                         .send(player);
 
@@ -250,12 +251,12 @@ public class Utilities {
 
     public static void resetRideCooldown(Entity entity) {
         FieldAccessor<Integer> field = FieldAccessor.getField(
-            Reflection.getNmsClass("Entity", "world.entity"),
+            Reflection.resolveMinecraftClass("Entity", "world.entity"),
             VersionFields.fromServerVersion(ServerVersion.getVersion()).getRideCooldownField(),
             Integer.TYPE
         );
 
-        field.set(Reflection.getHandle(entity), 0);
+        field.set(Reflection.fetchEntityHandle(entity), 0);
     }
 
     public static boolean isSimilar(ItemStack main, ItemStack check) {
@@ -305,24 +306,7 @@ public class Utilities {
 
     }
 
-    public static String itemToString(ItemStack itemStack) {
-        YamlConfiguration config = new YamlConfiguration();
-        config.set("i", itemStack);
-        return config.saveToString();
-    }
-
-    public static ItemStack stringToItem(String stringBlob) {
-        YamlConfiguration config = new YamlConfiguration();
-        try {
-            config.loadFromString(stringBlob);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return config.getItemStack("i", null);
-    }
-
-    public static void getInputStreamString(String link, ReturnValue<String> stringReturn) {
+    public static void getInputStreamString(String link, Consumer<String> stringReturn) {
         CompletableFuture.runAsync(() -> {
             try {
                 System.setProperty("http.agent", "Chrome");
@@ -337,14 +321,35 @@ public class Utilities {
                 final InputStream stream = connection.getInputStream();
                 PluginUtilities.getScheduler().runTask(() -> {
                     try {
-                        stringReturn.run(ApacheUtils.toString(stream));
+                        stringReturn.accept(new String(stream.readAllBytes(), StandardCharsets.UTF_8));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
-            } catch (Exception var6) {
+            } catch (Exception ignored) {
             }
-
         });
+    }
+
+    public static String encodeBase64(String s) {
+        return Base64.getEncoder().encodeToString(s.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String decodeBase64(String s) {
+        return new String(Base64.getDecoder().decode(s), StandardCharsets.UTF_8);
+    }
+
+    public static long toTicks(long time, TimeUnit unit) {
+        long ticks = 20;
+        if (unit == TimeUnit.DAYS) {
+            ticks = ticks * 60 * 60 * 24 * time;
+        } else if (unit == TimeUnit.HOURS) {
+            ticks = ticks * 60 * 60 * time;
+        } else if (unit == TimeUnit.MINUTES) {
+            ticks = ticks * 60 * time;
+        } else {
+            ticks = ticks * time;
+        }
+        return ticks;
     }
 }

@@ -1,7 +1,7 @@
 package simplepets.brainsynder.managers;
 
-import lib.brainsynder.item.ItemBuilder;
 import org.bsdevelopment.pluginutils.inventory.AnvilGUI;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.conversations.ConversationContext;
@@ -31,7 +31,7 @@ public class RenameManager {
 
     public void renameViaAnvil(PetUser user, PetType type) {
         AnvilGUI.Builder builder = new AnvilGUI.Builder().plugin(PetCore.getInstance());
-        builder.itemLeft(new ItemBuilder(Material.NAME_TAG).withName(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.RENAME_ANVIL_TAG)).build());
+        builder.itemLeft(ItemBuilder.of(Material.NAME_TAG).withName(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.RENAME_ANVIL_TAG)).build());
         builder.onClick((slot, stateSnapshot) -> {
             if (slot != AnvilGUI.Slot.OUTPUT) return Collections.emptyList();
 

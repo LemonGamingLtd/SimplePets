@@ -1,9 +1,9 @@
 package simplepets.brainsynder.menu.inventory;
 
-import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.utils.Colorize;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.libs.json.JsonArray;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

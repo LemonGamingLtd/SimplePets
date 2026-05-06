@@ -1,10 +1,13 @@
 package simplepets.brainsynder.nms.entity;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Input;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import simplepets.brainsynder.api.event.entity.PetMoveEvent;
@@ -12,7 +15,9 @@ import simplepets.brainsynder.api.event.entity.movment.PetJumpEvent;
 import simplepets.brainsynder.api.event.entity.movment.PetRideEvent;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
+import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.managers.InventoryManager;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 
 public class EntityPetOverride extends EntityPet {
@@ -93,5 +98,16 @@ public class EntityPetOverride extends EntityPet {
 
         this.setSpeed((float) speed);
         super.travel(new Vec3(strafe, vertical, forward));
+    }
+
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
+        if (getOwnerUUID().equals(player.getUUID())) {
+            if (ConfigOption.MISC_TOGGLES_DISABLE_CLICKING.get()) return InteractionResult.FAIL;
+            if (InventoryManager.PET_DATA.getType((org.bukkit.entity.Player) player.getBukkitEntity()) != getPetType())
+                InventoryManager.PET_DATA.setType((org.bukkit.entity.Player) player.getBukkitEntity(), getPetType());
+            InventoryManager.PET_DATA.open(getPetUser());
+        }
+        return super.interact(player, hand, location);
     }
 }

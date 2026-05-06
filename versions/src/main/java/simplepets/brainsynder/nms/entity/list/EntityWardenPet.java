@@ -1,7 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.math.MathUtils;
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -9,8 +7,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.utilities.MathUtil;
 import org.bsdevelopment.pluginutils.version.VersionLimit;
 import simplepets.brainsynder.api.entity.hostile.IEntityWardenPet;
 import simplepets.brainsynder.api.pet.PetType;
@@ -58,7 +58,7 @@ public class EntityWardenPet extends EntityPetOverride implements IEntityWardenP
             if (vibrationTick <= 0) {
                 level().broadcastEntityEvent(this, (byte) 61);
                 this.playSound(SoundEvents.WARDEN_TENDRIL_CLICKS, 5.0F, this.getVoicePitch());
-                vibrationTick = MathUtils.random(40, 60);
+                vibrationTick = MathUtil.randomInt(40, 60);
             }
             vibrationTick--;
         }

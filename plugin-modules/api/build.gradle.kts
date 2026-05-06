@@ -3,7 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     id("org.bsdevelopment.java-conventions")
     id("maven-publish")
-    alias(libs.plugins.shadow)
+    id("com.gradleup.shadow")
 }
 
 group = "org.bsdevelopment.simplepets"
@@ -11,7 +11,6 @@ description = "api"
 
 dependencies {
     compileOnly(libs.spigotapi)
-    compileOnly(libs.bslib)
     compileOnly(libs.pluginutils)
 
     compileOnly("org.jetbrains:annotations:26.0.2")
@@ -19,6 +18,7 @@ dependencies {
 
 java {
     withSourcesJar()
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 tasks {
@@ -30,9 +30,6 @@ tasks {
         archiveBaseName.set("SimplePets-API")
         archiveClassifier.set("")
         archiveVersion.set("")
-
-        val groupID = "simplepets.brainsynder"
-        relocate("lib.brainsynder", "$groupID.libs.bslib")
     }
 
     publish {
@@ -62,8 +59,8 @@ publishing {
             name = "bs-repo"
             url = uri("https://repo.bsdevelopment.org/releases")
             credentials {
-                username = findProperty("BS_REPO_USER") as String?
-                password = findProperty("BS_REPO_PASS") as String?
+                username = (System.getenv("BS_REPO_USER") ?: findProperty("BS_REPO_USER")) as String?
+                password = (System.getenv("BS_REPO_PASS") ?: findProperty("BS_REPO_PASS")) as String?
             }
         }
     }

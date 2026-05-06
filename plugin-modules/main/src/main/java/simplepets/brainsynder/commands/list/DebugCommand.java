@@ -225,9 +225,9 @@ public class DebugCommand implements PetCommandClass {
     }
 
     private static JsonObject fetchServerInfo() {
-        PetCore.ServerInformation si = PetCore.SERVER_INFORMATION;
+        var si = PluginUtilities.getServerInformation();
         return new JsonObject()
-                .add("java", si.getJava())
+                .add("java", si.getJavaVersion())
                 .add("server-information", new JsonObject()
                         .add("server-type", si.getServerType())
                         .add("minecraft-version", si.getMinecraftVersion())

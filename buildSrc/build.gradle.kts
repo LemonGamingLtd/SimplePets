@@ -7,3 +7,8 @@ repositories {
     // Use the plugin portal to apply community plugins in convention plugins.
     gradlePluginPortal()
 }
+
+dependencies {
+    // Needed so shadow-conventions.gradle.kts can reference ShadowJar type
+    implementation("com.gradleup.shadow:shadow-gradle-plugin:9.0.0-beta8")
+}

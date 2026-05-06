@@ -1,15 +1,15 @@
 package simplepets.brainsynder.sql;
 
-import lib.brainsynder.nbt.JsonToNBT;
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nbt.StorageTagList;
-import lib.brainsynder.nbt.other.NBTException;
-import lib.brainsynder.optional.BiOptional;
-import lib.brainsynder.utils.Base64Wrapper;
-import lib.brainsynder.utils.Triple;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.nbt.StorageTagList;
+import org.bsdevelopment.nbt.io.StorageStringParser;
+import org.bsdevelopment.nbt.other.NBTException;
+import org.bsdevelopment.pluginutils.storage.optional.BiOptional;
+import org.bsdevelopment.pluginutils.utilities.Triple;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.debug.DebugBuilder;
 import simplepets.brainsynder.debug.DebugLevel;
+import simplepets.brainsynder.utils.Utilities;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -147,7 +147,7 @@ public interface SQLHandler {
         String raw = results.getString("UnlockedPets");
         try {
             if (!raw.equals("W10=")) {
-                compound.setTag("owned_pets", JsonToNBT.parse(Base64Wrapper.decodeString(raw)).toList());
+                compound.setTag("owned_pets", StorageStringParser.parse(Utilities.decodeBase64(raw)).toList());
             }
         } catch (NBTException e) {
             SimplePets.getDebugLogger().debug(DebugBuilder.build().setMessages(
@@ -158,25 +158,23 @@ public interface SQLHandler {
 
         // Loads pet names
         String rawName = results.getString("PetName");
-        if (Base64Wrapper.isEncoded(rawName)) {
-            rawName = Base64Wrapper.decodeString(rawName);
-            try {
-                compound.setTag("pet_names", JsonToNBT.parse(rawName).toList());
-            } catch (NBTException e) {
-                // Old pet name save... not supported in the new system
-            }
+        try {
+            rawName = Utilities.decodeBase64(rawName);
+            compound.setTag("pet_names", StorageStringParser.parse(rawName).toList());
+        } catch (IllegalArgumentException | NBTException ignored) {
+            // Not base64 encoded, or old format not supported in new system
         }
 
         String spawnedPets = results.getString("NeedsRespawn");
-        if (Base64Wrapper.isEncoded(spawnedPets)) {
-            spawnedPets = Base64Wrapper.decodeString(spawnedPets);
+        try {
+            spawnedPets = Utilities.decodeBase64(spawnedPets);
             StorageTagList pets = new StorageTagList();
             try {
-                JsonToNBT parser = JsonToNBT.parse(spawnedPets);
+                StorageStringParser parser = StorageStringParser.parse(spawnedPets);
 
                 if (spawnedPets.startsWith("[")) {
                     // New system
-                    parser.toList().getList().forEach(storageBase -> {
+                    parser.toList().getTagList().forEach(storageBase -> {
                         StorageTagCompound tag = (StorageTagCompound) storageBase;
                         if (!tag.hasKey("type")) {
                             if (tag.hasKey("data")) {
@@ -194,35 +192,31 @@ public interface SQLHandler {
                     StorageTagCompound tag = parser.toCompound();
                     compound.setTag("spawned_pets", pets.appendTag(new StorageTagCompound().setString("type", tag.getString("PetType")).setTag("data", tag)));
                 }
-            } catch (NBTException e) {
-                // Old pet name save... not supported in the new system
+            } catch (NBTException ignored) {
+                // Old format not supported in new system
             }
-        }
+        } catch (IllegalArgumentException ignored) {}
 
         // Loading saved pets
         String savedPets = results.getString("SavedPets");
-        if (Base64Wrapper.isEncoded(savedPets)) {
-            savedPets = Base64Wrapper.decodeString(savedPets);
+        try {
+            savedPets = Utilities.decodeBase64(savedPets);
             StorageTagList pets = new StorageTagList();
-            try {
-                JsonToNBT parser = JsonToNBT.parse(savedPets);
-
-                parser.toList().getList().forEach(storageBase -> {
-                    StorageTagCompound tag = (StorageTagCompound) storageBase;
-                    if (!tag.hasKey("type")) {
-                        if (tag.hasKey("data")) {
-                            tag.setString("type", tag.getCompoundTag("data").getString("PetType"));
-                            pets.appendTag(tag);
-                        }
-                        // Ignore the other values because it is not formatted correctly
-                    } else {
-                        pets.appendTag(storageBase);
+            StorageStringParser parser = StorageStringParser.parse(savedPets);
+            parser.toList().getTagList().forEach(storageBase -> {
+                StorageTagCompound tag = (StorageTagCompound) storageBase;
+                if (!tag.hasKey("type")) {
+                    if (tag.hasKey("data")) {
+                        tag.setString("type", tag.getCompoundTag("data").getString("PetType"));
+                        pets.appendTag(tag);
                     }
-                });
-                compound.setTag("saved_pets", pets);
-            } catch (NBTException e) {
-            }
-        }
+                    // Ignore the other values because it is not formatted correctly
+                } else {
+                    pets.appendTag(storageBase);
+                }
+            });
+            compound.setTag("saved_pets", pets);
+        } catch (IllegalArgumentException | NBTException ignored) {}
 
         return compound;
     }

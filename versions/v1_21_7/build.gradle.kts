@@ -1,7 +1,7 @@
 plugins {
     id("org.bsdevelopment.java-conventions")
     alias(libs.plugins.paperweight)
-    alias(libs.plugins.shadow)
+    id("com.gradleup.shadow")
 }
 
 var mcVersion = "1.21.7"
@@ -15,7 +15,6 @@ dependencies {
     compileOnly(project(":main"))
     implementation(project(":versions"))
 
-    compileOnly(libs.bslib)
     compileOnly(libs.pluginutils)
     paperweight.paperDevBundle(latestMinecraft)
 }
@@ -34,7 +33,6 @@ tasks {
         archiveClassifier.set("")
 
         var groupID = "simplepets.brainsynder"
-        relocate("lib.brainsynder", "$groupID.libs.bslib")
         relocate("$groupID.nms", "$groupID.versions.$nmsVersion")
 
         // TODO: This needs to be removed once 26.1 comes out

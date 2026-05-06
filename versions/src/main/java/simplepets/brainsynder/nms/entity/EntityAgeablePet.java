@@ -1,11 +1,11 @@
 package simplepets.brainsynder.nms.entity;
 
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.misc.IAgeablePet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
@@ -15,6 +15,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 public abstract class EntityAgeablePet extends EntityPetOverride implements IAgeablePet {
     private static final EntityDataAccessor<Boolean> BABY = SynchedEntityData.defineId(EntityAgeablePet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> AGE_LOCKED = SynchedEntityData.defineId(EntityAgeablePet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityAgeablePet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
@@ -30,6 +31,7 @@ public abstract class EntityAgeablePet extends EntityPetOverride implements IAge
     public void populateDataAccess(PetDataAccess dataAccess) {
         super.populateDataAccess(dataAccess);
         dataAccess.define(BABY, Boolean.FALSE);
+        dataAccess.define(AGE_LOCKED, false);
     }
 
     @Override

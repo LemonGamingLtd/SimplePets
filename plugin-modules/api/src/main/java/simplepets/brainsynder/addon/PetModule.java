@@ -1,9 +1,8 @@
 package simplepets.brainsynder.addon;
 
-import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.utils.AdvString;
-import lib.brainsynder.utils.Colorize;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
+import org.bsdevelopment.pluginutils.text.AdvString;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import simplepets.brainsynder.api.Namespace;
@@ -58,8 +57,7 @@ public abstract class PetModule implements Listener {
     public ItemStack getAddonIcon() {
         StringBuilder authors = new StringBuilder();
         localData.getAuthors().forEach(s -> authors.append(s).append(", "));
-        return new ItemBuilder(Material.PLAYER_HEAD)
-            .setTexture("http://textures.minecraft.net/texture/" +
+        return ItemBuilder.playerSkull("http://textures.minecraft.net/texture/" +
                 (enabled ? "78d58a7651fedae4c03efebc226c03fd791eb74a132babb974e8d838ac6882" : "2da1508d47ed73b5c515e3b93928b728e4bc6278569a79b3723ab6972ce05357"))
             .withName(Colorize.fetchColor("e1eb5b") + getNamespace().namespace() + " Module").withLore(localData.getDescription())
             .addLore("&r ", "&7Author: &e" + AdvString.replaceLast(", ", "", authors.toString()))

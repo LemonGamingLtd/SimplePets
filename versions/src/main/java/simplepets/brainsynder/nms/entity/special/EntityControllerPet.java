@@ -1,7 +1,5 @@
 package simplepets.brainsynder.nms.entity.special;
 
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.sounds.SoundMaker;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,6 +10,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageTagCompound;
+import org.bsdevelopment.pluginutils.sound.SafeSound;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -72,8 +72,8 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
     public void playAmbientSound() {
         if (isPetSilent()) return;
         SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
-            SoundMaker sound = config.getSound();
-            if (sound != null) sound.playSound(getEntity());
+            SafeSound sound = config.getSound();
+            if (sound != null) sound.playAt(getEntity().getLocation(), 1f, 1f);
         });
     }
 
@@ -149,8 +149,12 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
         }
     }
 
-    @Override
+    // Method was removed in version 26.1
     public InteractionResult interactAt(net.minecraft.world.entity.player.Player entityhuman, Vec3 vec3d, InteractionHand enumhand) {
+        return InteractionResult.FAIL;
+    }
+    // Replacement for interactAt
+    public InteractionResult interact(net.minecraft.world.entity.player.Player entityhuman, InteractionHand hand, final Vec3 location) {
         return InteractionResult.FAIL;
     }
 

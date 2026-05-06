@@ -9,7 +9,11 @@ import lib.brainsynder.utils.Utilities;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.help.HelpCommand;
+import org.bsdevelopment.pluginutils.libs.json.Json;
+import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.json.JsonValue;
 import org.bsdevelopment.pluginutils.libs.json.WriterConfig;
+import org.bsdevelopment.pluginutils.reflection.Reflection;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
@@ -29,6 +33,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.IPetsPlugin;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
+import simplepets.brainsynder.api.plugin.utils.HelperUtilities;
 import simplepets.brainsynder.api.plugin.utils.IPetUtilities;
 import simplepets.brainsynder.api.user.UserManagement;
 import simplepets.brainsynder.commands.list.*;
@@ -49,25 +54,23 @@ import simplepets.brainsynder.sql.handlers.MySQLHandler;
 import simplepets.brainsynder.sql.handlers.SQLiteHandler;
 import simplepets.brainsynder.utils.JavaVersion;
 import simplepets.brainsynder.utils.Premium;
+import simplepets.brainsynder.utils.Utilities;
 import simplepets.brainsynder.utils.VersionFields;
 import simplepets.brainsynder.utils.debug.Debug;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.nio.file.Files;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PetCore extends JavaPlugin implements IPetsPlugin {
-    public static ServerInformation SERVER_INFORMATION;
-    private final List<String> supportedVersions = new ArrayList<>();
+    private boolean versionDetectionDone = false;
     private static PetCore instance;
 
     private FoliaLib scheduler;
@@ -90,6 +93,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     private AddonManager addonManager;
 
     private Class<?> spawnutilClass = null;
+    private String targetVersion = null;
 
     private Debug debug;
     private IPetUtilities petUtilities;
@@ -108,14 +112,10 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         isStarting = true;
 
         debug = new Debug(this);
-        SERVER_INFORMATION = new ServerInformation();
 
         SimplePets.getDebugLogger().debug(DebugBuilder.build()
                 .setLevel(DebugLevel.WARNING).setBroadcast(true)
-                .setMessages(
-                        " *** As of version R5-B296 includes some major changes, If any issues are found please create a bug report",
-                        " *** On the Github: https://tiny.bsdevelopment.org/pet-issues"
-                ));
+                .setMessages(" *** As of version R5-B296 includes some major changes, If any issues are found please create a bug report"));
 
         if (ServerVersion.getVersion().isEqualOrNewer(ServerVersion.v1_21_11)) {
             SimplePets.getDebugLogger().debug(DebugBuilder.build()
@@ -227,6 +227,12 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         handleListeners();
         //handleUpdateUtils();
 
+        Plugin papi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+        if (papi != null && papi.isEnabled()) {
+            new simplepets.brainsynder.hooks.PlaceholderAPIHook().register();
+            debug.debug(DebugLevel.HIDDEN, "Hooked into PlaceholderAPI");
+        }
+
         {
             TimeUnit unit;
 
@@ -278,7 +284,9 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     @Override
     public void onDisable() {
         isStarting = false;
-        supportedVersions.clear();
+        versionDetectionDone = false;
+        spawnutilClass = null;
+        targetVersion = null;
         if (petUtilities == null) return; // Failed to load this field due to unsupported version
         SimplePets.getDebugLogger().debug(DebugLevel.NORMAL, "Saving player pets (if there are any)", false);
         if (USER_MANAGER != null)
@@ -373,16 +381,16 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     private boolean wasPluginReloaded() {
         try {
             Method isStopping = Bukkit.class.getDeclaredMethod("isStopping");
-            return !((boolean) Reflection.invoke(isStopping, null));
+            return !((boolean) Reflection.executeMethod(isStopping, null));
         } catch (Exception e) {
             String fieldName = VersionFields.fromServerVersion(ServerVersion.getVersion()).getServerRunningField();
 
-            Class<?> nmsClass = Reflection.getNmsClass("MinecraftServer", "server");
+            Class<?> nmsClass = Reflection.resolveMinecraftClass("MinecraftServer", "server");
 
             try {
-                Object server = Reflection.getMethod(nmsClass, "getServer").invoke(null);
+                Object server = Reflection.resolveMethod(nmsClass, "getServer").invoke(null);
                 Field field = nmsClass.getDeclaredField(fieldName);
-                Reflection.setFieldAccessible(field);
+                Reflection.makeFieldAccessible(field);
                 return (boolean) field.get(server);
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -393,6 +401,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
     private void handleManagers() {
         debug.debug(DebugLevel.HIDDEN, "Initializing plugin managers");
+        migrateLegacyFiles();
         particleManager = new ParticleManager(this);
         renameManager = new RenameManager(this);
         PET_CONFIG = new PetConfiguration(this);
@@ -530,7 +539,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     private void handleMetrics() {
         SimplePets.getDebugLogger().debug(DebugLevel.HIDDEN, "Loading Metrics");
         Metrics metrics = new Metrics(this, 244);
-        metrics.addCustomChart(new SimplePie("server_type", () -> String.valueOf(SERVER_INFORMATION.serverType)));
+        metrics.addCustomChart(new SimplePie("server_type", () -> String.valueOf(PluginUtilities.getServerInformation().getServerType())));
         metrics.addCustomChart(new SimplePie("stupid_config_option_for_gui_command", () -> String.valueOf(ConfigOption.SIMPLER_GUI.get())));
         metrics.addCustomChart(new AdvancedPie("spawned_pet_counter", this::getSpawnedPetCounts));
         metrics.addCustomChart(new AdvancedPie("active_pets", this::getActivePets));
@@ -576,7 +585,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         try {
             if (spawnutilClass == null) return;
             if (ISpawnUtil.class.isAssignableFrom(spawnutilClass)) {
-                SPAWN_UTIL = (ISpawnUtil) spawnutilClass.getConstructor(ClassLoader.class).newInstance(getClassLoader());
+                SPAWN_UTIL = (ISpawnUtil) spawnutilClass.getConstructor(ClassLoader.class, String.class).newInstance(getClassLoader(), targetVersion);
                 debug.debug(DebugLevel.HIDDEN, "Successfully Linked to " + version.getVersionName() + " SpawnUtil Class");
             }
         } catch (Exception e) {
@@ -585,8 +594,8 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
                 .setBroadcast(true)
                 .setMessages(
                     "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().getVersionName().replace("v", "").replace("_", "."),
-                    "Please check the Jenkins for an updated build: https://ci.bsdevelopment.org/job/SimplePets_v5/",
-                    "Check if there is a SimplePets-" + ServerVersion.getVersion().getVersionName().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
+                    "Please check the Jenkins for an updated build: https://jenkins.bsdevelopment.org/job/SimplePets/",
+                    "Check the 'Supported Minecraft Versions' section for version support",
                     " ",
                     "Error: " + e.getMessage()
                 )
@@ -617,40 +626,26 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     }
 
     private boolean fetchSupportedVersions() {
-        if (!supportedVersions.isEmpty()) return supportedVersions.contains(ServerVersion.getVersion().getVersionName());
-        supportedVersions.clear();
+        if (versionDetectionDone) return spawnutilClass != null;
+        versionDetectionDone = true;
+
         String current = ServerVersion.getVersion().getVersionName();
-        boolean supported = false;
-        String packageName = "simplepets.brainsynder.versions.<VER>.SpawnerUtil";
-        for (ServerVersion version : ServerVersion.getVersions()) {
-            if (version.getVersionName().equals(current) && (!supported)) supported = true;
-            try {
-                Class<?> clazz = Class.forName(packageName.replace("<VER>", version.getVersionName()), false, getClassLoader());
-                if (clazz != null) {
-                    if (version.getVersionName().equals(current)) spawnutilClass = clazz;
-                    supportedVersions.add(version.getVersionName());
-                }
-            } catch (Exception ignored) {
-            }
-        }
-        if (!supported) {
-            try {
-                Class<?> clazz = Class.forName(packageName.replace("<VER>", current), false, getClassLoader());
-                if (clazz != null) {
-                    spawnutilClass = clazz;
-                    supportedVersions.add(current);
-                }
-            } catch (Exception ignored) {
-            }
+        String resolvedVersion = HelperUtilities.resolveTargetVersion("SpawnerUtil");
+        if (resolvedVersion == null) return false;
+
+        try {
+            spawnutilClass = Class.forName(HelperUtilities.NMS_PATH + "." + resolvedVersion + ".SpawnerUtil", false, getClassLoader());
+            targetVersion = resolvedVersion;
+        } catch (ClassNotFoundException e) {
+            return false;
         }
 
-        if (!supportedVersions.contains(current)) return false;
-
-        if (!supportedVersions.isEmpty()) {
-            debug.debug("Found support for version(s): " + supportedVersions.toString().replace("v", "").replace("_", "."));
-            debug.debug("Targeting version: " + ServerVersion.getVersion().getVersionName().replace("v", "").replace("_", "."));
+        if (!resolvedVersion.equals(current)) {
+            debug.debug("Version " + current.replace("v", "").replace("_", ".") + " has no dedicated version module, linking to version " + resolvedVersion.replace("v", "").replace("_", "."));
         }
-        return supported;
+
+        debug.debug("Targeting version: " + resolvedVersion.replace("v", "").replace("_", "."));
+        return true;
     }
 
     public boolean hasFullyStarted() {
@@ -677,102 +672,49 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         return scheduler;
     }
 
-    public static class ServerInformation {
-        private final String java;
-        private final String rawVersion;
-        private final String bukkitVersion;
-        private final String minecraftVersion;
-        private final boolean paper;
+    private void migrateLegacyFiles() {
+        File petsFolder = new File(getDataFolder(), "Pets");
+        File itemsFolder = new File(getDataFolder(), "Items");
 
-        private String serverType = "Unknown";
-        private String buildVersion = "Unknown";
-        private boolean mojangMapped = false;
+        if (petsFolder.exists() && hasLegacyFiles(petsFolder)) {
+            debug.debug(DebugBuilder.build().setLevel(DebugLevel.WARNING).setMessages("Legacy pet config files detected — moving to Pets/legacy/ and regenerating"));
+            moveFolderContentsToLegacy(petsFolder);
+        }
 
-        public ServerInformation() {
-            paper = PaperLib.isPaper();
+        if (itemsFolder.exists() && hasLegacyFiles(itemsFolder)) {
+            debug.debug(DebugBuilder.build().setLevel(DebugLevel.WARNING).setMessages("Legacy item files detected — moving to Items/legacy/ and regenerating"));
+            moveFolderContentsToLegacy(itemsFolder);
+        }
+    }
 
-            // Fetches JavaVersion
-            String java = System.getProperty("java.version");
-            int pos = java.indexOf('.');
-            pos = java.indexOf('.', pos + 1);
-            if (pos != -1) {
-                this.java = java.substring(0, pos).replace(".0", "");
-            } else {
-                this.java = java;
-            }
+    private boolean hasLegacyFiles(File folder) {
+        File[] files = folder.listFiles(file -> file.isFile() && file.getName().endsWith(".json"));
+        if (files == null) return false;
 
-            rawVersion = Bukkit.getVersion();
-            bukkitVersion = Bukkit.getBukkitVersion();
-
-            if (paper) {
-                try {
-                    Class<?> buildInfoClass = Class.forName("io.papermc.paper.ServerBuildInfo");
-                    Method buildInfoMethod = Reflection.getMethod(buildInfoClass, "buildInfo");
-                    Object instance = Reflection.invoke(buildInfoMethod, null);
-
-                    serverType = (String) Reflection.invoke(Reflection.getMethod(buildInfoClass, "brandName"), instance);
-                    buildVersion = AdvString.between("-", "-", rawVersion);
-                } catch (Exception e) {
-
-                    Pattern pattern = Pattern.compile("git-(\\w+)-(\\w+) \\(MC: (\\w.+)\\)");
-                    Matcher matcher = pattern.matcher(rawVersion);
-                    if (matcher.find()) {
-                        serverType = matcher.group(1);
-                        buildVersion = matcher.group(2);
-                    } else {
-                        serverType = rawVersion;
-                        buildVersion = "Unknown";
-                    }
-                }
-            } else {
-                serverType = "Spigot";
-                buildVersion = AdvString.before("-", rawVersion);
-            }
-
-            minecraftVersion = AdvString.between("(MC: ", ")", rawVersion);
-
+        for (File file : files) {
             try {
-                Class<?> livingClass = Class.forName("net,minecraft,core,registries,BuiltInRegistries".replace(",", "."), false, getInstance().getClassLoader());
-                Field field = livingClass.getDeclaredField("ENTITY_TYPE");
-                if (field != null) {
-                    mojangMapped = true;
-                    SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, "Plugin is on a server that is using Mojang Mappings");
-                }
-            } catch (Exception e) {
-                SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, "Plugin is on a server that is using Obfuscated Mappings");
-            }
-        }
+                String content = Files.readString(file.toPath());
+                JsonValue root = Json.parse(content);
+                if (!root.isObject()) continue;
 
-        public String getJava() {
-            return java;
-        }
+                JsonValue itemValue = root.asObject().get("item");
+                if (itemValue == null || !itemValue.isObject()) continue;
 
-        public String getBuildVersion() {
-            return buildVersion;
+                JsonObject item = itemValue.asObject();
+                if (item.names().contains("material") && !item.names().contains("id")) return true;
+            } catch (IOException ignored) {}
         }
+        return false;
+    }
 
-        public String getBukkitVersion() {
-            return bukkitVersion;
-        }
+    private void moveFolderContentsToLegacy(File folder) {
+        File legacyDir = new File(folder, "legacy");
+        legacyDir.mkdirs();
+        File[] files = folder.listFiles(file -> file.isFile() && file.getName().endsWith(".json"));
+        if (files == null) return;
 
-        public String getMinecraftVersion() {
-            return minecraftVersion;
-        }
-
-        public String getRawVersion() {
-            return rawVersion;
-        }
-
-        public String getServerType() {
-            return serverType;
-        }
-
-        public boolean isMojangMapped() {
-            return mojangMapped;
-        }
-
-        public boolean isPaper() {
-            return paper;
+        for (File file : files) {
+            file.renameTo(new File(legacyDir, file.getName()));
         }
     }
 }

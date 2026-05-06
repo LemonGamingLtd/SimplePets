@@ -1,7 +1,6 @@
 package simplepets.brainsynder.api.wrappers;
 
-import lib.brainsynder.item.ItemBuilder;
-import org.bukkit.Material;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 
 public enum MooshroomVariant implements Iconable {
     RED("d0bc61b9757a7b83e03cd2507a2157913c2cf016e7c096a4d6cf1fe1b8db"),
@@ -15,8 +14,7 @@ public enum MooshroomVariant implements Iconable {
 
     @Override
     public ItemBuilder getIcon() {
-        ItemBuilder builder = new ItemBuilder(Material.PLAYER_HEAD);
-        builder.setTexture(texture);
+        ItemBuilder builder = ItemBuilder.playerSkull(texture);
         return builder;
     }
 

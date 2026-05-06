@@ -28,12 +28,13 @@ public class RenameCommand implements PetCommandClass {
                     RenameType rename = RenameType.getType(ConfigOption.RENAME_TYPE.get(), RenameType.ANVIL);
 
                     SimplePets.getUserManager().getPetUser(player).ifPresent(user -> {
-                        if (rename == RenameType.COMMAND) {
-                            if (!args.has("name")) {
-                                player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §cUsage: /pet rename <type> <name>");
-                                return;
-                            }
+                        if (args.has("name")) {
                             user.setPetName(args.get("name"), type);
+                            return;
+                        }
+
+                        if ((rename == RenameType.COMMAND) && (!args.has("name"))) {
+                            player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §cUsage: /pet rename <type> <name>");
                         } else {
                             dispatch(rename, user, type);
                         }
@@ -51,12 +52,13 @@ public class RenameCommand implements PetCommandClass {
                             RenameType rename = RenameType.getType(ConfigOption.RENAME_TYPE.get(), RenameType.ANVIL);
 
                             SimplePets.getUserManager().getPetUser(target).ifPresent(user -> {
-                                if (rename == RenameType.COMMAND) {
-                                    if (!args.has("name")) {
-                                        player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §cUsage: /pet rename target <player> <type> <name>");
-                                        return;
-                                    }
+                                if (args.has("name")) {
                                     user.setPetName(args.get("name"), type);
+                                    return;
+                                }
+
+                                if ((rename == RenameType.COMMAND) && (!args.has("name"))) {
+                                    player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + " §cUsage: /pet rename target <player> <type> <name>");
                                 } else {
                                     dispatch(rename, user, type);
                                 }

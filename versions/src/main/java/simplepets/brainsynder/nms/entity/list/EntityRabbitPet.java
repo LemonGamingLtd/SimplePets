@@ -1,7 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.reflection.Reflection;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -11,7 +9,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.reflection.Reflection;
 import simplepets.brainsynder.api.entity.passive.IEntityRabbitPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -154,7 +154,7 @@ public class EntityRabbitPet extends EntityAgeablePet implements IEntityRabbitPe
             return navigation.getPath();
         } catch (NoSuchMethodError ex) {
             try {
-                return (Path) Reflection.getMethod(PathNavigation.class, "getPath").invoke(navigation);
+                return (Path) Reflection.resolveMethod(PathNavigation.class, "getPath").invoke(navigation);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }

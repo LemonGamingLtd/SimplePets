@@ -1,9 +1,10 @@
 package simplepets.brainsynder.commands.list;
 
-import lib.brainsynder.nms.Tellraw;
-import lib.brainsynder.utils.Colorize;
 import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.chat.TellrawMessage;
+import org.bsdevelopment.pluginutils.chat.decoration.NamedTextColor;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bsdevelopment.pluginutils.utilities.PasteClient;
 import org.bukkit.ChatColor;
 import simplepets.brainsynder.PetCore;
@@ -24,9 +25,9 @@ public class DatabaseCommand implements PetCommandClass {
                     PetCore.getInstance().getSqlHandler().getRowCount().whenComplete((playerDataCount, throwable) -> {
                         sender.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PREFIX) + Colorize.translateBungeeHex(" &#d1c9c9Player Data SQL &#b35349======&#de9790-------"));
                         sender.sendMessage(Colorize.translateBungeeHex(" &#e1eb5b- &#d1c9c9Type: &#e3c79a" + (SQLData.USE_SQLITE ? "SQLite" : "MySQL")));
-                        Tellraw raw = Tellraw.fromLegacy("&#e1eb5b - &#d1c9c9Status: ");
+                        TellrawMessage raw = TellrawMessage.of("&#e1eb5b - &#d1c9c9Status: ");
                         if (SQLData.USE_SQLITE) {
-                            raw.then("CONNECTED").color(ChatColor.GREEN).tooltip("&7SQLite connections are kept connected");
+                            raw.then("CONNECTED").color(NamedTextColor.GREEN).tooltip("&7SQLite connections are kept connected");
                         } else {
                             raw.then("IDLE").color("#e3aa4f").tooltip("&7MySQL connections are kept closed until they are needed", "&7That's what the IDLE state is");
                         }

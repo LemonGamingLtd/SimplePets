@@ -1,6 +1,7 @@
 package simplepets.brainsynder.menu.items.list;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.PluginUtilities;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.Namespace;
@@ -25,7 +26,7 @@ public class Ride extends Item {
 
     @Override
     public ItemBuilder getDefaultItem() {
-        return new ItemBuilder(Material.DIAMOND_HORSE_ARMOR).withName("&#e3c79a&lRide Your Pet");
+        return ItemBuilder.of(Material.DIAMOND_HORSE_ARMOR).withName("&#e3c79a&lRide Your Pet");
     }
 
     @Override

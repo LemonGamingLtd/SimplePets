@@ -1,7 +1,7 @@
 package simplepets.brainsynder.listeners;
 
-import lib.brainsynder.utils.AdvString;
-import lib.brainsynder.utils.Colorize;
+import org.bsdevelopment.pluginutils.text.AdvString;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

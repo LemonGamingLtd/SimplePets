@@ -1,8 +1,8 @@
 package simplepets.brainsynder.api.pet;
 
-import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.sounds.SoundMaker;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.sound.SafeSound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -81,7 +81,7 @@ public interface IPetConfig {
     /**
      * What is the Ambient sound the pet makes
      */
-    SoundMaker getSound();
+    SafeSound getSound();
 
     /**
      * Will fetch what the customized item is

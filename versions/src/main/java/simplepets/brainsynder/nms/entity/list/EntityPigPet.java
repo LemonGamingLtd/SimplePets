@@ -1,6 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -9,10 +8,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.animal.pig.PigSoundVariant;
+import net.minecraft.world.entity.animal.pig.PigSoundVariants;
 import net.minecraft.world.entity.animal.pig.PigVariant;
 import net.minecraft.world.entity.animal.pig.PigVariants;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.craftbukkit.CraftRegistry;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
@@ -30,6 +32,7 @@ import simplepets.brainsynder.nms.utils.VariantUtils;
 public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
     private static final EntityDataAccessor<Integer> DATA_BOOST_TIME = SynchedEntityData.defineId(EntityPigPet.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Holder<PigVariant>> VARIANT = SynchedEntityData.defineId(EntityPigPet.class, EntityDataSerializers.PIG_VARIANT);
+    private static final EntityDataAccessor<Holder<PigSoundVariant>> DATA_SOUND_VARIANT_ID = SynchedEntityData.defineId(EntityPigPet.class, EntityDataSerializers.PIG_SOUND_VARIANT);
     private TemperatureVariant variant = TemperatureVariant.TEMPERATE;
 
     public EntityPigPet(PetType type, PetUser user) {
@@ -42,6 +45,9 @@ public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
         super.populateDataAccess(dataAccess);
         dataAccess.define(DATA_BOOST_TIME, 0);
         dataAccess.define(VARIANT, VariantUtils.getDefaultOrAny(registryAccess(), PigVariants.TEMPERATE));
+
+        Registry<PigSoundVariant> pigSoundVariants = this.registryAccess().lookupOrThrow(Registries.PIG_SOUND_VARIANT);
+        dataAccess.define(DATA_SOUND_VARIANT_ID, pigSoundVariants.get(PigSoundVariants.CLASSIC).or(pigSoundVariants::getAny).orElseThrow());
     }
 
     @Override

@@ -1,6 +1,6 @@
 package simplepets.brainsynder.menu.items.list;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -23,6 +23,6 @@ public class Placeholder extends Item {
 
     @Override
     public ItemBuilder getDefaultItem() {
-        return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).withName(" ");
+        return ItemBuilder.of(Material.GRAY_STAINED_GLASS_PANE).withName(" ");
     }
 }

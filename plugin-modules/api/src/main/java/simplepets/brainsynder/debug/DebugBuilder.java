@@ -1,7 +1,7 @@
 package simplepets.brainsynder.debug;
 
 import com.google.common.collect.Lists;
-import lib.brainsynder.utils.AdvString;
+import org.bsdevelopment.pluginutils.text.AdvString;
 
 import java.util.List;
 

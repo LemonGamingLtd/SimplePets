@@ -1,14 +1,14 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import lib.brainsynder.math.MathUtils;
-import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Items;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.utilities.MathUtil;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -62,7 +62,7 @@ public class EntityWitchPet extends EntityRaiderPet implements IEntityWitchPet {
         if (flag) {
             ItemStack item = new ItemStack(Material.POTION);
             PotionMeta meta = (PotionMeta) item.getItemMeta();
-            meta.setColor(Color.fromRGB(MathUtils.random(0,255), MathUtils.random(0,255), MathUtils.random(0,255)));
+            meta.setColor(Color.fromRGB(MathUtil.randomInt(0,255), MathUtil.randomInt(0,255), MathUtil.randomInt(0,255)));
             item.setItemMeta(meta);
             setItemSlot(EquipmentSlot.MAINHAND, CraftItemStack.asNMSCopy(item));
         } else {

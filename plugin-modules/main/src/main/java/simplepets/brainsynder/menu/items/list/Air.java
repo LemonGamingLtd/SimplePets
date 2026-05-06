@@ -1,6 +1,6 @@
 package simplepets.brainsynder.menu.items.list;
 
-import lib.brainsynder.item.ItemBuilder;
+import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bukkit.Material;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -28,12 +28,12 @@ public class Air extends Item {
 
     @Override
     public ItemBuilder getItemBuilder() {
-        return new ItemBuilder(Material.AIR);
+        return ItemBuilder.of(Material.AIR);
     }
 
     @Override
     public ItemBuilder getDefaultItem() {
-        return new ItemBuilder(Material.AIR);
+        return ItemBuilder.of(Material.AIR);
     }
 
     @Override

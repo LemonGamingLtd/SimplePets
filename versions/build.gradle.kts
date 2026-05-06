@@ -1,14 +1,25 @@
+import org.bsdevelopment.spigotweight.extension.UserdevExtension
+
 plugins {
     id("org.bsdevelopment.java-conventions")
-    alias(libs.plugins.paperweight)
+    alias(libs.plugins.spigotweight)
 }
-var latestMinecraft = "1.21.11-R0.1-SNAPSHOT"
+var latestMinecraft = "26.1"
 
 dependencies {
     compileOnly(project(":api"))
     compileOnly(project(":main"))
-    compileOnly(libs.bslib)
     compileOnly(libs.pluginutils)
-    paperweight.paperDevBundle(latestMinecraft)
+}
+
+spigotweight {
+    minecraftVersion = latestMinecraft
+    target = UserdevExtension.SpigotAPITarget.SPIGOT   // SPIGOT or PAPER
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 

@@ -5,13 +5,27 @@
 
 package simplepets.brainsynder.utils;
 
+import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.version.ServerVersion;
-import simplepets.brainsynder.PetCore;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public enum VersionFields implements FieldValues {
+    // Minecraft 26.1+ — always Mojang-mapped, no obfuscated names needed
+    V26_1(
+            "itemsById",       // net.minecraft.network.syncher.SynchedEntityData$itemsById
+            "factory",                      // net.minecraft.world.entity.EntityType$factory
+            "frozen",                       // net.minecraft.core.MappedRegistry$frozen
+            "unregisteredIntrusiveHolders", // net.minecraft.core.MappedRegistry$unregisteredIntrusiveHolders
+            "ENTITY_TYPE",                  // net.minecraft.core.registries.BuiltInRegistries#ENTITY_TYPE
+            "jumping",                      // net.minecraft.world.entity.LivingEntity$jumping
+            "boardingCooldown",             // net.minecraft.world.entity.Entity$boardingCooldown
+            "running",                      // net.minecraft.server.MinecraftServer$running
+            "attributes",                   // net.minecraft.world.entity.LivingEntity$attributes
+            "type"                          // net.minecraft.network.protocol.game.ClientboundAddEntityPacket$type
+    ),
+
     // Minecraft 1.21.11
     V1_21_11(
             "e", // net.minecraft.network.syncher.SynchedEntityData$itemsById
@@ -71,6 +85,9 @@ public enum VersionFields implements FieldValues {
 
 
     public static VersionFields fromServerVersion(ServerVersion version) {
+        // 26.1+ is always Mojang-mapped; all future versions share the same unobfuscated names
+        if (version.isEqualOrNewer(ServerVersion.v26_1)) return V26_1;
+
         VersionFields fields = VERSION_MAP.get(version);
         if (fields == null) throw new IllegalArgumentException("Unsupported server version: " + version);
 
@@ -94,7 +111,7 @@ public enum VersionFields implements FieldValues {
 
     private static final Map<ServerVersion, VersionFields> VERSION_MAP = buildVersionMap();
     private static final VersionFields CURRENT = fromServerVersion(ServerVersion.getVersion());
-    private static final boolean MOJANG_MAPPED = PetCore.SERVER_INFORMATION.isMojangMapped();
+    private static final boolean MOJANG_MAPPED = PluginUtilities.getServerInformation().isMojangMapped();
 
     private final FieldName entityDataMap, entityFactory, registryFrozen, registryIntrusive, entityRegistry, entityJump, resetCooldown, isRunning, attributes, type;
 

@@ -1,7 +1,7 @@
 package simplepets.brainsynder.impl;
 
 import com.google.common.collect.Lists;
-import lib.brainsynder.utils.Colorize;
+import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import simplepets.brainsynder.api.entity.IEntityPet;
