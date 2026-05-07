@@ -28,5 +28,4 @@ tasks.withType<ShadowJar>().configureEach {
     relocate("io.papermc.lib",                 "$groupID.libs.paperlib")
     relocate("org.bstats",                     "$groupID.libs.bstats")
     relocate("org.bsdevelopment",              "$groupID.libs.bsdev")
-    relocate("com.tcoded.folialib",            "$groupID.libs.folialib")
 }
