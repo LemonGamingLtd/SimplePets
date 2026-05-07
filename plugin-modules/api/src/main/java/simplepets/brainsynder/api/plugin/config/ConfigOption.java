@@ -331,7 +331,7 @@ public interface ConfigOption {
                     Should pet owners be able to open their pets data menu when right clicking the pet.
 
                     Default: {default}""");
-    public final ConfigEntry<Boolean> MISC_TOGGLES_LINE_OF_SIGHT_REQUIRED = createOption("misc-toggles.line-of-sight-required", true,
+    ConfigEntry<Boolean> MISC_TOGGLES_LINE_OF_SIGHT_REQUIRED = REGISTRY.register("misc-toggles.line-of-sight-required", true,
             """
                     Requires players to have a clear line of sight to their pet before interacting with it.
                     This prevents exploits where players can access their pet through walls.

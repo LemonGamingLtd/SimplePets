@@ -718,7 +718,7 @@ public class PetOwner implements PetUser {
                 return;
             }
 
-            if (ConfigOption.INSTANCE.MISC_TOGGLES_LINE_OF_SIGHT_REQUIRED.getValue()
+            if (ConfigOption.MISC_TOGGLES_LINE_OF_SIGHT_REQUIRED.get()
                     && !hasLineOfSight(player, entityPet.getEntity())) {
                 Utilities.runPetCommands(CommandReason.FAILED, PetOwner.this, type);
                 SimplePets.getParticleHandler().sendParticle(ParticleHandler.Reason.FAILED, player, entityPet.getEntity().getLocation());

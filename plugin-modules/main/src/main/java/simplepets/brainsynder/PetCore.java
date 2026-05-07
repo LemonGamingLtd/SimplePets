@@ -2,10 +2,6 @@ package simplepets.brainsynder;
 
 import com.jeff_media.updatechecker.UpdateChecker;
 import com.tcoded.folialib.FoliaLib;
-import io.papermc.lib.PaperLib;
-import lib.brainsynder.reflection.Reflection;
-import lib.brainsynder.utils.AdvString;
-import lib.brainsynder.utils.Utilities;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.command.CommandBuilder;
 import org.bsdevelopment.pluginutils.command.help.HelpCommand;
@@ -252,7 +248,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
                 addonManager.checkAddons();
 
                 handleMetrics();
-            }, ConfigOption.INSTANCE.ADDON_LOAD_TIME.getValue(), unit);
+            }, ConfigOption.ADDON_LOAD_TIME.get(), unit);
         }
 
         checkWorldGuard(value -> {
@@ -432,7 +428,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         manager.registerEvents(new SavesGUIListener(), this);
         manager.registerEvents(new SelectionGUIListener(), this);
         manager.registerEvents(new LocationChangeListener(), this);
-        manager.registerEvents(new PortalListener(), this);
+        //manager.registerEvents(new PortalListener(), this);
         manager.registerEvents(new DismountListener(), this);
     }
 

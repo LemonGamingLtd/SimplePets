@@ -25,7 +25,7 @@ public class InteractListener implements Listener {
                 e.setCancelled(true);
                 if (entity.getOwnerUUID().equals(e.getPlayer().getUniqueId())) {
                     if (ConfigOption.MISC_TOGGLES_DISABLE_CLICKING.get()) return;
-                    if (ConfigOption.INSTANCE.MISC_TOGGLES_LINE_OF_SIGHT_REQUIRED.getValue()
+                    if (ConfigOption.MISC_TOGGLES_LINE_OF_SIGHT_REQUIRED.get()
                             && !hasLineOfSight(e.getPlayer(), e.getRightClicked())) return;
                     if (InventoryManager.PET_DATA.getType(e.getPlayer()) != entity.getPetType())
                         InventoryManager.PET_DATA.setType(e.getPlayer(), entity.getPetType());
@@ -53,8 +53,8 @@ public class InteractListener implements Listener {
                 e.setCancelled(true);
                 if (entity.getOwnerUUID().equals(e.getPlayer().getUniqueId())) {
                     if (ConfigOption.MISC_TOGGLES_DISABLE_CLICKING.get()) return;
-                    if (ConfigOption.INSTANCE.MISC_TOGGLES_DISABLE_CLICKING.getValue()) return;
-                    if (ConfigOption.INSTANCE.MISC_TOGGLES_LINE_OF_SIGHT_REQUIRED.getValue()
+                    if (ConfigOption.MISC_TOGGLES_DISABLE_CLICKING.get()) return;
+                    if (ConfigOption.MISC_TOGGLES_LINE_OF_SIGHT_REQUIRED.get()
                             && !hasLineOfSight(e.getPlayer(), e.getRightClicked())) return;
                     if (InventoryManager.PET_DATA.getType(e.getPlayer()) != entity.getPetType())
                         InventoryManager.PET_DATA.setType(e.getPlayer(), entity.getPetType());

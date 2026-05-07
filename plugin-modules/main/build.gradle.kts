@@ -20,6 +20,8 @@ dependencies {
         exclude(group = "io.papermc", module = "paperlib")
         exclude(group = "de.tr7zw", module = "item-nbt-api-plugin")
     }
+    implementation(libs.paperlib)
+    implementation(libs.folialib)
     implementation(libs.updatechecker)
     implementation(libs.bstats)
 }

@@ -9,6 +9,7 @@ var latestMinecraft = "26.1"
 dependencies {
     compileOnly(project(":api"))
     compileOnly(project(":main"))
+    compileOnly(libs.folialib)
     compileOnly(libs.pluginutils)
 }
 

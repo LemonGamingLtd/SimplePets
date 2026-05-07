@@ -5,7 +5,6 @@ import org.bsdevelopment.pluginutils.storage.RandomCollection;
 import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bsdevelopment.pluginutils.version.VersionCompatibility;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -27,7 +26,11 @@ import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.entity.special.EntityControllerPet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class SpawnerUtil implements ISpawnUtil {
     private final Map<PetType, Class<?>> petMap;
@@ -102,7 +105,7 @@ public class SpawnerUtil implements ISpawnUtil {
                 customEntity = (EntityPet) petMap.get(type).getDeclaredConstructor(PetType.class, PetUser.class).newInstance(type, user);
             }
 
-            VersionTranslator.moveTo(customEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+            VersionHelper.moveTo(customEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
             customEntity.setInvisible(false);
             customEntity.setInvulnerable(true);
             customEntity.setPersistenceRequired();

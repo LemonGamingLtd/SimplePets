@@ -16,7 +16,9 @@ dependencies {
     implementation(project(":versions"))
 
     compileOnly(libs.pluginutils)
-    paperweight.paperDevBundle(latestMinecraft)
+    paperweight.paperDevBundle(latestMinecraft) {
+        exclude("net.kyori", "adventure-text-serializer-ansi")
+    }
 }
 
 // TODO: This needs to be removed once 26.1 comes out

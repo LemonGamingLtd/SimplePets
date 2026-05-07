@@ -1,12 +1,6 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import com.mojang.authlib.GameProfile;
-import io.papermc.lib.PaperLib;
-import lib.brainsynder.item.ItemBuilder;
-import lib.brainsynder.nbt.StorageBase;
-import lib.brainsynder.nbt.StorageTagCompound;
-import lib.brainsynder.nbt.StorageTagString;
-import lib.brainsynder.utils.Base64Wrapper;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerEntity;
@@ -26,6 +20,7 @@ import org.bsdevelopment.nbt.StorageTagString;
 import org.bsdevelopment.pluginutils.PluginUtilities;
 import org.bsdevelopment.pluginutils.inventory.ItemBuilder;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import org.bsdevelopment.pluginutils.libs.paperlib.PaperLib;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
