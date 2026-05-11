@@ -78,6 +78,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     protected double walkSpeed = 0.6000000238418579;
     protected double rideSpeed = 0.4000000238418579;
     protected double flySpeed = 0.10000000149011612;
+    protected double waterSpeed = 0.15;
     private boolean floatDown = false;
     private boolean glowVanishToggle = true;
     private boolean autoRemoveToggle = true;
@@ -115,6 +116,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
             this.walkSpeed = config.getWalkSpeed();
             this.rideSpeed = config.getRideSpeed();
             this.flySpeed = config.getFlySpeed();
+            this.waterSpeed = config.getWaterSpeed();
             this.floatDown = config.canFloat();
         });
 
@@ -387,6 +389,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
             flySpeed = object.getDouble("flySpeed");
             VersionHelper.setAttributes(this, -1, flySpeed);
         }
+        if (object.hasKey("waterSpeed")) waterSpeed = object.getDouble("waterSpeed");
         if (object.hasKey("scale")) setPetScale(object.getDouble("scale"));
         if (object.hasKey("half_scale")) {
             if (object.getBoolean("half_scale", false)) {
