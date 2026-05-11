@@ -68,7 +68,12 @@ public class PathfinderFollowPlayer extends Goal {
         if (!VersionHelper.getEntityLevel(player).getWorld().getName()
                 .equals(VersionHelper.getEntityLevel(entity).getWorld().getName())) return false;
 
-        targetPos = new BlockPos(randomize(player.getX()), player.getBlockY(), randomize(player.getZ()));
+        if (entity instanceof IFlyableEntity) {
+            int hoverOffset = Math.max(2, (int) entity.getBoundingBox().getYsize());
+            targetPos = new BlockPos(randomize(player.getX()), player.getBlockY() + hoverOffset, randomize(player.getZ()));
+        } else {
+            targetPos = new BlockPos(randomize(player.getX()), player.getBlockY(), randomize(player.getZ()));
+        }
         return true;
     }
 

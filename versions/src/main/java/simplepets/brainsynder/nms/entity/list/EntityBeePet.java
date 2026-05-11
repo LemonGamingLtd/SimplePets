@@ -1,6 +1,5 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import org.bsdevelopment.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -11,6 +10,7 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.passive.IEntityBeePet;
 import simplepets.brainsynder.api.pet.PetType;
@@ -116,6 +116,13 @@ public class EntityBeePet extends EntityAgeablePet implements IEntityBeePet {
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
         } else {
+            if (this.onGround) {
+                setDeltaMovement(getDeltaMovement().x, 0.15, getDeltaMovement().z);
+            } else {
+                double phase = (getId() % 20) * (Math.PI / 10.0);
+                double bob = Math.sin(level().getGameTime() * 0.1 + phase) * 0.03;
+                setDeltaMovement(getDeltaMovement().x, bob, getDeltaMovement().z);
+            }
             this.moveRelative(this.getSpeed(), vec3);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.8100000262260437D));

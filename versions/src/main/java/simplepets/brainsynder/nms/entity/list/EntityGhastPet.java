@@ -9,16 +9,15 @@ import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.hostile.IEntityGhastPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPetOverride;
+import simplepets.brainsynder.nms.entity.EntityFlyablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.Ghast}
  */
-public class EntityGhastPet extends EntityPetOverride implements IEntityGhastPet {
+public class EntityGhastPet extends EntityFlyablePet implements IEntityGhastPet {
     private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(EntityGhastPet.class, EntityDataSerializers.BOOLEAN);
 
-    // TODO: Need to figure out why the Ghast pet wont work properly if given the Flight MoveController
     public EntityGhastPet(PetType type, PetUser user) {
         super(EntityType.GHAST, type, user);
     }

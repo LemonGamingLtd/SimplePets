@@ -117,6 +117,13 @@ public class EntityParrotPet extends EntityTameablePet implements IEntityParrotP
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
         } else {
+            if (this.onGround) {
+                setDeltaMovement(getDeltaMovement().x, 0.15, getDeltaMovement().z);
+            } else {
+                double phase = (getId() % 20) * (Math.PI / 10.0);
+                double bob = Math.sin(level().getGameTime() * 0.1 + phase) * 0.03;
+                setDeltaMovement(getDeltaMovement().x, bob, getDeltaMovement().z);
+            }
             this.moveRelative(this.getSpeed(), vec3);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.8100000262260437D));

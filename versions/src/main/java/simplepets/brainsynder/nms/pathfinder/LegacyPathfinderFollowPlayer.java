@@ -119,7 +119,12 @@ public class LegacyPathfinderFollowPlayer extends Goal {
         if (--this.updateCountdownTicks <= 0) {
             this.updateCountdownTicks = updateInterval;
 
-            navigation.moveTo(navigation.createPath(player, getStoppingDistance()), entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+            if (entity instanceof IFlyableEntity) {
+                int hoverOffset = Math.max(2, (int) entity.getBoundingBox().getYsize());
+                navigation.moveTo(navigation.createPath(player.blockPosition().above(hoverOffset), getStoppingDistance()), entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+            } else {
+                navigation.moveTo(navigation.createPath(player, getStoppingDistance()), entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+            }
         }
     }
 

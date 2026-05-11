@@ -5,7 +5,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.version.VersionLimit;
@@ -27,6 +33,45 @@ public class EntityHappyGhastPet extends EntityAgeablePet implements IEntityHapp
 
     public EntityHappyGhastPet(PetType type, PetUser user) {
         super(EntityType.HAPPY_GHAST, type, user);
+        this.moveControl = new FlyingMoveControl(this, 20, false);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        FlyingPathNavigation navigation = new FlyingPathNavigation(this, level);
+        navigation.setCanOpenDoors(false);
+        navigation.setCanFloat(false);
+        return navigation;
+    }
+
+    @Override
+    public void travel(Vec3 vec3) {
+        if (isOwnerRiding()) {
+            super.travel(vec3);
+            calculateEntityAnimation(false);
+            return;
+        }
+        if (isInWater()) {
+            moveRelative(0.02F, vec3);
+            move(MoverType.SELF, getDeltaMovement());
+            setDeltaMovement(getDeltaMovement().scale(0.800000011920929D));
+        } else if (isInLava()) {
+            moveRelative(0.02F, vec3);
+            move(MoverType.SELF, getDeltaMovement());
+            setDeltaMovement(getDeltaMovement().scale(0.5D));
+        } else {
+            if (this.onGround) {
+                setDeltaMovement(getDeltaMovement().x, 0.15, getDeltaMovement().z);
+            } else {
+                double phase = (getId() % 20) * (Math.PI / 10.0);
+                double bob = Math.sin(level().getGameTime() * 0.1 + phase) * 0.03;
+                setDeltaMovement(getDeltaMovement().x, bob, getDeltaMovement().z);
+            }
+            moveRelative(getSpeed(), vec3);
+            move(MoverType.SELF, getDeltaMovement());
+            setDeltaMovement(getDeltaMovement().scale(0.8100000262260437D));
+        }
+        calculateEntityAnimation(false);
     }
 
     @Override
