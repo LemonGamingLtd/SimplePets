@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.hostile.IEntityDolphinPet;
+import simplepets.brainsynder.api.entity.misc.IWaterEntity;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
@@ -13,7 +14,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 /**
  * NMS: {@link net.minecraft.world.entity.animal.Dolphin}
  */
-public class EntityDolphinPet extends EntityAgeablePet implements IEntityDolphinPet {
+public class EntityDolphinPet extends EntityAgeablePet implements IEntityDolphinPet, IWaterEntity {
     private static final EntityDataAccessor<Boolean> HAS_FISH = SynchedEntityData.defineId(EntityDolphinPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> MOIST = SynchedEntityData.defineId(EntityDolphinPet.class, EntityDataSerializers.INT);
 

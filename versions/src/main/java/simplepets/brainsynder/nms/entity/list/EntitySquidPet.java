@@ -2,6 +2,7 @@ package simplepets.brainsynder.nms.entity.list;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import simplepets.brainsynder.api.entity.misc.IWaterEntity;
 import simplepets.brainsynder.api.entity.passive.IEntitySquidPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -10,7 +11,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 /**
  * NMS: {@link net.minecraft.world.entity.animal.Squid}
  */
-public class EntitySquidPet extends EntityAgeablePet implements IEntitySquidPet {
+public class EntitySquidPet extends EntityAgeablePet implements IEntitySquidPet, IWaterEntity {
     public EntitySquidPet (EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
     }
