@@ -145,4 +145,8 @@ public interface MessageOption {
             {value} - The new value
             {type} - The type of pet selected
             """);
+
+    ConfigEntry<String> PET_ON_COOLDOWN = REGISTRY.register("cooldown.on_cooldown",
+            "{prefix} &cYou must wait &e{seconds} &csecond(s) before changing your pet.",
+            "Sent when a player tries to spawn a pet while on cooldown. {seconds} = remaining seconds.");
 }

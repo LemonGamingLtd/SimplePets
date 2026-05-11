@@ -562,4 +562,17 @@ public interface ConfigOption {
                     Example: '&#c986b2'
 
                     Default: {default}""");
+
+    ConfigEntry<Boolean> PET_COOLDOWN_ENABLED = REGISTRY.register("pet-cooldown.enabled", false,
+            """
+                    When enabled, players must wait a set duration before spawning another pet.
+                    Bypass permission: pet.cooldown.bypass
+
+                    Default: {default}""");
+    ConfigEntry<Integer> PET_COOLDOWN_SECONDS = REGISTRY.register("pet-cooldown.duration", 5,
+            """
+                    How many seconds a player must wait between spawning pets.
+                    Only applies when 'pet-cooldown.enabled' is true.
+
+                    Default: {default}""");
 }

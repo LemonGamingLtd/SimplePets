@@ -60,6 +60,13 @@ public class SummonCommand implements PetCommandClass {
                     StorageTagCompound finalCompound = compound;
 
                     PetCore.getInstance().getUserManager().getPetUser(player.getUniqueId()).ifPresent(user -> {
+                        if (user.isOnPetChangeCooldown()) {
+                            player.sendMessage(PetCore.getInstance().getMessageFile()
+                                    .getTranslation(MessageOption.PET_ON_COOLDOWN)
+                                    .replace("{seconds}", String.valueOf(user.getRemainingCooldownSeconds())));
+                            return;
+                        }
+
                         if (!user.canSpawnMorePets()) {
                             player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.CANT_SPAWN_MORE_PETS));
                             return;
@@ -70,6 +77,7 @@ public class SummonCommand implements PetCommandClass {
                         if (event.isCancelled()) return;
 
                         SpawnResult<IEntityPet> result = spawner.spawnEntityPet(type, user, finalCompound);
+                        if (result.isSuccess()) user.recordPetChange();
                         handleSpawnResult(player, result, type, finalCompound);
                     });
                 });

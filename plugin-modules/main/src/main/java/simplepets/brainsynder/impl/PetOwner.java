@@ -29,6 +29,7 @@ import simplepets.brainsynder.utils.Utilities;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class PetOwner implements PetUser {
 
@@ -36,6 +37,7 @@ public class PetOwner implements PetUser {
     private final String name;
 
     private boolean isLoaded = false;
+    private long lastPetChangeTimestamp = 0L;
 
     private PetType vehicle = null;
     private final List<PetType> hatPets;
@@ -694,5 +696,26 @@ public class PetOwner implements PetUser {
     @Override
     public void updateSelectionMenu() {
         InventoryManager.SELECTION.update(this);
+    }
+
+    @Override
+    public boolean isOnPetChangeCooldown() {
+        if (!ConfigOption.PET_COOLDOWN_ENABLED.get()) return false;
+        Player player = getPlayer();
+//        if (player != null && Utilities.hasPermission(player, "pet.cooldown.bypass")) return false;
+        return getRemainingCooldownSeconds() > 0;
+    }
+
+    @Override
+    public long getRemainingCooldownSeconds() {
+        long remainingMillis = (ConfigOption.PET_COOLDOWN_SECONDS.get() * 1000L) - (System.currentTimeMillis() - lastPetChangeTimestamp);
+        if (remainingMillis <= 0) return 0L;
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(remainingMillis);
+        return remainingMillis % 1000 > 0 ? seconds + 1 : seconds;
+    }
+
+    @Override
+    public void recordPetChange() {
+        this.lastPetChangeTimestamp = System.currentTimeMillis();
     }
 }
