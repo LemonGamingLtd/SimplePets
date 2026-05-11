@@ -94,6 +94,7 @@ public class PetConfiguration implements PetConfigManager {
                     setDefault("ride_speed", ConfigOption.PET_TOGGLES_RIDE_SPEED.get());
                     setDefault("walk_speed", ConfigOption.PET_TOGGLES_WALK_SPEED.get());
                     setDefault("fly_speed", ConfigOption.PET_TOGGLES_FLY_SPEED.get());
+                    setDefault("water_speed", ConfigOption.PET_TOGGLES_WATER_SPEED.get());
                     setDefault("fly", canFlyDefault(type));
                     setDefault("float_down", false);
 
@@ -200,6 +201,11 @@ public class PetConfiguration implements PetConfigManager {
         @Override
         public double getFlySpeed() {
             return JSON.getDouble("fly_speed", ConfigOption.PET_TOGGLES_FLY_SPEED.get());
+        }
+
+        @Override
+        public double getWaterSpeed() {
+            return JSON.getDouble("water_speed", ConfigOption.PET_TOGGLES_WATER_SPEED.get());
         }
 
         @Override

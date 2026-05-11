@@ -461,6 +461,12 @@ public interface ConfigOption {
                     This can be overridden in an individual pet .json file using the ride_speed key.
 
                     Default: {default}""").pastPaths("PetToggles.Default-Ride-Speed");
+    ConfigEntry<Double> PET_TOGGLES_WATER_SPEED = REGISTRY.register("pet-toggles.default-pet-water-speed", 0.15,
+            """
+                    The default speed a pet moves at when being ridden on or through water.
+                    This can be overridden in an individual pet .json file using the water_speed key.
+
+                    Default: {default}""");
 
 
     ConfigEntry<Boolean> PET_SAVES_ENABLED = REGISTRY.register("pet-saves.enabled", true,
