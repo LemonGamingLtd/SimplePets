@@ -3,10 +3,12 @@ package simplepets.brainsynder.nms.entity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
+import simplepets.brainsynder.api.entity.misc.IWaterEntity;
 import simplepets.brainsynder.api.event.entity.PetMoveEvent;
 import simplepets.brainsynder.api.event.entity.movment.PetJumpEvent;
 import simplepets.brainsynder.api.event.entity.movment.PetRideEvent;
@@ -89,6 +91,31 @@ public class EntityPetOverride extends EntityPet {
                 } catch (IllegalArgumentException | IllegalStateException ignored) {
                 }
             });
+        }
+
+        if (isInWater() && !this.onGround) {
+            if (this instanceof IWaterEntity) {
+                float pitchRad = (float) Math.toRadians(passenger.getXRot());
+                double pitchVertical = -Math.sin(pitchRad) * Math.abs(forward);
+                setDeltaMovement(Vec3.ZERO);
+                moveRelative((float) waterSpeed, new Vec3(strafe, pitchVertical, forward));
+            } else {
+                double yForce;
+                if (isUnderWater()) {
+                    yForce = 0.06;
+                } else if (clientInput.jump()) {
+                    yForce = getJumpHeight();
+                } else {
+                    double phase = (getId() % 20) * (Math.PI / 10.0);
+                    yForce = Math.sin(level().getGameTime() * 0.1 + phase) * 0.03;
+                }
+                setDeltaMovement(0, yForce, 0);
+                moveRelative((float) waterSpeed, new Vec3(strafe, 0, forward));
+            }
+            move(MoverType.SELF, getDeltaMovement());
+            setDeltaMovement(getDeltaMovement().scale(0.8));
+            calculateEntityAnimation(false);
+            return;
         }
 
         this.setSpeed((float) speed);
