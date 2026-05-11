@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
+import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.api.entity.misc.IWaterEntity;
 import simplepets.brainsynder.api.event.entity.PetMoveEvent;
 import simplepets.brainsynder.api.event.entity.movment.PetJumpEvent;
@@ -117,6 +118,17 @@ public class EntityPetOverride extends EntityPet {
                 setDeltaMovement(0, yForce, 0);
                 moveRelative((float) waterSpeed, new Vec3(strafe, 0, forward));
             }
+            move(MoverType.SELF, getDeltaMovement());
+            setDeltaMovement(getDeltaMovement().scale(0.8));
+            calculateEntityAnimation(false);
+            return;
+        }
+
+        if (this instanceof IFlyableEntity) {
+            float pitchRad = (float) Math.toRadians(passenger.getXRot());
+            double pitchVertical = -Math.sin(pitchRad) * Math.abs(forward);
+            setDeltaMovement(Vec3.ZERO);
+            moveRelative((float) flySpeed, new Vec3(strafe, pitchVertical, forward));
             move(MoverType.SELF, getDeltaMovement());
             setDeltaMovement(getDeltaMovement().scale(0.8));
             calculateEntityAnimation(false);
