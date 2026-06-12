@@ -33,6 +33,11 @@ public abstract class EntityFlyablePet extends EntityPetOverride implements IFly
             calculateEntityAnimation(false);
             return;
         }
+        if (!isFlightEnabled()) {
+            super.travel(vec3);
+            calculateEntityAnimation(false);
+            return;
+        }
         if (this.isInWater()) {
             this.moveRelative(0.02F, vec3);
             this.move(MoverType.SELF, this.getDeltaMovement());

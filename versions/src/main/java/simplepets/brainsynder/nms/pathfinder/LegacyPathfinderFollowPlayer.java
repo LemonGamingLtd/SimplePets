@@ -9,7 +9,6 @@ import org.bsdevelopment.pluginutils.utilities.MathUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import simplepets.brainsynder.api.entity.misc.EntityPetType;
-import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.api.event.entity.movment.PetTeleportEvent;
 import simplepets.brainsynder.api.other.ParticleHandler;
 import simplepets.brainsynder.api.pet.CommandReason;
@@ -114,12 +113,12 @@ public class LegacyPathfinderFollowPlayer extends Goal {
             return;
         }
 
-        if ( (!(entity instanceof IFlyableEntity)) && (!entity.onGround())) return;
+        if ( (!entity.isFlightEnabled()) && (!entity.onGround())) return;
 
         if (--this.updateCountdownTicks <= 0) {
             this.updateCountdownTicks = updateInterval;
 
-            if (entity instanceof IFlyableEntity) {
+            if (entity.isFlightEnabled()) {
                 int hoverOffset = Math.max(2, (int) entity.getBoundingBox().getYsize());
                 navigation.moveTo(navigation.createPath(player.blockPosition().above(hoverOffset), getStoppingDistance()), entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
             } else {

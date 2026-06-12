@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
-import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.api.entity.misc.IWaterEntity;
 import simplepets.brainsynder.api.event.entity.PetMoveEvent;
 import simplepets.brainsynder.api.event.entity.movment.PetJumpEvent;
@@ -124,7 +123,7 @@ public class EntityPetOverride extends EntityPet {
             return;
         }
 
-        if (this instanceof IFlyableEntity) {
+        if (isFlightEnabled()) {
             float pitchRad = (float) Math.toRadians(passenger.getXRot());
             double pitchVertical = -Math.sin(pitchRad) * Math.abs(forward);
             setDeltaMovement(Vec3.ZERO);

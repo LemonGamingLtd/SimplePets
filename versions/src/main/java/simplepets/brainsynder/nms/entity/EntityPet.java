@@ -452,6 +452,16 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         return super.getUser();
     }
 
+    public boolean isFlightEnabled() {
+        if (getPetType() == null
+                || getPetUser() == null
+                || getPetUser().getPlayer() == null) return false;
+        
+        return SimplePets.getPetConfigManager().getPetConfig(getPetType())
+                .map(config -> config.canFly(getPetUser().getPlayer()))
+                .orElse(false);
+    }
+
     @Override
     public org.bukkit.entity.EntityType getPetEntityType() {
         return getPetType().getEntityType();
