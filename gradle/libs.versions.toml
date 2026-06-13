@@ -15,7 +15,7 @@ pluginutils-version = "0.1.39"
 # Plugins
 hangar-version = "0.0.5" # hangar plugin is not used yet...
 shadow-version = "9.0.0-beta8"
-paperweight-version = "2.0.0-beta.19"
+paperweight-version = "2.0.0-beta.21"
 spigotweight-version = "1.0.9-SNAPSHOT"
 
 [libraries]
