@@ -5,22 +5,22 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Bukkit;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
-import simplepets.brainsynder.nms.entity.list.EntitySlimePet;
+import simplepets.brainsynder.nms.entity.branch.EntityCubeAbstractPet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 
 import java.util.Random;
 
-public class ControllerSlime extends MoveControl {
+public class ControllerCubeEntity extends MoveControl {
     private float yRot;
     private int jumpDelay;
-    private final EntitySlimePet slimePet;
+    private final EntityCubeAbstractPet cubeEntityPet;
     private final Player player;
     private int lastJump; // Slime sometimes gets stuck when going around fences so I implemented this variable to patch it
 
-    public ControllerSlime(EntitySlimePet entityslime) {
+    public ControllerCubeEntity(EntityCubeAbstractPet entityslime) {
         super(entityslime);
-        this.slimePet = entityslime;
-        this.player = VersionHelper.getEntityHandle(Bukkit.getPlayer(slimePet.getOwnerUUID()));
+        this.cubeEntityPet = entityslime;
+        this.player = VersionHelper.getEntityHandle(Bukkit.getPlayer(cubeEntityPet.getOwnerUUID()));
         this.yRot = 180.0F * entityslime.getYRot() / 3.1415927F;
     }
 
@@ -40,12 +40,12 @@ public class ControllerSlime extends MoveControl {
         this.mob.yBodyRot = this.mob.getYRot();
 
         // Let the slime idle if 1. It isn't prompted to move, 2. It isn't stuck, 3. It is close to its owner
-        if (this.operation != Operation.MOVE_TO && lastJump < 60 && slimePet.distanceToSqr(player) <= stoppingDistance) {
+        if (this.operation != Operation.MOVE_TO && lastJump < 60 && cubeEntityPet.distanceToSqr(player) <= stoppingDistance) {
             this.mob.setZza(0.0F);
             lastJump++;
         } else {
             this.operation = Operation.WAIT;
-            this.mob.setSpeed((float)(this.speedModifier * slimePet.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
+            this.mob.setSpeed((float)(this.speedModifier * cubeEntityPet.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
 
             // If the slime is on the ground or simply stuck,
             if (this.mob.onGround || lastJump > 60) {
@@ -53,13 +53,13 @@ public class ControllerSlime extends MoveControl {
                     // Reset the jump delay (shortened since otherwise the slime is too slow)
                     this.jumpDelay = (new Random().nextInt(20) + 10) / 3;
                     // Make it jump and play its sound
-                    this.slimePet.getJumpControl().jump();
-                    this.slimePet.playJumpSound();
+                    this.cubeEntityPet.getJumpControl().jump();
+                    this.cubeEntityPet.playJumpSound();
                     // Reset the last jump timer
                     lastJump = 0;
                 } else {
-                    this.slimePet.xxa = 0.0F;
-                    this.slimePet.zza = 0.0F;
+                    this.cubeEntityPet.xxa = 0.0F;
+                    this.cubeEntityPet.zza = 0.0F;
                     this.mob.setSpeed(0.0F);
                     lastJump++;
                 }
