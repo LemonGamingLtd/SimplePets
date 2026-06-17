@@ -3,6 +3,7 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -18,7 +19,6 @@ import simplepets.brainsynder.api.entity.passive.IEntityHappyGhastPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.ColorWrapper;
-import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -32,7 +32,7 @@ public class EntityHappyGhastPet extends EntityAgeablePet implements IEntityHapp
     private ColorWrapper color = ColorWrapper.NONE;
 
     public EntityHappyGhastPet(PetType type, PetUser user) {
-        super(EntitySelector.HAPPY_GHAST, type, user);
+        super(EntityType.HAPPY_GHAST, type, user);
         this.moveControl = new FlyingMoveControl(this, 20, false);
     }
 
@@ -112,22 +112,22 @@ public class EntityHappyGhastPet extends EntityAgeablePet implements IEntityHapp
 
         switch (color) {
             case NONE -> setItemSlot(EquipmentSlot.BODY, Items.AIR.getDefaultInstance());
-            case WHITE -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.white().getDefaultInstance());
-            case ORANGE -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.orange().getDefaultInstance());
-            case MAGENTA -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.magenta().getDefaultInstance());
-            case LIGHT_BLUE -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.lightBlue().getDefaultInstance());
-            case YELLOW -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.yellow().getDefaultInstance());
-            case LIME -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.lime().getDefaultInstance());
-            case PINK -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.pink().getDefaultInstance());
-            case GRAY -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.gray().getDefaultInstance());
-            case LIGHT_GRAY -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.lightGray().getDefaultInstance());
-            case CYAN -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.cyan().getDefaultInstance());
-            case PURPLE -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.purple().getDefaultInstance());
-            case BLUE -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.blue().getDefaultInstance());
-            case BROWN -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.brown().getDefaultInstance());
-            case GREEN -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.green().getDefaultInstance());
-            case RED -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.red().getDefaultInstance());
-            case BLACK -> setItemSlot(EquipmentSlot.BODY, Items.HARNESS.black().getDefaultInstance());
+            case WHITE -> setItemSlot(EquipmentSlot.BODY, Items.WHITE_HARNESS.getDefaultInstance());
+            case ORANGE -> setItemSlot(EquipmentSlot.BODY, Items.ORANGE_HARNESS.getDefaultInstance());
+            case MAGENTA -> setItemSlot(EquipmentSlot.BODY, Items.MAGENTA_HARNESS.getDefaultInstance());
+            case LIGHT_BLUE -> setItemSlot(EquipmentSlot.BODY, Items.LIGHT_BLUE_HARNESS.getDefaultInstance());
+            case YELLOW -> setItemSlot(EquipmentSlot.BODY, Items.YELLOW_HARNESS.getDefaultInstance());
+            case LIME -> setItemSlot(EquipmentSlot.BODY, Items.LIME_HARNESS.getDefaultInstance());
+            case PINK -> setItemSlot(EquipmentSlot.BODY, Items.PINK_HARNESS.getDefaultInstance());
+            case GRAY -> setItemSlot(EquipmentSlot.BODY, Items.GRAY_HARNESS.getDefaultInstance());
+            case LIGHT_GRAY -> setItemSlot(EquipmentSlot.BODY, Items.LIGHT_GRAY_HARNESS.getDefaultInstance());
+            case CYAN -> setItemSlot(EquipmentSlot.BODY, Items.CYAN_HARNESS.getDefaultInstance());
+            case PURPLE -> setItemSlot(EquipmentSlot.BODY, Items.PURPLE_HARNESS.getDefaultInstance());
+            case BLUE -> setItemSlot(EquipmentSlot.BODY, Items.BLUE_HARNESS.getDefaultInstance());
+            case BROWN -> setItemSlot(EquipmentSlot.BODY, Items.BROWN_HARNESS.getDefaultInstance());
+            case GREEN -> setItemSlot(EquipmentSlot.BODY, Items.GREEN_HARNESS.getDefaultInstance());
+            case RED -> setItemSlot(EquipmentSlot.BODY, Items.RED_HARNESS.getDefaultInstance());
+            case BLACK -> setItemSlot(EquipmentSlot.BODY, Items.BLACK_HARNESS.getDefaultInstance());
         }
     }
 }
