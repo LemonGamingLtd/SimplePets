@@ -6,7 +6,7 @@ plugins {
     id("com.gradleup.shadow")
 }
 
-var mcVersion = "26.1"
+var mcVersion = "26.2"
 
 var nmsVersion = "v$mcVersion".replace(".", "_")
 var latestMinecraft = "$mcVersion-R0.1-SNAPSHOT"
