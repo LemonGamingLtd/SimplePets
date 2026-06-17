@@ -4,7 +4,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
 import org.bsdevelopment.nbt.StorageTagCompound;
@@ -17,6 +16,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.WardenAnger;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -30,7 +30,7 @@ public class EntityWardenPet extends EntityPetOverride implements IEntityWardenP
     private int vibrationTick = 0;
 
     public EntityWardenPet(PetType type, PetUser user) {
-        super(EntityType.WARDEN, type, user);
+        super(EntitySelector.WARDEN, type, user);
         if (ConfigOption.PET_TOGGLES_WARDEN_ANIMATIONS.get()) {
             this.setPose(Pose.EMERGING);
             PluginUtilities.getScheduler().runTaskLater(() -> this.setPose(Pose.STANDING), 135);

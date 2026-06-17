@@ -1,14 +1,14 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import org.bsdevelopment.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.passive.IEntityBatPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityFlyablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -19,7 +19,7 @@ public class EntityBatPet extends EntityFlyablePet implements IEntityBatPet {
     private static final EntityDataAccessor<Byte> HANGING = SynchedEntityData.defineId(EntityBatPet.class, EntityDataSerializers.BYTE);
 
     public EntityBatPet(PetType type, PetUser user) {
-        super(EntityType.BAT, type, user);
+        super(EntitySelector.BAT, type, user);
     }
 
     @Override

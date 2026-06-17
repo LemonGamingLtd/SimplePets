@@ -10,6 +10,7 @@ import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.hostile.IEntityZombiePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -22,7 +23,7 @@ public class EntityZombiePet extends EntityPetOverride implements IEntityZombieP
     private static final EntityDataAccessor<Boolean> DROWN_CONVERTING = SynchedEntityData.defineId(EntityZombiePet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityZombiePet(PetType type, PetUser user) {
-        this(EntityType.ZOMBIE, type, user);
+        this(EntitySelector.ZOMBIE, type, user);
     }
     public EntityZombiePet (EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);

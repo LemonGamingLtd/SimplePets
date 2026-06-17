@@ -3,11 +3,11 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.hostile.IEntityDolphinPet;
 import simplepets.brainsynder.api.entity.misc.IWaterEntity;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -19,7 +19,7 @@ public class EntityDolphinPet extends EntityAgeablePet implements IEntityDolphin
     private static final EntityDataAccessor<Integer> MOIST = SynchedEntityData.defineId(EntityDolphinPet.class, EntityDataSerializers.INT);
 
     public EntityDolphinPet(PetType type, PetUser user) {
-        super(EntityType.DOLPHIN, type, user);
+        super(EntitySelector.DOLPHIN, type, user);
     }
 
     @Override

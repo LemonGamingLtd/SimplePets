@@ -3,11 +3,11 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.pluginutils.version.VersionLimit;
 import simplepets.brainsynder.api.entity.passive.IEntityTadpolePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityFishPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -19,7 +19,7 @@ public class EntityTadpolePet extends EntityFishPet implements IEntityTadpolePet
     private static final EntityDataAccessor<Boolean> AGE_LOCKED = SynchedEntityData.defineId(EntityTadpolePet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityTadpolePet(PetType type, PetUser user) {
-        super(EntityType.TADPOLE, type, user);
+        super(EntitySelector.TADPOLE, type, user);
     }
 
     @Override

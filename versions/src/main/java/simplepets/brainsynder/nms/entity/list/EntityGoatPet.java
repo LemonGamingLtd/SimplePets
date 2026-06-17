@@ -3,12 +3,12 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.passive.IEntityGoatPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -21,7 +21,7 @@ public class EntityGoatPet extends EntityAgeablePet implements IEntityGoatPet {
     public static final EntityDataAccessor<Boolean> DATA_HAS_RIGHT_HORN = SynchedEntityData.defineId(EntityGoatPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityGoatPet(PetType type, PetUser user) {
-        super(EntityType.GOAT, type, user);
+        super(EntitySelector.GOAT, type, user);
     }
 
     @Override

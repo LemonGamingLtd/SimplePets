@@ -4,7 +4,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
@@ -12,6 +11,7 @@ import simplepets.brainsynder.api.entity.passive.IEntitySnifferPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.SnifferState;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -25,7 +25,7 @@ public class EntitySnifferPet extends EntityAgeablePet implements IEntitySniffer
     private SnifferState state = SnifferState.IDLING;
 
     public EntitySnifferPet(PetType type, PetUser user) {
-        super(EntityType.SNIFFER, type, user);
+        super(EntitySelector.SNIFFER, type, user);
     }
 
     @Override

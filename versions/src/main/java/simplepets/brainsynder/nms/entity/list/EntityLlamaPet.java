@@ -20,6 +20,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.ColorWrapper;
 import simplepets.brainsynder.api.wrappers.LlamaColor;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.branch.EntityDonkeyAbstractPet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
@@ -32,7 +33,7 @@ public class EntityLlamaPet extends EntityDonkeyAbstractPet implements IEntityLl
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityLlamaPet.class, EntityDataSerializers.INT);
 
     public EntityLlamaPet(PetType type, PetUser user) {
-        this(EntityType.LLAMA, type, user);
+        this(EntitySelector.LLAMA, type, user);
     }
 
     public EntityLlamaPet(EntityType<? extends Mob> llama, PetType type, PetUser user) {

@@ -3,12 +3,12 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.version.VersionLimit;
 import simplepets.brainsynder.api.entity.hostile.IEntityBoggedPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -20,7 +20,7 @@ public class EntityBoggedPet extends EntityPetOverride implements IEntityBoggedP
     private static final EntityDataAccessor<Boolean> DATA_SHEARED = SynchedEntityData.defineId(EntityBoggedPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityBoggedPet(PetType type, PetUser user) {
-        super(EntityType.BOGGED, type, user);
+        super(EntitySelector.BOGGED, type, user);
     }
 
     @Override

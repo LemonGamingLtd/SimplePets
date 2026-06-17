@@ -1,12 +1,12 @@
 package simplepets.brainsynder.nms.entity.list;
 
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.hostile.IEntityRavagerPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.branch.EntityRaiderPet;
 
 /**
@@ -17,7 +17,7 @@ public class EntityRavagerPet extends EntityRaiderPet implements IEntityRavagerP
     private boolean chomping = false;
 
     public EntityRavagerPet(PetType type, PetUser user) {
-        super(EntityType.RAVAGER, type, user);
+        super(EntitySelector.RAVAGER, type, user);
         doIndirectAttach = true;
     }
 

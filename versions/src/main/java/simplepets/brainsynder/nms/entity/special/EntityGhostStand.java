@@ -20,6 +20,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 
 public class EntityGhostStand extends ArmorStand {
@@ -37,11 +38,11 @@ public class EntityGhostStand extends ArmorStand {
 
     @Override
     public EntityType<?> getType() {
-        return EntityType.ARMOR_STAND;
+        return EntitySelector.ARMOR_STAND;
     }
 
     public static EntityGhostStand spawn(Location location, EntityControllerPet pet) {
-        EntityGhostStand stand = new EntityGhostStand(EntityType.ARMOR_STAND, Reflection.fetchWorldHandle(location.getWorld()), pet);
+        EntityGhostStand stand = new EntityGhostStand(EntitySelector.ARMOR_STAND, Reflection.fetchWorldHandle(location.getWorld()), pet);
         stand.setPos(location.getX(), location.getY(), location.getZ());
         stand.setNoBasePlate(true);
         stand.setInvulnerable(true);

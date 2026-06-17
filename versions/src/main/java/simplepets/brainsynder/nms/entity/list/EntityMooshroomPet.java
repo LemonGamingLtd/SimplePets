@@ -3,13 +3,13 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.passive.IEntityMooshroomPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.MooshroomVariant;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -20,7 +20,7 @@ public class EntityMooshroomPet extends EntityAgeablePet implements IEntityMoosh
     private static final EntityDataAccessor<Integer> TYPE = SynchedEntityData.defineId(EntityMooshroomPet.class, EntityDataSerializers.INT);
 
     public EntityMooshroomPet(PetType type, PetUser user) {
-        super(EntityType.MOOSHROOM, type, user);
+        super(EntitySelector.MOOSHROOM, type, user);
     }
 
     @Override

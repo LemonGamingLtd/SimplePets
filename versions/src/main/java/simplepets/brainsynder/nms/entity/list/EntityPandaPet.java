@@ -5,7 +5,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
@@ -13,6 +12,7 @@ import simplepets.brainsynder.api.entity.passive.IEntityPandaPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.PandaVariant;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -30,7 +30,7 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
     private static final EntityDataAccessor<Byte> PANDA_FLAGS = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.BYTE);
 
     public EntityPandaPet(PetType type, PetUser user) {
-        super(EntityType.PANDA, type, user);
+        super(EntitySelector.PANDA, type, user);
     }
 
     @Override

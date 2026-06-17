@@ -3,12 +3,12 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.hostile.IEntityVexPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityFlyablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -19,7 +19,7 @@ public class EntityVexPet extends EntityFlyablePet implements IEntityVexPet {
     protected static final EntityDataAccessor<Byte> VEX_FLAGS = SynchedEntityData.defineId(EntityVexPet.class, EntityDataSerializers.BYTE);
 
     public EntityVexPet(PetType type, PetUser user) {
-        super(EntityType.VEX, type, user);
+        super(EntitySelector.VEX, type, user);
     }
 
     @Override

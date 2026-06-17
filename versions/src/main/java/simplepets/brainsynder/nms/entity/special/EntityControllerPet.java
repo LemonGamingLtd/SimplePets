@@ -5,7 +5,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -20,6 +19,7 @@ import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.list.EntityArmorStandPet;
 import simplepets.brainsynder.nms.entity.list.EntityShulkerPet;
 import simplepets.brainsynder.nms.entity.list.EntityZombiePet;
@@ -36,7 +36,7 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
     private Entity displayEntity, displayRider = null;
 
     public EntityControllerPet(PetType type, PetUser user, Location location) {
-        super(EntityType.ZOMBIE, type, user);
+        super(EntitySelector.ZOMBIE, type, user);
         setDisplayName(false);
 
         ENTITIES.addLast(getEntity());
@@ -236,7 +236,7 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
         net.minecraft.world.entity.Entity displayEntity = VersionHelper.getEntityHandle(this.displayEntity);
         Location loc;
         if (this.displayRider != null) {
-            if (this.displayRider.getType().equals(EntityType.SHULKER)) {
+            if (this.displayRider.getType().equals(EntitySelector.SHULKER)) {
                 loc = this.getBukkitEntity().getLocation().clone().add(0, 0.75, 0);
             } else {
                 loc = this.getBukkitEntity().getLocation().clone();

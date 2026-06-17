@@ -3,7 +3,6 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Items;
 import org.bsdevelopment.nbt.StorageTagCompound;
@@ -17,6 +16,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import simplepets.brainsynder.api.entity.hostile.IEntityWitchPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.branch.EntityRaiderPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -27,7 +27,7 @@ public class EntityWitchPet extends EntityRaiderPet implements IEntityWitchPet {
     private static final EntityDataAccessor<Boolean> IS_DRINKING = SynchedEntityData.defineId(EntityWitchPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityWitchPet(PetType type, PetUser user) {
-        super(EntityType.WITCH, type, user);
+        super(EntitySelector.WITCH, type, user);
     }
 
     @Override

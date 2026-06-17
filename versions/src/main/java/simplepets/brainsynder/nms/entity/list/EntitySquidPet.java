@@ -6,6 +6,7 @@ import simplepets.brainsynder.api.entity.misc.IWaterEntity;
 import simplepets.brainsynder.api.entity.passive.IEntitySquidPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 
 /**
@@ -17,6 +18,6 @@ public class EntitySquidPet extends EntityAgeablePet implements IEntitySquidPet,
     }
 
     public EntitySquidPet(PetType type, PetUser user) {
-        super(EntityType.SQUID, type, user);
+        super(EntitySelector.SQUID, type, user);
     }
 }

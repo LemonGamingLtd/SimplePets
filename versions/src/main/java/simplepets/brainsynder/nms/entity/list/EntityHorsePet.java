@@ -5,7 +5,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -18,6 +17,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.horse.HorseArmorType;
 import simplepets.brainsynder.api.wrappers.horse.HorseColorType;
 import simplepets.brainsynder.api.wrappers.horse.HorseStyleType;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.branch.EntityHorseAbstractPet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
@@ -30,7 +30,7 @@ public class EntityHorsePet extends EntityHorseAbstractPet implements IEntityHor
     private HorseArmorType armor = null;
 
     public EntityHorsePet(PetType type, PetUser user) {
-        super(EntityType.HORSE, type, user);
+        super(EntitySelector.HORSE, type, user);
     }
 
     @Override

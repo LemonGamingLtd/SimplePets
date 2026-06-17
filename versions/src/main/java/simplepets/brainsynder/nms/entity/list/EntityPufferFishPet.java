@@ -3,13 +3,13 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.hostile.IEntityPufferFishPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.PufferState;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityFishPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -20,7 +20,7 @@ public class EntityPufferFishPet extends EntityFishPet implements IEntityPufferF
     private static final EntityDataAccessor<Integer> PUFF_STATE = SynchedEntityData.defineId(EntityPufferFishPet.class, EntityDataSerializers.INT);
 
     public EntityPufferFishPet(PetType type, PetUser user) {
-        super(EntityType.PUFFERFISH, type, user);
+        super(EntitySelector.PUFFERFISH, type, user);
     }
 
     @Override

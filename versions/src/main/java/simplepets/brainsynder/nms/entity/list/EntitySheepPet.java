@@ -3,13 +3,13 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.passive.IEntitySheepPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.DyeColorWrapper;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -23,7 +23,7 @@ public class EntitySheepPet extends EntityAgeablePet implements IEntitySheepPet 
     private int toggle = 0;
 
     public EntitySheepPet(PetType type, PetUser user) {
-        super(EntityType.SHEEP, type, user);
+        super(EntitySelector.SHEEP, type, user);
     }
 
     @Override

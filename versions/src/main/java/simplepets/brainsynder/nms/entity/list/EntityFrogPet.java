@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.frog.FrogVariant;
@@ -22,6 +21,7 @@ import simplepets.brainsynder.api.entity.passive.IEntityFrogPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.TemperatureVariant;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
@@ -45,7 +45,7 @@ public class EntityFrogPet extends EntityAgeablePet implements IEntityFrogPet {
     private int tongueTick = 0;
 
     public EntityFrogPet(PetType type, PetUser user) {
-        super(EntityType.FROG, type, user);
+        super(EntitySelector.FROG, type, user);
         //this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true);
     }
 

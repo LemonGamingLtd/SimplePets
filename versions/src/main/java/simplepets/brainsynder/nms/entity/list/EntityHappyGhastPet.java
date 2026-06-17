@@ -3,7 +3,6 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -19,6 +18,7 @@ import simplepets.brainsynder.api.entity.passive.IEntityHappyGhastPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.ColorWrapper;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -32,7 +32,7 @@ public class EntityHappyGhastPet extends EntityAgeablePet implements IEntityHapp
     private ColorWrapper color = ColorWrapper.NONE;
 
     public EntityHappyGhastPet(PetType type, PetUser user) {
-        super(EntityType.HAPPY_GHAST, type, user);
+        super(EntitySelector.HAPPY_GHAST, type, user);
         this.moveControl = new FlyingMoveControl(this, 20, false);
     }
 

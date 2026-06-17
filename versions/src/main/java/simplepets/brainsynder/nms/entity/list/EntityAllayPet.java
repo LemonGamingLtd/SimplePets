@@ -3,13 +3,13 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bsdevelopment.pluginutils.version.VersionLimit;
 import simplepets.brainsynder.api.entity.passive.IEntityAllayPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityFlyablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -22,7 +22,7 @@ public class EntityAllayPet extends EntityFlyablePet implements IEntityAllayPet 
     private static final EntityDataAccessor<Boolean> DATA_CAN_DUPLICATE = SynchedEntityData.defineId(EntityAllayPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityAllayPet(PetType type, PetUser user) {
-        super(EntityType.ALLAY, type, user);
+        super(EntitySelector.ALLAY, type, user);
     }
 
     @Override

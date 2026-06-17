@@ -1,17 +1,16 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import org.bsdevelopment.nbt.StorageTagCompound;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.chicken.ChickenSoundVariant;
 import net.minecraft.world.entity.animal.chicken.ChickenSoundVariants;
 import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import net.minecraft.world.entity.animal.chicken.ChickenVariants;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.craftbukkit.CraftRegistry;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
@@ -19,6 +18,7 @@ import simplepets.brainsynder.api.entity.passive.IEntityChickenPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.TemperatureVariant;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 import simplepets.brainsynder.nms.utils.VariantUtils;
@@ -32,7 +32,7 @@ public class EntityChickenPet extends EntityAgeablePet implements IEntityChicken
     private TemperatureVariant variant = TemperatureVariant.TEMPERATE;
 
     public EntityChickenPet(PetType type, PetUser user) {
-        super(EntityType.CHICKEN, type, user);
+        super(EntitySelector.CHICKEN, type, user);
     }
 
     @Override

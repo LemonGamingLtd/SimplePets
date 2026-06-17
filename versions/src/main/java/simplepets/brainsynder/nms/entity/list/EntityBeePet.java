@@ -3,7 +3,6 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
@@ -15,6 +14,7 @@ import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.passive.IEntityBeePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -26,7 +26,7 @@ public class EntityBeePet extends EntityAgeablePet implements IEntityBeePet {
     private static final EntityDataAccessor<Long> ANGER = SynchedEntityData.defineId(EntityBeePet.class, EntityDataSerializers.LONG);
 
     public EntityBeePet(PetType type, PetUser user) {
-        super(EntityType.BEE, type, user);
+        super(EntitySelector.BEE, type, user);
         this.moveControl = new FlyingMoveControl(this, 20, true);
     }
 

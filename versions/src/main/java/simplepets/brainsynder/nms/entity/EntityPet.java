@@ -35,6 +35,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 import simplepets.brainsynder.nms.pathfinder.LegacyPathfinderFollowPlayer;
 import simplepets.brainsynder.nms.pathfinder.PathfinderFollowPlayer;
@@ -93,7 +94,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
     public EntityPet(EntityType<? extends Mob> entitytypes, Level world) {
         super(entitytypes, world);
-        rawEntityType = EntityType.PIG;
+        rawEntityType = EntitySelector.PIG;
     }
 
     public EntityPet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
