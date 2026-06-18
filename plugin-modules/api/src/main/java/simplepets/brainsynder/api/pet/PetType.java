@@ -266,7 +266,7 @@ public enum PetType {
     STRIDER(IEntityStriderPet.class, "cb7ffdda656c68d88851a8e05b48cd2493773ffc4ab7d64e9302229fe3571059", PetDataRegistry.BABY, PetDataRegistry.SADDLE),
 
     @PetCustomization(ambient = "ENTITY_SULFUR_CUBE_SQUISH", weight = PetWeight.SLIGHTLY_HEAVY)
-    SULFUR_CUBE(IEntityMagmaCubePet.class, "f0d9056ec6db388af12304ef96ffdc8228dcf368ab255323258b716f990b4ab", PetDataRegistry.SIZE),
+    SULFUR_CUBE(IEntitySulfurCubePet.class, "f0d9056ec6db388af12304ef96ffdc8228dcf368ab255323258b716f990b4ab", PetDataRegistry.SIZE),
 
     @PetCustomization(ambient = "ENTITY_TADPOLE_FLOP")
     TADPOLE(IEntityTadpolePet.class, "987035f5352334c2cba6ac4c65c2b9059739d6d0e839c1dd98d75d2e77957847"),
