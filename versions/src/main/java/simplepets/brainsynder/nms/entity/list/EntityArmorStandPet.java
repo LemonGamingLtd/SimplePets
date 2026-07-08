@@ -42,6 +42,7 @@ import simplepets.brainsynder.api.pet.CommandReason;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.special.EntityControllerPet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 import simplepets.brainsynder.utils.Utilities;
@@ -70,11 +71,11 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
     private final List<ItemStack> cachedItems = new ArrayList<>();
 
     public EntityArmorStandPet(ServerLevel world) {
-        super(EntityType.ARMOR_STAND, world);
+        super(EntitySelector.ARMOR_STAND, world);
     }
 
     public EntityArmorStandPet(EntityControllerPet pet, PetUser user) {
-        super(EntityType.ARMOR_STAND, pet.level());
+        super(EntitySelector.ARMOR_STAND, pet.level());
         this.pet = pet;
         this.user = user;
         this.additional = new HashMap<>();
@@ -90,7 +91,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
 
     @Override
     public EntityType<?> getType() {
-        return EntityType.ARMOR_STAND;
+        return EntitySelector.ARMOR_STAND;
     }
 
     public static EntityArmorStandPet spawn(Location location, EntityControllerPet pet) {
@@ -376,7 +377,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
 
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entitytrackerentry) {
-        return VersionHelper.VERSION_TRANSLATOR.getAddEntityPacket(this, entitytrackerentry, EntityType.ARMOR_STAND, VersionHelper.getPosition(this));
+        return VersionHelper.VERSION_TRANSLATOR.getAddEntityPacket(this, entitytrackerentry, EntitySelector.ARMOR_STAND, VersionHelper.getPosition(this));
     }
 
     @Override

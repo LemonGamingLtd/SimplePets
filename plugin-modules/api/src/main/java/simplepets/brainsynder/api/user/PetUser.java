@@ -228,6 +228,21 @@ public interface PetUser {
      */
     void updateSelectionMenu();
 
+    /**
+     * Returns true if the player is currently within the pet change cooldown window.
+     */
+    boolean isOnPetChangeCooldown();
+
+    /**
+     * Returns how many seconds remain on the pet change cooldown, or 0 if not on cooldown.
+     */
+    long getRemainingCooldownSeconds();
+
+    /**
+     * Records the current time as the last pet change, starting the cooldown window.
+     */
+    void recordPetChange();
+
 
     class Entry<K, V> {
         private final K key;

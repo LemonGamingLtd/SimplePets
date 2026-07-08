@@ -28,6 +28,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.ColorWrapper;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.special.EntityControllerPet;
 import simplepets.brainsynder.nms.entity.special.EntityGhostStand;
 import simplepets.brainsynder.nms.helper.VersionHelper;
@@ -52,11 +53,11 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
     private int toggle = 0;
 
     public EntityShulkerPet(ServerLevel world) {
-        super(EntityType.SHULKER, world);
+        super(EntitySelector.SHULKER, world);
     }
 
     public EntityShulkerPet(EntityControllerPet pet, EntityGhostStand ghostStand, PetUser user) {
-        super(EntityType.SHULKER, pet.level());
+        super(EntitySelector.SHULKER, pet.level());
         this.pet = pet;
         this.ghostStand = ghostStand;
         pet.setBabySafe(true);
@@ -73,7 +74,7 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
 
     @Override
     public EntityType<?> getType() {
-        return EntityType.SHULKER;
+        return EntitySelector.SHULKER;
     }
 
     public static EntityShulkerPet spawn(Location location, EntityControllerPet pet, EntityGhostStand ghostStand) {
@@ -360,7 +361,7 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
 
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entitytrackerentry) {
-        return VersionHelper.VERSION_TRANSLATOR.getAddEntityPacket(this, entitytrackerentry, EntityType.SHULKER, VersionHelper.getPosition(this));
+        return VersionHelper.VERSION_TRANSLATOR.getAddEntityPacket(this, entitytrackerentry, EntitySelector.SHULKER, VersionHelper.getPosition(this));
     }
 
     @Override

@@ -11,11 +11,12 @@ include(":api")
 include(":main")
 
 // include(":versions:v1_21_6") // Removed support in version R5-B296
-//include(":versions:v1_21_7")
+// include(":versions:v1_21_7") // Removed support in version R5-304
 //include(":versions:v1_21_8")
 //include(":versions:v1_21_10")
 include(":versions:v1_21_11")
 include(":versions:v26_1")
+include(":versions:v26_2")
 // AUTOMATION END
 
 project(":api").projectDir  = file("plugin-modules/api")

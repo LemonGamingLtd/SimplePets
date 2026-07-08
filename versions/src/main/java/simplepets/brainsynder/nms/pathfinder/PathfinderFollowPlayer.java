@@ -10,7 +10,6 @@ import net.minecraft.world.level.pathfinder.Path;
 import org.bsdevelopment.pluginutils.utilities.MathUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.api.event.entity.movment.PetTeleportEvent;
 import simplepets.brainsynder.api.other.ParticleHandler;
 import simplepets.brainsynder.api.pet.CommandReason;
@@ -68,7 +67,12 @@ public class PathfinderFollowPlayer extends Goal {
         if (!VersionHelper.getEntityLevel(player).getWorld().getName()
                 .equals(VersionHelper.getEntityLevel(entity).getWorld().getName())) return false;
 
-        targetPos = new BlockPos(randomize(player.getX()), player.getBlockY(), randomize(player.getZ()));
+        if (entity.isFlightEnabled()) {
+            int hoverOffset = Math.max(2, (int) entity.getBoundingBox().getYsize());
+            targetPos = new BlockPos(randomize(player.getX()), player.getBlockY() + hoverOffset, randomize(player.getZ()));
+        } else {
+            targetPos = new BlockPos(randomize(player.getX()), player.getBlockY(), randomize(player.getZ()));
+        }
         return true;
     }
 
@@ -91,7 +95,7 @@ public class PathfinderFollowPlayer extends Goal {
     @Override // Set navigation here
     public void start() {
         // Failed: pet is in the air and is not a flying pet
-        if ( (!(entity instanceof IFlyableEntity)) && (!entity.onGround())) return;
+        if ( (!entity.isFlightEnabled()) && (!entity.onGround())) return;
 
         Path path = navigation.createPath(targetPos, 1);
         navigation.moveTo(path, entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());

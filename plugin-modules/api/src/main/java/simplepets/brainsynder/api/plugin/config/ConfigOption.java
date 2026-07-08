@@ -467,6 +467,12 @@ public interface ConfigOption {
                     This can be overridden in an individual pet .json file using the ride_speed key.
 
                     Default: {default}""").pastPaths("PetToggles.Default-Ride-Speed");
+    ConfigEntry<Double> PET_TOGGLES_WATER_SPEED = REGISTRY.register("pet-toggles.default-pet-water-speed", 0.15,
+            """
+                    The default speed a pet moves at when being ridden on or through water.
+                    This can be overridden in an individual pet .json file using the water_speed key.
+
+                    Default: {default}""");
 
 
     ConfigEntry<Boolean> PET_SAVES_ENABLED = REGISTRY.register("pet-saves.enabled", true,
@@ -566,6 +572,19 @@ public interface ConfigOption {
                     Are pet names allowed to have HEX colors?
                     NOTE: If this is disabled only regular chat color will be used (EG: '&c')
                     Example: '&#c986b2'
+
+                    Default: {default}""");
+
+    ConfigEntry<Boolean> PET_COOLDOWN_ENABLED = REGISTRY.register("pet-cooldown.enabled", false,
+            """
+                    When enabled, players must wait a set duration before spawning another pet.
+                    Bypass permission: pet.cooldown.bypass
+
+                    Default: {default}""");
+    ConfigEntry<Integer> PET_COOLDOWN_SECONDS = REGISTRY.register("pet-cooldown.duration", 5,
+            """
+                    How many seconds a player must wait between spawning pets.
+                    Only applies when 'pet-cooldown.enabled' is true.
 
                     Default: {default}""");
 }

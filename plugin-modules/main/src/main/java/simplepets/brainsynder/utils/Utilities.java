@@ -63,6 +63,14 @@ public class Utilities {
 
     public static boolean handlePetSpawning(PetUser user, PetType type, StorageTagCompound compound, boolean checkDataPermissions) {
         Player player = user.getPlayer();
+
+        if (user.isOnPetChangeCooldown()) {
+            player.sendMessage(PetCore.getInstance().getMessageFile()
+                    .getTranslation(MessageOption.PET_ON_COOLDOWN)
+                    .replace("{seconds}", String.valueOf(user.getRemainingCooldownSeconds())));
+            return false;
+        }
+
         if (type.isInDevelopment() && (!ConfigOption.PET_TOGGLES_DEV_MOBS.get())) {
             player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.PET_IN_DEVELOPMENT).replace("{type}", type.getName()));
             return false;
@@ -92,6 +100,7 @@ public class Utilities {
 
         return switch (result.state()) {
             case SUCCESS -> {
+                user.recordPetChange();
                 player.sendMessage(PetCore.getInstance().getMessageFile().getTranslation(MessageOption.SUMMONED_PET).replace("{type}", type.getName()));
                 yield true;
             }

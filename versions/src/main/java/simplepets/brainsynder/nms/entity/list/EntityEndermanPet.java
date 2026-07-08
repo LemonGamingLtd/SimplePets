@@ -3,7 +3,6 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
@@ -17,6 +16,7 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.debug.DebugBuilder;
 import simplepets.brainsynder.debug.DebugLevel;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -30,7 +30,7 @@ public class EntityEndermanPet extends EntityPetOverride implements IEntityEnder
     private static final EntityDataAccessor<Boolean> SCREAMING = SynchedEntityData.defineId(EntityEndermanPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityEndermanPet(PetType type, PetUser user) {
-        super(EntityType.ENDERMAN, type, user);
+        super(EntitySelector.ENDERMAN, type, user);
     }
 
     @Override

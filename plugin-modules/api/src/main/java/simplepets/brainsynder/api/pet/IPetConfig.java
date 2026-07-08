@@ -74,6 +74,13 @@ public interface IPetConfig {
     double getFlySpeed();
 
     /**
+     * How fast should the pet move when ridden on or through water
+     * <p>
+     * Example: 0.200000438418579
+     */
+    double getWaterSpeed();
+
+    /**
      * What type of entity is the pet
      */
     Optional<EntityType> getEntityType();

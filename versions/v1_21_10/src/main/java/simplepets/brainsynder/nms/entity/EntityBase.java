@@ -23,8 +23,8 @@ import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.CitizensFixer;
+import simplepets.brainsynder.nms.entity.branch.EntityCubeAbstractPet;
 import simplepets.brainsynder.nms.entity.list.EntityRabbitPet;
-import simplepets.brainsynder.nms.entity.list.EntitySlimePet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 import simplepets.brainsynder.utils.VersionFields;
@@ -56,7 +56,7 @@ public class EntityBase extends Mob {
 
     @Override
     public void jumpFromGround() {
-        if (this instanceof EntitySlimePet) {
+        if (this instanceof EntityCubeAbstractPet) {
             Vec3 vec3d = this.getDeltaMovement();
             this.setDeltaMovement(vec3d.x, this.getJumpPower(), vec3d.z);
             this.hasImpulse = true;

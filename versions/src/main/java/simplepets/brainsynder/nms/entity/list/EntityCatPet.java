@@ -1,16 +1,15 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import org.bsdevelopment.nbt.StorageTagCompound;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.feline.CatSoundVariant;
 import net.minecraft.world.entity.animal.feline.CatSoundVariants;
 import net.minecraft.world.entity.animal.feline.CatVariants;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import org.bukkit.craftbukkit.CraftRegistry;
 import simplepets.brainsynder.api.entity.passive.IEntityCatPet;
@@ -18,6 +17,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.CatVariant;
 import simplepets.brainsynder.api.wrappers.DyeColorWrapper;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityTameablePet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
@@ -35,7 +35,7 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
     private CatVariant type = CatVariant.TABBY;
 
     public EntityCatPet(PetType type, PetUser user) {
-        super(EntityType.CAT, type, user);
+        super(EntitySelector.CAT, type, user);
     }
 
     @Override

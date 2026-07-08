@@ -1,21 +1,22 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import org.bsdevelopment.nbt.StorageTagCompound;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.Bucketable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
+import simplepets.brainsynder.api.entity.misc.IWaterEntity;
 import simplepets.brainsynder.api.entity.passive.IEntityAxolotlPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.AxolotlVariant;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -24,13 +25,13 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
  */
 // Implement Bucketable so the server resends the entity when the client tries
 // to pick it up with a bucket
-public class EntityAxolotlPet extends EntityAgeablePet implements IEntityAxolotlPet, Bucketable {
+public class EntityAxolotlPet extends EntityAgeablePet implements IEntityAxolotlPet, IWaterEntity, Bucketable {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(EntityAxolotlPet.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_PLAYING_DEAD = SynchedEntityData.defineId(EntityAxolotlPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityAxolotlPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityAxolotlPet(PetType type, PetUser user) {
-        super(EntityType.AXOLOTL, type, user);
+        super(EntitySelector.AXOLOTL, type, user);
     }
 
     @Override

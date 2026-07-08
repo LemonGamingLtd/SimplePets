@@ -4,7 +4,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.bsdevelopment.nbt.StorageTagCompound;
@@ -14,6 +13,7 @@ import simplepets.brainsynder.api.entity.passive.IEntityArmadilloPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.ArmadilloPhase;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -25,7 +25,7 @@ public class EntityArmadilloPet extends EntityAgeablePet implements IEntityArmad
     private static final EntityDataAccessor<Armadillo.ArmadilloState> ARMADILLO_STATE = SynchedEntityData.defineId(EntityArmadilloPet.class, EntityDataSerializers.ARMADILLO_STATE);
 
     public EntityArmadilloPet(PetType type, PetUser user) {
-        super(EntityType.ARMADILLO, type, user);
+        super(EntitySelector.ARMADILLO, type, user);
     }
 
     @Override

@@ -4,7 +4,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.villager.VillagerData;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import org.bsdevelopment.nbt.StorageTagCompound;
@@ -19,6 +18,7 @@ import simplepets.brainsynder.api.wrappers.villager.BiomeType;
 import simplepets.brainsynder.api.wrappers.villager.VillagerInfo;
 import simplepets.brainsynder.api.wrappers.villager.VillagerLevel;
 import simplepets.brainsynder.api.wrappers.villager.VillagerType;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -34,7 +34,7 @@ public class EntityVillagerPet extends EntityAgeablePet implements IEntityVillag
     private boolean shaking = false;
 
     public EntityVillagerPet(PetType type, PetUser user) {
-        super(EntityType.VILLAGER, type, user);
+        super(EntitySelector.VILLAGER, type, user);
     }
 
     @Override

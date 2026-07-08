@@ -3,7 +3,6 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.golem.CopperGolemState;
 import net.minecraft.world.level.block.WeatheringCopper;
 import org.bsdevelopment.nbt.StorageTagCompound;
@@ -13,6 +12,7 @@ import simplepets.brainsynder.api.entity.passive.IEntityCopperGolemPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.CopperGolemOxidation;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -25,7 +25,7 @@ public class EntityCopperGolemPet extends EntityPetOverride implements IEntityCo
     private static final EntityDataAccessor<CopperGolemState> COPPER_GOLEM_STATE = SynchedEntityData.defineId(EntityCopperGolemPet.class, EntityDataSerializers.COPPER_GOLEM_STATE);
 
     public EntityCopperGolemPet(PetType type, PetUser user) {
-        super(EntityType.COPPER_GOLEM, type, user);
+        super(EntitySelector.COPPER_GOLEM, type, user);
     }
 
     @Override

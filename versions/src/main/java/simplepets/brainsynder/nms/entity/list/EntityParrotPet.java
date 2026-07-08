@@ -3,7 +3,6 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
@@ -16,6 +15,7 @@ import simplepets.brainsynder.api.entity.passive.IEntityParrotPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.ParrotVariant;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityTameablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -28,7 +28,7 @@ public class EntityParrotPet extends EntityTameablePet implements IEntityParrotP
     private int toggle = 0;
 
     public EntityParrotPet(PetType type, PetUser user) {
-        super(EntityType.PARROT, type, user);
+        super(EntitySelector.PARROT, type, user);
         this.moveControl = new FlyingMoveControl(this, 10, false);
     }
 
@@ -117,6 +117,13 @@ public class EntityParrotPet extends EntityTameablePet implements IEntityParrotP
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
         } else {
+            if (this.onGround) {
+                setDeltaMovement(getDeltaMovement().x, 0.15, getDeltaMovement().z);
+            } else {
+                double phase = (getId() % 20) * (Math.PI / 10.0);
+                double bob = Math.sin(level().getGameTime() * 0.1 + phase) * 0.03;
+                setDeltaMovement(getDeltaMovement().x, bob, getDeltaMovement().z);
+            }
             this.moveRelative(this.getSpeed(), vec3);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.8100000262260437D));

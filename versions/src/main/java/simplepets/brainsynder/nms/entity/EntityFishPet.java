@@ -6,19 +6,20 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Bucketable;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import simplepets.brainsynder.api.entity.misc.IEntityFishPet;
+import simplepets.brainsynder.api.entity.misc.IWaterEntity;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 // Implement Bucketable so the server resends the entity when the client tries
 // to pick it up with a bucket
-public class EntityFishPet extends EntityPetOverride implements IEntityFishPet, Bucketable {
+public class EntityFishPet extends EntityPetOverride implements IEntityFishPet, IWaterEntity, Bucketable {
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityFishPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityFishPet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {

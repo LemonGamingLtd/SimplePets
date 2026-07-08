@@ -3,12 +3,12 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.hostile.IEntityWitherPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityPetOverride;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -22,7 +22,7 @@ public class EntityWitherPet extends EntityPetOverride implements IEntityWitherP
     private static final EntityDataAccessor<Integer> INVULNERABILITY_TIME = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
 
     public EntityWitherPet(PetType type, PetUser user) {
-        super(EntityType.WITHER, type, user);
+        super(EntitySelector.WITHER, type, user);
     }
 
     @Override

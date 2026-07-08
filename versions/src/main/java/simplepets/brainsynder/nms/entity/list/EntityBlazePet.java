@@ -1,14 +1,14 @@
 package simplepets.brainsynder.nms.entity.list;
 
-import org.bsdevelopment.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
+import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.hostile.IEntityBlazePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityFlyablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -19,7 +19,7 @@ public class EntityBlazePet extends EntityFlyablePet implements IEntityBlazePet 
     private static final EntityDataAccessor<Byte> ON_FIRE = SynchedEntityData.defineId(EntityBlazePet.class, EntityDataSerializers.BYTE);
 
     public EntityBlazePet(PetType type, PetUser user) {
-        super(EntityType.BLAZE, type, user);
+        super(EntitySelector.BLAZE, type, user);
     }
 
     @Override

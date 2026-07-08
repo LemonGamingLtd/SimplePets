@@ -3,12 +3,12 @@ package simplepets.brainsynder.nms.entity.list;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.libs.json.JsonObject;
 import simplepets.brainsynder.api.entity.hostile.IEntityHoglinPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -19,7 +19,7 @@ public class EntityHoglinPet extends EntityAgeablePet implements IEntityHoglinPe
     private static final EntityDataAccessor<Boolean> IMMUNE_TO_ZOMBIFICATION = SynchedEntityData.defineId(EntityHoglinPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityHoglinPet(PetType type, PetUser user) {
-        super(EntityType.HOGLIN, type, user);
+        super(EntitySelector.HOGLIN, type, user);
     }
 
     @Override
