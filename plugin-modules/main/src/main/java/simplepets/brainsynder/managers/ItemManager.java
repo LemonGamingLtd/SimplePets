@@ -11,6 +11,7 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.debug.DebugBuilder;
 import simplepets.brainsynder.menu.items.CustomItem;
 import simplepets.brainsynder.menu.items.list.*;
+import simplepets.brainsynder.utils.Utilities;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -151,7 +152,7 @@ public class ItemManager implements ItemHandler {
         if (items.isEmpty()) initiate();
         if (item.getType() == Material.AIR) return Optional.of(AIR);
         for (Item loader : items.values()) {
-            if (loader.getItemBuilder().build().isSimilar(item)) {
+            if (Utilities.isSimilar(loader.getItemBuilder().build(), item)) {
                 return Optional.of(loader);
             }
         }
