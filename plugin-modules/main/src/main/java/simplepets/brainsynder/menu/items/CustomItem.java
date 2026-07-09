@@ -60,13 +60,11 @@ public abstract class CustomItem extends Item {
                     loc = "";
                 }
 
-                array.forEach(jsonValue -> {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), jsonValue.asString()
-                        .replace("{location}", loc)
-                        .replace("{name}", owner.getPlayer().getName())
-                        .replace("{type}", entityPet.getPetType().getName())
-                    );
-                });
+                array.forEach(jsonValue -> dispatch(jsonValue.asString()
+                    .replace("{location}", loc)
+                    .replace("{name}", owner.getPlayer().getName())
+                    .replace("{type}", entityPet.getPetType().getName())
+                ));
             });
             return;
         }
@@ -76,12 +74,10 @@ public abstract class CustomItem extends Item {
             Location location = player.getLocation();
             String loc = location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ();
 
-            array.forEach(jsonValue -> {
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), jsonValue.asString()
-                    .replace("{location}", loc)
-                    .replace("{name}", owner.getPlayer().getName())
-                );
-            });
+            array.forEach(jsonValue -> dispatch(jsonValue.asString()
+                .replace("{location}", loc)
+                .replace("{name}", owner.getPlayer().getName())
+            ));
             return;
         }
 
@@ -90,13 +86,11 @@ public abstract class CustomItem extends Item {
                 Location location = entityPet.getEntity().getLocation();
                 String loc = location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ();
 
-                array.forEach(jsonValue -> {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), jsonValue.asString()
-                        .replace("{location}", loc)
-                        .replace("{name}", owner.getPlayer().getName())
-                        .replace("{type}", entityPet.getPetType().getName())
-                    );
-                });
+                array.forEach(jsonValue -> dispatch(jsonValue.asString()
+                    .replace("{location}", loc)
+                    .replace("{name}", owner.getPlayer().getName())
+                    .replace("{type}", entityPet.getPetType().getName())
+                ));
             });
         });
     }
@@ -104,5 +98,13 @@ public abstract class CustomItem extends Item {
     @Override
     public void onClick(PetUser user, CustomInventory inventory, IEntityPet pet) {
         runCommands(user);
+    }
+
+    private void dispatch(String command) {
+        if (command == null) return;
+        command = command.trim();
+        if (command.startsWith("/")) command = command.substring(1);
+        if (command.isEmpty()) return;
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
     }
 }
