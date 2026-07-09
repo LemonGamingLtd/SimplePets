@@ -82,6 +82,11 @@ public class EntityFoxPet extends EntityAgeablePet implements IEntityFoxPet {
     }
 
     @Override
+    public boolean isCrouching() {
+        return getSpecialFlag(4);
+    }
+
+    @Override
     public boolean isPetSleeping() {
         return getSpecialFlag(32);
     }
