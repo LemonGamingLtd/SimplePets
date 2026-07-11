@@ -366,12 +366,12 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
 
     @Override
     public boolean isBurning() {
-        return super.hasVisualFire;
+        return getBukkitEntity().isVisualFire();
     }
 
     @Override
     public void setBurning(boolean var) {
-        super.hasVisualFire = var;
+        getBukkitEntity().setVisualFire(var);
     }
 
 
