@@ -11,7 +11,7 @@ include(":api")
 include(":main")
 
 // include(":versions:v1_21_6") // Removed support in version R5-B296
-// include(":versions:v1_21_7") // Removed support in version R5-304
+// include(":versions:v1_21_7") // Removed support in version R5-B304
 //include(":versions:v1_21_8")
 //include(":versions:v1_21_10")
 include(":versions:v1_21_11")

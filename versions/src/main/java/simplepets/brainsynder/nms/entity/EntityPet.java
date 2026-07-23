@@ -260,7 +260,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     @Override
     public void setBurning(boolean var) {
         this.onFire = var;
-        setRemainingFireTicks(var ? 150 : 0);
+        getEntity().setVisualFire(var);
     }
 
     @Override
@@ -553,7 +553,6 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         }
 
         if (this.frozen && (getTicksFrozen() < 140)) setTicksFrozen(150);
-        if (this.onFire && (getRemainingFireTicks() < 140)) setRemainingFireTicks(150);
 
         if (getPetUser().getPlayer() != null) {
             Player player = getPetUser().getPlayer();

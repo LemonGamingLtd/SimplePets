@@ -669,12 +669,12 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
 
     @Override
     public boolean isBurning() {
-        return super.hasVisualFire;
+        return getBukkitEntity().isVisualFire();
     }
 
     @Override
     public void setBurning(boolean var) {
-        super.hasVisualFire = var;
+        getBukkitEntity().setVisualFire(var);
     }
 
     protected boolean damageEntity0(DamageSource damagesource, float f) {
