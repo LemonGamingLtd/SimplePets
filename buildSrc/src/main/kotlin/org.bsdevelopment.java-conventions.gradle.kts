@@ -24,6 +24,7 @@ tasks.withType<JavaCompile> {
 
 val groupID = "simplepets.brainsynder"
 tasks.withType<ShadowJar>().configureEach {
+    relocate("com.tcoded.folialib",            "$groupID.libs.folialib")
     relocate("com.jeff_media.updatechecker",   "$groupID.libs.updatechecker")
     relocate("io.papermc.lib",                 "$groupID.libs.paperlib")
     relocate("org.bstats",                     "$groupID.libs.bstats")
