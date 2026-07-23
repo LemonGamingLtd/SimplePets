@@ -108,7 +108,8 @@ public class Debug implements DebugLogger {
         if (runnable == null) return;
 
         if (builder.sync()) {
-            core.getScheduler().getImpl().runNextTick(runnable);
+            final Runnable finalRunnable = runnable;
+            core.getScheduler().getImpl().runNextTick(__ -> finalRunnable.run());
         } else {
             runnable.run();
         }

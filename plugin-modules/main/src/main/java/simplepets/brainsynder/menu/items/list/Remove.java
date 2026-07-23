@@ -51,7 +51,7 @@ public class Remove extends Item {
         if (masterUser.getPetEntities().size() == 1) {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_REMOVE.get())
                 masterUser.getPlayer().closeInventory();
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(), () -> masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(), __ -> masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
                 masterUser.removePet(iEntityPet.getPetType());
                 if (inventory instanceof DataMenu) masterUser.updateDataMenu();
             }), 100L, TimeUnit.MILLISECONDS);
@@ -61,7 +61,7 @@ public class Remove extends Item {
         menu.setTask(masterUser.getPlayer().getName(), (user, type) -> {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_REMOVE.get())
                 user.getPlayer().closeInventory();
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(user.getPlayer(), () -> {
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(user.getPlayer(), __ -> {
                 user.removePet(type);
                 if (inventory instanceof DataMenu) user.updateDataMenu();
             }, 100L, TimeUnit.MILLISECONDS);

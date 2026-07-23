@@ -55,7 +55,7 @@ public class AddonGUIListener implements Listener {
                     e.getInventory().setItem(e.getRawSlot(), stack);
 
                     PetCore.getInstance().getAddonManager().downloadViaName(name, container.get(Keys.ADDON_URL, PersistentDataType.STRING), () -> {
-                        PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, () ->
+                        PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ ->
                             menu.open(user, menu.getCurrentPage(user), menu.isInstallerGUI(user)),
                             500L, TimeUnit.MILLISECONDS
                         );
@@ -69,7 +69,7 @@ public class AddonGUIListener implements Listener {
                         e.getInventory().setItem(e.getRawSlot(), stack);
 
                         PetCore.getInstance().getAddonManager().update(module.getLocalData(), container.get(Keys.ADDON_UPDATE, PersistentDataType.STRING), () -> {
-                            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, () ->
+                            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ ->
                                 menu.open(user, menu.getCurrentPage(user), menu.isInstallerGUI(user)),
                                 100L, TimeUnit.MILLISECONDS
                             );
@@ -80,7 +80,7 @@ public class AddonGUIListener implements Listener {
                     boolean enabled = !module.isEnabled();
                     PetCore.getInstance().getAddonManager().toggleAddonModule(module, enabled);
 
-                    PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, () ->
+                    PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ ->
                         menu.open(user, menu.getCurrentPage(user), menu.isInstallerGUI(user)),
                         100L, TimeUnit.MILLISECONDS
                     );
@@ -96,7 +96,7 @@ public class AddonGUIListener implements Listener {
         if (!(e.getInventory().getHolder() instanceof AddonHolder)) return;
         AddonMenu menu = InventoryManager.ADDONS;
         Player player = (Player) e.getPlayer();
-        PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, () -> {
+        PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ -> {
             if (!(player.getOpenInventory().getTopInventory().getHolder() instanceof AddonHolder)) {
                 SimplePets.getUserManager().getPetUser(player).ifPresent(menu::reset);
             }

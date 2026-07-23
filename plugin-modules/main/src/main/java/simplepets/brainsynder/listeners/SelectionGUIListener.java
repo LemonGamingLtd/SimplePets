@@ -69,7 +69,7 @@ public class SelectionGUIListener implements Listener {
                         return;
                     }
 
-                    PetCore.getInstance().getScheduler().getImpl().runAtEntity(player, () ->
+                    PetCore.getInstance().getScheduler().getImpl().runAtEntity(player, __ ->
                         Utilities.handlePetSpawning(user, type.getType(), new StorageTagCompound(), false)
                     );
                     break;

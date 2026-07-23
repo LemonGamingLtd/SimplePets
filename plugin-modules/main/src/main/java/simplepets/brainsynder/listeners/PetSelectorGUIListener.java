@@ -66,7 +66,7 @@ public class PetSelectorGUIListener implements Listener {
         PetSelectorMenu menu = InventoryManager.SELECTOR;
 
         Player player = (Player) e.getPlayer();
-        PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, () -> {
+        PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ -> {
             if (!(player.getOpenInventory().getTopInventory().getHolder() instanceof SelectorHolder)) {
                 SimplePets.getUserManager().getPetUser(player).ifPresent(menu::reset);
             }

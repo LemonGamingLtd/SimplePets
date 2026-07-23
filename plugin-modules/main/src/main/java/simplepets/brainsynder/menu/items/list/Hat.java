@@ -47,7 +47,7 @@ public class Hat extends Item {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_HAT.get())
                 masterUser.getPlayer().closeInventory();
             // Schedule on pet entity to avoid Folia cross-region thread access issues
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(pet.getEntity(), () -> {
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(pet.getEntity(), __ -> {
                 if (!pet.getEntity().isValid() || pet.getEntity().isDead()) return;
                 masterUser.setPetHat(pet.getPetType(), !masterUser.isPetHat(pet.getPetType()));
             }, 100L, TimeUnit.MILLISECONDS);
@@ -59,7 +59,7 @@ public class Hat extends Item {
                 masterUser.getPlayer().closeInventory();
             masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
                 // Schedule on pet entity to avoid Folia cross-region thread access issues
-                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(iEntityPet.getEntity(), () -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(iEntityPet.getEntity(), __ -> {
                     if (!iEntityPet.getEntity().isValid() || iEntityPet.getEntity().isDead()) return;
                     masterUser.setPetHat(iEntityPet.getPetType(), !masterUser.isPetHat(iEntityPet.getPetType()));
                 }, 100L, TimeUnit.MILLISECONDS);
@@ -73,7 +73,7 @@ public class Hat extends Item {
                 user.getPlayer().closeInventory();
             // Get pet entity and schedule on it to avoid Folia cross-region thread access issues
             user.getPetEntity(type).ifPresent(entityPet -> {
-                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(entityPet.getEntity(), () -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(entityPet.getEntity(), __ -> {
                     if (!entityPet.getEntity().isValid() || entityPet.getEntity().isDead()) return;
                     user.setPetHat(type, !user.isPetHat(type));
                 }, 100L, TimeUnit.MILLISECONDS);

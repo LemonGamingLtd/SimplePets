@@ -46,6 +46,7 @@ import simplepets.brainsynder.nms.EntitySelector;
 import simplepets.brainsynder.nms.entity.special.EntityControllerPet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
 import simplepets.brainsynder.utils.Utilities;
+import simplepets.brainsynder.PetCore;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -244,8 +245,11 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
     @Override
     public void teleportToOwner() {
         user.getUserLocation().ifPresent(location -> {
-            PaperLib.teleportAsync(getEntity(), location);
-            PaperLib.teleportAsync(pet.getEntity(), location);
+            PetCore.getInstance().getScheduler().getImpl().teleportAsync(getEntity(), location);
+            PetCore.getInstance().getScheduler().getImpl().teleportAsync(pet.getEntity(), location);
+
+            //PaperLib.teleportAsync(getEntity(), location);
+            //PaperLib.teleportAsync(pet.getEntity(), location);
             SimplePets.getPetUtilities().runPetCommands(CommandReason.TELEPORT, user, getPetType());
             SimplePets.getParticleHandler().sendParticle(ParticleHandler.Reason.TELEPORT, user.getPlayer(), location);
         });

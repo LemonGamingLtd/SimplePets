@@ -140,7 +140,7 @@ public class SpawnerUtil implements ISpawnUtil {
                     String name = compound.getString("name");
                     if (name != null) name = name.replace("~", " ");
                     final String finalName = name;
-                    PetCore.getInstance().getScheduler().getImpl().runAtEntity(customEntity.getEntity(), () -> customEntity.setPetName(finalName));
+                    PetCore.getInstance().getScheduler().getImpl().runAtEntity(customEntity.getEntity(), __ -> customEntity.setPetName(finalName));
                 }
                 SimplePets.getPetUtilities().runPetCommands(CommandReason.SPAWN, user, type);
                 int count = spawnCount.getOrDefault(type, 0);

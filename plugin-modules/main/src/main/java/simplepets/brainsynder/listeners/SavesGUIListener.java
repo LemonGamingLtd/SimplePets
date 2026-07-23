@@ -50,7 +50,7 @@ public class SavesGUIListener implements Listener {
                 if (Utilities.isSimilar(entry.getValue(), e.getCurrentItem())) {
                     if (e.getClick().isRightClick()) {
                         user.removePetSave(compound);
-                        PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, () -> menu.open(user), 100L, TimeUnit.MILLISECONDS);
+                        PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ -> menu.open(user), 100L, TimeUnit.MILLISECONDS);
                         return;
                     }
 
@@ -76,7 +76,7 @@ public class SavesGUIListener implements Listener {
         if (!(e.getInventory().getHolder() instanceof SavesHolder)) return;
         SavesMenu menu = InventoryManager.PET_SAVES;
         Player player = (Player) e.getPlayer();
-        PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, () -> {
+        PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ -> {
             if (!(player.getOpenInventory().getTopInventory().getHolder() instanceof SavesHolder)) {
                 SimplePets.getUserManager().getPetUser(player).ifPresent(menu::reset);
             }

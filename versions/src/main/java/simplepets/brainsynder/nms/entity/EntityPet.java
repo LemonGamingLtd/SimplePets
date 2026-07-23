@@ -41,6 +41,7 @@ import simplepets.brainsynder.nms.pathfinder.LegacyPathfinderFollowPlayer;
 import simplepets.brainsynder.nms.pathfinder.PathfinderFollowPlayer;
 import simplepets.brainsynder.nms.pathfinder.PathfinderGoalLookAtOwner;
 import simplepets.brainsynder.nms.utils.EntityUtils;
+import simplepets.brainsynder.PetCore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,7 +123,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         });
 
         VersionHelper.setAttributes(this, walkSpeed, flySpeed);
-        EntityUtils.fetchTeam(user.getPlayer()).addEntry(getUUID().toString());
+        //EntityUtils.fetchTeam(user.getPlayer()).addEntry(getUUID().toString());
 
         verticalWorldConfines = ConfigOption.MISC_TOGGLES_WORLD_CONFINES_PET_LIMITS.get();
         maxHeight = getEntity().getWorld().getMaxHeight();
@@ -134,53 +135,54 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         ServerPlayer player = VersionHelper.getEntityHandle(getPetUser().getPlayer());
 
         debugInfo.set("display-name", new JsonObject()
-                .add("name", petName)
-                .add("display-name-visibility (config)", displayNameVisibility)
-                .add("hide-name-while-shifting (config)", hideNameShifting)
-                .add("actually-visible", isCustomNameVisible())
+            .add("name", petName)
+            .add("display-name-visibility (config)", displayNameVisibility)
+            .add("hide-name-while-shifting (config)", hideNameShifting)
+            .add("actually-visible", isCustomNameVisible())
         );
         debugInfo.set("data", new JsonObject()
-                .add("jump-height", jumpHeight)
-                .add("frozen", frozen)
-                .add("on-fire", onFire)
-                .add("silent", silent)
-                .add("visible", visible)
-                .add("auto-remove", new JsonObject()
-                        .add("auto-remove-enabled", autoRemoveToggle)
-                        .add("stand-still-ticks", standStillTicks)
-                        .add("auto-remove-tick", autoRemoveTick)
-                )
-                .add("hover-remove", new JsonObject()
-                        .add("hover-ticks", hoverTickCount)
-                        .add("hover-ticks-target", hoverRemoveTick)
-                )
+            .add("jump-height", jumpHeight)
+            .add("frozen", frozen)
+            .add("on-fire", onFire)
+            .add("silent", silent)
+            .add("visible", visible)
+            .add("auto-remove", new JsonObject()
+                .add("auto-remove-enabled", autoRemoveToggle)
+                .add("stand-still-ticks", standStillTicks)
+                .add("auto-remove-tick", autoRemoveTick)
+            )
+            .add("hover-remove", new JsonObject()
+                .add("hover-ticks", hoverTickCount)
+                .add("hover-ticks-target", hoverRemoveTick)
+            )
         );
 
         int maxRange = ConfigOption.PATHFINDING_MAX_DISTANCE.get();
         debugInfo.set("follow-player", new JsonObject()
-                .add("distance", distanceToSqr(player))
-                .add("max-follow-distance (config)", maxRange)
-                .add("should-follow", (distanceToSqr(player) < (double) (maxRange * maxRange)) )
+            .add("distance", distanceToSqr(player))
+            .add("max-follow-distance (config)", maxRange)
+            .add("should-follow", (distanceToSqr(player) < (double) (maxRange * maxRange)))
         );
 
         int teleportDistance = ConfigOption.PATHFINDING_TELEPORT_DISTANCE.get();
         debugInfo.set("teleport-pet", new JsonObject()
-                .add("distance", distanceTo(player))
-                .add("teleport-distance (config)", teleportDistance)
-                .add("should-teleport", (distanceToSqr(player) >= teleportDistance) )
-                .add("should-force-teleport", (distanceTo(player) >= 80) )
+            .add("distance", distanceTo(player))
+            .add("teleport-distance (config)", teleportDistance)
+            .add("should-teleport", (distanceToSqr(player) >= teleportDistance))
+            .add("should-force-teleport", (distanceTo(player) >= 80))
         );
 
         JsonObject petData = new JsonObject();
         if (this instanceof IEntityControllerPet controllerPet) {
             controllerPet.getVisibleEntity().fetchPetDebugInformation(petData);
-        }else{
+        } else {
             fetchPetData(petData);
         }
-        debugInfo.set("pet-"+getPetType().getName()+"-data", petData);
+        debugInfo.set("pet-" + getPetType().getName() + "-data", petData);
     }
 
-    public void fetchPetData(JsonObject data) {}
+    public void fetchPetData(JsonObject data) {
+    }
 
     public void setDisplayName(boolean displayName) {
         this.displayNameVisibility = displayName;
@@ -197,7 +199,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     @Override
     public void teleportToOwner() {
         getPetUser().getUserLocation().ifPresent(location -> {
-            setPos(location.getX(), location.getY(), location.getZ());
+            PetCore.getInstance().getScheduler().getImpl().teleportAsync(getEntity(), location);
+            //setPos(location.getX(), location.getY(), location.getZ());
             SimplePets.getPetUtilities().runPetCommands(CommandReason.TELEPORT, getPetUser(), getPetType());
             SimplePets.getParticleHandler().sendParticle(ParticleHandler.Reason.TELEPORT, getPetUser().getPlayer(), location);
         });
@@ -285,8 +288,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         Bukkit.getServer().getPluginManager().callEvent(event);
 
         petName = Colorize.translateBungeeHex(event.getPrefix())
-                + SimplePets.getPetUtilities().translatePetName(event.getName())
-                + Colorize.translateBungeeHex(event.getSuffix());
+            + SimplePets.getPetUtilities().translatePetName(event.getName())
+            + Colorize.translateBungeeHex(event.getSuffix());
         this.getBukkitEntity().setCustomNameVisible(ConfigOption.PET_TOGGLES_SHOW_NAMES.get());
         this.getBukkitEntity().setCustomName(petName);
     }
@@ -395,7 +398,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         if (object.hasKey("half_scale")) {
             if (object.getBoolean("half_scale", false)) {
                 setPetScale(0.5);
-            }else{
+            } else {
                 setPetScale(1.0);
             }
         }
@@ -455,12 +458,12 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
     public boolean isFlightEnabled() {
         if (getPetType() == null
-                || getPetUser() == null
-                || getPetUser().getPlayer() == null) return false;
-        
+            || getPetUser() == null
+            || getPetUser().getPlayer() == null) return false;
+
         return SimplePets.getPetConfigManager().getPetConfig(getPetType())
-                .map(config -> config.canFly(getPetUser().getPlayer()))
-                .orElse(false);
+            .map(config -> config.canFly(getPetUser().getPlayer()))
+            .orElse(false);
     }
 
     @Override
@@ -496,8 +499,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         if (autoRemoveToggle && (bukkitEntity != null)) {
             Location location = bukkitEntity.getLocation();
             if ((blockX != location.getBlockX())
-                    || (blockY != location.getBlockY())
-                    || (blockZ != location.getBlockZ())) {
+                || (blockY != location.getBlockY())
+                || (blockZ != location.getBlockZ())) {
                 blockX = location.getBlockX();
                 blockY = location.getBlockY();
                 blockZ = location.getBlockZ();
@@ -561,8 +564,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
             // Checks if the pet can actually be toggled to match their owners
             // player visibility status
             boolean ownerVanish = (VersionHelper.getEntityHandle(player).isInvisible()
-                    // Added this check for SuperVanish and PremiumVanish since they recommend using this method to check
-                    || SimplePets.getPetUtilities().isVanished(player)
+                // Added this check for SuperVanish and PremiumVanish since they recommend using this method to check
+                || SimplePets.getPetUtilities().isVanished(player)
             );
 
             if (ownerVanish && ConfigOption.MISC_TOGGLES_REMOVED_VANISH.get()) {
@@ -570,19 +573,19 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                 return;
             }
 
-            if ((!canIgnoreVanish()) && ConfigOption.MISC_TOGGLES_PET_VANISHING.get()) {
-                if (isPetVisible()) {
-                    if (ownerVanish != this.isInvisible()) { // If Owner is invisible & pet is not
-                        if (isGlowing && (!ownerVanish))
-                            glowHandler(player, false);  // If the pet is glowing & owner is not vanished
-                        this.setInvisible(!this.isInvisible());
-                    } else {
-                        if (ownerVanish && glowVanishToggle)
-                            if (VersionHelper.getEntityHandle(player).isInvisible())
-                                glowHandler(player, true);
-                    }
-                }
-            }
+            //if ((!canIgnoreVanish()) && ConfigOption.MISC_TOGGLES_PET_VANISHING.get()) {
+            //    if (isPetVisible()) {
+            //        if (ownerVanish != this.isInvisible()) { // If Owner is invisible & pet is not
+            //            if (isGlowing && (!ownerVanish))
+            //                glowHandler(player, false);  // If the pet is glowing & owner is not vanished
+            //            this.setInvisible(!this.isInvisible());
+            //        } else {
+            //            if (ownerVanish && glowVanishToggle)
+            //                if (VersionHelper.getEntityHandle(player).isInvisible())
+            //                    glowHandler(player, true);
+            //        }
+            //    }
+            //}
 
             if (getPetUser().isPetHat(getPetType())) {
                 setYRot(player.getLocation().getYaw());
@@ -659,7 +662,6 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 //        if (!immovable) return;
 //        super.push(x, y, z);
 //    }
-
     @Override
     public boolean isOnPortalCooldown() {
         return true; // Prevents pets from teleporting from a portal
@@ -676,7 +678,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         return block.getType().isSolid() || block.isLiquid();
     }
 
-    private static AttributeSupplier.Builder createAttributes (EntityPet entityPet) {
+    private static AttributeSupplier.Builder createAttributes(EntityPet entityPet) {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
         if (entityPet instanceof IFlyableEntity) builder.add(Attributes.FLYING_SPEED, 1);
         builder.add(Attributes.SCALE, 1);

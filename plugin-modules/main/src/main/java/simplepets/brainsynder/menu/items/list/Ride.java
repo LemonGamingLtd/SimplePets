@@ -47,7 +47,7 @@ public class Ride extends Item {
             if (ConfigOption.MISC_TOGGLES_AUTO_CLOSE_RIDE.get())
                 masterUser.getPlayer().closeInventory();
             // Schedule on pet entity to avoid Folia cross-region thread access issues
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(pet.getEntity(), () -> {
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(pet.getEntity(), __ -> {
                 if (!pet.getEntity().isValid() || pet.getEntity().isDead()) return;
                 masterUser.setPetVehicle(pet.getPetType(), !masterUser.isPetVehicle(pet.getPetType()));
             }, 100L, TimeUnit.MILLISECONDS);
@@ -59,7 +59,7 @@ public class Ride extends Item {
                 masterUser.getPlayer().closeInventory();
             masterUser.getPetEntities().stream().findFirst().ifPresent(iEntityPet -> {
                 // Schedule on pet entity to avoid Folia cross-region thread access issues
-                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(iEntityPet.getEntity(), () -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(iEntityPet.getEntity(), __ -> {
                     if (!iEntityPet.getEntity().isValid() || iEntityPet.getEntity().isDead()) return;
                     masterUser.setPetVehicle(iEntityPet.getPetType(), !masterUser.isPetVehicle(iEntityPet.getPetType()));
                 }, 100L, TimeUnit.MILLISECONDS);
@@ -72,7 +72,7 @@ public class Ride extends Item {
                 user.getPlayer().closeInventory();
             // Get pet entity and schedule on it to avoid Folia cross-region thread access issues
             user.getPetEntity(type).ifPresent(entityPet -> {
-                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(entityPet.getEntity(), () -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(entityPet.getEntity(), __ -> {
                     if (!entityPet.getEntity().isValid() || entityPet.getEntity().isDead()) return;
                     user.setPetVehicle(type, !user.isPetVehicle(type));
                 }, 100L, TimeUnit.MILLISECONDS);

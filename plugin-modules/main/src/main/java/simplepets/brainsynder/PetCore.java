@@ -95,8 +95,8 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
     private IPetUtilities petUtilities;
     private SQLHandler sqlHandler;
 
-    public final Executor sync = task -> getScheduler().getImpl().runNextTick(task);
-    public final Executor async = task -> getScheduler().getImpl().runAsync(task);
+    public final Executor sync = task -> getScheduler().getImpl().runNextTick(__ -> task.run());
+    public final Executor async = task -> getScheduler().getImpl().runAsync(__ -> task.run());
 
     @Override
     public void onEnable() {
@@ -242,7 +242,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
             debug.debug(SimplePets.ADDON, "Loading addons in '" + ConfigOption.ADDON_LOAD_TIME.get() + " " + timeunit + "'");
 
-            getScheduler().getImpl().runLater(() -> {
+            getScheduler().getImpl().runLater(__ -> {
                 addonManager = new AddonManager(PetCore.this);
                 addonManager.initialize();
                 addonManager.checkAddons();
@@ -269,7 +269,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         }
 
         // Delay it for a second to actually have the database load
-        getScheduler().getImpl().runLater(() -> {
+        getScheduler().getImpl().runLater(__ -> {
             debug.debug(DebugLevel.HIDDEN, "Respawning pets for players (if there are any)");
             UserManagement userManager = SimplePets.getUserManager();
             Bukkit.getOnlinePlayers().forEach(userManager::getPetUser);

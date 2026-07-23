@@ -29,7 +29,7 @@ public class LocationChangeListener implements Listener {
             Player player = event.getPlayer();
             SimplePets.getUserManager().getPetUser(player).ifPresent(user -> {
                 user.cacheAndRemove();
-                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, user::summonCachedPets, 2L, TimeUnit.SECONDS);
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ -> user.summonCachedPets(), 2L, TimeUnit.SECONDS);
             });
         }
     }
@@ -42,7 +42,7 @@ public class LocationChangeListener implements Listener {
         SimplePets.getUserManager().getPetUser(player).ifPresent(user -> {
             if (user.hasPets()) {
                 user.cacheAndRemove();
-                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, user::summonCachedPets, 2L, TimeUnit.SECONDS);
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ -> user.summonCachedPets(), 2L, TimeUnit.SECONDS);
             }
         });
     }

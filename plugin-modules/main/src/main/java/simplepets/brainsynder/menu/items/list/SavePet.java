@@ -49,7 +49,7 @@ public class SavePet extends Item {
                 if (pet.getPetType() == PetType.ARMOR_STAND) compound.setBoolean("restricted", true);
                 masterUser.addPetSave(compound);
             }
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(), () -> inventory.open(masterUser), 50L, TimeUnit.MILLISECONDS);
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(), __ -> inventory.open(masterUser), 50L, TimeUnit.MILLISECONDS);
             return;
         }
 
@@ -61,7 +61,7 @@ public class SavePet extends Item {
                     masterUser.addPetSave(compound);
                 }
             });
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(), () -> inventory.open(masterUser), 50L, TimeUnit.MILLISECONDS);
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(masterUser.getPlayer(), __ -> inventory.open(masterUser), 50L, TimeUnit.MILLISECONDS);
             return;
         }
         PetSelectorMenu menu = InventoryManager.SELECTOR;
@@ -73,7 +73,7 @@ public class SavePet extends Item {
                     user.addPetSave(compound);
                 }
             });
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(user.getPlayer(), () -> inventory.open(user), 50L, TimeUnit.MILLISECONDS);
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(user.getPlayer(), __ -> inventory.open(user), 50L, TimeUnit.MILLISECONDS);
         });
         menu.open(masterUser, 1, inventory.getTitle());
     }

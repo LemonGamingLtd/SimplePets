@@ -253,7 +253,7 @@ public class AddonManager {
         CompletableFuture.runAsync(() -> {
             try {
                 download(url, name, file -> {
-                    plugin.getScheduler().getImpl().runNextTick(() -> {
+                    plugin.getScheduler().getImpl().runNextTick(__ -> {
                         loadAddon(file);
                         initialize();
                         runnable.run();
@@ -276,7 +276,7 @@ public class AddonManager {
         CompletableFuture.runAsync(() -> {
             try {
                 download(url, original.getName(), file -> {
-                    plugin.getScheduler().getImpl().runNextTick(() -> {
+                    plugin.getScheduler().getImpl().runNextTick(__ -> {
                         loadAddon(file);
                         initialize();
                         runnable.run();
@@ -287,7 +287,7 @@ public class AddonManager {
                     final File file = new File(folder.getAbsolutePath() + "/" + original.getName());
                     original.delete();
                     FileUtils.copyURLToFile(new URL(url), file);
-                    plugin.getScheduler().getImpl().runNextTick(() -> {
+                    plugin.getScheduler().getImpl().runNextTick(__ -> {
                         loadAddon(file);
                         initialize();
                         runnable.run();

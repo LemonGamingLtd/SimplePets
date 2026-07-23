@@ -58,9 +58,9 @@ public final class SignMenuFactory {
                 boolean success = menu.response.test(player, event.getPacket().getStringArrays().read(0));
 
                 if (!success && menu.reopenIfFail && !menu.forceClose) {
-                    PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, () -> menu.open(player), 100L, TimeUnit.MILLISECONDS);
+                    PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ -> menu.open(player), 100L, TimeUnit.MILLISECONDS);
                 }
-                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, () -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(player, __ -> {
                     if (player.isOnline()) {
                         player.sendBlockChange(menu.location, menu.location.getBlock().getBlockData());
                     }

@@ -81,7 +81,7 @@ public class PetOwner implements PetUser {
         ownedPets.clear();
         pendingRemovalEntityUUIDs.clear();
 
-        PetCore.getInstance().getScheduler().getImpl().runNextTick(() -> {
+        PetCore.getInstance().getScheduler().getImpl().runNextTick(__ -> {
             if (compound.hasKey("pet_names")) {
                 StorageTagList names = (StorageTagList) compound.getTag("pet_names");
                 names.getTagList().forEach(storageBase -> {
@@ -125,7 +125,7 @@ public class PetOwner implements PetUser {
                             Player player = Bukkit.getPlayer(uuid);
                             if (player != null) {
                                 if (!Utilities.hasPermission(player, type.getPermission())) return;
-                                PetCore.getInstance().getScheduler().getImpl().runAtLocation(player.getLocation(), () -> {
+                                PetCore.getInstance().getScheduler().getImpl().runAtLocation(player.getLocation(), task -> {
                                     spawnUtil.spawnEntityPet(type, PetOwner.this, tag.getCompoundTag("data"));
                                 });
                             }
@@ -204,7 +204,7 @@ public class PetOwner implements PetUser {
             for (org.bukkit.World world : Bukkit.getWorlds()) {
                 for (Entity entity : world.getEntities()) {
                     if (toRemove.contains(entity.getUniqueId())) {
-                        PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, () -> {
+                        PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, __ -> {
                             if (entity.isValid() && !entity.isDead()) {
                                 entity.remove();
                             }
@@ -225,7 +225,7 @@ public class PetOwner implements PetUser {
                     if (hasPet(type)) {
                         laterTasks.add(BiOptional.of(type, tag.getCompoundTag("data")));
                     } else {
-                        PetCore.getInstance().getScheduler().getImpl().runAtLocation(player.getLocation(), () -> {
+                        PetCore.getInstance().getScheduler().getImpl().runAtLocation(player.getLocation(), __ -> {
                             spawnUtil.spawnEntityPet(type, PetOwner.this, tag.getCompoundTag("data"));
                         });
                     }
@@ -238,7 +238,7 @@ public class PetOwner implements PetUser {
             StorageTagCompound compound = biOptional.second().get();
             removePet(type);
 
-            PetCore.getInstance().getScheduler().getImpl().runAtLocation(player.getLocation(), () -> {
+            PetCore.getInstance().getScheduler().getImpl().runAtLocation(player.getLocation(), __ -> {
                 spawnUtil.spawnEntityPet(type, PetOwner.this, compound);
             });
         });
@@ -271,7 +271,7 @@ public class PetOwner implements PetUser {
             });
 
             entityPet.getEntities().forEach(entity -> {
-                PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, () -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, __ -> {
                     if (entity.isValid() && !entity.isDead()) {
                         SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, player, entity.getLocation());
                         entity.remove();
@@ -466,7 +466,7 @@ public class PetOwner implements PetUser {
             .setTag("data", entityPet.asCompound())
             .setString("type", type.getName()));
 
-        entityPet.getEntities().forEach(entity -> PetCore.getInstance().getScheduler().getImpl().runAtLocation(entity.getLocation(), () -> {
+        entityPet.getEntities().forEach(entity -> PetCore.getInstance().getScheduler().getImpl().runAtLocation(entity.getLocation(), __ -> {
             SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, getPlayer(), entity.getLocation());
             entity.remove();
         }));
@@ -489,7 +489,7 @@ public class PetOwner implements PetUser {
 
             entityPet.getEntities().forEach(entity -> {
                 SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, getPlayer(), entity.getLocation());
-                PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, entity::remove);
+                PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, __ -> entity.remove());
             });
         });
         petMap.clear();
@@ -586,7 +586,7 @@ public class PetOwner implements PetUser {
                 Bukkit.getPluginManager().callEvent(hatEvent);
                 // Set the pet as a hat
                 Entity finalEnt = ent;
-                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(finalEnt, () -> {
+                PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(finalEnt, __ -> {
                     // Verify entity is still valid before attempting hat operation
                     if (!finalEnt.isValid() || finalEnt.isDead()) return;
                     Utilities.runPetCommands(CommandReason.HAT, PetOwner.this, type);
@@ -745,7 +745,7 @@ public class PetOwner implements PetUser {
                 entityPet.teleportToOwner();
             }
 
-            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(entityPet.getEntity(), () -> {
+            PetCore.getInstance().getScheduler().getImpl().runAtEntityLater(entityPet.getEntity(), __ -> {
                 // Verify entity is still valid before attempting mount
                 if (!entityPet.getEntity().isValid() || entityPet.getEntity().isDead()) return;
                 entityPet.attachOwner();
