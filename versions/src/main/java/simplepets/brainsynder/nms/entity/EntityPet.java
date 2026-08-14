@@ -23,6 +23,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+import simplepets.brainsynder.PetCore;
+import simplepets.brainsynder.api.ISpawnUtil;
 import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
@@ -41,7 +43,6 @@ import simplepets.brainsynder.nms.pathfinder.LegacyPathfinderFollowPlayer;
 import simplepets.brainsynder.nms.pathfinder.PathfinderFollowPlayer;
 import simplepets.brainsynder.nms.pathfinder.PathfinderGoalLookAtOwner;
 import simplepets.brainsynder.nms.utils.EntityUtils;
-import simplepets.brainsynder.PetCore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +62,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     private boolean onFire = false;
     private boolean silent = false;
     private boolean visible = true;
+    private boolean relocationPending = false;
     private ChatColor glowColor = ChatColor.WHITE;
     private boolean ignoreVanish = false;
     private int standStillTicks = 0;
@@ -199,11 +201,50 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     @Override
     public void teleportToOwner() {
         getPetUser().getUserLocation().ifPresent(location -> {
-            PetCore.getInstance().getScheduler().getImpl().teleportAsync(getEntity(), location);
-            //setPos(location.getX(), location.getY(), location.getZ());
+            if (relocationPending) return;
+
+            if (isOwnedByCurrentRegion(location)) {
+                VersionHelper.moveTo(this, location.getX(), location.getY(), location.getZ(), getYRot(), getXRot());
+            } else {
+                // Folia cannot move an entity directly into a region owned by another thread.
+                // Its asynchronous entity teleport recreates the entity from getType(); because
+                // custom pets expose their vanilla type, that turns a wither pet into a real,
+                // invulnerable WitherBoss. Remove this instance and recreate the pet safely on
+                // the destination region instead.
+                ISpawnUtil spawnUtil = SimplePets.getSpawnUtil();
+                if (spawnUtil == null) return;
+
+                PetUser user = getPetUser();
+                PetType type = getPetType();
+                StorageTagCompound compound = asCompound();
+                Location destination = location.clone();
+
+                relocationPending = true;
+                if (!user.removePet(type)) {
+                    relocationPending = false;
+                    return;
+                }
+
+                PetCore.getInstance().getScheduler().getImpl().runAtLocation(destination, __ ->
+                    spawnUtil.spawnEntityPet(type, user, compound, destination)
+                );
+            }
+
             SimplePets.getPetUtilities().runPetCommands(CommandReason.TELEPORT, getPetUser(), getPetType());
             SimplePets.getParticleHandler().sendParticle(ParticleHandler.Reason.TELEPORT, getPetUser().getPlayer(), location);
         });
+    }
+
+    private boolean isOwnedByCurrentRegion(Location location) {
+        try {
+            Object result = Bukkit.class
+                .getMethod("isOwnedByCurrentRegion", Location.class)
+                .invoke(null, location);
+            return !(result instanceof Boolean) || (Boolean) result;
+        } catch (ReflectiveOperationException ignored) {
+            // Non-Folia servers have one owning thread, so an in-place move is safe.
+            return true;
+        }
     }
 
     @Override

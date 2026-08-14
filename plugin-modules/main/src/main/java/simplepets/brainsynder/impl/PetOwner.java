@@ -466,7 +466,7 @@ public class PetOwner implements PetUser {
             .setTag("data", entityPet.asCompound())
             .setString("type", type.getName()));
 
-        entityPet.getEntities().forEach(entity -> PetCore.getInstance().getScheduler().getImpl().runAtLocation(entity.getLocation(), __ -> {
+        entityPet.getEntities().forEach(entity -> PetCore.getInstance().getScheduler().getImpl().runAtEntity(entity, __ -> {
             SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, getPlayer(), entity.getLocation());
             entity.remove();
         }));
