@@ -108,6 +108,13 @@ public class EntityBase extends Mob {
         return user;
     }
 
+    /**
+     * Sets the world for a pet that has been constructed but not added yet.
+     */
+    public void setSpawnLevel(Level level) {
+        setLevel(level);
+    }
+
     EntityType<? extends Mob> getEntityType(EntityType<? extends Mob> originalType) {
         try {
             DefaultedRegistry<EntityType<?>> registry = CitizensFixer.getVanillaRegistry(BuiltInRegistries.ENTITY_TYPE);

@@ -98,6 +98,7 @@ public class SpawnerUtil implements ISpawnUtil {
 
         try {
             EntityPet customEntity;
+            CraftWorld targetWorld = (CraftWorld) location.getWorld();
 
             if ((type == PetType.ARMOR_STAND) || (type == PetType.SHULKER)) {
                 customEntity = new EntityControllerPet(type, user, location);
@@ -105,6 +106,11 @@ public class SpawnerUtil implements ISpawnUtil {
                 customEntity = (EntityPet) petMap.get(type).getDeclaredConstructor(PetType.class, PetUser.class).newInstance(type, user);
             }
 
+            // EntityBase historically constructs pets in the owner's live world. The owner can
+            // change worlds between scheduling and execution (notably during death/respawn), so
+            // bind the unadded entity to the explicit spawn destination before it is moved,
+            // exposed to spawn listeners, or inserted into the world's entity lookup.
+            customEntity.setSpawnLevel(targetWorld.getHandle());
             VersionHelper.moveTo(customEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
             customEntity.setInvisible(false);
             customEntity.setInvulnerable(true);
@@ -123,7 +129,7 @@ public class SpawnerUtil implements ISpawnUtil {
 
             if (!location.getChunk().isLoaded()) location.getChunk().load();
 
-            if (VersionHelper.addEntity(((CraftWorld) location.getWorld()).getHandle(), customEntity, CreatureSpawnEvent.SpawnReason.CUSTOM)) {
+            if (VersionHelper.addEntity(targetWorld.getHandle(), customEntity, CreatureSpawnEvent.SpawnReason.CUSTOM)) {
                 user.setPet(customEntity);
 
                 if ((compound != null) && (!compound.hasNoTags())) {

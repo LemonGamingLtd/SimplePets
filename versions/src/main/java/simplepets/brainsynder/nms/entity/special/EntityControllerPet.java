@@ -12,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.sound.SafeSound;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import simplepets.brainsynder.api.entity.IEntityPet;
@@ -37,6 +38,8 @@ public class EntityControllerPet extends EntityZombiePet implements IEntityContr
 
     public EntityControllerPet(PetType type, PetUser user, Location location) {
         super(EntitySelector.ZOMBIE, type, user);
+        // Display entities inherit the controller's level, so correct it before they are created.
+        setLevel(((CraftWorld) location.getWorld()).getHandle());
         setDisplayName(false);
 
         ENTITIES.addLast(getEntity());

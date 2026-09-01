@@ -217,7 +217,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                 PetUser user = getPetUser();
                 PetType type = getPetType();
                 StorageTagCompound compound = asCompound();
-                Location destination = location.clone();
+                Player owner = user.getPlayer();
+                if (owner == null) return;
 
                 relocationPending = true;
                 if (!user.removePet(type)) {
@@ -225,8 +226,13 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                     return;
                 }
 
-                PetCore.getInstance().getScheduler().getImpl().runAtLocation(destination, __ ->
-                    spawnUtil.spawnEntityPet(type, user, compound, destination)
+                // Follow the owner's entity scheduler and resolve their location when the task
+                // executes. A captured location can become stale while a death/respawn or
+                // cross-world teleport moves the owner to another Folia region.
+                PetCore.getInstance().getScheduler().getImpl().runAtEntity(owner, __ ->
+                    user.getUserLocation().ifPresent(destination ->
+                        spawnUtil.spawnEntityPet(type, user, compound, destination)
+                    )
                 );
             }
 
