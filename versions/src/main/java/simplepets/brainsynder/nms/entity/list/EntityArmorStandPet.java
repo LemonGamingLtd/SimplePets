@@ -298,7 +298,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         object.setBoolean("clone", isOwner());
         object.setBoolean("restricted", restricted);
         object.setEnum("glow-color", getGlowColor());
-        if (!isPetVisible()) object.setBoolean("visible", !isPetVisible());
+        object.setBoolean("visible", isPetVisible());
 
         StorageTagCompound items = new StorageTagCompound();
         if (getHeadItem() != null) items.setTag("head", parseItem(getHeadItem()));

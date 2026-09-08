@@ -295,7 +295,7 @@ public class EntityShulkerPet extends Shulker implements IEntityShulkerPet {
     public StorageTagCompound asCompound() {
         StorageTagCompound object = pet.asCompound();
         object.setEnum("glow-color", getGlowColor());
-        if (!isPetVisible()) object.setBoolean("visible", !isPetVisible());
+        object.setBoolean("visible", isPetVisible());
 
         if (!additional.isEmpty()) {
             StorageTagCompound additional = new StorageTagCompound();

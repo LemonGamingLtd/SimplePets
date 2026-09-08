@@ -82,12 +82,12 @@ public interface PetDataRegistry {
             }).build();
 
     PetData<IEntityPet> VISIBLE = PetData.of("visible", IEntityPet.class)
-            .defaultValue(false).enabledByDefault(false)
+            .defaultValue(true).enabledByDefault(false)
             .item(false, ItemBuilder.of(Material.POTION).handleMeta(PotionMeta.class, potionMeta -> {
                 potionMeta.setBasePotionType(PotionType.INVISIBILITY);
                 return potionMeta;
-            }).withName("&#c8c8c8{name}: &atrue"))
-            .item(true, ItemBuilder.of(Material.GLASS_BOTTLE).withName("&#c8c8c8{name}: &cfalse"))
+            }).withName("&#c8c8c8{name}: &cfalse"))
+            .item(true, ItemBuilder.of(Material.GLASS_BOTTLE).withName("&#c8c8c8{name}: &atrue"))
             .onToggle(entityPet -> {
                 if (entityPet instanceof IEntityControllerPet controller) {
                     controller.getVisibleEntity().setPetVisible(!controller.getVisibleEntity().isPetVisible());
