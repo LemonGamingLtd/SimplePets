@@ -28,11 +28,13 @@ public class PathfinderGoalLookAtOwner extends Goal {
 
     @Override
     public boolean canUse() {
-        if ((user == null) || (player == null)) {
-            this.user = entityPet.getPetUser();
-            if (!(user.getPlayer() instanceof Player)) return false;
-            this.player = user.getPlayer();
-        }
+        this.user = entityPet.getPetUser();
+        if (user == null) return false;
+        this.player = user.getPlayer();
+        if (player == null || !player.isOnline() || player.isDead()) return false;
+        if (!player.getWorld().equals(entityPet.getBukkitEntity().getWorld())) return false;
+        if (entityPet.distanceToSqr(VersionHelper.<ServerPlayer>getEntityHandle(player)) > range * range) return false;
+        if (user.isPetHat(entityPet.getPetType())) return false;
 
         if (EntityUtils.getRandom().nextFloat() >= this.chance) {
             return false;
@@ -44,7 +46,9 @@ public class PathfinderGoalLookAtOwner extends Goal {
     // Translation: shouldContinue
     @Override
     public boolean canContinueToUse() {
-        if (this.player.isDead()) {
+        if (this.player == null || !this.player.isOnline() || this.player.isDead()
+                || !player.getWorld().equals(entityPet.getBukkitEntity().getWorld())
+                || user.isPetHat(entityPet.getPetType())) {
             return false;
         } else if (this.entityPet.distanceToSqr(VersionHelper.<ServerPlayer>getEntityHandle(player)) > (double)(this.range * this.range)) {
             return false;
@@ -62,10 +66,7 @@ public class PathfinderGoalLookAtOwner extends Goal {
     // Translation: tick
     @Override
     public void tick() {
-        Location location = entityPet.getBukkitEntity().getLocation();
-        location.add(location.getDirection().multiply(4.0));
-        if (!user.isPetHat(entityPet.getPetType()))
-            location.setY(VersionHelper.<ServerPlayer>getEntityHandle(player).getEyeY());
+        Location location = player.getEyeLocation();
 
         this.entityPet.getLookControl().setLookAt(location.getX(), location.getY(), location.getZ());
         --this.lookTime;

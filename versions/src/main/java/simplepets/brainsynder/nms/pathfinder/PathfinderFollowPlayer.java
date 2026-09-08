@@ -47,16 +47,12 @@ public class PathfinderFollowPlayer extends Goal {
     @Override // Runs per tick
     public boolean canUse() {
         // Simple Check in case user is null
-        if (user == null) {
-            this.user = entity.getPetUser();
-            this.player = VersionHelper.<ServerPlayer>getEntityHandle(user.getPlayer());
-        }
-
+        this.user = entity.getPetUser();
         if (user == null) return false; // Failed: no user found
         if (user.getPlayer() == null) return false; // Failed: no player found
-        if (entity == null) return false; // Failed: entity is missing ?!?
 
         if (!user.getPlayer().isOnline()) return false; // Failed: player is not online
+        this.player = VersionHelper.<ServerPlayer>getEntityHandle(user.getPlayer());
 
         // Failed: player is riding a mob, and config denies pet from following player
         if (user.getPlayer().isInsideVehicle()
@@ -66,6 +62,9 @@ public class PathfinderFollowPlayer extends Goal {
         // Failed: pet and player are in different worlds
         if (!VersionHelper.getEntityLevel(player).getWorld().getName()
                 .equals(VersionHelper.getEntityLevel(entity).getWorld().getName())) return false;
+
+        // Release MOVE and LOOK near the owner so idle look goals can run.
+        if (entity.distanceToSqr(player) <= minRange * minRange) return false;
 
         if (entity.isFlightEnabled()) {
             int hoverOffset = Math.max(2, (int) entity.getBoundingBox().getYsize());
@@ -78,13 +77,17 @@ public class PathfinderFollowPlayer extends Goal {
 
     @Override // called after start() and if canUse() == true
     public boolean canContinueToUse() {
-        return !navigation.isInProgress() && (entity.distanceToSqr(player) < (double) (this.maxRange * this.maxRange));
+        return user != null && user.getPlayer() != null && user.getPlayer().isOnline()
+                && VersionHelper.getEntityLevel(player) == VersionHelper.getEntityLevel(entity)
+                && navigation.isInProgress()
+                && entity.distanceToSqr(player) > minRange * minRange;
     }
 
     @Override
     public void tick() {
-        if (entity.distanceToSqr(this.player) >= teleportDistance) { // Will teleport the pet if the player is more than 155 blocks away
-            if (entity.distanceTo(this.player) >= 80) { // Will teleport the pet if the player is more than 144 blocks away
+        entity.getLookControl().setLookAt(player.getX(), player.getEyeY(), player.getZ());
+        if (entity.distanceToSqr(this.player) >= teleportDistance) {
+            if (entity.distanceTo(this.player) >= 80) {
                 entity.teleportToOwner(); // Will ignore all checks and just teleport to the player
             } else {
                 this.tryTeleport();

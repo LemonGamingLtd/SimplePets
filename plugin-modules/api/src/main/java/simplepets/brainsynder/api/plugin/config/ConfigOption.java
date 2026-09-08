@@ -173,7 +173,9 @@ public interface ConfigOption {
                     Default: {default}""");
     ConfigEntry<Integer> PATHFINDING_TELEPORT_DISTANCE = REGISTRY.register("pathfinding.distance-till-teleport", 1000,
             """
-                    How far away from the player does the pet have to be before it teleports closer
+                    Squared distance from the player before the pet teleports closer.
+                    For 20 blocks use 400; the default 1000 is approximately 32 blocks.
+                    Keep this above the square of min-distance-to-player so pets have room to walk.
 
                     Default: {default}""");
 
