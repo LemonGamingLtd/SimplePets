@@ -6,6 +6,7 @@ import org.bsdevelopment.pluginutils.storage.RandomCollection;
 import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bsdevelopment.pluginutils.version.VersionCompatibility;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -32,6 +33,7 @@ import simplepets.brainsynder.nms.helper.VersionHelper;
 import simplepets.brainsynder.utils.SpawnBlockDiagnostics;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,10 +132,10 @@ public class SpawnerUtil implements ISpawnUtil {
                 String reason = event.getReason();
                 if ((reason != null) && (!reason.isEmpty())) return SpawnResult.fail(reason);
 
-                return reportBlockedSpawn(type, user, spawnLocation, "PetEntitySpawnEvent", new PetEntitySpawnEvent(user, customEntity));
+                return reportBlockedSpawn(type, user, location, "PetEntitySpawnEvent", new PetEntitySpawnEvent(user, customEntity));
             }
 
-            if (!spawnLocation.getChunk().isLoaded()) spawnLocation.getChunk().load();
+            if (!location.getChunk().isLoaded()) location.getChunk().load();
 
             if (VersionHelper.addEntity(targetWorld.getHandle(), customEntity, CreatureSpawnEvent.SpawnReason.CUSTOM)) {
                 user.setPet(customEntity);
@@ -160,8 +162,8 @@ public class SpawnerUtil implements ISpawnUtil {
                 return SpawnResult.success(customEntity);
             }
 
-            SimplePets.getPetUtilities().runPetCommands(CommandReason.FAILED, user, type, spawnLocation);
-            return reportBlockedSpawn(type, user, spawnLocation, "CreatureSpawnEvent", buildSpawnProbeEvent(customEntity));
+            SimplePets.getPetUtilities().runPetCommands(CommandReason.FAILED, user, type, location);
+            return reportBlockedSpawn(type, user, location, "CreatureSpawnEvent", buildSpawnProbeEvent(customEntity));
         } catch (Exception e) {
             e.printStackTrace();
             SimplePets.getPetUtilities().runPetCommands(CommandReason.FAILED, user, type, location);
