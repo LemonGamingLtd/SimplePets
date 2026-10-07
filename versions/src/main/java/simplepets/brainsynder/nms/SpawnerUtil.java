@@ -1,5 +1,6 @@
 package simplepets.brainsynder.nms;
 
+import net.minecraft.world.phys.AABB;
 import org.bsdevelopment.nbt.StorageTagCompound;
 import org.bsdevelopment.pluginutils.storage.RandomCollection;
 import org.bsdevelopment.pluginutils.text.Colorize;
@@ -9,6 +10,9 @@ import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.PetCore;
 import simplepets.brainsynder.api.ISpawnUtil;
@@ -25,6 +29,7 @@ import simplepets.brainsynder.debug.DebugLevel;
 import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.entity.special.EntityControllerPet;
 import simplepets.brainsynder.nms.helper.VersionHelper;
+import simplepets.brainsynder.utils.SpawnBlockDiagnostics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +41,7 @@ public class SpawnerUtil implements ISpawnUtil {
     private final Map<PetType, Class<?>> petMap;
     private final Map<PetType, Integer> spawnCount;
 
-    public SpawnerUtil (ClassLoader classLoader, String targetVersionName) {
+    public SpawnerUtil(ClassLoader classLoader, String targetVersionName) {
         petMap = new HashMap<>();
         spawnCount = new HashMap<>();
 
@@ -47,17 +52,17 @@ public class SpawnerUtil implements ISpawnUtil {
 
             String name = type.getEntityClass().getSimpleName().replaceFirst("I", "");
             try {
-                Class<?> clazz = Class.forName("simplepets.brainsynder.versions."+ targetVersionName +".entity.list."+name, false, classLoader);
+                Class<?> clazz = Class.forName("simplepets.brainsynder.versions." + targetVersionName + ".entity.list." + name, false, classLoader);
                 if (!VersionCompatibility.isCompatible(clazz)) {
                     SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(DebugLevel.WARNING).setMessages(
-                            "The '"+type.getName()+"' pet is not supported for your server version [will NOT affect your server]"
+                            "The '" + type.getName() + "' pet is not supported for your server version [will NOT affect your server]"
                     ));
                     continue;
                 }
                 petMap.put(type, clazz);
-            }catch (Exception ignored) {
+            } catch (Exception ignored) {
                 SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(DebugLevel.WARNING).setMessages(
-                        "The '"+type.getName()+" ("+name+")' pet is not available for your server version [will NOT affect your server]"
+                        "The '" + type.getName() + " (" + name + ")' pet is not available for your server version [will NOT affect your server]"
                 ));
             }
         }
@@ -92,8 +97,7 @@ public class SpawnerUtil implements ISpawnUtil {
             int minHeight = location.getWorld().getMinHeight();
             int y = location.getBlockY();
 
-            if ( (y > maxHeight) || (minHeight > y) )
-                return SpawnResult.fail(Colorize.translateBungeeHex(ConfigOption.MISC_TOGGLES_EXCEEDS_WORLD_CONFINES.get()));
+            if ((y > maxHeight) || (minHeight > y)) return SpawnResult.fail(Colorize.translateBungeeHex(ConfigOption.MISC_TOGGLES_EXCEEDS_WORLD_CONFINES.get()));
         }
 
         try {
@@ -102,7 +106,7 @@ public class SpawnerUtil implements ISpawnUtil {
 
             if ((type == PetType.ARMOR_STAND) || (type == PetType.SHULKER)) {
                 customEntity = new EntityControllerPet(type, user, location);
-            }else{
+            } else {
                 customEntity = (EntityPet) petMap.get(type).getDeclaredConstructor(PetType.class, PetUser.class).newInstance(type, user);
             }
 
@@ -113,21 +117,23 @@ public class SpawnerUtil implements ISpawnUtil {
             customEntity.setSpawnLevel(targetWorld.getHandle());
             VersionHelper.moveTo(customEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
             customEntity.setInvisible(false);
-            customEntity.setInvulnerable(true);
+            VersionHelper.VERSION_TRANSLATOR.setInvulnerable(customEntity, true);
             customEntity.setPersistenceRequired();
+            if (customEntity instanceof EntityControllerPet controllerPet) controllerPet.reloadLocation();
 
             // Call the spawn event
             PetEntitySpawnEvent event = new PetEntitySpawnEvent(user, customEntity);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (event.isCancelled()) {
                 SimplePets.getPetUtilities().runPetCommands(CommandReason.FAILED, user, type);
-                String reason = "";
-                if (event.getReason() != null) reason = event.getReason();
-                if (!reason.isEmpty()) return SpawnResult.fail(reason);
-                return SpawnResult.fail("The spawning of this pet was cancelled by another plugin.");
+
+                String reason = event.getReason();
+                if ((reason != null) && (!reason.isEmpty())) return SpawnResult.fail(reason);
+
+                return reportBlockedSpawn(type, user, spawnLocation, "PetEntitySpawnEvent", new PetEntitySpawnEvent(user, customEntity));
             }
 
-            if (!location.getChunk().isLoaded()) location.getChunk().load();
+            if (!spawnLocation.getChunk().isLoaded()) spawnLocation.getChunk().load();
 
             if (VersionHelper.addEntity(targetWorld.getHandle(), customEntity, CreatureSpawnEvent.SpawnReason.CUSTOM)) {
                 user.setPet(customEntity);
@@ -150,16 +156,17 @@ public class SpawnerUtil implements ISpawnUtil {
                 }
                 SimplePets.getPetUtilities().runPetCommands(CommandReason.SPAWN, user, type);
                 int count = spawnCount.getOrDefault(type, 0);
-                spawnCount.put(type, (count+1));
+                spawnCount.put(type, (count + 1));
                 return SpawnResult.success(customEntity);
             }
-        }catch (Exception e) {
+
+            SimplePets.getPetUtilities().runPetCommands(CommandReason.FAILED, user, type, spawnLocation);
+            return reportBlockedSpawn(type, user, spawnLocation, "CreatureSpawnEvent", buildSpawnProbeEvent(customEntity));
+        } catch (Exception e) {
             e.printStackTrace();
             SimplePets.getPetUtilities().runPetCommands(CommandReason.FAILED, user, type, location);
             return SpawnResult.fail("An error occurred while trying to spawn the pet: " + e.getMessage());
         }
-
-        return SpawnResult.fail("An unknown error occurred while trying to spawn the pet.");
     }
 
     @Override
@@ -182,9 +189,74 @@ public class SpawnerUtil implements ISpawnUtil {
         return spawnCount;
     }
 
-    private Location getRandomLocation (PetType type, Location center) {
+    private Event buildSpawnProbeEvent(EntityPet customEntity) {
+        Entity bukkitEntity = customEntity.getBukkitEntity();
+        if (!(bukkitEntity instanceof LivingEntity livingEntity)) return null;
+        return new CreatureSpawnEvent(livingEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
+    }
+
+    private SpawnResult<IEntityPet> reportBlockedSpawn(PetType type, PetUser user, Location location, String eventName, Event probeEvent) {
+        List<String> details = new ArrayList<>();
+        String blockingPlugin = findBlockingPlugin(probeEvent);
+
+        if (blockingPlugin != null) {
+            details.add("The spawn was cancelled by '" + blockingPlugin + "' (via " + eventName + ")");
+        } else {
+            details.add("The spawn was cancelled by another plugin (via " + eventName + ")");
+
+            List<String> listeningPlugins = (probeEvent == null) ? List.of() : SpawnBlockDiagnostics.getListeningPlugins(probeEvent);
+            if (listeningPlugins.isEmpty()) {
+                details.add("No other plugin is listening to that event, so the server itself rejected the pet");
+            } else {
+                details.add("Plugins listening to that event: " + String.join(", ", listeningPlugins));
+            }
+        }
+
+        if (ConfigOption.PET_TOGGLES_SPAWN_BYPASS.get()) details.add("'pet-toggles.mob-spawn-bypass' is enabled but did not override the cancellation");
+
+        List<String> report = new ArrayList<>();
+        report.add("Failed to spawn the '" + type.getName() + "' pet for " + getUserName(user));
+        report.add("Location: " + location.getWorld().getName() + " @ " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ());
+        report.addAll(details);
+
+        SimplePets.getDebugLogger().debug(DebugBuilder.build(getClass()).setLevel(DebugLevel.ERROR).setMessages(report.toArray(String[]::new)));
+        return SpawnResult.fail(ChatColor.RED + String.join("\n" + ChatColor.RED, details));
+    }
+
+    private String findBlockingPlugin(Event probeEvent) {
+        if (probeEvent == null) return null;
+        if (!ConfigOption.MISC_TOGGLES_SPAWN_FAILURE_DIAGNOSTICS.get()) return null;
+        return SpawnBlockDiagnostics.findCancellingPlugin(probeEvent).orElse(null);
+    }
+
+    private String getUserName(PetUser user) {
+        Player player = user.getPlayer();
+        return (player == null) ? String.valueOf(user.getOwnerUUID()) : player.getName();
+    }
+
+    private Location getRandomLocation(PetType type, Location center) {
         List<Location> locationList = circle(center, modifyInt(type, 4), 3, false, false, true);
         return RandomCollection.fromCollection(locationList).next();
+    }
+
+    private Location getSafeLocation(EntityPet entity, Location location) {
+        if (canFit(entity, location)) return location;
+
+        List<Location> locations = circle(location, modifyInt(entity.getPetType(), 4), 3, false, true, true);
+        locations.sort(Comparator.comparingDouble(location::distanceSquared));
+
+        for (Location candidate : locations) {
+            if (canFit(entity, candidate)) return candidate;
+        }
+
+        return entity.getPetUser().getUserLocation().orElse(location);
+    }
+
+    private boolean canFit(EntityPet entity, Location location) {
+        double halfWidth = entity.getBbWidth() / 2D;
+        return VersionHelper.getEntityLevel(entity).noBlockCollision(entity, new AABB(
+                location.getX() - halfWidth, location.getY(), location.getZ() - halfWidth,
+                location.getX() + halfWidth, location.getY() + entity.getBbHeight(), location.getZ() + halfWidth));
     }
 
     private int modifyInt(PetType type, int number) {

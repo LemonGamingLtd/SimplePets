@@ -707,7 +707,6 @@ public class PetOwner implements PetUser {
 
         if (!vehicle) return true;
 
-        this.vehicle = type;
         Optional<IPetConfig> configOptional = SimplePets.getPetConfigManager().getPetConfig(type);
         if (!configOptional.isPresent()) return false;
         IPetConfig config = configOptional.get();

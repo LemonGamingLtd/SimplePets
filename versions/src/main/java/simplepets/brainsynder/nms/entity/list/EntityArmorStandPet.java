@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.EulerAngle;
 import simplepets.brainsynder.api.entity.ambient.IEntityArmorStandPet;
@@ -52,6 +53,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Function;
+
+import static simplepets.brainsynder.api.pet.PetDataRegistry.VISIBLE;
 
 public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStandPet {
 
@@ -100,7 +103,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         stand.setPos(location.getX(), location.getY(), location.getZ());
         stand.setBasePlateVisibility(false);
         stand.setArmsVisibile(true);
-        stand.setInvulnerable(true);
+        VersionHelper.VERSION_TRANSLATOR.setInvulnerable(stand, true);
         stand.persist = true;
         stand.setSpecial(true);
         stand.setInvisible(false);
@@ -298,7 +301,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         object.setBoolean("clone", isOwner());
         object.setBoolean("restricted", restricted);
         object.setEnum("glow-color", getGlowColor());
-        object.setBoolean("visible", isPetVisible());
+        if (!isPetVisible()) object.setBoolean(VISIBLE.namespace(), !isPetVisible());
 
         StorageTagCompound items = new StorageTagCompound();
         if (getHeadItem() != null) items.setTag("head", parseItem(getHeadItem()));
@@ -325,7 +328,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         if (object.hasKey("small")) setSmallStand(object.getBoolean("small"));
         if (object.hasKey("clone")) setOwner(object.getBoolean("clone"));
         if (object.hasKey("invisible")) setPetVisible(!object.getBoolean("invisible"));
-        if (object.hasKey("visible")) setPetVisible(object.getBoolean("visible"));
+        if (object.hasKey(VISIBLE.namespace())) setPetVisible(object.getBoolean(VISIBLE.namespace()));
         if (object.hasKey("items")) {
             StorageTagCompound items = object.getCompoundTag("items");
             if (items.hasKey("head")) setHeadItem(parseString(items.getTag("head")));
@@ -590,7 +593,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
     }
 
     private void handleCloning() {
-        org.bukkit.inventory.PlayerInventory inventory = getPetUser().getPlayer().getInventory();
+        PlayerInventory inventory = getPetUser().getPlayer().getInventory();
         ItemStack head = checkItem(inventory.getHelmet());
         ItemStack chest = checkItem(inventory.getChestplate());
         ItemStack legs = checkItem(inventory.getLeggings());

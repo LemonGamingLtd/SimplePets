@@ -20,6 +20,7 @@ import org.bsdevelopment.pluginutils.text.Colorize;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -50,9 +51,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
+import static simplepets.brainsynder.api.pet.PetDataRegistry.*;
+
 public abstract class EntityPet extends EntityBase implements IEntityPet {
     private Map<String, StorageTagCompound> additional;
     private String petName = null;
+    private String rawPetName = null;
     private final EntityType<? extends Mob> rawEntityType;
 
 
@@ -105,7 +109,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         rawEntityType = entitytypes;
         this.additional = new HashMap<>();
 
-        this.collides = false;
+        this.collides = ConfigOption.PET_TOGGLES_MOB_PUSHER.get();
         this.noPhysics = false;
 
         VersionHelper.overrideAttributeMap(this);
@@ -329,6 +333,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                 name = config.get().getDisplayName();
             }
         }
+        rawPetName = name;
         String newName = name.replace("%player%", getPetUser().getPlayer().getName());
 
         EntityNameChangeEvent event = new EntityNameChangeEvent(this, newName);
@@ -382,11 +387,11 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         object.setString("PetType", getPetType().getName());
         object.setFloat("health", getHealth());
         object.setString("ownerName", getPetUser().getOwnerName());
-        getPetUser().getPetName(getPetType()).ifPresent(name -> {
+        storedPetName().ifPresent(name -> {
             object.setString("name", name.replace('§', '&'));
         });
-        object.setBoolean("silent", silent);
-        object.setBoolean("visible", isPetVisible());
+        object.setBoolean(SILENT.namespace(), silent);
+        if (!isPetVisible()) object.setBoolean(VISIBLE.namespace(), !isPetVisible());
 
         if (!additional.isEmpty()) {
             StorageTagCompound additional = new StorageTagCompound();
@@ -395,8 +400,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         }
 
         object.setDouble("scale", getPetScale());
-        object.setBoolean("frozen", isFrozen());
-        object.setBoolean("burning", isBurning());
+        object.setBoolean(FROZEN.namespace(), isFrozen());
+        object.setBoolean(BURNING.namespace(), isBurning());
         object.setEnum("glow-color", getGlowColor());
         return object;
     }
@@ -416,16 +421,16 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         }
 
         if (object.hasKey("glow-color")) setGlowColor(object.getEnum("glow-color", ChatColor.class, ChatColor.WHITE));
-        if (object.hasKey("silent")) silent = object.getBoolean("silent");
-        if (object.hasKey("visible")) setPetVisible(object.getBoolean("visible"));
+        if (object.hasKey(SILENT.namespace())) setPetSilent(object.getBoolean(SILENT.namespace()));
+        if (object.hasKey(VISIBLE.namespace())) setPetVisible(object.getBoolean(VISIBLE.namespace()));
 
         if (object.hasKey("additional")) {
             StorageTagCompound additional = object.getCompoundTag("additional");
             additional.getKeySet().forEach(pluginKey -> this.additional.put(pluginKey, additional.getCompoundTag(pluginKey)));
         }
 
-        if (object.hasKey("frozen")) setFrozen(object.getBoolean("frozen", false));
-        if (object.hasKey("burning")) setBurning(object.getBoolean("burning", false));
+        if (object.hasKey(FROZEN.namespace())) setFrozen(object.getBoolean(FROZEN.namespace(), false));
+        if (object.hasKey(BURNING.namespace())) setBurning(object.getBoolean(BURNING.namespace(), false));
         if (object.hasKey("pose")) {
             Pose pose = object.getEnum("pose", Pose.class);
             if (pose != null) setPose(pose);
@@ -442,8 +447,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         }
         if (object.hasKey("waterSpeed")) waterSpeed = object.getDouble("waterSpeed");
         if (object.hasKey("scale")) setPetScale(object.getDouble("scale"));
-        if (object.hasKey("half_scale")) {
-            if (object.getBoolean("half_scale", false)) {
+        if (object.hasKey(HALF_SCALE.namespace())) {
+            if (object.getBoolean(HALF_SCALE.namespace(), false)) {
                 setPetScale(0.5);
             } else {
                 setPetScale(1.0);
@@ -470,6 +475,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     @Override
     public void setPetSilent(boolean silent) {
         this.silent = silent;
+        setSilent(silent);
     }
 
     @Override
@@ -527,7 +533,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     }
 
     private boolean isOnGround(net.minecraft.world.entity.Entity entity) {
-        org.bukkit.block.Block block = entity.getBukkitEntity().getLocation().subtract(0, 0.5, 0).getBlock();
+        Block block = entity.getBukkitEntity().getLocation().subtract(0, 0.5, 0).getBlock();
         return block.getType().isSolid() || block.isLiquid();
     }
 
@@ -578,7 +584,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
         // Ensures that pets that hover for too long are either removed
         // by the player or automatically deleted if they are not associated with any player
-        if (isOnGround()) {
+        if (isOnGround() || (this instanceof IFlyableEntity)) {
             if (hoverTickCount != 0) hoverTickCount = 0;
         } else {
             if (hoverTickCount == hoverRemoveTick) {
@@ -720,8 +726,13 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
     // Added in 1.20
     public boolean isOnGround() {
-        org.bukkit.block.Block block = this.getBukkitEntity().getLocation().subtract(0, 0.5, 0).getBlock();
+        Block block = this.getBukkitEntity().getLocation().subtract(0, 0.5, 0).getBlock();
         return block.getType().isSolid() || block.isLiquid();
+    }
+
+    private Optional<String> storedPetName() {
+        if (rawPetName != null) return Optional.of(rawPetName);
+        return getPetUser().getPetName(getPetType());
     }
 
     private static AttributeSupplier.Builder createAttributes(EntityPet entityPet) {
