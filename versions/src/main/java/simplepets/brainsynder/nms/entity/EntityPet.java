@@ -245,6 +245,18 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         });
     }
 
+    /**
+     * Folia: never let a pet be carried by an asynchronous teleport. Folia moves passengers and vehicles to another
+     * region by creating a new entity from {@link #getType()} and copying this one's data into it. Pets report their
+     * vanilla type, so a hat pet on a player who used /rtp or a portal became a real, invulnerable, persistent
+     * WitherBoss, Warden and so on. Returning false makes Folia refuse that whole teleport instead; the owner can take
+     * the hat off (or get off the pet) and try again. On Spigot/Paper this method doesn't exist and is never called.
+     */
+    @SuppressWarnings("unused")
+    protected boolean canTeleportAsync() {
+        return false;
+    }
+
     private boolean isOwnedByCurrentRegion(Location location) {
         try {
             Object result = Bukkit.class
